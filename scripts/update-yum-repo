@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+if [ ! -d "${SNAP_CACHE_DIR}" ]; then
+  echo "Diretório de cache do Snap (\$SNAP_CACHE_DIR) não configurado"
+  exit -1
+fi
+
+echo "Instalando dependências..."
+sudo yum install -y rpm-build python-boto deltarpm python-deltarpm
+
+echo "Importando chave privada GPG..."
+rm -rf ~/.gnupg
+gpg --list-secret-keys 'gpg@servicos.gov.br' || gpg --import gpg-secret # arquivo secreto configurado no Snap
+
+echo "Importando chave pública GPG no RPM..."
+rm -rf gpg-public-key
+gpg --export --armor 'gpg@servicos.gov.br' > gpg-public-key
+sudo rpm --import gpg-public-key
+
+echo "Criando configuração default para o rpmbuild..."
+cat <<-EOF > ~/.rpmmacros
+%_signature gpg
+%_gpg_name gpg@servicos.gov.br
+EOF
+
+echo "Compilando e gerando RPM..."
+./gradlew assemble buildRpm
+
+echo "Verificando assinatura no RPM..."
+rpm --checksig $(find build/rpmbuild/RPMS/noarch/editor-guia-de-servicos*.rpm -type f)
+
+if [ ! -d "${SNAP_CACHE_DIR}/rpm-s3" ]; then
+  echo "Instalando rpm-s3..."
+  pushd "${SNAP_CACHE_DIR}"
+    git clone https://github.com/crohr/rpm-s3 --recurse-submodules
+  popd
+fi
+
+echo "Sincronizando pacotes com a S3..."
+# Precisamos usar o Python 2.7 embutido no CentOS
+PATH=/bin:/usr/bin ${SNAP_CACHE_DIR}/rpm-s3/bin/rpm-s3 \
+    -b servicosgovbr \
+    -p "centos/7" \
+    --sign \
+    $(find build/rpmbuild/RPMS/noarch/editor-guia-de-servicos*.rpm -type f)
