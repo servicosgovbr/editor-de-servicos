@@ -1,0 +1,9 @@
+{
+  "language": "pt",
+  "gitbook": ">=2.0.0",
+  "title": "Editor do Guia de Serviços",
+  "structure": {
+    "readme": "index.md",
+    "summary": "_sumario.md"
+  }
+}
