@@ -1,1 +1,10 @@
-
+.gradle
+build
+editor-guia-de-servicos.ipr
+editor-guia-de-servicos.iml
+editor-guia-de-servicos.iws
+.vagrant
+.DS_Store
+*~
+tmp
+_book
