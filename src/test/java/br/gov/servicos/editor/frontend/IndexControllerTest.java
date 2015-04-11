@@ -1,4 +1,4 @@
-package br.gov.servicos.editor;
+package br.gov.servicos.editor.frontend;
 
 import org.junit.Test;
 

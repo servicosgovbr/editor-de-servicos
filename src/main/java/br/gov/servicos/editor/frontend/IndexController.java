@@ -1,4 +1,4 @@
-package br.gov.servicos.editor;
+package br.gov.servicos.editor.frontend;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
