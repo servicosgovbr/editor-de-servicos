@@ -9,7 +9,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
 
-import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang3.StringUtils.join;
+
 
 @Configuration
 public class ServletContainerConfig {
