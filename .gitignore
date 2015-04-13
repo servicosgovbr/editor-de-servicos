@@ -8,3 +8,5 @@ editor-guia-de-servicos.iws
 *~
 tmp
 _book
+.jruby-container
+.sass-cache
