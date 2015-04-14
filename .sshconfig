@@ -1,0 +1,32 @@
+ChallengeResponseAuthentication no
+Compression yes
+CompressionLevel 9
+ForwardAgent yes
+GSSAPIAuthentication no
+KbdInteractiveAuthentication no
+PasswordAuthentication no
+PubkeyAuthentication yes
+RSAAuthentication no
+RequestTTY auto
+RhostsRSAAuthentication no
+StrictHostKeyChecking no
+
+Host alpha
+  Hostname 54.207.59.83
+  User centos
+  Port 22
+  IdentityFile ./secrets/guiadeservicos-kp.pem
+  IdentityFile /var/snap-ci/repo/guiadeservicos-kp.pem
+  LogLevel=quiet
+  UserKnownHostsFile=/dev/null
+  StrictHostKeyChecking=no
+
+Host app-vagrant
+  Hostname localhost
+  User vagrant
+  Port 2222
+  IdentityFile ~/.vagrant.d/insecure_private_key
+  IdentityFile ./secrets/server_ssh_key
+  LogLevel=quiet
+  UserKnownHostsFile=/dev/null
+  StrictHostKeyChecking=no
