@@ -1,3 +1,4 @@
 #!/bin/bash
 
-echo 'Ambiente alpha para o editor ainda não foi configurado'
+scp -vF .sshconfig $(find build/rpmbuild/RPMS/noarch/editor-guia-de-servicos*.rpm -type f) alpha:~/editor-guia-de-servicos-latest.rpm
+ssh -vF .sshconfig alpha '/bin/bash -s' < scripts/alpha-deploy
