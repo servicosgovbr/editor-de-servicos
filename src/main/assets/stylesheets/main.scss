@@ -24,3 +24,9 @@ select {
     }
   }
 }
+
+fieldset.required > h3 {
+  &::after {
+    content: ' * ';
+  }
+}
