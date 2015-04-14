@@ -7,7 +7,7 @@
 Editor do Guia de Serviços
 ====
 
-Este é o repositório oficial do Editor do Guia de Serviços.
+Este é o repositório oficial do Editor do Guia de Serviços. Uma versão [alpha](http://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha), constantemente atualizada, está disponível em uma [máquina virtual na Amazon](ec2-54-207-59-83.sa-east-1.compute.amazonaws.com).
 
 Documentação
 ----
