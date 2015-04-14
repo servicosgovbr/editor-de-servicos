@@ -13,4 +13,4 @@ echo 'Removendo pacote instalado'
 rm -rf editor-guia-de-servicos-latest.rpm
 
 sudo systemctl daemon-reload
-sudo systemctl restart guia-de-servicos
+sudo systemctl restart editor-guia-de-servicos
