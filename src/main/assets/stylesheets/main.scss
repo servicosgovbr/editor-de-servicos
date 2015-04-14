@@ -8,6 +8,15 @@ h1 {
 
 h2 {
   font-size: em(18);
+  color: #2c66ce;
+}
+
+h3 {
+  
+}
+
+label {
+  color: #606060;
 }
 
 input,
@@ -16,6 +25,7 @@ select {
   &.inline {
     display: inline;
     width: 10%;
+
 
     &.inline-lg {
       width: 60%;
