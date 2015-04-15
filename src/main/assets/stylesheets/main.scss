@@ -1,32 +1,51 @@
 @import 'bourbon/bourbon';
 @import 'base/base';
 @import 'neat/neat';
+@import 'neat/settings/grid';
+
+
+#main {
+@include outer-container;
+}
+
+#conteudo {
+@include span-columns(12);
+@include omega();
 
 h1 {
-  font-size: em(22);
+font-size: em(22);
 }
 
 h2 {
-  font-size: em(18);
-  color: #2c66ce;
+font-size: em(18);
+color: #2c66ce;
+}
+
+h3 {
+
+}
+
+label {
+color: #606060;
 }
 
 input,
 label,
 select {
-  &.inline {
-    display: inline;
-    width: 10%;
+&.inline {
+display: inline;
+width: 10%;
 
 
-    &.inline-lg {
-      width: 60%;
-    }
-  }
+&.inline-lg {
+width: 60%;
+}
+}
+}
 }
 
 fieldset.required > h3 {
-  &::after {
-    content: ' * ';
-  }
+&::after {
+content: ' * ';
+}
 }
