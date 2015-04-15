@@ -1,51 +1,46 @@
+$visual-grid: true;
+$visual-grid-color: pink;
+$visual-grid-index: front;
+$visual-grid-opacity: 0.05;
+
 @import 'bourbon/bourbon';
 @import 'base/base';
 @import 'neat/neat';
 @import 'neat/settings/grid';
 
-
-#main {
-@include outer-container;
+#principal {
+  @include outer-container;
 }
 
 #conteudo {
-@include span-columns(12);
-@include omega();
+  @include span-columns(12);
+  @include omega();
 
-h1 {
-font-size: em(22);
-}
+  h1 {
+    font-size: em(22);
+  }
 
-h2 {
-font-size: em(18);
-color: #2c66ce;
-}
+  h2 {
+    font-size: em(18);
+    color: #2c66ce;
+  }
 
-h3 {
+  input,
+  label,
+  select {
+    &.inline {
+      display: inline;
+      width: 10%;
+    }
 
-}
+    &.inline-lg {
+      width: 60%;
+    }
+  }
 
-label {
-color: #606060;
-}
-
-input,
-label,
-select {
-&.inline {
-display: inline;
-width: 10%;
-
-
-&.inline-lg {
-width: 60%;
-}
-}
-}
-}
-
-fieldset.required > h3 {
-&::after {
-content: ' * ';
-}
+  fieldset.required > h3 {
+    &::after {
+      content: ' * ';
+    }
+  }
 }

@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout">
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+	  layout:decorator="layout">
 
 <head>
     <title>Principal</title>
 </head>
 
-<body>
-	<div id="conteudo" layout:fragment="corpo">
-		<section id="main" role="main">
+<body id="conteudo">
+	<div layout:fragment="corpo">
+		<section id="principal" role="main">
 			<div id="passo-1" th:replace="form/passo-1"></div>
 			<div id="passo-2" th:replace="form/passo-2"></div>
 			<div id="passo-3" th:replace="form/passo-3"></div>
 		</section>
 	</div>
-
 </body>
 </html>
