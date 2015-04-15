@@ -2,25 +2,26 @@
 button {
   @include appearance(none);
   -webkit-font-smoothing: antialiased;
-  background-color: $action-color;
+  background-color: #2c66ce;
   border-radius: $base-border-radius;
   border: none;
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-family: $base-font-family;
+  font-family: $heading-font-family;
   font-size: $base-font-size;
-  font-weight: 600;
   line-height: 1;
   padding: 0.75em 1em;
   text-decoration: none;
   user-select: none;
   vertical-align: middle;
   white-space: nowrap;
+  outline: 0px;
+  margin-bottom: 10px;
 
   &:hover,
   &:focus {
-    background-color: darken($action-color, 15%);
+    background-color: #2153ae;
     color: #fff;
   }
 
@@ -28,4 +29,18 @@ button {
     cursor: not-allowed;
     opacity: 0.5;
   }
+}
+
+.button-cancel {
+    background-color: $cinza-medio;
+    color: $cinza-escuro;
+    margin-right: 10px;
+    outline: 0px;
+
+  &:hover,  
+  &:focus {
+  background-color: $cinza-medio-escuro;
+  }
+
+
 }

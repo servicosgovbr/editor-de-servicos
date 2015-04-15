@@ -16,18 +16,22 @@ $small-spacing: $base-spacing / 2;
 $base-z-index: 0;
 
 // Colors
-$blue: #477dca;
-$dark-gray: #333;
-$medium-gray: #999;
-$light-gray: #ddd;
+$preto: #333333;
+$cinza-escuro: #606060;
+$cinza-medio-escuro: #999999;
+$cinza-medio: #dcdcdc;
+$cinza-claro: #eef0f1;
+$branco: #ffffff;
+$azul-regular: #2c66ce;
+$azul-escuro: #2153ae;
 
 // Font Colors
-$base-background-color: #fff;
-$base-font-color: #606060;
-$action-color: $blue;
+$base-background-color: $branco;
+$base-font-color: $cinza-escuro;
+$action-color: $azul-regular;
 
 // Border
-$base-border-color: $light-gray;
+$base-border-color: $cinza-claro;
 $base-border: 1px solid $base-border-color;
 
 // Forms
