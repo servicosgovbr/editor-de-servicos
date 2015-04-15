@@ -44,11 +44,10 @@ $visual-grid-opacity: 0.05;
       content: ' * ';
     }
   }
+
+  p.observacao {
+    font-size: em(14);
+    margin-top: em(30);
+  }
 }
 
-
-.observacao { 
-  font-size: 14px;
-  font-family: $base-font-family;
-  margin-top: 30px;
-}
