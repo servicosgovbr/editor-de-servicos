@@ -45,13 +45,15 @@ $visual-grid-opacity: 0.05;
     }
   }
 
-  p.observacao {
-    font-size: em(14);
-    margin-top: em(30);
-  }
+  p {
 
+    &.observacao {
+      font-size: em(14);
+      margin-top: em(30);
+    }
+
+    &.aviso-salvo-em {
+      font-size: em(13);
+    }
+  }
 }
-
-  p.aviso-salvo-em {
-    font-size: em(13);
-  }
