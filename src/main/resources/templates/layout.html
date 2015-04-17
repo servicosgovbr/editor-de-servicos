@@ -11,6 +11,9 @@
     <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon"/>
 </head>
 
-<body layout:fragment="corpo"></body>
+<body>
+<div th:replace="fragments/header"></div>
+<div layout:fragment="corpo"></div>
+</body>
 </html>
 

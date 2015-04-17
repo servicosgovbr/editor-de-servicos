@@ -8,13 +8,45 @@ $visual-grid-opacity: 0.05;
 @import 'neat/neat';
 @import 'neat/settings/grid';
 
-#principal {
+//Cores
+$azul: #2c66ce;
+
+@mixin clear-margins {
+  margin: 0;
+}
+
+@mixin clear-paddings {
+  padding: 0;
+}
+
+@mixin clear-all {
+  @include clear-margins;
+  @include clear-paddings;
+}
+
+body {
+  @include clear-all;
+}
+
+.auto-grid {
   @include outer-container;
 }
 
-#conteudo {
-  @include span-columns(12);
-  @include omega();
+#header {
+  @include fill-parent;
+  background-color: $azul;
+
+  #logout-form {
+    float: right;
+
+    button {
+      @include clear-margins;
+    }
+  }
+
+}
+
+#principal {
 
   h1 {
     font-size: em(22);
@@ -22,7 +54,7 @@ $visual-grid-opacity: 0.05;
 
   h2 {
     font-size: em(18);
-    color: #2c66ce;
+    color: $azul;
     padding-top: 25px;
   }
 
