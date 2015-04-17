@@ -10,6 +10,7 @@ $visual-grid-opacity: 0.05;
 
 //Cores
 $azul: #2c66ce;
+$vermelho: red;
 
 @mixin clear-margins {
   margin: 0;
@@ -32,6 +33,16 @@ body {
   @include outer-container;
 }
 
+.alert {
+  &.alert-info {
+    color: $azul;
+  }
+
+  &.alert-error {
+    color: $vermelho;
+  }
+}
+
 #header {
   @include fill-parent;
   background-color: $azul;
@@ -44,6 +55,22 @@ body {
     }
   }
 
+}
+
+#login-form {
+  @include outer-container;
+  margin-top: em(50px);
+
+  form {
+    @include span-columns(6);
+    @include shift(3);
+
+    button {
+      @include direction-context(right-to-left) {
+        @include span-columns(4)
+      }
+    }
+  }
 }
 
 #principal {

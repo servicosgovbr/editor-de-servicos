@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Acessar o editor de serviços</title>
+</head>
+
+<body>
+<div layout:fragment="corpo">
+    <div id="login-form">
+        <form th:action="@{/login}" method="post"
+              th:with="csrf = ${#httpServletRequest.getAttribute('CsrfToken')}">
+
+            <h1>Login</h1>
+
+            <p th:if="${param.error}" class="alert alert-error">
+                <i class="fa fa-bug"></i>
+                Ocorreu um erro com seu login. Por favor, tente novamente.
+            </p>
+
+            <p th:if="${param.logout}" class="alert alert-info">
+                <i class="fa fa-info"></i>
+                Você foi deslogado do sistema.
+            </p>
+
+            <p>Informe seu usuário e senha para acessar o editor de serviços.</p>
+
+            <label for="usuario">Usuário:</label>
+            <input id="usuario" name="username" type="text" placeholder="nome de usuário"
+                   required="required" autofocus="true"/>
+
+            <label for="senha">Senha:</label>
+            <input id="senha" name="password" type="password" placeholder="senha" required="required"/>
+
+            <input type="hidden" name="${csrfToken.parameterName}" value="${csrfToken.token}"/>
+
+            <button type="submit">
+                <i class="fa fa-sign-in"></i>
+                Entrar
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
