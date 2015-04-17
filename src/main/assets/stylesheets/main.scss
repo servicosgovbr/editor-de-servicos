@@ -47,6 +47,7 @@ body {
   @include fill-parent;
   background-color: $azul;
   min-height: em(40px);
+  color: white;
 
   #logout-form {
     float: right;
