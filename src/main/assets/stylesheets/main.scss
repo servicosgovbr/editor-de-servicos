@@ -100,15 +100,13 @@ header {
     }
   }
 
-  p {
+  .observacao {
+    font-size: em(14);
+    margin-top: em(30);
+  }
 
-    &.observacao {
-      font-size: em(14);
-      margin-top: em(30);
-    }
-
-    &.aviso-salvo-em {
-      font-size: em(13);
-    }
+  .aviso-salvo-em {
+    font-size: em(13);
+    margin-left: .5em;
   }
 }
