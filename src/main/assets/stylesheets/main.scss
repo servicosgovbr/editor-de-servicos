@@ -8,10 +8,6 @@ $visual-grid-opacity: 0.05;
 @import 'neat/neat';
 @import 'neat/settings/grid';
 
-//Cores
-$azul: #2c66ce;
-$vermelho: red;
-
 @mixin clear-margins {
   margin: 0;
 }
@@ -43,13 +39,13 @@ body {
   }
 }
 
-#header {
+header {
   @include fill-parent;
-  background-color: $azul;
+  background-color: $azul-regular;
   min-height: em(40px);
   color: white;
 
-  #logout-form {
+  #logout {
     float: right;
 
     button {
@@ -81,7 +77,7 @@ body {
 
   h2 {
     font-size: em(18);
-    color: $azul;
+    color: $azul-regular;
     padding-top: 25px;
   }
 
