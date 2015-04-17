@@ -22,6 +22,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.security:spring-security-web:4.0.0.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.0.0.RELEASE'
 
     compile 'org.jolokia:jolokia-osgi:1.2.2'
     compile 'org.pegdown:pegdown:1.4.2'

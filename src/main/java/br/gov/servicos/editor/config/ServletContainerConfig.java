@@ -11,7 +11,6 @@ import javax.servlet.Filter;
 
 import static org.apache.commons.lang3.StringUtils.join;
 
-
 @Configuration
 public class ServletContainerConfig {
 
@@ -48,6 +47,7 @@ public class ServletContainerConfig {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
+
         return filter;
     }
 

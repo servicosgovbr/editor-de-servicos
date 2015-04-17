@@ -33,6 +33,7 @@ public class FilterConfig {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setOrder(order);
         registration.setFilter(filter);
+
         return registration;
     }
 }
