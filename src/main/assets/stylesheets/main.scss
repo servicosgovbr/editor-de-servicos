@@ -46,6 +46,7 @@ body {
 #header {
   @include fill-parent;
   background-color: $azul;
+  min-height: em(40px);
 
   #logout-form {
     float: right;
@@ -66,9 +67,7 @@ body {
     @include shift(3);
 
     button {
-      @include direction-context(right-to-left) {
-        @include span-columns(4)
-      }
+      float: right;
     }
   }
 }

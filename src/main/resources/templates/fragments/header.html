@@ -1,6 +1,6 @@
 <header id="header" role="banner">
     <div class="auto-grid">
-        <div id="logout-form">
+        <div id="logout-form" th:if="${#httpServletRequest.remoteUser}">
             <form th:action="@{/logout}" method="post">
                 <button type="submit">
                     <i class="fa fa-sign-out"></i> SAIR
