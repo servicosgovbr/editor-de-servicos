@@ -81,6 +81,19 @@ header {
     padding-top: 25px;
   }
 
+  a.remove {
+    display: inline-block;
+    width: 1.5em;
+    border-radius: $base-border-radius;
+    text-align: center;
+    background-color: lighten(red, 20%);
+    color: white;
+
+    &:hover {
+      background-color: lighten(red, 10%);
+    }
+  }
+
   input,
   label,
   select {
