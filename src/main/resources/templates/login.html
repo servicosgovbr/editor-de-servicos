@@ -17,28 +17,27 @@
             <h1>Login</h1>
 
             <p th:if="${param.error}" class="alert alert-error">
-                <i class="fa fa-bug"></i>
-                Ocorreu um erro com seu login. Por favor, tente novamente.
+                <i class="fa fa-bug"></i>&nbsp;
+                Nome ou senha incorretos.
             </p>
 
             <p th:if="${param.logout}" class="alert alert-info">
-                <i class="fa fa-info"></i>
-                Você foi deslogado do sistema.
+                <i class="fa fa-info"></i>&nbsp;
+                Você saiu do sistema.
             </p>
 
             <p>Informe seu usuário e senha para acessar o editor de serviços.</p>
 
-            <label for="usuario">Usuário:</label>
-            <input id="usuario" name="username" type="text" placeholder="nome de usuário"
-                   required="required" autofocus="true"/>
+            <label for="usuario">Usuário</label>
+            <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required" autofocus="true"/>
 
-            <label for="senha">Senha:</label>
-            <input id="senha" name="password" type="password" placeholder="senha" required="required"/>
+            <label for="senha">Senha</label>
+            <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
 
             <input type="hidden" name="${csrfToken.parameterName}" value="${csrfToken.token}"/>
 
             <button type="submit">
-                <i class="fa fa-sign-in"></i>
+                <i class="fa fa-sign-in"></i>&nbsp;
                 Entrar
             </button>
         </form>
