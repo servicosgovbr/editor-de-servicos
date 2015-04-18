@@ -31,11 +31,11 @@ body {
 
 .alert {
   &.alert-info {
-    color: $azul;
+    color: $azul-regular;
   }
 
   &.alert-error {
-    color: $vermelho;
+    color: red;
   }
 }
 
