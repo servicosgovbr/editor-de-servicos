@@ -1,5 +1,5 @@
 <fieldset class="required">
-    <h3>Tempo estimado</h3>
+    <h3>Tempo total estimado</h3>
 
     <p>
         Descreva quanto tempo em média o solicitante levará para obter esse serviço.
@@ -7,7 +7,13 @@
 
     <p>
         Entre <input class="inline" id="tempoEstimadoMin" type="text" name="tempoEstimadoMin"/> e
-        <input class="inline" id="tempoEstimadoMax" type="text" name="tempoEstimadoMax"/> dias.
+        <input class="inline" id="tempoEstimadoMax" type="text" name="tempoEstimadoMax"/>
+        <select class="inline">
+            <option>minutos</option>
+            <option>horas</option>
+            <option>dias</option>
+            <option>meses</option>
+        </select>.
     </p>
 
     <label for="tempoEstimadoExato">
