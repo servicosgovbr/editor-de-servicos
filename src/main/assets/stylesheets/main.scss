@@ -117,4 +117,16 @@ header {
     font-size: em(13);
     margin-left: .5em;
   }
+
+  div.counter {
+    float: right;
+    color: $cinza-escuro;
+    font-size: em(12);
+    margin-bottom: $base-spacing;
+    margin-top: em(-15);
+
+    span {
+      font-weight: bold;
+    }
+  }
 }
