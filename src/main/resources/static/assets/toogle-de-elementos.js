@@ -1,14 +1,17 @@
 jQuery(function($) {
 
-  $('input:radio.toogle').each(function() {
-    var others = $('input:radio[name=' + this.name + ']');
-    var target = $('#' + this.id + '-toogle');
-    var toogle = $(this);
+  var applicaToogle = function () {
+    var elementoAlvo = $('#' + this.id + '-toogle');
+    var escondeAlvo = $.fn.hide.bind(elementoAlvo);
+    var mostraAlvo = $.fn.show.bind(elementoAlvo);
 
-    others.change($.fn.hide.bind(target));
-    toogle.change($.fn.show.bind(target));
-    target.hide();
-  });
+    $('input:radio[name=' + this.name + ']').change(escondeAlvo);
+    $(this).change(mostraAlvo);
+
+    escondeAlvo();
+  };
+
+  $('input:radio.toogle').each(applicaToogle);
 
 });
 
