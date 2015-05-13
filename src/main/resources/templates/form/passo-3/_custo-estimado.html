@@ -2,36 +2,54 @@
     <h3>Custo estimado</h3>
 
     <p>
-        Caso este serviço possua custos ou taxas, informe a estimativa mais fiel possível.
-    </p>
-
-    <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de emissão"/> R$ <input type="text" class="inline"/>
-    <a class="inline remove" href="#">
-        <span class="fa fa-times"></span>
-    </a>
-
-    <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de envio"/> R$ <input type="text" class="inline"/>
-    <a class="inline remove" href="#">
-        <span class="fa fa-times"></span>
-    </a>
-
-    <input class="inline inline-lg" type="text" placeholder="Ex.: Exame médico"/> R$ <input type="text" class="inline"/>
-    <a class="inline remove" href="#">
-        <span class="fa fa-times"></span>
-    </a>
-
-    <p>
-        <button>
-            <i class="fa fa-plus"></i>&nbsp;
-            Adicionar custo
-        </button>
+        Este serviço é gratuito?
     </p>
 
     <p>
-        <label for="custoEstimadoExcecoes">
-            <input id="custoEstimadoExcecoes" type="checkbox" name="exatidaoCustoEstimado" value="excecoes"/>
-            Pode haver exceções a estas estimativas (será mostrado ao solicitante um texto de esclarecimento)
-        </label>
+        <input type="radio" id="gratuito-sim" name="gratuito" value="sim"/>
+        <label class="inline" for="gratuito-sim">Sim</label>
+
+        <br/>
+
+        <input type="radio" id="gratuito-nao" class="toogle" name="gratuito" value="nao"/>
+        <label class="inline" for="gratuito-nao">Não</label>
     </p>
+
+    <div id="gratuito-nao-toogle">
+
+        <p>
+            Informe a estimativa mais fiel possível com relação os custos ou taxas sobre este serviço.
+        </p>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de emissão"/> R$ <input type="text" class="inline"/>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de envio"/> R$ <input type="text" class="inline"/>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: Exame médico"/> R$ <input type="text" class="inline"/>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+        <p>
+            <button>
+                <i class="fa fa-plus"></i>&nbsp;
+                Adicionar custo
+            </button>
+        </p>
+
+        <p>
+            <label for="custoEstimadoExcecoes">
+                <input id="custoEstimadoExcecoes" type="checkbox" name="exatidaoCustoEstimado" value="excecoes"/>
+                Pode haver exceções a estas estimativas (será mostrado ao solicitante um texto de esclarecimento)
+            </label>
+        </p>
+
+    </div>
 
 </fieldset>
