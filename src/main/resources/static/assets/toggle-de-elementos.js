@@ -1,7 +1,7 @@
 jQuery(function($) {
 
-  var applicaToogle = function () {
-    var elementoAlvo = $('#' + this.id + '-toogle');
+  var applicaToggle = function () {
+    var elementoAlvo = $('#' + this.id + '-toggle');
     var escondeAlvo = $.fn.hide.bind(elementoAlvo);
     var mostraAlvo = $.fn.show.bind(elementoAlvo);
 
@@ -11,7 +11,7 @@ jQuery(function($) {
     escondeAlvo();
   };
 
-  $('input:radio.toogle').each(applicaToogle);
+  $('input:radio.toggle').each(applicaToggle);
 
 });
 
