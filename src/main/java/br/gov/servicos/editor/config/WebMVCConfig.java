@@ -29,6 +29,8 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
+                    .antMatchers("/info").permitAll()
+                    .antMatchers("/health").permitAll()
                     .antMatchers("/assets/**").permitAll()
                     .antMatchers("/fonts/**").permitAll()
                     .anyRequest().authenticated();
