@@ -113,11 +113,6 @@ header {
     }
   }
 
-  .aviso-salvo-em {
-    font-size: em(13);
-    margin-left: .5em;
-  }
-
   div.counter {
     float: right;
     color: $cinza-escuro;
@@ -129,4 +124,16 @@ header {
       font-weight: bold;
     }
   }
+
+  div.editor-preview {
+  }
+
+  div.editor-barra-ferramentas {
+  }
+
+  .aviso-salvo-em {
+    font-size: em(13);
+    margin-left: .5em;
+  }
+
 }

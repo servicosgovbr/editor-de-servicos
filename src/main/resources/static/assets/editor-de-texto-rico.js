@@ -1,5 +1,9 @@
 (function($, _, marked) {
 
+  $(function() {
+    $('textarea').each(function() { EditorMarkdown(this).cria() })
+  })
+
   var EditorMarkdown = function(e) {
 
     var editor = $(e);
@@ -26,9 +30,6 @@
         if (editor.is(':focus')) return;
         _.each(componentesEditor, function(c) { c.esconde() });
       }, 100);
-    };
-
-    var verficicaFoco = function() {
     };
 
     return {
@@ -59,7 +60,7 @@
       Lista(editor)
     ];
 
-    return Componente('<div class="markdown-barra-ferramentas" style="display:none;"></div>', function(elemento) {
+    return Componente('<div class="editor-barra-ferramentas" style="display:none;"></div>', function(elemento) {
       _.each(botoes, function(botao) {
         elemento.append(botao.cria());
       });
@@ -70,8 +71,8 @@
 
   var Link = function(editor) {
     return Botao('Adicionar link', 'fa fa-link', editor, function() {
-      var textoSelecionado = editor.getSelection().text || 'digite a url aqui'
-      editor.surroundSelectedText('[', ']('+ textoSelecionado +')');
+      var textoLink = editor.getSelection().text || 'digite a url aqui'
+      editor.surroundSelectedText('[', ']('+ textoLink +')');
     });
   };
 
@@ -109,9 +110,5 @@
       html: _.bind($.fn.html, elemento)
     };
   };
-
-  $(function() {
-    $('textarea').each(function() { EditorMarkdown(this).cria() })
-  })
 
 })(jQuery, _, marked);
