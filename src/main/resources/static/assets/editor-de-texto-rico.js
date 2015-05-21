@@ -25,12 +25,22 @@
   var Preview = function(editor) {
 
     var preview = Componente('<div class="editor-preview"></div>', function(elemento) {
+      var resize = function() {
+        elemento.css({
+          'max-height': editor.css('height'),
+          'height': editor.css('height')
+        });
+      };
+
+      var atualiza = _.debounce(_.compose(resize, atualizaPreview), 500);
+
       editor
         .after(elemento)
-        .keydown(_.debounce(atualizaPreview, 500))
+        .mouseup(resize)
+        .keydown(atualiza)
         .change(atualizaPreview);
 
-      atualizaPreview();
+      atualiza();
     });
 
     var atualizaPreview = function() {
