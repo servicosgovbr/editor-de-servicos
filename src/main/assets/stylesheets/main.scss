@@ -123,6 +123,10 @@ header {
     span {
       font-weight: bold;
     }
+
+    span.over {
+      color: $vermelho-escuro;
+    }
   }
 
   div.editor-preview {
@@ -132,7 +136,9 @@ header {
     box-shadow: $form-box-shadow;
     box-sizing: border-box;
     padding: $base-spacing / 3;
+    overflow: scroll;
     float: right;
+    max-width: 49%;
     width: 49%;
 
     ul {

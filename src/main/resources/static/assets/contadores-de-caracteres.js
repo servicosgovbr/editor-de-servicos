@@ -6,6 +6,7 @@ jQuery(function($) {
 
   var ativaContador = function () {
     var maxLength = parseInt($(this).attr("maxlength")) || 140;
+    $(this).removeAttr('maxlength');
 
     var opcoes = {
       counter: '#' + this.id + '-counter',
