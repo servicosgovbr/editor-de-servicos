@@ -23,33 +23,32 @@
   };
 
   var Preview = function(editor) {
-
-    var preview = Componente('<div class="editor-preview"></div>', function(elemento) {
-      var resize = function() {
+    return Componente('<div class="editor-preview"></div>', function(elemento) {
+      var atualizaTamanho = function() {
         elemento.css({
           'max-height': editor.css('height'),
           'height': editor.css('height')
         });
       };
 
-      var atualiza = _.debounce(_.compose(resize, atualizaPreview), 500);
+      var atualizaTexto = function() {
+        elemento.html(marked(
+          editor.val() || editor.attr('placeholder') || ''
+        ));
+      };
+
+      var atualiza = _.debounce(
+        _.compose(atualizaTamanho, atualizaTexto),
+      500);
 
       editor
         .after(elemento)
-        .mouseup(resize)
+        .mouseup(atualizaTamanho)
         .keydown(atualiza)
-        .change(atualizaPreview);
+        .change(atualiza);
 
       atualiza();
     });
-
-    var atualizaPreview = function() {
-      preview.html(marked(
-        editor.val() || editor.attr('placeholder') || ''
-      ));
-    }
-
-    return preview;
   };
 
   var BarraFerramentas = function(editor) {
@@ -106,8 +105,7 @@
     });
 
     return {
-      cria: cria,
-      html: _.bind($.fn.html, elemento)
+      cria: cria
     };
   };
 
