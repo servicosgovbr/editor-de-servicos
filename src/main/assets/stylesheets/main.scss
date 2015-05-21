@@ -126,9 +126,27 @@ header {
   }
 
   div.editor-preview {
+    background-color: $cinza-claro;
+    border: $base-border;
+    border-radius: $base-border-radius;
+    box-shadow: $form-box-shadow;
+    box-sizing: border-box;
+    padding: $base-spacing / 3;
+    float: right;
+    width: 49%;
+
+    ul {
+      @extend %default-ul;
+    }
   }
 
-  div.editor-barra-ferramentas {
+  div.editor-barra-ferramentas a {
+    margin-right: em(10);
+    color: $cinza-escuro;
+
+    &:hover {
+      color: $azul-escuro;
+    }
   }
 
   .aviso-salvo-em {
