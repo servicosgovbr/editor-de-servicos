@@ -75,7 +75,7 @@
   };
 
   var Lista = function(editor) {
-    return Botao('Adicionar lista', 'fa fa-list', editor, function() {
+    return Botao('Adicionar item de lista', 'fa fa-list', editor, function() {
       var textoSelecionado = editor.getSelection()
       editor.replaceSelectedText('\n- ' + (textoSelecionado.text || 'Novo item'))
     });
