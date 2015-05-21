@@ -73,7 +73,10 @@
   };
 
   var Botao = function(nome, icone, editor, acao) {
-    return Componente('<i class="' + icone + '" alt="' + nome + '"></i>', function(elemento) {
+
+    var html = '<a href="javascript:void(0)" title="' + nome + '" alt="' + nome  + '"><i class="' + icone + '"></i>'
+
+    return Componente(html, function(elemento) {
       var disparaAcao = _.wrap(acao, function(acao) {
         acao();
         editor.change();
