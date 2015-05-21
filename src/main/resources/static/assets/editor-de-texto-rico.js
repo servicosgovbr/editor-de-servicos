@@ -15,21 +15,6 @@
 
     var cria = function() {
       _.each(componentesEditor, function(c) { c.cria() });
-
-      editor
-        .focus(mostraComponentes)
-        .focusout(escondeComponentes);
-    };
-
-    var mostraComponentes = function() {
-      _.each(componentesEditor, function(c) { c.mostra() });
-    };
-
-    var escondeComponentes = function() {
-      _.delay(function() {
-        if (editor.is(':focus')) return;
-        _.each(componentesEditor, function(c) { c.esconde() });
-      }, 100);
     };
 
     return {
@@ -39,7 +24,7 @@
 
   var Preview = function(editor) {
 
-    var preview = Componente('<div class="markdown-preview" style="display: none;"></div>', function(elemento) {
+    var preview = Componente('<div class="editor-preview"></div>', function(elemento) {
       editor
         .after(elemento)
         .keydown(_.debounce(atualizaPreview, 500))
@@ -60,7 +45,7 @@
       Lista(editor)
     ];
 
-    return Componente('<div class="editor-barra-ferramentas" style="display:none;"></div>', function(elemento) {
+    return Componente('<div class="editor-barra-ferramentas"></div>', function(elemento) {
       _.each(botoes, function(botao) {
         elemento.append(botao.cria());
       });
@@ -105,8 +90,6 @@
 
     return {
       cria: cria,
-      mostra: _.bind($.fn.show, elemento),
-      esconde: _.bind($.fn.hide, elemento),
       html: _.bind($.fn.html, elemento)
     };
   };
