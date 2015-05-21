@@ -29,10 +29,14 @@
         .after(elemento)
         .keydown(_.debounce(atualizaPreview, 500))
         .change(atualizaPreview);
+
+      atualizaPreview();
     });
 
     var atualizaPreview = function() {
-      preview.html(marked(editor.val()));
+      preview.html(marked(
+        editor.val() || editor.attr('placeholder') || ''
+      ));
     }
 
     return preview;
