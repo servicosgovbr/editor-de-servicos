@@ -136,7 +136,7 @@ header {
     box-shadow: $form-box-shadow;
     box-sizing: border-box;
     padding: $base-spacing / 3;
-    overflow: scroll;
+    overflow: auto;
     float: right;
     max-width: 49%;
     width: 49%;
