@@ -9,6 +9,51 @@
         <input id="etapa1-titulo" type="text" name="titulo" value="" placeholder="Ex.: Agende uma visita"/>
         <textarea id="etapa1-descricao" name="descricao" maxlength="500" rows="7" placeholder="Ex.: É necessário agendar uma visita, antes de..."></textarea>
     </p>
+
+    <p>
+        Esta etapa é gratuita?
+    </p>
+
+    <p>
+        <input type="radio" id="gratuito-sim" name="gratuito" value="sim"/>
+        <label class="inline" for="gratuito-sim">Sim</label>
+
+        <input type="radio" id="gratuito-nao" class="toggle" name="gratuito" value="nao"/>
+        <label class="inline" for="gratuito-nao">Não</label>
+    </p>
+
+    <div id="gratuito-nao-toggle">
+
+        <p>
+            Informe a estimativa mais fiel possível com relação os custos ou taxas sobre esta etapa.
+        </p>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de emissão"/> R$ <input type="text" class="inline"/>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de envio"/> R$ <input type="text" class="inline"/>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+        <p>
+            <button>
+                <i class="fa fa-plus"></i>&nbsp;
+                Adicionar custo
+            </button>
+        </p>
+
+        <p>
+            <label for="custoEstimadoExcecoes">
+                <input id="custoEstimadoExcecoes" type="checkbox" name="exatidaoCustoEstimado" value="excecoes"/>
+                Pode haver exceções a estas estimativas (será mostrado ao solicitante um texto de esclarecimento)
+            </label>
+        </p>
+
+    </div>
+
     <p>
         Documentos necessários para esta etapa, separados por vírgula:
         <input id="etapa1-docs" type="text" name="docs" value="" placeholder="Ex.: RG, CPF, Declaração de..."/>
