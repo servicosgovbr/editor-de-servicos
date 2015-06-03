@@ -5,26 +5,45 @@
         Descreva quanto tempo em média o solicitante levará para obter esse serviço.
     </p>
 
-    <p>
-        Entre <input class="inline" id="tempoEstimadoMin" type="text" name="tempoEstimadoMin"/>
+    <label for="tempoEstimadoPeriodo">
+        <input type="radio" id="tempoEstimadoPeriodo" name="tempoEstimadoTipo"/>
+        Entre <input class="inline" id="tempoEstimadoPeriodoMin" type="text" name="tempoEstimadoPeriodoMin"/>
         <select class="inline">
             <option>minutos</option>
             <option>horas</option>
             <option>dias</option>
+            <option>dias corridos</option>
+            <option>dias úteis</option>
             <option>meses</option>
         </select> e
-        <input class="inline" id="tempoEstimadoMax" type="text" name="tempoEstimadoMax"/>
+        <input class="inline" id="tempoEstimadoPeriodoMax" type="text" name="tempoEstimadoPeriodoMax"/>
+        <select class="inline">
+            <option>minutos</option>
+            <option>horas</option>
+            <option>dias corridos</option>
+            <option>dias úteis</option>
+            <option>meses</option>
+        </select>
+    </label>
+
+    <label for="tempoEstimadoExato">
+        <input type="radio" id="tempoEstimadoExato" name="tempoEstimadoTipo"/>
+        Até <input class="inline" id="tempoEstimadoExatoMin" type="text" name="tempoEstimadoExatoMin"/>
         <select class="inline">
             <option>minutos</option>
             <option>horas</option>
             <option>dias</option>
+            <option>dias corridos</option>
+            <option>dias úteis</option>
             <option>meses</option>
-        </select>.
+        </select>
+    </label>
+
+    <p>
+        Existe alguma exceção ao tempo estimado? Caso houver, informe abaixo.
     </p>
 
-    <label for="tempoEstimadoExcecoes">
-        <input id="tempoEstimadoExcecoes" type="checkbox" name="exatidaoTempoEstimado" value="excecoes"/>
-        Pode haver exceções a estas estimativas (será mostrado ao solicitante um texto de esclarecimento)
-    </label>
+    <textarea name="tempoEstimadoExcecao" maxlength="500" rows="7" 
+        placeholder="Ex.: Nos estados do Paraná e Santa Catarina o tempo médio é de 10 dias úteis devido ao..."></textarea>
 
 </fieldset>
