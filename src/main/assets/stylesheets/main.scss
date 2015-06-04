@@ -71,6 +71,16 @@ header {
 
 #principal {
 
+  ul {
+    @extend %default-ul;
+  }
+
+  h1,
+  h2 {
+    padding-top: 25px;
+  }
+
+
   h1 {
     font-size: em(22);
   }
@@ -78,7 +88,6 @@ header {
   h2 {
     font-size: em(18);
     color: $azul-regular;
-    padding-top: 25px;
   }
 
   a.remove {
@@ -140,10 +149,6 @@ header {
     float: right;
     max-width: 49%;
     width: 49%;
-
-    ul {
-      @extend %default-ul;
-    }
   }
 
   div.editor-barra-ferramentas a {
