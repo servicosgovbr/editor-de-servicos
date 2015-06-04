@@ -104,8 +104,7 @@ header {
   }
 
   input,
-  label,
-  select {
+  label {
     &.inline {
       display: inline;
       width: 10%;
@@ -114,6 +113,10 @@ header {
     &.inline-lg {
       width: 60%;
     }
+  }
+
+  select.inline {
+    display: inline;
   }
 
   fieldset.required > h3 {
