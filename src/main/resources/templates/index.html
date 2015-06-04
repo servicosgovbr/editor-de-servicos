@@ -9,21 +9,19 @@
 </head>
 
 <body>
-    <div layout:fragment="corpo">
-        <section id="principal" class="auto-grid" role="main">
-            <div th:replace="form/introducao"></div>
-            <div th:replace="form/dados-principais"></div>
-            <div th:replace="form/situacao-servico"></div>
-            <div th:replace="form/dados-complementares"></div>
+    <section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
+        <div th:replace="form/introducao"></div>
+        <div th:replace="form/dados-principais"></div>
+        <div th:replace="form/situacao-servico"></div>
+        <div th:replace="form/dados-complementares"></div>
 
-            <button class="cancel">Descartar alterações</button>
-            <button>
-                <i class="fa fa-upload"></i>&nbsp;
-                Publicar
-            </button>
+        <button class="cancel">Descartar alterações</button>
+        <button>
+            <i class="fa fa-upload"></i>&nbsp;
+            Publicar
+        </button>
 
-            <span class="aviso-salvo-em">salvo às hh:mm de dd/mm/aaaa</span>
-        </section>
-    </div>
+        <span class="aviso-salvo-em">salvo às hh:mm de dd/mm/aaaa</span>
+    </section>
 </body>
 </html>
