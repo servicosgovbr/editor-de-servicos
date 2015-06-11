@@ -9,7 +9,7 @@
 Name:               editor-de-servicos
 Version:            %{version}
 Release:            1
-Summary:            Editor do Guia de Serviços
+Summary:            Editor de Serviços
 Group:              Applications
 License:            MIT
 Vendor:             ThoughtWorks, Inc
@@ -22,7 +22,7 @@ Requires:           jdk1.8.0_40
 Source0:             %{_sourcedir}/%{name}-%{version}.jar
 
 %description
-Editor do Guia de Serviços do Governo Federal do Brasil
+Editor de Serviços do Governo Federal do Brasil
 
 %prep
 
