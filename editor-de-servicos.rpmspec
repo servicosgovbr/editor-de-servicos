@@ -39,10 +39,10 @@ mkdir -p %{buildroot}/etc/sysconfig
 cp %{SOURCE1} %{buildroot}/etc/sysconfig/%{name}
 
 cat <<-EOF > %{buildroot}/etc/sysconfig/%{name}-overrides
-# Este arquivo sobrescreve variáveis de configuração do Portal de Serviços.
+# Este arquivo sobrescreve variáveis de configuração do Editor de Serviços.
 # Para mais informações, veja a documentação em:
 #
-# http://servicosgovbr.github.io/portal-de-servicos/desenvolvimento/configuracao.html
+# http://servicosgovbr.github.io/editor-de-servicos/desenvolvimento/configuracao.html
 EOF
 
 mkdir -p %{buildroot}/etc/systemd/system
