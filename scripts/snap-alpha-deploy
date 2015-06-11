@@ -1,4 +1,0 @@
-#!/bin/bash
-
-scp -vF .sshconfig $(find build/rpmbuild/RPMS/noarch/editor-de-servicos*.rpm -type f) alpha:~/editor-de-servicos-latest.rpm
-ssh -vF .sshconfig alpha '/bin/bash -s' < scripts/alpha-deploy

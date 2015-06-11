@@ -19,7 +19,8 @@ Prefix:             /opt/%{name}
 BuildArchitectures: noarch
 Requires:           jdk1.8.0_40
 
-Source0:             %{_sourcedir}/%{name}-%{version}.jar
+Source0:            %{_sourcedir}/%{name}-%{version}.jar
+Source1:            %{_sourcedir}/editor-de-servicos.default.config
 
 %description
 Editor de Serviços do Governo Federal do Brasil
@@ -31,12 +32,17 @@ Editor de Serviços do Governo Federal do Brasil
 %install
 # JAR principal
 mkdir -p %{buildroot}/%{prefix}/lib
-cp %SOURCE0 %{buildroot}/%{prefix}/lib/%{name}.jar
+cp %{SOURCE0} %{buildroot}/%{prefix}/lib/%{name}.jar
 
 # Configurações e variáveis de ambiente
 mkdir -p %{buildroot}/etc/sysconfig
-cat <<-EOF > %{buildroot}/etc/sysconfig/%{name}
-# Variáveis de ambiente para configuração do %{summary}
+cp %{SOURCE1} %{buildroot}/etc/sysconfig/%{name}
+
+cat <<-EOF > %{buildroot}/etc/sysconfig/%{name}-overrides
+# Este arquivo sobrescreve variáveis de configuração do Portal de Serviços.
+# Para mais informações, veja a documentação em:
+#
+# http://servicosgovbr.github.io/portal-de-servicos/desenvolvimento/configuracao.html
 EOF
 
 mkdir -p %{buildroot}/etc/systemd/system
@@ -49,39 +55,25 @@ ExecStart=/opt/%{name}/bin/%{name}
 User=%{_user}
 TimeoutSec=300
 EnvironmentFile=/etc/sysconfig/%{name}
+EnvironmentFile=/etc/sysconfig/%{name}-overrides
+SyslogIdentifier=editor-de-servicos
+SyslogLevelPrefix=false
+StandardOutput=syslog
+StandardError=syslog
+WorkingDirectory=/var/run/%{name}
+OOMScoreAdjust=-1000
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 mkdir -p %{buildroot}/var/run/%{name}
-mkdir -p %{buildroot}/var/log/%{name}
-mkdir -p %{buildroot}/etc/logrotate.d
-
-cat <<-EOF > %{buildroot}/etc/logrotate.d/%{name}
-/var/log/%{name}/*.log {
-    missingok
-    notifempty
-    daily
-    rotate 100
-    compress
-    delaycompress
-    create 640 root adm
-    sharedscripts
-    create 0640 %{_user} %{_user}
-}
-EOF
 
 # Script para iniciar o processo
 mkdir -p %{buildroot}/%{prefix}/bin
 cat <<-EOF > %{buildroot}/%{prefix}/bin/%{name}
 #!/bin/bash
-
-pushd /var/run/%{name} > /dev/null
-  source /etc/sysconfig/%{name}
-  java -jar %{prefix}/lib/%{name}.jar > /var/log/%{name}/%{name}.log
-popd > /dev/null
-
+java ${JAVA_OPTS} -jar %{prefix}/lib/%{name}.jar
 EOF
 
 %files
@@ -89,11 +81,9 @@ EOF
 %attr(0644, %{_user}, %{_user}) %{prefix}/lib/%{name}.jar
 %attr(0644, %{_user}, %{_user}) /etc/systemd/system/%{name}.service
 %dir %attr(0755, %{_user}, %{_user}) /var/run/%{name}
-%dir %attr(0755, %{_user}, %{_user}) /var/log/%{name}
 
-%config
-%attr(0644, %{_user}, %{_user}) /etc/sysconfig/%{name}
-%attr(0644, %{_user}, %{_user}) /etc/logrotate.d/%{name}
+%config %attr(0644, %{_user}, %{_user}) /etc/sysconfig/%{name}
+%config(noreplace) %attr(0644, %{_user}, %{_user}) /etc/sysconfig/%{name}-overrides
 
 %clean
 rm -rf %{buildroot}
@@ -102,5 +92,5 @@ rm -rf %{buildroot}
 getent group %{_user} >/dev/null || groupadd -r %{_user}
 getent passwd %{_user} >/dev/null || \
     useradd -r -g %{_user} -d /home/%{_user} -s /sbin/nologin \
-    -c "Usuário para o serviço do %{summary}" %{_user}
+    -c "Usuário para o serviço do Editor de Serviços" %{_user}
 exit 0

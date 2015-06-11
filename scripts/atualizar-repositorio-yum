@@ -30,7 +30,7 @@ echo "Compilando e gerando RPM..."
 ./gradlew assemble buildRpm
 
 echo "Verificando assinatura no RPM..."
-rpm --checksig $(find build/rpmbuild/RPMS/noarch/editor-de-servicos*.rpm -type f)
+rpm --checksig $(find build/rpmbuild/RPMS/noarch/portal-de-servicos*.rpm -type f)
 
 rm -rf "${SNAP_CACHE_DIR}/rpm-s3"
 if [ ! -d "${SNAP_CACHE_DIR}/rpm-s3" ]; then
@@ -46,4 +46,5 @@ PATH=/bin:/usr/bin ${SNAP_CACHE_DIR}/rpm-s3/bin/rpm-s3 \
     -b servicosgovbr \
     -p "centos/7" \
     --sign \
-    $(find build/rpmbuild/RPMS/noarch/editor-de-servicos*.rpm -type f)
+    --keep 30 \
+    $(find build/rpmbuild/RPMS/noarch/portal-de-servicos*.rpm -type f)
