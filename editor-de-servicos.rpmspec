@@ -4,16 +4,16 @@
 %define __os_install_post %{nil}
 %define _binary_payload w9.gzdio
 
-%define _user editorguiaservicos
+%define _user editorservicos
 
-Name:               editor-guia-de-servicos
+Name:               editor-de-servicos
 Version:            %{version}
 Release:            1
 Summary:            Editor do Guia de Serviços
 Group:              Applications
 License:            MIT
 Vendor:             ThoughtWorks, Inc
-URL:                http://github.com/servicosgovbr/editor-guia-de-servicos
+URL:                http://github.com/servicosgovbr/editor-de-servicos
 BuildRoot:          %{builddir}
 Prefix:             /opt/%{name}
 BuildArchitectures: noarch

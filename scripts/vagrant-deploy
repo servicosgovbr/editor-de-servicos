@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'Instalando novo Guia de Serviços...'
-sudo yum remove -y editor-guia-de-servicos
+sudo yum remove -y editor-de-servicos
 sudo yum install -y $1
 
 sudo bash -c 'cat <<-EOF > /etc/sysconfig/guia-de-servicos
@@ -16,4 +16,4 @@ EOF
 
 echo 'Reiniciando serviço...'
 sudo systemctl daemon-reload
-sudo systemctl restart editor-guia-de-servicos
+sudo systemctl restart editor-de-servicos

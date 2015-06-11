@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo 'Instalando novo Editor do Guia de Serviços'
-sudo yum remove -y editor-guia-de-servicos
-sudo yum install -y editor-guia-de-servicos-latest.rpm
+sudo yum remove -y editor-de-servicos
+sudo yum install -y editor-de-servicos-latest.rpm
 
 if [ "$?" -ne '0' ]; then
   echo 'Erro na instalação. Abortando...'
@@ -10,7 +10,7 @@ if [ "$?" -ne '0' ]; then
 fi
 
 echo 'Removendo pacote instalado'
-rm -rf editor-guia-de-servicos-latest.rpm
+rm -rf editor-de-servicos-latest.rpm
 
 sudo systemctl daemon-reload
-sudo systemctl restart editor-guia-de-servicos
+sudo systemctl restart editor-de-servicos
