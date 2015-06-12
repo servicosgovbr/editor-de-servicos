@@ -5,79 +5,15 @@
         Escolha um ou mais eventos da linha da vida relacionados a este serviço.
     </p>
 
-    <label for="evento1">
-        <input id="evento1" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Apoio financeiro e crédito
-    </label>
-
-    <label for="evento2">
-        <input id="evento2" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Aposentadoria
-    </label>
-
-    <label for="evento3">
-        <input id="evento3" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Contas e Impostos
-    </label>
-
-    <label for="evento4">
-        <input id="evento4" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Cuidados com a saúde
-    </label>
-
-    <label for="evento5">
-        <input id="evento5" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Documentos e certidões
-    </label>
-
-    <label for="evento6">
-        <input id="evento6" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Empreendedorismo e negócios
-    </label>
-
-    <label for="evento7">
-        <input id="evento7" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Estrangeiros no Brasil
-    </label>
-
-    <label for="evento8">
-        <input id="evento8" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Estudos
-    </label>
-
-    <label for="evento9">
-        <input id="evento9" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Exportação de produtos e serviços
-    </label>
-
-    <label for="evento10">
-        <input id="evento10" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Família
-    </label>
-
-    <label for="evento11">
-        <input id="evento11" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Importação de produtos e serviços
-    </label>
-
-    <label for="evento12">
-        <input id="evento12" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Imóveis
-    </label>
-
-    <label for="evento13">
-        <input id="evento13" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Profissão e trabalho
-    </label>
-
-    <label for="evento14">
-        <input id="evento14" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Veículos
-    </label>
-
-    <label for="evento15">
-        <input id="evento15" type="checkbox" name="eventoDaLinhaDaVida"/>
-        Viagem ao exterior
-    </label>
+    <th:block th:each="eventoDaLinhaDaVida : ${@eventosDaLinhaDaVida}">
+        <label th:for="${#ids.next('eventosDaLinhaDaVida')}">
+            <input type="checkbox"
+                   th:field="*{eventosDaLinhaDaVida}"
+                   th:value="${eventoDaLinhaDaVida}"
+                   th:checked="${servico.eventosDaLinhaDaVida.contains(eventoDaLinhaDaVida)}"
+                    />
+            <span th:text="${eventoDaLinhaDaVida}">Evento da linha da vida</span>
+        </label>
+    </th:block>
 
 </fieldset>

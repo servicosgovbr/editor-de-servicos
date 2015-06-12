@@ -5,12 +5,12 @@
         Este serviço é gratuito para o solicitante?
     </p>
 
-    <label for="gratuitoSim">
-        <input id="gratuitoSim" type="radio" name="gratuito"/> Sim
+    <label th:for="${#ids.next('gratuito')}">
+        <input type="radio" th:field="*{gratuito}" th:value="true" th:checked="*{gratuito == true}"/> Sim
     </label>
 
-    <label for="gratuitoNao">
-        <input id="gratuitoNao" class="toggle" type="radio" name="gratuito"/> Não
+    <label th:for="${#ids.next('gratuito')}">
+        <input type="radio" th:field="*{gratuito}" th:value="false" th:checked="*{gratuito == false}"/> Não
     </label>
 
 </fieldset>

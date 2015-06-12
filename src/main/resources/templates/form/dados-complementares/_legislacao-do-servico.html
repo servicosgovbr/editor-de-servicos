@@ -10,7 +10,9 @@
     </p>
 
     <p>
-        <input type="text" value="" placeholder="http://"/>
+        <th:block th:each="legislacao : *{legislacoes}">
+            <input type="text" th:field="*{legislacoes}" th:value="${legislacao}" placeholder="http://"/>
+        </th:block>
     </p>
 
     <p>

@@ -6,14 +6,10 @@
     </p>
 
     <p>
-        <input id="quemPodeUtilizar1" type="text" name="quemPodeUtilizar1" value=""
-               placeholder="Ex.: Deficientes físicos"/>
-
-        <input id="quemPodeUtilizar2" type="text" name="quemPodeUtilizar2" value=""
-               placeholder="Ex.: Aposentados"/>
-
-        <input id="quemPodeUtilizar3" type="text" name="quemPodeUtilizar3" value=""
-               placeholder="Ex.: Cidadãos maiores de 16 anos"/>
+        <th:block th:each="solicitante : *{solicitantes}">
+            <input type="text" th:field="*{solicitantes}" th:value="${solicitante}"
+                   placeholder="Ex.: Deficientes físicos"/>
+        </th:block>
     </p>
 
     <p>

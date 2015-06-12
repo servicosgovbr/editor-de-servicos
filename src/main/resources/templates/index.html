@@ -9,20 +9,30 @@
 </head>
 
 <body>
-    <section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
+<section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
+    <form th:action="@{/salvar}" th:object="${servico}" method="post">
+
         <div th:replace="form/introducao"></div>
         <div th:replace="form/dados-principais"></div>
         <div th:replace="form/situacao-servico"></div>
         <div th:replace="form/etapas"></div>
         <div th:replace="form/dados-complementares"></div>
 
-        <button class="cancel">Descartar alterações</button>
         <button>
-            <i class="fa fa-upload"></i>&nbsp;
+            <i class="fa fa-hdd-o"></i>&nbsp;
+            Salvar
+        </button>
+
+        <button>
+            <i class="fa fa-paper-plane"></i>&nbsp;
             Publicar
         </button>
 
-        <span class="aviso-salvo-em">salvo às hh:mm de dd/mm/aaaa</span>
-    </section>
+        <button class="cancel">
+            <i class="fa fa-trash-o"></i>&nbsp;
+            Descartar alterações
+        </button>
+    </form>
+</section>
 </body>
 </html>

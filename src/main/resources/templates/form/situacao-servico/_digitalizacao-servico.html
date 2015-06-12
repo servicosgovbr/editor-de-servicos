@@ -5,18 +5,11 @@
         Este é um serviço eletrônico e disponível em um site do governo?
     </p>
 
-    <label for="eletronico_total">
-        <input id="eletronico_total" type="radio" name="eletronico" value="total"/>
-        Sim: serviço totalmente eletrônico
-    </label>
+    <th:block th:each="situacao : ${ {'Sim: serviço totalmente eletrônico', 'Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)', 'Não: serviço não possui etapas eletrônicas'} }">
+        <label th:for="${#ids.next('situacao')}">
+            <input type="radio" th:field="*{situacao}" th:value="${situacao}"/>
+            <span th:text="${situacao}"></span>
+        </label>
+    </th:block>
 
-    <label for="eletronico_parcial">
-        <input id="eletronico_parcial" type="radio" name="eletronico" value="parcial"/>
-        Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)
-    </label>
-
-    <label for="eletronico_nao">
-        <input id="eletronico_nao" type="radio" name="eletronico" value="nao"/>
-        Não: serviço não possui etapas eletrônicas
-    </label>
 </fieldset>
