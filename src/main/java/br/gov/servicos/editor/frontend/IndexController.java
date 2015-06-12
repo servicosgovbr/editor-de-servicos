@@ -30,7 +30,8 @@ public class IndexController {
                 .withAreasDeInteresse(asList("Comércio e Serviços", "Comunicações"))
                 .withSegmentosDaSociedade(asList("Cidadãos", "Empresas"))
                 .withEventosDaLinhaDaVida(asList("Documentos e certidões", "Contas e Impostos"))
-                .withLegislacoes(singletonList("http://www.lexml.gov.br/urn/urn:lex:br:federal:decreto:2009-08-11;6932"))
+                .withLegislacoes(asList("http://www.lexml.gov.br/urn/urn:lex:br:federal:decreto:2009-08-11;6932",
+                        "http://www.lexml.gov.br/urn/urn:lex:br:federal:lei:1993-06-21;8666"))
                 .withSolicitantes(singletonList("Cidadãos maiores de 18 anos"))
                 .withGratuito(true)
                 .withSituacao("Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)")

@@ -10,8 +10,8 @@
     </p>
 
     <p>
-        <th:block th:each="legislacao : *{legislacoes}">
-            <input type="text" th:field="*{legislacoes}" th:value="${legislacao}" placeholder="http://"/>
+        <th:block th:each="legislacao, row : *{legislacoes}">
+            <input type="text" th:field="*{legislacoes[__${row.index}__]}" th:value="${legislacao}" placeholder="http://"/>
         </th:block>
     </p>
 
