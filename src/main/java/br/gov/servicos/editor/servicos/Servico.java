@@ -20,7 +20,8 @@ public class Servico {
     String nomesPopulares;
     String descricao;
     String palavrasChave;
-    List<String> solicitantes = singletonList("");
+    List<String> solicitantes;
+    TempoEstimado tempoEstimado;
     Boolean gratuito;
     String situacao;
     List<String> areasDeInteresse = singletonList("");

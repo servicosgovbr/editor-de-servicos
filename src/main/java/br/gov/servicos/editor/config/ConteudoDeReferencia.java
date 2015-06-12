@@ -11,6 +11,18 @@ import static java.util.Arrays.asList;
 public class ConteudoDeReferencia {
 
     @Bean
+    public List<String> medidasDeTempo() {
+        return asList(
+                "minutos",
+                "horas",
+                "dias",
+                "dias corridos",
+                "dias úteis",
+                "meses"
+        );
+    }
+
+    @Bean
     public List<String> segmentosDaSociedade() {
         return asList(
                 "Cidadãos",

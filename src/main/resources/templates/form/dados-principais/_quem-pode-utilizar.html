@@ -10,6 +10,8 @@
             <input type="text" th:field="*{solicitantes}" th:value="${solicitante}"
                    placeholder="Ex.: Deficientes físicos"/>
         </th:block>
+
+        <input type="text" th:field="*{solicitantes[__${servico.solicitantes?.size() ?: 0}__]}" placeholder="Ex.: Deficientes físicos"/>
     </p>
 
     <p>

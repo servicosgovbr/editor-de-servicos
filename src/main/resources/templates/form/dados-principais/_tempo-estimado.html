@@ -6,37 +6,44 @@
         do dever descrito neste serviço?
     </p>
 
-    <label for="tempoEstimadoPeriodo">
-        <input type="radio" id="tempoEstimadoPeriodo" name="tempoEstimadoTipo"/>
-        Entre <input class="inline" id="tempoEstimadoPeriodoMin" type="text" name="tempoEstimadoPeriodoMin"/>
+    <label th:for="*{#ids.next('tempoEstimado.tipo')}">
+        <input type="radio"
+               th:value="entre"
+               th:field="*{tempoEstimado.tipo}"
+               th:checked="${servico.tempoEstimado?.tipo == 'entre'}"/>
+
+        Entre
+
+        <input class="inline" type="text" th:field="*{tempoEstimado.minimo}"/>
+
         <select class="inline">
-            <option>minutos</option>
-            <option>horas</option>
-            <option>dias</option>
-            <option>dias corridos</option>
-            <option>dias úteis</option>
-            <option>meses</option>
-        </select> e
-        <input class="inline" id="tempoEstimadoPeriodoMax" type="text" name="tempoEstimadoPeriodoMax"/>
+            <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
+                    th:selected="${servico.tempoEstimado?.tipoMinimo == medida}"></option>
+        </select>
+
+        e
+
+        <input class="inline" type="text" th:field="*{tempoEstimado.maximo}"/>
+
         <select class="inline">
-            <option>minutos</option>
-            <option>horas</option>
-            <option>dias corridos</option>
-            <option>dias úteis</option>
-            <option>meses</option>
+            <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
+                    th:selected="${servico.tempoEstimado?.tipoMaximo == medida}"></option>
         </select>
     </label>
 
-    <label for="tempoEstimadoExato">
-        <input type="radio" id="tempoEstimadoExato" name="tempoEstimadoTipo"/>
-        Até <input class="inline" id="tempoEstimadoExatoMin" type="text" name="tempoEstimadoExatoMin"/>
+    <label th:for="*{#ids.next('tempoEstimado.tipo')}">
+        <input type="radio"
+               th:value="até"
+               th:field="*{tempoEstimado.tipo}"
+               th:checked="${servico.tempoEstimado?.tipo == 'até'}"/>
+
+        Até
+
+        <input class="inline" type="text" th:field="*{tempoEstimado.maximo}"/>
+
         <select class="inline">
-            <option>minutos</option>
-            <option>horas</option>
-            <option>dias</option>
-            <option>dias corridos</option>
-            <option>dias úteis</option>
-            <option>meses</option>
+            <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
+                    th:selected="${servico.tempoEstimado?.tipoMaximo == medida}"></option>
         </select>
     </label>
 
@@ -45,6 +52,7 @@
     </p>
 
     <textarea name="tempoEstimadoExcecao" maxlength="500" rows="7"
+              th:field="*{tempoEstimado.excecoes}"
               placeholder="Ex.: Nos estados do Paraná e Santa Catarina o tempo médio é de 10 dias úteis devido ao..."></textarea>
 
 </fieldset>
