@@ -13,6 +13,8 @@
         <th:block th:each="legislacao, row : *{legislacoes}">
             <input type="text" th:field="*{legislacoes[__${row.index}__]}" th:value="${legislacao}" placeholder="http://"/>
         </th:block>
+
+        <input type="text" th:unless="*{legislacoes}" th:field="*{legislacoes}" value="" placeholder="http://"/>
     </p>
 
     <p>

@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Collections.singletonList;
 
 @Data
 @Wither
@@ -28,6 +25,6 @@ public class Servico {
     List<String> areasDeInteresse;
     List<String> eventosDaLinhaDaVida;
     List<String> segmentosDaSociedade;
-    List<String> legislacoes = new ArrayList<>(singletonList(""));
+    List<String> legislacoes;
 
 }
