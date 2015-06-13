@@ -24,9 +24,10 @@ public class Servico {
     TempoEstimado tempoEstimado;
     Boolean gratuito;
     String situacao;
-    List<String> areasDeInteresse = singletonList("");
-    List<String> eventosDaLinhaDaVida = singletonList("");
-    List<String> segmentosDaSociedade = singletonList("");
+    Orgao orgao;
+    List<String> areasDeInteresse;
+    List<String> eventosDaLinhaDaVida;
+    List<String> segmentosDaSociedade;
     List<String> legislacoes = new ArrayList<>(singletonList(""));
 
 }

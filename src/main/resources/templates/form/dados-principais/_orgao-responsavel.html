@@ -6,8 +6,13 @@
     </p>
 
     <select name="orgaoResponsavel">
-        <option selected="selected">Selecione um órgão…</option>
-        <option value="">Ministério do Planejamento, Orçamento e Gestão (MPOG)</option>
+        <option th:selected="${servico.orgao == null}">Selecione um órgão…</option>
+        <option th:each="orgao : ${@orgaos}"
+                th:value="${orgao.id}"
+                th:text="${orgao.nome}"
+                th:selected="${servico.orgao?.id == orgao.id}">
+            Nome do órgão
+        </option>
     </select>
 
 </fieldset>

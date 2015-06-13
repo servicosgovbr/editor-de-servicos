@@ -10,8 +10,7 @@
             <input type="checkbox"
                    th:field="*{eventosDaLinhaDaVida}"
                    th:value="${eventoDaLinhaDaVida}"
-                   th:checked="${servico.eventosDaLinhaDaVida.contains(eventoDaLinhaDaVida)}"
-                    />
+                   th:checked="${servico.eventosDaLinhaDaVida?.contains(eventoDaLinhaDaVida)}"/>
             <span th:text="${eventoDaLinhaDaVida}">Evento da linha da vida</span>
         </label>
     </th:block>

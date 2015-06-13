@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
+import br.gov.servicos.editor.servicos.Orgao;
 import br.gov.servicos.editor.servicos.Servico;
 import br.gov.servicos.editor.servicos.TempoEstimado;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,7 @@ public class IndexController {
                                 .withTipoMaximo("dias")
                                 .withExcecoes("Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.")
                 )
+                .withOrgao(new Orgao().withId("ministerio-da-saude-ms"))
                 .withGratuito(true)
                 .withSituacao("Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)")
         );

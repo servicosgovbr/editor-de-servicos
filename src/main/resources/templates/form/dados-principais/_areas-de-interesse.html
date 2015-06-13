@@ -9,7 +9,10 @@
 
     <th:block th:each="areaDeInteresse : ${@areasDeInteresse}">
         <label th:for="${#ids.next('areasDeInteresse')}">
-            <input type="checkbox" th:field="*{areasDeInteresse}" th:value="${areaDeInteresse}" th:checked="${servico.areasDeInteresse.contains(areaDeInteresse)}"/>
+            <input type="checkbox"
+                   th:field="*{areasDeInteresse}"
+                   th:value="${areaDeInteresse}"
+                   th:checked="${servico.areasDeInteresse?.contains(areaDeInteresse)}"/>
             <span th:text="${areaDeInteresse}">Área de Interesse</span>
         </label>
     </th:block>
