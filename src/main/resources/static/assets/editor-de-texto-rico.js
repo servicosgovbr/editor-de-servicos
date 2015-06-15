@@ -1,7 +1,7 @@
 (function($, _, marked) {
 
   $(function() {
-    $('textarea').each(function() { EditorMarkdown(this).cria() })
+    $('textarea').each(function() { EditorMarkdown(this).cria(); })
   })
 
   var EditorMarkdown = function(e) {
