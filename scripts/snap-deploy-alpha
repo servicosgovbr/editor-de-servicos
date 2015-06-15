@@ -12,7 +12,7 @@ yum makecache fast -y
 yum install -y "editor-de-servicos-1.0.${SNAP_PIPELINE_COUNTER:-0}-1"
 
 cat <<-EOS > /etc/sysconfig/editor-de-servicos-overrides
-SPRING_DATA_ELASTICSEARCH_CLUSTERNODES=""
+FLAGS_IMPORTAR_CARTAS=true
 EOS
 
 systemctl daemon-reload
