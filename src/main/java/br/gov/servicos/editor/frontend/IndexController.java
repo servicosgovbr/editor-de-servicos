@@ -63,6 +63,7 @@ public class IndexController {
 
     @RequestMapping(value = "/salvar", method = RequestMethod.POST)
     RedirectView salvar(@ModelAttribute("servico") Servico servico, BindingResult result) {
+        System.out.println("servico = " + servico);
         return new RedirectView("/");
     }
 

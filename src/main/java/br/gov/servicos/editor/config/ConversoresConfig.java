@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.util.Locale;
 
 @Configuration
-@EnableWebMvc
 public class ConversoresConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
