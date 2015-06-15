@@ -7,3 +7,10 @@ spring:
 
 server:
   port: ${port:8080}
+
+flags:
+  importar.cartas: false
+
+eds:
+  cartas:
+    repositorio: "https://github.com/servicosgovbr/cartas-de-servico.git"

@@ -7,3 +7,10 @@ endpoints:
 
   jolokia:
     enabled: false
+
+flags:
+  importar.cartas: false
+
+eds:
+  cartas:
+    repositorio: "https://github.com/servicosgovbr/cartas-de-servico.git"
