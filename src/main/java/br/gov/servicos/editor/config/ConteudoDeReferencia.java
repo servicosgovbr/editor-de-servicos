@@ -4,7 +4,7 @@ import br.gov.servicos.editor.servicos.Orgao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import java.util.Collection;
 
 import static java.util.Arrays.asList;
 
@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 public class ConteudoDeReferencia {
 
     @Bean
-    List<String> tiposDeCanalDePrestacao() {
+    Collection<String> tiposDeCanalDePrestacao() {
         return asList(
                 "Web",
                 "Presencial",
@@ -27,7 +27,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    List<Orgao> orgaos() {
+    Collection<Orgao> orgaos() {
         return asList(
                 new Orgao("arquivo-nacional-an", "Arquivo Nacional (AN)"),
                 new Orgao("banco-central-do-brasil-bcb", "Banco Central do Brasil (BCB)"),
@@ -64,7 +64,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    public List<String> medidasDeTempo() {
+    Collection<String> medidasDeTempo() {
         return asList(
                 "minutos",
                 "horas",
@@ -76,7 +76,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    public List<String> segmentosDaSociedade() {
+    Collection<String> segmentosDaSociedade() {
         return asList(
                 "Cidadãos",
                 "Empresas",
@@ -86,7 +86,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    public List<String> eventosDaLinhaDaVida() {
+    Collection<String> eventosDaLinhaDaVida() {
         return asList(
                 "Apoio financeiro e crédito",
                 "Aposentadoria",
@@ -107,7 +107,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    public List<String> areasDeInteresse() {
+    Collection<String> areasDeInteresse() {
         return asList(
                 "Administração",
                 "Agropecuária",

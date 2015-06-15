@@ -5,8 +5,9 @@
         Selecione o órgão responsável por este serviço.
     </p>
 
-    <select name="orgaoResponsavel">
-        <option th:selected="${servico.orgao == null}">Selecione um órgão…</option>
+    <select th:field="*{orgao}">
+
+        <option th:selected="*{orgao == null}" th:value="null">Selecione um órgão…</option>
         <option th:each="orgao : ${@orgaos}"
                 th:value="${orgao.id}"
                 th:text="${orgao.nome}"
