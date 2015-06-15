@@ -1,16 +1,32 @@
 <div id="passo-3" xmlns:th="http://www.thymeleaf.org">
     <h2>Etapas para a realização deste serviço</h2>
 
+    <th:block th:each="etapa, row : ${servico.etapas}">
+        <fieldset th:replace="form/etapas/_informacoes"></fieldset>
+        <fieldset th:replace="form/etapas/_custos"></fieldset>
+        <fieldset th:replace="form/etapas/_documentos-necessarios"></fieldset>
+        <fieldset th:replace="form/etapas/_canais-de-prestacao"></fieldset>
 
-    <fieldset th:replace="form/etapas/_informacoes"></fieldset>
-    <fieldset th:replace="form/etapas/_custos"></fieldset>
-    <fieldset th:replace="form/etapas/_documentos-necessarios"></fieldset>
-    <fieldset th:replace="form/etapas/_canais-de-comunicacao"></fieldset>
+        <p>
+            <button>
+                <i class="fa fa-plus"></i>&nbsp;
+                Adicionar etapa
+            </button>
+        </p>
+    </th:block>
 
-    <p>
-        <button>
-            <i class="fa fa-plus"></i>&nbsp;
-            Adicionar etapa
-        </button>
-    </p>
+    <th:block th:if="${servico.etapas == null || servico.etapas.isEmpty()}">
+        <fieldset th:replace="form/etapas/_informacoes"></fieldset>
+        <fieldset th:replace="form/etapas/_custos"></fieldset>
+        <fieldset th:replace="form/etapas/_documentos-necessarios"></fieldset>
+        <fieldset th:replace="form/etapas/_canais-de-prestacao"></fieldset>
+
+        <p>
+            <button>
+                <i class="fa fa-plus"></i>&nbsp;
+                Adicionar etapa
+            </button>
+        </p>
+    </th:block>
+
 </div>

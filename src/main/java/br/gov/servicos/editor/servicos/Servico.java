@@ -21,6 +21,7 @@ public class Servico {
     TempoEstimado tempoEstimado;
     Boolean gratuito;
     String situacao;
+    List<Etapa> etapas;
     Orgao orgao;
     List<String> areasDeInteresse;
     List<String> eventosDaLinhaDaVida;

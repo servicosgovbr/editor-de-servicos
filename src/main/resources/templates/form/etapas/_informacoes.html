@@ -5,7 +5,7 @@
         Um título que indica de forma simples o objetivo dessa etapa.
     </p>
 
-    <input id="etapa1-titulo" type="text" name="titulo" value="" placeholder="Ex.: Inscrição no SisFIES"/>
+    <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].titulo}" placeholder="Ex.: Inscrição no SisFIES"/>
 </fieldset>
 
 <fieldset>
@@ -15,6 +15,6 @@
         Descreva de forma breve os objetivos dessa etapa, os principais pontos que o solicitante deve observar, explicando o que deve ser feito para o cumprimento dessa etapa.
     </p>
 
-    <textarea id="etapa1-descricao" name="descricao" maxlength="500" rows="7"
+    <textarea th:field="*{etapas[__${row?.index ?: 0}__].descricao}" maxlength="500" rows="7"
               placeholder="Ex.: O primeiro passo para efetuar a inscrição é acessar o SisFIES e informar os dados solicitados. No primeiro acesso..."></textarea>
 </fieldset>

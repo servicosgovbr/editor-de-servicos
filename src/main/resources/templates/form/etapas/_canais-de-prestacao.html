@@ -1,0 +1,64 @@
+<fieldset class="required">
+    <h3>Canais de prestação</h3>
+
+    <p>
+        Informe os canais de prestação disponíveis para esta etapa.
+    </p>
+
+    <th:block th:each="canal, rowCanal : *{etapas[__${row?.index ?: 0}__].canaisDePrestacao}">
+
+        <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].tipo}">
+            <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
+                    th:value="${tipo}"
+                    th:text="${tipo}">Tipo de canal</option>
+        </select>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: www.orgao.gov.br"
+               th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].descricao}"/>
+
+        <label class="inline">
+            <input type="checkbox"
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].preferencial}"
+                   th:value="true"
+                   th:checked="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].preferencial}"/>
+            Preferencial
+        </label>
+
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+    </th:block>
+
+    <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
+
+        <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].tipo}">
+            <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
+                    th:value="${tipo}"
+                    th:text="${tipo}">Tipo de canal</option>
+        </select>
+
+        <input class="inline inline-lg" type="text" placeholder="Ex.: www.orgao.gov.br"
+               th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].descricao}"/>
+
+        <label class="inline">
+            <input type="checkbox"
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].preferencial}"
+                   th:value="true"
+                   th:checked="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].preferencial}"/>
+            Preferencial
+        </label>
+
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+
+    </th:block>
+
+    <p>
+        <button>
+            <i class="fa fa-plus"></i>&nbsp;
+            Adicionar canal
+        </button>
+    </p>
+</fieldset>

@@ -1,8 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.servicos.Orgao;
-import br.gov.servicos.editor.servicos.Servico;
-import br.gov.servicos.editor.servicos.TempoEstimado;
+import br.gov.servicos.editor.servicos.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,6 +44,17 @@ public class IndexController {
                                 .withTipoMaximo("dias")
                                 .withExcecoes("Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.")
                 )
+                .withEtapas(singletonList(new Etapa()
+                                .withTitulo("Agendar prova teórica do CFC")
+                                .withDescricao("A prova teórica do CFC deve ser agendada nas...")
+                                .withDocumentos(asList("RG", "CPF", "Termo de conclusão de curso no CFC"))
+                                .withCustos(singletonList(new Custo().withDescricao("Taxa de emissão").withValor("78,50")))
+                                .withCanaisDePrestacao(asList(
+                                        new CanalDePrestacao().withDescricao("Posto de atendimento").withPreferencial(true).withTipo("Presencial"),
+                                        new CanalDePrestacao().withDescricao("555").withPreferencial(false).withTipo("Telefone")
+                                ))
+                ))
+
                 .withOrgao(new Orgao().withId("ministerio-da-saude-ms"))
                 .withGratuito(true)
                 .withSituacao("Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)")

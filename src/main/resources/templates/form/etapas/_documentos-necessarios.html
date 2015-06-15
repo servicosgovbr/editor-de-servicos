@@ -5,8 +5,14 @@
         Adicione documentos, certidões ou declarações necessárias para esta etapa:
     </p>
 
-    <input id="doc1" type="text" name="docs" value="" placeholder="Ex.: RG"/>
-    <input id="doc2" type="text" name="docs" value="" placeholder="Ex.: Declaração de imposto de renda"/>
+    <th:block th:each="documento, rowDocs : *{etapas[__${row?.index ?: 0}__].documentos}">
+        <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].documentos[__${rowDocs.index}__]}" placeholder="Ex.: RG"/>
+    </th:block>
+
+    <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.documentos == null || etapas[__${row?.index ?: 0}__]?.documentos.isEmpty()}">
+        <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].documentos[0]}" placeholder="Ex.: RG"/>
+    </th:block>
+
     <button>
         <i class="fa fa-plus"></i>&nbsp;
         Adicionar Documento

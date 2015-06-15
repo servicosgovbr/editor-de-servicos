@@ -5,19 +5,23 @@
         Informe a estimativa mais fiel possível com relação aos custos ou taxas sobre esta etapa.
     </p>
 
-    <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de emissão"/>
-    R$ <input type="text" class="inline"/>
+    <th:block th:each="custo, rowCusto : *{etapas[__${row?.index ?: 0}__].custos}">
+        <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
+        R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].valor}" class="inline"/>
 
-    <a class="inline remove" href="#">
-        <span class="fa fa-times"></span>
-    </a>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+    </th:block>
 
-    <input class="inline inline-lg" type="text" placeholder="Ex.: Taxa de envio"/>
-    R$ <input type="text" class="inline"/>
+    <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.custos == null || etapas[__${row?.index ?: 0}__]?.custos.isEmpty()}">
+        <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
+        R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].valor}" class="inline"/>
 
-    <a class="inline remove" href="#">
-        <span class="fa fa-times"></span>
-    </a>
+        <a class="inline remove" href="#">
+            <span class="fa fa-times"></span>
+        </a>
+    </th:block>
 
     <div>
         <button>
