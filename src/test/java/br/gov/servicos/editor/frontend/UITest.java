@@ -25,8 +25,6 @@ import static org.hamcrest.core.Is.is;
 public class UITest {
 
     WebDriver driver;
-    boolean acceptNextAlert = true;
-    StringBuffer verificationErrors = new StringBuffer();
 
     @Value("${local.server.port}")
     int port;
