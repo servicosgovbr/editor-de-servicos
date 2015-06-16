@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -57,6 +58,24 @@ public class UITest {
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
 
         driver.findElement(By.id("nome")).sendKeys("Carteira Nacional de Habilitação (CNH)");
+        driver.findElement(By.id("nomesPopulares")).sendKeys("carta de motorista, carteira, carta, cnh, habilitação");
+        driver.findElement(By.id("descricao")).sendKeys("A CNH blah blah blah...");
+        driver.findElement(By.name("solicitantes")).sendKeys("Cidadãos maiores de 18 anos");
+
+        driver.findElement(By.id("tempoEstimado.tipo1")).click();
+        driver.findElement(By.id("tempoEstimado.minimo")).sendKeys("12");
+        new Select(driver.findElement(By.id("tempoEstimado.tipoMinimo"))).selectByValue("dias úteis");
+
+        driver.findElement(By.id("tempoEstimado.maximo")).sendKeys("18");
+        new Select(driver.findElement(By.id("tempoEstimado.tipoMaximo"))).selectByValue("dias úteis");
+
+        driver.findElement(By.id("tempoEstimado.excecoes")).sendKeys("Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.");
+
+        driver.findElement(By.id("gratuito2")).click();
+        driver.findElement(By.id("situacao1")).click();
+
+        driver.findElement(By.name("etapas[0].titulo")).sendKeys("Agendar prova teórica do CFC");
+        driver.findElement(By.id("palavrasChave")).sendKeys("carta de motorista, carteira, carta, cnh, habilitação");
 
         driver.findElement(By.id("salvar")).click();
     }
