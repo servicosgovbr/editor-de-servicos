@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,16 @@ public class UITest {
     public void deveLogarComoUsuarioSimples() throws Exception {
         driver.get(baseUrl + "/exemplo");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
+
+        driver.findElement(By.id("usuario")).sendKeys("user");
+        driver.findElement(By.id("senha")).sendKeys("user");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
+
+        driver.findElement(By.id("nome")).sendKeys("Carteira Nacional de Habilitação (CNH)");
+
+        driver.findElement(By.id("salvar")).click();
     }
 
 
