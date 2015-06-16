@@ -37,7 +37,7 @@ public class UITest {
     public void setUp() throws Exception {
         baseUrl = "http://localhost:" + port;
 
-        driver = new HtmlUnitDriver();
+        driver = new HtmlUnitDriver(true);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
@@ -48,7 +48,7 @@ public class UITest {
 
     @Test
     public void deveSeguirSequenciaSimplesDeEdicao() throws Exception {
-        driver.get(baseUrl + "/exemplo");
+        driver.get(baseUrl + "/");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
 
         driver.findElement(By.id("usuario")).sendKeys("user");
