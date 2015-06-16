@@ -46,7 +46,7 @@ public class UITest {
     }
 
     @Test
-    public void deveLogarComoUsuarioSimples() throws Exception {
+    public void deveSeguirSequenciaSimplesDeEdicao() throws Exception {
         driver.get(baseUrl + "/exemplo");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
 
