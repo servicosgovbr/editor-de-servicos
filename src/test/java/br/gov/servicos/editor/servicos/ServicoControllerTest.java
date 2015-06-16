@@ -3,11 +3,13 @@ package br.gov.servicos.editor.servicos;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 
 import static br.gov.servicos.fixtures.TestData.SERVICO;
-import static org.springframework.test.web.ModelAndViewAssert.assertModelAttributeValue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.ModelAndViewAssert.assertViewName;
 
 public class ServicoControllerTest {
@@ -27,7 +29,8 @@ public class ServicoControllerTest {
 
     @Test
     public void aoEditarServicoDeveCarregarOServico() {
-        assertModelAttributeValue(controller.editar("exemplo-servico"), "servico", SERVICO);
+        ModelAndView resultado = controller.editar("exemplo-servico");
+        assertThat(resultado.getModel().get("servico"), is(SERVICO));
     }
 
 }

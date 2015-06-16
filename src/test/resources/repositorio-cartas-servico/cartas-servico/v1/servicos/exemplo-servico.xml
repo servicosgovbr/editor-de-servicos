@@ -5,73 +5,98 @@
 
     <id>exemplo-de-servico</id>
 
-    <nome>Exemplo de serviço</nome>
+    <nome>Carteira Nacional de Habilitação (CNH)</nome>
 
-    <nomesPopulares/>
+    <nomes-populares>carta de motorista, carteira, carta, cnh, habilitação</nomes-populares>
 
-    <descricao><![CDATA[Descrição serviço]]></descricao>
+    <descricao><![CDATA[A CNH blah blah blah...]]></descricao>
 
-    <url><![CDATA[url://site]]></url>
+    <palavras-chave>carta de motorista, carteira, carta, cnh, habilitação</palavras-chave>
 
-    <urlAgendamento><![CDATA[url://agendamento]]></urlAgendamento>
+    <areas-de-interesse>
+        <area-de-interesse>
+            <id>comercio-e-servicos</id>
+            <nome>Comércio e Serviços</nome>
+        </area-de-interesse>
 
-    <solicitantes/>
+        <area-de-interesse>
+            <id>comunicacoes</id>
+            <nome>Comunicações</nome>
+        </area-de-interesse>
+    </areas-de-interesse>
 
-    <tempoTotalEstimado/>
+    <segmentos-da-sociedade>
+        <segmento-da-sociedade>
+            <id>cidadaos</id>
+            <nome>Cidadãos</nome>
+        </segmento-da-sociedade>
 
-    <digitalizacao/>
+        <segmento-da-sociedade>
+            <id>empresas</id>
+            <nome>Empresas</nome>
+        </segmento-da-sociedade>
+    </segmentos-da-sociedade>
 
-    <etapas/>
+    <eventos-da-linha-da-vida>
+        <evento-da-linha-da-vida>
+            <id>documentos-e-certidoes</id>
+            <nome>Documentos e certidões</nome>
+        </evento-da-linha-da-vida>
 
-    <orgaoResponsavel>
-        <id>orgao-responsavel</id>
-        <nome>Órgão responsável</nome>
-    </orgaoResponsavel>
+        <evento-da-linha-da-vida>
+            <id>contas-e-impostos</id>
+            <nome>Contas e Impostos</nome>
+        </evento-da-linha-da-vida>
+    </eventos-da-linha-da-vida>
 
-    <orgaoPrestador>
-        <id>orgao-prestador</id>
-        <nome>Órgão prestador</nome>
-    </orgaoPrestador>
+    <legislacao-relacionada>
+        <link href="http://www.lexml.gov.br/urn/urn:lex:br:federal:decreto:2009-08-11;6932"/>
+        <link href="http://www.lexml.gov.br/urn/urn:lex:br:federal:lei:1993-06-21;8666"/>
+    </legislacao-relacionada>
 
-    <segmentosDaSociedade>
-        <segmentoDaSociedade>
-            <id>servicos-aos-cidadaos</id>
-            <nome>Serviços aos Cidadãos</nome>
-        </segmentoDaSociedade>
-    </segmentosDaSociedade>
+    <solicitantes>
+        <solicitante>Cidadãos maiores de 18 anos</solicitante>
+    </solicitantes>
 
-    <eventosDaLinhaDaVida>
-        <eventoDaLinhaDaVida>
-            <id>linha-da-vida</id>
-            <nome>Linha da Vida</nome>
-        </eventoDaLinhaDaVida>
-    </eventosDaLinhaDaVida>
+    <tempo-total-estimado tipo="entre">
+        <minimo tipo="dias">15</minimo>
+        <maximo tipo="dias">20</maximo>
+        <excecoes><![CDATA[Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.]]></excecoes>
+    </tempo-total-estimado>
 
-    <areasDeInteresse>
-        <areaDeInteresse>
-            <id>area-de-interesse</id>
-            <nome>Área de Interesse</nome>
-        </areaDeInteresse>
-    </areasDeInteresse>
+    <etapas>
+        <etapa>
+            <titulo>Agendar prova teórica do CFC</titulo>
+            <descricao>A prova teórica do CFC deve ser agendada nas...</descricao>
+            <documentos>
+                <documento>RG</documento>
+                <documento>CPF</documento>
+                <documento>Termo de conclusão de curso no CFC</documento>
+            </documentos>
+            <custos>
+                <custo>
+                    <descricao>Taxa de emissão</descricao>
+                    <valor>78,50</valor>
+                </custo>
+            </custos>
+            <canais-de-prestacao>
+                <canal-de-prestacao tipo="Presencial" preferencial="true">
+                    <descricao>Posto de atendimento</descricao>
+                </canal-de-prestacao>
+                <canal-de-prestacao tipo="Telefone" preferencial="false">
+                    <descricao>555</descricao>
+                </canal-de-prestacao>
+            </canais-de-prestacao>
+        </etapa>
+    </etapas>
 
-    <palavrasChave/>
+    <orgao>
+        <id>ministerio-da-saude-ms</id>
+        <nome>Ministério da Saúde</nome>
+    </orgao>
 
-    <custoTotalEstimado>R$ 10,50</custoTotalEstimado>
+    <gratuito>true</gratuito>
 
-    <legislacaoRelacionada/>
-
-    <canaisDePrestacao>
-        <canalDePrestacao tipo="web">
-            <descricao>Web</descricao>
-            <link rel="canal-de-prestacao#web" href="http://canal-prestacao"/>
-        </canalDePrestacao>
-    </canaisDePrestacao>
-
-    <informacoesUteis>
-        <informacaoUtil tipo="app">
-            <descricao>Aplicativo móvel</descricao>
-            <link rel="informacao-util#app" href="http://app-movel"/>
-        </informacaoUtil>
-    </informacoesUteis>
+    <situacao>Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)</situacao>
 
 </servico>
