@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.Main;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,11 @@ public class UITest {
 
         driver = new HtmlUnitDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        driver.close();
     }
 
     @Test
