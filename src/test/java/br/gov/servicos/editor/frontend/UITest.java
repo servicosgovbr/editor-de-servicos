@@ -15,9 +15,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -81,10 +78,6 @@ public class UITest {
         driver.findElement(By.id("palavrasChave")).sendKeys("carta de motorista, carteira, carta, cnh, habilitação");
 
         driver.findElement(By.id("salvar")).click();
-
-        try(Writer f = new FileWriter(new File("out.html"))) {
-            f.write(driver.getPageSource());
-        }
 
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
     }
