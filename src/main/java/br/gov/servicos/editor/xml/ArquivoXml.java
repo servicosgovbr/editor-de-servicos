@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static java.lang.Boolean.parseBoolean;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -20,12 +21,10 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class ArquivoXml {
 
-    private static final String UTF_8 = "UTF-8";
-
     Optional<Element> xml;
 
     public ArquivoXml(String caminhoXml, String root) throws IOException {
-        this(Jsoup.parse(new File(caminhoXml), UTF_8).select(root).first());
+        this(Jsoup.parse(new File(caminhoXml), defaultCharset().name()).select(root).first());
     }
 
     private ArquivoXml(Element xml) {
