@@ -1,10 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
 <div id="passo-1" xmlns:th="http://www.thymeleaf.org">
     <h2>Dados Principais</h2>
 
-    <fieldset th:replace="form/dados-principais/_nome"></fieldset>
-    <fieldset th:replace="form/dados-principais/_nomes-populares"></fieldset>
-    <fieldset th:replace="form/dados-principais/_o-que-e"></fieldset>
-    <fieldset th:replace="form/dados-principais/_quem-pode-utilizar"></fieldset>
-    <fieldset th:replace="form/dados-principais/_tempo-estimado"></fieldset>
-    <fieldset th:replace="form/dados-principais/_custo-estimado"></fieldset>
+    <fieldset th:replace="form/dados-principais/_nome :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_nomes-populares :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_o-que-e :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_quem-pode-utilizar :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_tempo-estimado :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_custo-estimado :: fieldset"></fieldset>
 </div>
+</body>
+</html>

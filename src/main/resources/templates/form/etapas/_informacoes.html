@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
 <fieldset class="required">
     <h3>Título da etapa</h3>
 
@@ -18,3 +25,5 @@
     <textarea th:field="*{etapas[__${row?.index ?: 0}__].descricao}" maxlength="500" rows="7"
               placeholder="Ex.: O primeiro passo para efetuar a inscrição é acessar o SisFIES e informar os dados solicitados. No primeiro acesso..."></textarea>
 </fieldset>
+</body>
+</html>

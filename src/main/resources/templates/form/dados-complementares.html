@@ -1,10 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
 <div id="passo-4" xmlns:th="http://www.thymeleaf.org">
     <h2>Dados Complementares</h2>
 
-    <fieldset th:replace="form/dados-principais/_orgao-responsavel"></fieldset>
-    <fieldset th:replace="form/dados-principais/_segmentos-da-sociedade"></fieldset>
-    <fieldset th:replace="form/dados-principais/_eventos-da-linha-da-vida"></fieldset>
-    <fieldset th:replace="form/dados-principais/_areas-de-interesse"></fieldset>
-    <fieldset th:replace="form/dados-complementares/_palavras-chave"></fieldset>
-    <fieldset th:replace="form/dados-complementares/_legislacao-do-servico"></fieldset>
+    <fieldset th:replace="form/dados-principais/_orgao-responsavel :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_segmentos-da-sociedade :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_eventos-da-linha-da-vida :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-principais/_areas-de-interesse :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-complementares/_palavras-chave :: fieldset"></fieldset>
+    <fieldset th:replace="form/dados-complementares/_legislacao-do-servico :: fieldset"></fieldset>
 </div>
+</body>
+</html>

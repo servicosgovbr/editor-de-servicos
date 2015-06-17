@@ -1,11 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
 <div id="passo-3" xmlns:th="http://www.thymeleaf.org">
     <h2>Etapas para a realização deste serviço</h2>
 
     <th:block th:each="etapa, row : ${servico.etapas}">
-        <fieldset th:replace="form/etapas/_informacoes"></fieldset>
-        <fieldset th:replace="form/etapas/_custos"></fieldset>
-        <fieldset th:replace="form/etapas/_documentos-necessarios"></fieldset>
-        <fieldset th:replace="form/etapas/_canais-de-prestacao"></fieldset>
+        <fieldset th:replace="form/etapas/_informacoes :: fieldset"></fieldset>
+        <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
+        <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
+        <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
 
         <p>
             <button>
@@ -16,10 +23,10 @@
     </th:block>
 
     <th:block th:if="${servico.etapas == null || servico.etapas.isEmpty()}">
-        <fieldset th:replace="form/etapas/_informacoes"></fieldset>
-        <fieldset th:replace="form/etapas/_custos"></fieldset>
-        <fieldset th:replace="form/etapas/_documentos-necessarios"></fieldset>
-        <fieldset th:replace="form/etapas/_canais-de-prestacao"></fieldset>
+        <fieldset th:replace="form/etapas/_informacoes :: fieldset"></fieldset>
+        <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
+        <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
+        <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
 
         <p>
             <button>
@@ -30,3 +37,5 @@
     </th:block>
 
 </div>
+</body>
+</html>

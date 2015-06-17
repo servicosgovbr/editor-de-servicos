@@ -12,11 +12,11 @@
 <section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
     <form th:action="@{/salvar}" th:object="${servico}" method="post">
 
-        <div th:replace="form/introducao"></div>
-        <div th:replace="form/dados-principais"></div>
-        <div th:replace="form/situacao-servico"></div>
-        <div th:replace="form/etapas"></div>
-        <div th:replace="form/dados-complementares"></div>
+        <div th:replace="form/introducao :: #introducao"></div>
+        <div th:replace="form/dados-principais :: #passo-1"></div>
+        <div th:replace="form/situacao-servico :: #passo-2"></div>
+        <div th:replace="form/etapas :: #passo-3"></div>
+        <div th:replace="form/dados-complementares :: #passo-4"></div>
 
         <button id="salvar">
             <i class="fa fa-hdd-o"></i>&nbsp;
@@ -28,7 +28,7 @@
             Publicar
         </button>
 
-        <button class="descartar">
+        <button class="cancel">
             <i class="fa fa-trash-o"></i>&nbsp;
             Descartar alterações
         </button>

@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
 <fieldset class="required">
     <h3>Legislação do serviço</h3>
 
@@ -11,10 +18,17 @@
 
     <p>
         <th:block th:each="legislacao, row : *{legislacoes}">
-            <input type="text" th:field="*{legislacoes[__${row.index}__]}" th:value="${legislacao}" placeholder="http://"/>
+            <input type="text"
+                   th:field="*{legislacoes[__${row.index}__]}"
+                   th:value="${legislacao}"
+                   placeholder="http://"/>
         </th:block>
 
-        <input type="text" th:if="${servico.legislacoes == null || servico.legislacoes.isEmpty()}" th:field="*{legislacoes}" value="" placeholder="http://"/>
+        <input type="text"
+               th:if="${servico.legislacoes == null || servico.legislacoes.isEmpty()}"
+               th:field="*{legislacoes}"
+               value=""
+               placeholder="http://"/>
     </p>
 
     <p>
@@ -25,3 +39,5 @@
     </p>
 
 </fieldset>
+</body>
+</html>
