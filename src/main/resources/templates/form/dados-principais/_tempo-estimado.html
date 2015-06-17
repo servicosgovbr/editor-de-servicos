@@ -14,20 +14,20 @@
 
         Entre
 
-        <input class="inline" type="text" th:field="*{tempoEstimado.minimo}"/>
+        <input class="inline" type="text" th:field="*{tempoEstimado.entreMinimo}"/>
 
-        <select class="inline" th:field="*{tempoEstimado.tipoMinimo}">
+        <select class="inline" th:field="*{tempoEstimado.entreTipoMinimo}">
             <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
-                    th:selected="${servico.tempoEstimado?.tipoMinimo == medida}"></option>
+                    th:selected="${servico.tempoEstimado?.entreTipoMinimo == medida}"></option>
         </select>
 
         e
 
-        <input class="inline" type="text" th:field="*{tempoEstimado.maximo}"/>
+        <input class="inline" type="text" th:field="*{tempoEstimado.entreMaximo}"/>
 
-        <select class="inline" th:field="*{tempoEstimado.tipoMaximo}">
+        <select class="inline" th:field="*{tempoEstimado.entreTipoMaximo}">
             <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
-                    th:selected="${servico.tempoEstimado?.tipoMaximo == medida}"></option>
+                    th:selected="${servico.tempoEstimado?.entreTipoMaximo == medida}"></option>
         </select>
     </label>
 
@@ -39,11 +39,11 @@
 
         Até
 
-        <input class="inline" type="text" th:field="*{tempoEstimado.maximo}"/>
+        <input class="inline" type="text" th:field="*{tempoEstimado.ateMaximo}"/>
 
-        <select class="inline">
+        <select class="inline" th:field="*{tempoEstimado.ateTipoMaximo}">
             <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
-                    th:selected="${servico.tempoEstimado?.tipoMaximo == medida}"></option>
+                    th:selected="${servico.tempoEstimado?.ateTipoMaximo == medida}"></option>
         </select>
     </label>
 

@@ -13,11 +13,14 @@ public class TempoEstimado {
 
     String tipo; // 'entre' ou 'até'
 
-    String minimo;
-    String tipoMinimo; // minutos, horas, etc
+    String entreMinimo;
+    String entreTipoMinimo; // minutos, horas, etc
 
-    String maximo;
-    String tipoMaximo; // minutos, horas, etc
+    String ateMaximo;
+    String ateTipoMaximo; // minutos, horas, etc
+
+    String entreMaximo;
+    String entreTipoMaximo; // minutos, horas, etc
 
     String excecoes;
 }

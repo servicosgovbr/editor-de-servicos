@@ -50,44 +50,48 @@ class ServicoController {
                 .withSolicitantes(xml.coleta("solicitantes > solicitante"))
                 .withGratuito(xml.textoAtivo("gratuito"))
                 .withSituacao(xml.texto("situacao"))
-                .withTempoEstimado(
-                        xml.converte("tempo-total-estimado",
-                                t -> new TempoEstimado()
-                                        .withTipo(t.atributo("tipo"))
-                                        .withTipoMinimo(t.atributo("minimo", "tipo"))
-                                        .withMinimo(t.texto("minimo"))
-                                        .withTipoMaximo(t.atributo("maximo", "tipo"))
-                                        .withMaximo(t.texto("maximo"))
-                                        .withExcecoes(t.texto("excecoes")))
-                )
-                .withEtapas(
-                        xml.coleta("servico > etapas > etapa", e ->
-                                        new Etapa()
-                                                .withTitulo(e.texto("titulo"))
-                                                .withDescricao(e.texto("descricao"))
-                                                .withDocumentos(e.coleta("documentos documento"))
-                                                .withCustos(e.coleta("custos custo",
-                                                                c -> new Custo()
-                                                                        .withDescricao(c.texto("descricao"))
-                                                                        .withValor(c.texto("valor")))
-                                                )
-                                                .withCanaisDePrestacao(
-                                                        e.coleta("canais-de-prestacao canal-de-prestacao",
-                                                                c -> new CanalDePrestacao()
-                                                                        .withTipo(c.atributo("tipo"))
-                                                                        .withDescricao(c.texto("canal-de-prestacao > descricao"))
-                                                                        .withPreferencial(c.atrituboAtivo("preferencial"))
-                                                        )
-                                                )
-                        )
-                )
-                .withOrgao(
-                        xml.converte("orgao",
-                                o -> new Orgao()
-                                        .withId(o.texto("id"))
-                                        .withNome(o.texto("nome"))
-                        )
-                );
+
+                .withTempoEstimado(xml.converte("tempo-total-estimado", t -> {
+                    if (t.atributo("tipo").equals("entre")) {
+                        return new TempoEstimado()
+                                .withTipo(t.atributo("tipo"))
+                                .withEntreTipoMinimo(t.atributo("minimo", "tipo"))
+                                .withEntreMinimo(t.texto("minimo"))
+                                .withEntreTipoMaximo(t.atributo("maximo", "tipo"))
+                                .withEntreMaximo(t.texto("maximo"))
+                                .withExcecoes(t.texto("excecoes"));
+                    } else if (t.atributo("tipo").equals("até")) {
+                        return new TempoEstimado()
+                                .withTipo(t.atributo("tipo"))
+                                .withAteTipoMaximo(t.atributo("maximo", "tipo"))
+                                .withAteMaximo(t.texto("maximo"))
+                                .withExcecoes(t.texto("excecoes"));
+                    }
+
+                    throw new IllegalArgumentException("Tipo de tempo estimado desconhecido");
+                }))
+
+                .withEtapas(xml.coleta("servico > etapas > etapa", e ->
+                        new Etapa()
+                                .withTitulo(e.texto("titulo"))
+                                .withDescricao(e.texto("descricao"))
+                                .withDocumentos(e.coleta("documentos documento"))
+                                .withCustos(e.coleta("custos custo",
+                                        c -> new Custo()
+                                                .withDescricao(c.texto("descricao"))
+                                                .withValor(c.texto("valor"))))
+
+                                .withCanaisDePrestacao(
+                                        e.coleta("canais-de-prestacao canal-de-prestacao",
+                                                c -> new CanalDePrestacao()
+                                                        .withTipo(c.atributo("tipo"))
+                                                        .withDescricao(c.texto("canal-de-prestacao > descricao"))
+                                                        .withPreferencial(c.atrituboAtivo("preferencial"))))))
+
+                .withOrgao(xml.converte("orgao",
+                        o -> new Orgao()
+                                .withId(o.texto("id"))
+                                .withNome(o.texto("nome"))));
     }
 
 }

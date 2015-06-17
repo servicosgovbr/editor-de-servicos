@@ -15,6 +15,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,11 +66,11 @@ public class UITest {
         driver.findElement(By.name("solicitantes")).sendKeys("Cidadãos maiores de 18 anos");
 
         driver.findElement(By.id("tempoEstimado.tipo1")).click();
-        driver.findElement(By.id("tempoEstimado.minimo")).sendKeys("12");
-        new Select(driver.findElement(By.id("tempoEstimado.tipoMinimo"))).selectByValue("dias úteis");
+        driver.findElement(By.id("tempoEstimado.entreMinimo")).sendKeys("12");
+        new Select(driver.findElement(By.id("tempoEstimado.entreTipoMinimo"))).selectByValue("dias úteis");
 
-        driver.findElement(By.id("tempoEstimado.maximo")).sendKeys("18");
-        new Select(driver.findElement(By.id("tempoEstimado.tipoMaximo"))).selectByValue("dias úteis");
+        driver.findElement(By.id("tempoEstimado.entreMaximo")).sendKeys("18");
+        new Select(driver.findElement(By.id("tempoEstimado.entreTipoMaximo"))).selectByValue("dias úteis");
 
         driver.findElement(By.id("tempoEstimado.excecoes")).sendKeys("Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.");
 
@@ -78,6 +81,12 @@ public class UITest {
         driver.findElement(By.id("palavrasChave")).sendKeys("carta de motorista, carteira, carta, cnh, habilitação");
 
         driver.findElement(By.id("salvar")).click();
+
+        try(Writer f = new FileWriter(new File("out.html"))) {
+            f.write(driver.getPageSource());
+        }
+
+        assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
     }
 
 

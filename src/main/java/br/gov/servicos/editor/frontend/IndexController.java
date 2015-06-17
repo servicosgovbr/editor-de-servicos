@@ -72,12 +72,22 @@ class IndexController {
                 .stream()
                 .forEach(s -> solicitantes.appendElement("solicitante").text(s));
 
-        Optional.ofNullable(servico.getTempoEstimado()).ifPresent(t ->
-                        root.appendElement("tempo-total-estimado")
-                                .attr("tipo", t.getTipo())
-                                .appendElement("minimo").attr("tipo", t.getTipoMinimo()).text(t.getMinimo()).parent()
-                                .appendElement("maximo").attr("tipo", t.getTipoMaximo()).text(t.getMaximo()).parent()
-                                .appendElement("excecoes").text(t.getExcecoes())
+        Optional.ofNullable(servico.getTempoEstimado()).ifPresent(t -> {
+                    Element tempo = root.appendElement("tempo-total-estimado");
+
+                    Optional.ofNullable(t.getTipo()).ifPresent(tipo -> {
+                        if (tipo.equals("entre")) {
+                            tempo.attr("tipo", tipo)
+                                    .appendElement("minimo").attr("tipo", t.getEntreTipoMinimo()).text(t.getEntreMinimo()).parent()
+                                    .appendElement("maximo").attr("tipo", t.getEntreTipoMaximo()).text(t.getEntreMaximo()).parent()
+                                    .appendElement("excecoes").text(t.getExcecoes());
+                        } else if (tipo.equals("até")) {
+                            tempo.attr("tipo", tipo)
+                                    .appendElement("maximo").attr("tipo", t.getAteTipoMaximo()).text(t.getAteMaximo()).parent()
+                                    .appendElement("excecoes").text(t.getExcecoes());
+                        }
+                    });
+                }
         );
 
         Element etapas = root.appendElement("etapas");
@@ -87,7 +97,7 @@ class IndexController {
                                 .appendElement("titulo").text(e.getTitulo()).parent()
                                 .appendElement("descricao").text(e.getDescricao()).parent()
                                 .appendElement("documentos").parent()
-                                .appendElement("custos").attr("excecoes", e.getCustoTemExcecoes().toString()).parent()
+                                .appendElement("custos").attr("excecoes", Optional.ofNullable(e.getCustoTemExcecoes()).orElse(false).toString()).parent()
                                 .appendElement("canais-de-prestacao").parent()
                 );
 
