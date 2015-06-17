@@ -11,7 +11,7 @@
                    placeholder="Ex.: Deficientes físicos"/>
         </th:block>
 
-        <input type="text" th:unless="*{solicitantes}" th:field="*{solicitantes}" value="" placeholder="Ex.: Deficientes físicos"/>
+        <input type="text" th:if="${servico.solicitantes == null || servico.solicitantes.isEmpty()}" th:field="*{solicitantes}" value="" placeholder="Ex.: Deficientes físicos"/>
     </p>
 
     <p>

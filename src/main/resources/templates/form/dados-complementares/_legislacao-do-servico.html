@@ -14,7 +14,7 @@
             <input type="text" th:field="*{legislacoes[__${row.index}__]}" th:value="${legislacao}" placeholder="http://"/>
         </th:block>
 
-        <input type="text" th:unless="*{legislacoes}" th:field="*{legislacoes}" value="" placeholder="http://"/>
+        <input type="text" th:if="${servico.legislacoes == null || servico.legislacoes.isEmpty()}" th:field="*{legislacoes}" value="" placeholder="http://"/>
     </p>
 
     <p>
