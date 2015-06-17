@@ -68,7 +68,7 @@ class ServicoController {
                                 .withExcecoes(t.texto("excecoes"));
                     }
 
-                    throw new IllegalArgumentException("Tipo de tempo estimado desconhecido");
+                    return null;
                 }))
 
                 .withEtapas(xml.coleta("servico > etapas > etapa", e ->
