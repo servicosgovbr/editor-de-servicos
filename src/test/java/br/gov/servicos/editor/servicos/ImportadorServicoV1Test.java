@@ -7,7 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.File;
 
 import static br.gov.servicos.fixtures.TestData.SERVICO_V1;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
 
 public class ImportadorServicoV1Test {
@@ -23,6 +23,6 @@ public class ImportadorServicoV1Test {
     public void deveImportarServicoNoFormatoV1() throws Exception {
         Servico servico = new ImportadorServicoV1(repositorioCartasLocal).carregar("exemplo-servico-v1").get();
 
-        assertThat(servico, is(SERVICO_V1));
+        assertThat(servico, samePropertyValuesAs(SERVICO_V1));
     }
 }

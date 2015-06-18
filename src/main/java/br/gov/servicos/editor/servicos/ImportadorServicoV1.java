@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -36,10 +37,17 @@ class ImportadorServicoV1 {
             return Optional.empty();
         }
 
-        ArquivoXml xml = new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first());
+        return carregar(new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first()));
+    }
 
+    public Optional<Servico> carregar(ArquivoXml xml) {
         return Optional.of(new Servico()
                 .withNome(xml.texto("nome"))
+                .withNomesPopulares(xml.texto("nomesPopulares"))
+                .withPalavrasChave(xml.texto("palavrasChave"))
+                .withSolicitantes(emptyList())
+                .withSituacao("")
+                .withLegislacoes(emptyList())
                 .withDescricao(xml.html("descricao") + "\n\n" + informacoesUteis(xml))
                 .withOrgao(xml.converte("orgaoResponsavel", this::orgao))
                 .withEventosDaLinhaDaVida(xml.coleta("eventosDaLinhaDaVida > eventoDaLinhaDaVida > nome"))
@@ -50,7 +58,10 @@ class ImportadorServicoV1 {
                         x -> "Serviços às Empresas".equals(x) ? "Empresas" : x
                 ))
                 .withEtapas(singletonList(new Etapa()
-                        .withCustos(singletonList(new Custo().withValor(xml.texto("custoTotalEstimado"))))
+                        .withTitulo("")
+                        .withDescricao("")
+                        .withDocumentos(emptyList())
+                        .withCustos(singletonList(new Custo().withDescricao("").withValor(xml.texto("custoTotalEstimado"))))
                         .withCanaisDePrestacao(
                                 Stream.concat(
                                         Stream.of(
@@ -72,8 +83,10 @@ class ImportadorServicoV1 {
     }
 
     private String informacoesUteis(ArquivoXml doc) {
-        return doc.coleta("informacoesUteis > informacaoUtil", x -> "* [" + x.texto("descricao") + "](" + x.atributo("link", "href") + ")\n")
-                .stream().collect(joining());
+        return doc.coleta("informacoesUteis > informacaoUtil", x -> format("* [%s](%s)\n", x.texto("descricao"), x.atributo("link", "href")))
+                .stream()
+                .collect(joining())
+                .trim();
     }
 
 }

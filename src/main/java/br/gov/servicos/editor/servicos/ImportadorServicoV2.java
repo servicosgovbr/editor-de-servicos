@@ -34,10 +34,14 @@ class ImportadorServicoV2 {
 
         ArquivoXml xml = new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first());
 
+        return carregar(xml);
+    }
+
+    public Optional<Servico> carregar(ArquivoXml xml) {
         return Optional.of(new Servico()
                 .withNome(xml.texto("nome"))
                 .withNomesPopulares(xml.texto("nomes-populares"))
-                .withDescricao(xml.texto("descricao"))
+                .withDescricao(xml.html("descricao"))
                 .withPalavrasChave(xml.texto("palavras-chave"))
                 .withAreasDeInteresse(xml.coleta("areas-de-interesse > area-de-interesse nome"))
                 .withSegmentosDaSociedade(xml.coleta("segmentos-da-sociedade > segmento-da-sociedade nome"))
@@ -67,7 +71,7 @@ class ImportadorServicoV2 {
                     return null;
                 }))
 
-                .withEtapas(xml.coleta("servico > etapas > etapa", e ->
+                .withEtapas(xml.coleta("etapas > etapa", e ->
                         new Etapa()
                                 .withTitulo(e.texto("titulo"))
                                 .withDescricao(e.texto("descricao"))

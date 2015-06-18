@@ -2,17 +2,13 @@ package br.gov.servicos.editor.xml;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.experimental.FieldDefaults;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 import static java.lang.Boolean.parseBoolean;
-import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
@@ -27,6 +23,7 @@ public class ArquivoXml {
 
     public ArquivoXml(Element xml) {
         this.xml = ofNullable(xml);
+        this.xml.ifPresent(x -> x.ownerDocument().outputSettings().prettyPrint(false));
     }
 
     public String atributo(String atributo) {
