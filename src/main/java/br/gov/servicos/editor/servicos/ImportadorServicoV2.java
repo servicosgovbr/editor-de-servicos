@@ -1,14 +1,17 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.xml.ArquivoXml;
+import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.Optional;
 
 import static java.lang.String.format;
+import static java.nio.charset.Charset.defaultCharset;
 import static lombok.AccessLevel.PRIVATE;
 
 @Component
@@ -22,13 +25,16 @@ class ImportadorServicoV2 {
         this.repositorioCartasLocal = repositorioCartasLocal;
     }
 
-    public Servico carregar(String id) throws IOException {
-        ArquivoXml xml = new ArquivoXml(
-                format("%s/cartas-servico/v2/servicos/%s.xml", repositorioCartasLocal.getPath(), id),
-                "servico"
-        );
+    @SneakyThrows
+    public Optional<Servico> carregar(String id) {
+        File arquivo = new File(format("%s/cartas-servico/v2/servicos/%s.xml", repositorioCartasLocal.getPath(), id));
+        if(!arquivo.exists()) {
+            return Optional.empty();
+        }
 
-        return new Servico()
+        ArquivoXml xml = new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first());
+
+        return Optional.of(new Servico()
                 .withNome(xml.texto("nome"))
                 .withNomesPopulares(xml.texto("nomes-populares"))
                 .withDescricao(xml.texto("descricao"))
@@ -81,6 +87,6 @@ class ImportadorServicoV2 {
                 .withOrgao(xml.converte("orgao",
                         o -> new Orgao()
                                 .withId(o.texto("id"))
-                                .withNome(o.texto("nome"))));
+                                .withNome(o.texto("nome")))));
     }
 }

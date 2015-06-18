@@ -25,11 +25,7 @@ public class ArquivoXml {
 
     Optional<Element> xml;
 
-    public ArquivoXml(String caminhoXml, String root) throws IOException {
-        this(Jsoup.parse(new File(caminhoXml), defaultCharset().name()).select(root).first());
-    }
-
-    private ArquivoXml(Element xml) {
+    public ArquivoXml(Element xml) {
         this.xml = ofNullable(xml);
     }
 

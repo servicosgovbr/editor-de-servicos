@@ -8,7 +8,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.Optional;
 
+import static br.gov.servicos.fixtures.TestData.SERVICO_V1;
 import static br.gov.servicos.fixtures.TestData.SERVICO_V2;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -21,25 +23,40 @@ public class ServicoControllerTest {
     ServicoController controller;
 
     @Mock
+    ImportadorServicoV1 v1;
+
+    @Mock
     ImportadorServicoV2 v2;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ServicoController(v2);
+        controller = new ServicoController(v1, v2);
     }
 
     @Test
     public void aoEditarServicoDeveRedireciarParaOIndex() throws IOException {
+        given(v2.carregar("exemplo-servico")).willReturn(Optional.of(SERVICO_V2));
+
         assertViewName(controller.editar("exemplo-servico"), "index");
     }
 
     @Test
     public void aoEditarServicoDeveCarregarOServico() throws IOException {
-        given(v2.carregar("exemplo-servico")).willReturn(SERVICO_V2);
+        given(v2.carregar("exemplo-servico")).willReturn(Optional.of(SERVICO_V2));
 
         ModelAndView resultado = controller.editar("exemplo-servico");
 
         assertThat(resultado.getModel().get("servico"), is(SERVICO_V2));
+    }
+
+    @Test
+    public void aoEditarServicoDeveCarregarOServicoV1() throws IOException {
+        given(v2.carregar("exemplo-servico")).willReturn(Optional.empty());
+        given(v1.carregar("exemplo-servico")).willReturn(Optional.of(SERVICO_V1));
+
+        ModelAndView resultado = controller.editar("exemplo-servico");
+
+        assertThat(resultado.getModel().get("servico"), is(SERVICO_V1));
     }
 
 }

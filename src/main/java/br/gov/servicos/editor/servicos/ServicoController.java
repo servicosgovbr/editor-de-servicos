@@ -16,16 +16,21 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ServicoController {
 
+    ImportadorServicoV1 importadorV1;
     ImportadorServicoV2 importadorV2;
 
     @Autowired
-    ServicoController(ImportadorServicoV2 importadorV2) {
+    ServicoController(ImportadorServicoV1 importadorV1, ImportadorServicoV2 importadorV2) {
+        this.importadorV1 = importadorV1;
         this.importadorV2 = importadorV2;
     }
 
     @RequestMapping(value = "/servico/{id}", method = GET)
     ModelAndView editar(@PathVariable("id") String id) throws IOException {
-        return new ModelAndView("index", "servico", importadorV2.carregar(id));
+        return new ModelAndView("index", "servico",
+                importadorV2.carregar(id)
+                        .orElseGet(() -> importadorV1.carregar(id)
+                        .orElseThrow(RuntimeException::new)));
     }
 
 }

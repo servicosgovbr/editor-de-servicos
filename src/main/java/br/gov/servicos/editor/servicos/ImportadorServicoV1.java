@@ -1,15 +1,18 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.xml.ArquivoXml;
+import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -26,13 +29,16 @@ class ImportadorServicoV1 {
         this.repositorioCartasLocal = repositorioCartasLocal;
     }
 
-    public Servico carregar(String id) throws IOException {
-        ArquivoXml xml = new ArquivoXml(
-                format("%s/cartas-servico/v1/servicos/%s.xml", repositorioCartasLocal.getPath(), id),
-                "servico"
-        );
+    @SneakyThrows
+    public Optional<Servico> carregar(String id) {
+        File arquivo = new File(format("%s/cartas-servico/v1/servicos/%s.xml", repositorioCartasLocal.getPath(), id));
+        if (!arquivo.exists()) {
+            return Optional.empty();
+        }
 
-        return new Servico()
+        ArquivoXml xml = new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first());
+
+        return Optional.of(new Servico()
                 .withNome(xml.texto("nome"))
                 .withDescricao(xml.html("descricao") + "\n\n" + informacoesUteis(xml))
                 .withOrgao(xml.converte("orgaoResponsavel", this::orgao))
@@ -44,7 +50,6 @@ class ImportadorServicoV1 {
                         x -> "Serviços às Empresas".equals(x) ? "Empresas" : x
                 ))
                 .withEtapas(singletonList(new Etapa()
-                        .withTitulo("Acesso ao serviço")
                         .withCustos(singletonList(new Custo().withValor(xml.texto("custoTotalEstimado"))))
                         .withCanaisDePrestacao(
                                 Stream.concat(
@@ -57,7 +62,7 @@ class ImportadorServicoV1 {
                                                         .withTipo(x.atributo("tipo"))
                                                         .withDescricao(x.atributo("link", "href")))
                                                 .stream())
-                                        .collect(toList()))));
+                                        .collect(toList())))));
     }
 
     private Orgao orgao(ArquivoXml doc) {

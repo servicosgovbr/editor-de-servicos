@@ -21,7 +21,7 @@ public class ImportadorServicoV2Test {
 
     @Test
     public void deveImportarServicoNoFormatoV1() throws Exception {
-        Servico servico = new ImportadorServicoV2(repositorioCartasLocal).carregar("exemplo-servico-v2");
+        Servico servico = new ImportadorServicoV2(repositorioCartasLocal).carregar("exemplo-servico-v2").get();
 
         assertThat(servico, is(SERVICO_V2));
     }

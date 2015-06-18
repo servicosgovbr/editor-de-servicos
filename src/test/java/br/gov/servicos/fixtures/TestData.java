@@ -16,7 +16,6 @@ public class TestData {
                     "* [Unidades do Departamento da Polícia Federal de cada região](http://www.dpf.gov.br/institucional/pf-pelo-brasil/)\n" +
                     "* [Documentação necessária para requerer Passaporte](http://www.dpf.gov.br/servicos/passaporte/documentacao-necessaria)\n")
             .withEtapas(singletonList(new Etapa()
-                    .withTitulo("Acesso ao serviço")
                     .withCustos(singletonList(new Custo().withValor("R$ 156,07")))
                     .withCanaisDePrestacao(asList(
                             new CanalDePrestacao().withTipo("Web").withDescricao("http://www.dpf.gov.br/servicos/passaporte/requerer-passaporte").withPreferencial(true),
