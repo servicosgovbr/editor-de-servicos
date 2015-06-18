@@ -13,8 +13,10 @@ import java.util.function.Function;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -59,11 +61,13 @@ public class ArquivoXml {
         return coleta(seletor, ArquivoXml::texto);
     }
 
-    public <T> List<T> coleta(String seletor, Function<ArquivoXml, T> conversor) {
+    @SafeVarargs
+    public final <T> List<T> coleta(String seletor, Function<ArquivoXml, T> conversor, Function<T, T>... mapeadores) {
         return xml.map(
                 x -> x.select(seletor)
                         .stream()
                         .map(e -> new ArquivoXml(e).converte(conversor))
+                        .map(s -> asList(mapeadores).stream().reduce(Function::andThen).orElse(identity()).apply(s))
                         .collect(toList())
         ).orElse(emptyList());
     }
@@ -89,5 +93,14 @@ public class ArquivoXml {
 
         return null;
     }
+
+    public String html(String seletor) {
+        return navega(seletor).html();
+    }
+
+    public String html() {
+        return xml.map(x -> x.html().trim()).orElse("");
+    }
+
 
 }

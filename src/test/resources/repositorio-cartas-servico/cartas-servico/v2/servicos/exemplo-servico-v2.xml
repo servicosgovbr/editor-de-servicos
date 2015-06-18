@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <servico xmlns="http://servicos.gov.br/carta/v1/servico">
 
-    <versao>1.0</versao>
+    <versao>2.0</versao>
 
     <id>exemplo-de-servico</id>
 
