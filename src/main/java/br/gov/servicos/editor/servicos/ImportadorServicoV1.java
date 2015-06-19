@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -60,7 +61,7 @@ class ImportadorServicoV1 {
                 .withEtapas(singletonList(new Etapa()
                         .withTitulo("")
                         .withDescricao("")
-                        .withDocumentos(emptyList())
+                        .withDocumentos(new ArrayList<>())
                         .withCustos(singletonList(new Custo().withDescricao("").withValor(xml.texto("custoTotalEstimado"))))
                         .withCanaisDePrestacao(
                                 Stream.concat(
@@ -83,7 +84,10 @@ class ImportadorServicoV1 {
     }
 
     private String informacoesUteis(ArquivoXml doc) {
-        return doc.coleta("informacoesUteis > informacaoUtil", x -> format("* [%s](%s)\n", x.texto("descricao"), x.atributo("link", "href")))
+        return doc.coleta("informacoesUteis > informacaoUtil", x ->
+                format("* %s\n", x.atributo("link", "href").isEmpty()
+                        ? x.texto("descricao")
+                        : format("[%s](%s)", x.texto("descricao"), x.atributo("link", "href"))))
                 .stream()
                 .collect(joining())
                 .trim();

@@ -37,7 +37,7 @@ public class TestData {
                     "de Emergência apenas é emitido no posto localizado no prédio da Superintendência Regional, na " +
                     "Lapa, e na cidade do Rio de Janeiro/RJ, apenas no posto localizado no Aeroporto Internacional Tom " +
                     "Jobim (Galeão).\n\n* [Informações gerais sobre Passaporte](http://www.dpf.gov.br/servicos/passaporte)\n" +
-                    "* [Dúvidas sobre Emissão de Passaportes: ligue 194]()\n" +
+                    "* Dúvidas sobre Emissão de Passaportes: ligue 194\n" +
                     "* [Unidades do Departamento da Polícia Federal de cada região](http://www.dpf.gov.br/institucional/pf-pelo-brasil/)\n" +
                     "* [Documentação necessária para requerer Passaporte](http://www.dpf.gov.br/servicos/passaporte/documentacao-necessaria)")
             .withEtapas(singletonList(new Etapa()
