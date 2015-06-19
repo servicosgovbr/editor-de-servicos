@@ -3,6 +3,7 @@ package br.gov.servicos.editor.frontend;
 import br.gov.servicos.editor.servicos.Servico;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
+import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class ExportadorServicoV2 {
                 .appendElement("versao").text("2").parent()
                 .appendElement("nome").text(servico.getNome()).parent()
                 .appendElement("nomes-populares").text(servico.getNomesPopulares()).parent()
-                .appendElement("descricao").html(servico.getDescricao()).parent()
+                .appendElement("descricao").appendChild(new DataNode(servico.getDescricao(), "")).parent()
                 .appendElement("palavras-chave").text(servico.getPalavrasChave()).parent();
 
         areasDeInteresse(servico, root);
@@ -78,13 +79,13 @@ public class ExportadorServicoV2 {
                 .forEach(e -> {
                             Element etapa = etapas.appendElement("etapa")
                                     .appendElement("titulo").text(e.getTitulo()).parent()
-                                    .appendElement("descricao").html(e.getDescricao()).parent()
+                                    .appendElement("descricao").appendChild(new DataNode(e.getDescricao(), "")).parent()
                                     .appendElement("documentos").parent();
 
                             Element custos = etapa.appendElement("custos").attr("excecoes", Optional.ofNullable(e.getCustoTemExcecoes()).orElse(false).toString());
                             e.getCustos().forEach(c ->
                                     custos.appendElement("custo")
-                                            .appendElement("descricao").text(c.getDescricao()).parent()
+                                            .appendElement("descricao").appendChild(new DataNode(c.getDescricao(), "")).parent()
                                             .appendElement("valor").text(c.getValor()));
 
                             Element canais = etapa.appendElement("canais-de-prestacao");
