@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.XmlDeclaration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,8 +35,10 @@ public class ExportadorServicoV2 {
                 .prettyPrint(true);
 
         document.children().remove();
-        Element root = document.appendElement("servico")
-                .appendElement("versao").text("2").parent()
+        Element root = document
+                .appendChild(new XmlDeclaration("xml", "", false).attr("version", "1.0").attr("encoding", "UTF-8"))
+                .appendElement("servico")
+                .attr("versao", "2")
                 .appendElement("nome").text(servico.getNome()).parent()
                 .appendElement("nomes-populares").text(servico.getNomesPopulares()).parent()
                 .appendElement("descricao").appendChild(new DataNode(servico.getDescricao(), "")).parent()
