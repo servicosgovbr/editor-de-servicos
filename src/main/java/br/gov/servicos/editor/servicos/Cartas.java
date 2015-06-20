@@ -154,7 +154,9 @@ public class Cartas {
     @SneakyThrows
     private <T> T comRepositorioAberto(Function<Git, T> fn) {
         try (Git git = Git.open(repositorioCartasLocal)) {
-            return fn.apply(git);
+            synchronized (Cartas.class) {
+                return fn.apply(git);
+            }
         }
     }
 
