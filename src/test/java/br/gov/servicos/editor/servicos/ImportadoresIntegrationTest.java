@@ -24,7 +24,7 @@ public class ImportadoresIntegrationTest {
         File repositorioCartasLocal = new ClassPathResource("repositorio-cartas-servico").getFile();
         v1 = new ImportadorServicoV1(repositorioCartasLocal);
         exportadorV2 = new ExportadorServicoV2(new Slugify());
-        v2 = new ImportadorServicoV2(new Cartas(repositorioCartasLocal));
+        v2 = new ImportadorServicoV2(new Cartas(repositorioCartasLocal, false));
 
     }
 

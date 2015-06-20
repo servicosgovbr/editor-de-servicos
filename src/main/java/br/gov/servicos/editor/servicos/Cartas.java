@@ -10,6 +10,7 @@ import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.RefSpec;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -34,10 +35,12 @@ import static org.eclipse.jgit.lib.Constants.*;
 public class Cartas {
 
     File repositorioCartasLocal;
+    boolean fazerPush;
 
     @Autowired
-    public Cartas(File repositorioCartasLocal) {
+    public Cartas(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
         this.repositorioCartasLocal = repositorioCartasLocal;
+        this.fazerPush = fazerPush;
     }
 
     @SneakyThrows
@@ -100,11 +103,15 @@ public class Cartas {
     @SneakyThrows
     private void push(Git git, String id) {
         log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-        git.push()
-                .setRemote(DEFAULT_REMOTE_NAME)
-                .setRefSpecs(new RefSpec(id + ":" + id))
-                .setProgressMonitor(new TextProgressMonitor())
-                .call();
+        if(fazerPush) {
+            git.push()
+                    .setRemote(DEFAULT_REMOTE_NAME)
+                    .setRefSpecs(new RefSpec(id + ":" + id))
+                    .setProgressMonitor(new TextProgressMonitor())
+                    .call();
+        } else {
+            log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
+        }
     }
 
     @SneakyThrows
@@ -137,7 +144,7 @@ public class Cartas {
     @SneakyThrows
     private void add(Git git, Path path) {
         String pattern = repositorioCartasLocal.toPath().relativize(path).toString();
-        log.debug("git add: {} ({}):", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), pattern);
+        log.debug("git add: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), pattern);
 
         git.add()
                 .addFilepattern(pattern)

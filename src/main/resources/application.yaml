@@ -10,6 +10,7 @@ server:
 
 flags:
   importar.cartas: true
+  git.push: false
 
 eds:
   cartas:
