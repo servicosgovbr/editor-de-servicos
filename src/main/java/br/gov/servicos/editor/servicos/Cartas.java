@@ -4,9 +4,9 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.TextProgressMonitor;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.merge.MergeStrategy;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -24,6 +25,7 @@ import java.util.function.Supplier;
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
@@ -59,6 +61,31 @@ public class Cartas {
             log.info("[V2] Arquivo {} não encontrado", arquivo);
             return empty();
         };
+    }
+
+    public Optional<RevCommit> ultimaRevisao(String id) {
+        return comRepositorioAberto(new Function<Git, Optional<RevCommit>>() {
+
+            @Override
+            @SneakyThrows
+            public Optional<RevCommit> apply(Git git) {
+
+                return ofNullable(git.getRepository().getRef(R_HEADS + id).getObjectId())
+                        .flatMap(new Function<ObjectId, Optional<RevCommit>>() {
+
+                            @Override
+                            @SneakyThrows
+                            public Optional<RevCommit> apply(ObjectId branchRef) {
+                                Iterator<RevCommit> iterator = git.log().setMaxCount(1).add(branchRef).call().iterator();
+
+                                if (iterator.hasNext()) {
+                                    return ofNullable(iterator.next());
+                                }
+                                return empty();
+                            }
+                        });
+            }
+        });
     }
 
     @SneakyThrows
@@ -103,7 +130,7 @@ public class Cartas {
     @SneakyThrows
     private void push(Git git, String id) {
         log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-        if(fazerPush) {
+        if (fazerPush) {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
                     .setRefSpecs(new RefSpec(id + ":" + id))
@@ -143,12 +170,16 @@ public class Cartas {
 
     @SneakyThrows
     private void add(Git git, Path path) {
-        String pattern = repositorioCartasLocal.toPath().relativize(path).toString();
+        String pattern = caminhoRelativo(path);
         log.debug("git add: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), pattern);
 
         git.add()
                 .addFilepattern(pattern)
                 .call();
+    }
+
+    private String caminhoRelativo(Path path) {
+        return repositorioCartasLocal.toPath().relativize(path).toString();
     }
 
     @SneakyThrows
@@ -212,5 +243,18 @@ public class Cartas {
             writer.write(document.toString());
         }
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
+    }
+
+    @SneakyThrows
+    private Optional<ReflogEntry> reflogMaisRecente(Git git, String id) {
+        return ofNullable(git.getRepository()
+                .getReflogReader(id))
+                .map(new Function<ReflogReader, ReflogEntry>() {
+                    @Override
+                    @SneakyThrows
+                    public ReflogEntry apply(ReflogReader reflogReader) {
+                        return reflogReader.getLastEntry();
+                    }
+                });
     }
 }

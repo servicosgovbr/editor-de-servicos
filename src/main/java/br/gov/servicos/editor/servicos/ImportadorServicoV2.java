@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-import static java.util.Optional.of;
 import static lombok.AccessLevel.PRIVATE;
 
 @Component
@@ -31,7 +30,20 @@ class ImportadorServicoV2 {
                 .map(this::parse)
                 .map(xml -> xml.select("servico").first())
                 .map(ArquivoXml::new)
-                .flatMap(this::carregar);
+                .map(this::carregar)
+                .map(s -> {
+                    Metadados metadados = new Metadados()
+                            .withNovo(false)
+                            .withVersao("2");
+
+                    cartas.ultimaRevisao(id).ifPresent(revisao -> {
+                        metadados.setRevisao(revisao.getId().getName());
+                        metadados.setAutor(revisao.getAuthorIdent().getName());
+                        metadados.setHorario(revisao.getAuthorIdent().getWhen());
+                    });
+
+                    return s.withMetadados(metadados);
+                });
     }
 
     @SneakyThrows
@@ -39,8 +51,8 @@ class ImportadorServicoV2 {
         return Jsoup.parse(conteudo, "/", Parser.xmlParser());
     }
 
-    public Optional<Servico> carregar(ArquivoXml xml) {
-        return of(new Servico()
+    public Servico carregar(ArquivoXml xml) {
+        return new Servico()
                 .withNome(xml.texto("nome"))
                 .withNomesPopulares(xml.texto("nomes-populares"))
                 .withDescricao(xml.html("descricao"))
@@ -93,6 +105,6 @@ class ImportadorServicoV2 {
                 .withOrgao(xml.converte("orgao",
                         o -> new Orgao()
                                 .withId(o.texto("id"))
-                                .withNome(o.texto("nome")))));
+                                .withNome(o.texto("nome"))));
     }
 }

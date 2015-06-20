@@ -9,6 +9,9 @@ import static java.util.Collections.singletonList;
 public class TestData {
 
     public static final Servico SERVICO_V1 = new Servico()
+            .withMetadados(new Metadados()
+                    .withNovo(false)
+                    .withVersao("1"))
             .withNome("Passaporte")
             .withPalavrasChave("")
             .withNomesPopulares("")
@@ -58,6 +61,9 @@ public class TestData {
             .withLegislacoes(emptyList());
 
     public static final Servico SERVICO_V2 = new Servico()
+            .withMetadados(new Metadados()
+                    .withNovo(false)
+                    .withVersao("2"))
             .withNome("Carteira Nacional de Habilitação (CNH)")
             .withNomesPopulares("carta de motorista, carteira, carta, cnh, habilitação")
             .withDescricao("A CNH blah blah blah...")

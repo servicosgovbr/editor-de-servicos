@@ -10,7 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
 
 public class ImportadoresIntegrationTest {
@@ -32,8 +32,8 @@ public class ImportadoresIntegrationTest {
     public void deveMigrarServicosDoFormatoV1ParaV2() throws Exception {
         Servico servicoV1 = v1.carregar("exemplo-servico-v1").get();
         Document doc = exportadorV2.exportar(servicoV1);
-        Servico servicoV2 = v2.carregar(new ArquivoXml(doc)).get();
+        Servico servicoV2 = v2.carregar(new ArquivoXml(doc));
 
-        assertThat(servicoV2, is(servicoV1));
+        assertThat(servicoV2.withMetadados(null), samePropertyValuesAs(servicoV1.withMetadados(null)));
     }
 }

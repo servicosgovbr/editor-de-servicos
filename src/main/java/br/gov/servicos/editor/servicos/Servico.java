@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Servico {
 
+    Metadados metadados;
     String nome;
     String nomesPopulares;
     String descricao;

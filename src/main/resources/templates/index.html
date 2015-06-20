@@ -10,7 +10,8 @@
 
 <body>
 <section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
-    <form th:action="@{/servico/{id}(id=${@slugify.slugify(servico.nome)})}" th:object="${servico}" method="post">
+    <form th:action="@{/servico/{id}(id=${servico.metadados.novo ? 'novo' : @slugify.slugify(servico.nome)})}"
+          th:object="${servico}" method="post">
 
         <div th:replace="form/introducao :: #introducao"></div>
         <div th:replace="form/dados-principais :: #passo-1"></div>
@@ -32,6 +33,13 @@
             <i class="fa fa-trash-o"></i>&nbsp;
             Descartar alterações
         </button>
+
+        <span th:text="${'Versão ' + (servico.metadados.versao ?: 'ainda não salva')}"></span>
+        <th:block th:if="*{metadados?.revisao}">
+            <span th:text="${'revisão ' + #strings.substring(servico?.metadados?.revisao, 0, 6)}"></span>,
+            <span th:text="${'por ' + servico?.metadados?.autor}"></span>,
+            <span th:text="${'em ' + #dates.format(servico?.metadados?.horario, 'dd/MMM/yyyy HH:mm')}"></span>
+        </th:block>
     </form>
 </section>
 </body>

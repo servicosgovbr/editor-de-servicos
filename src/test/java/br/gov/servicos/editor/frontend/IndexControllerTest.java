@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.servicos.Cartas;
+import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Servico;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
@@ -38,6 +39,8 @@ public class IndexControllerTest {
 
     @Test
     public void adicionaServicoVazioAoModel() throws Exception {
-        assertThat(controller.index().getModelMap().get("servico"), is(new Servico().withNome("novo")));
+        assertThat(controller.index().getModelMap().get("servico"), is(
+                new Servico().withMetadados(new Metadados()
+                        .withNovo(true))));
     }
 }

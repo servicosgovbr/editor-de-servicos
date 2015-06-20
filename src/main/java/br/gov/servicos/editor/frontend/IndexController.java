@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.servicos.Cartas;
+import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Servico;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
@@ -38,7 +39,9 @@ class IndexController {
 
     @RequestMapping("/")
     ModelAndView index() {
-        return new ModelAndView("index", "servico", new Servico().withNome("novo"));
+        return new ModelAndView("index", "servico", new Servico()
+                .withMetadados(new Metadados()
+                        .withNovo(true)));
     }
 
     @RequestMapping(value = "/servico/novo", method = POST)
