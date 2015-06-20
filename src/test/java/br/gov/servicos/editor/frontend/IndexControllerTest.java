@@ -1,7 +1,10 @@
 package br.gov.servicos.editor.frontend;
 
+import br.gov.servicos.editor.servicos.Cartas;
 import br.gov.servicos.editor.servicos.Servico;
+import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -18,13 +21,23 @@ public class IndexControllerTest {
     @Autowired
     ExportadorServicoV2 v2;
 
+    @Autowired
+    Cartas cartas;
+
+    IndexController controller;
+
+    @Before
+    public void setUp() throws Exception {
+        controller = new IndexController(v2, cartas, new Slugify());
+    }
+
     @Test
     public void retornaIndex() throws Exception {
-        assertThat(new IndexController(v2).index().getViewName(), is("index"));
+        assertThat(controller.index().getViewName(), is("index"));
     }
 
     @Test
     public void adicionaServicoVazioAoModel() throws Exception {
-        assertThat(new IndexController(v2).index().getModelMap().get("servico"), is(new Servico()));
+        assertThat(controller.index().getModelMap().get("servico"), is(new Servico().withNome("novo")));
     }
 }

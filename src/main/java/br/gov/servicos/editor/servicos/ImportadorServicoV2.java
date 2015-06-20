@@ -4,41 +4,43 @@ import br.gov.servicos.editor.xml.ArquivoXml;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.Optional;
 
-import static java.lang.String.format;
-import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Optional.of;
 import static lombok.AccessLevel.PRIVATE;
 
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ImportadorServicoV2 {
 
-    File repositorioCartasLocal;
+    Cartas cartas;
 
     @Autowired
-    public ImportadorServicoV2(File repositorioCartasLocal) {
-        this.repositorioCartasLocal = repositorioCartasLocal;
+    public ImportadorServicoV2(Cartas cartas) {
+        this.cartas = cartas;
     }
 
     @SneakyThrows
     public Optional<Servico> carregar(String id) {
-        File arquivo = new File(format("%s/cartas-servico/v2/servicos/%s.xml", repositorioCartasLocal.getPath(), id));
-        if(!arquivo.exists()) {
-            return Optional.empty();
-        }
+        return cartas.conteudoServicoV2(id)
+                .map(this::parse)
+                .map(xml -> xml.select("servico").first())
+                .map(ArquivoXml::new)
+                .flatMap(this::carregar);
+    }
 
-        ArquivoXml xml = new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first());
-
-        return carregar(xml);
+    @SneakyThrows
+    private Element parse(String conteudo) {
+        return Jsoup.parse(conteudo, "/", Parser.xmlParser());
     }
 
     public Optional<Servico> carregar(ArquivoXml xml) {
-        return Optional.of(new Servico()
+        return of(new Servico()
                 .withNome(xml.texto("nome"))
                 .withNomesPopulares(xml.texto("nomes-populares"))
                 .withDescricao(xml.html("descricao"))

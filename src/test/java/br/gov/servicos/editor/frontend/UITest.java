@@ -57,9 +57,10 @@ public class UITest {
 
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
 
-        driver.findElement(By.id("nome")).sendKeys("Carteira Nacional de Habilitação (CNH)");
-        driver.findElement(By.id("nomesPopulares")).sendKeys("carta de motorista, carteira, carta, cnh, habilitação");
-        driver.findElement(By.id("descricao")).sendKeys("A CNH blah blah blah...");
+        driver.findElement(By.id("nome")).clear();
+        driver.findElement(By.id("nome")).sendKeys("Serviço 1");
+        driver.findElement(By.id("nomesPopulares")).sendKeys("");
+        driver.findElement(By.id("descricao")).sendKeys("O Serviço 1 facilita a ...");
         driver.findElement(By.name("solicitantes")).sendKeys("Cidadãos maiores de 18 anos");
 
         driver.findElement(By.id("tempoEstimado.tipo1")).click();
@@ -74,13 +75,21 @@ public class UITest {
         driver.findElement(By.id("gratuito2")).click();
         driver.findElement(By.id("situacao1")).click();
 
-        driver.findElement(By.name("etapas[0].titulo")).sendKeys("Agendar prova teórica do CFC");
-        driver.findElement(By.id("palavrasChave")).sendKeys("carta de motorista, carteira, carta, cnh, habilitação");
+        driver.findElement(By.name("etapas[0].titulo")).sendKeys("Agendar atendimento presencial");
+        driver.findElement(By.id("palavrasChave")).sendKeys("serviço 1");
 
         driver.findElement(By.id("salvar")).click();
 
-        assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
-    }
+        System.out.println(driver.getPageSource());
 
+        assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
+        assertThat(driver.findElement(By.id("nome")).getAttribute("value"), is("Serviço 1"));
+
+        driver.findElement(By.id("nomesPopulares")).sendKeys("serviço 1, um");
+
+        driver.findElement(By.id("salvar")).click();
+        assertThat(driver.findElement(By.id("nomesPopulares")).getAttribute("value"), is("serviço 1, um"));
+
+    }
 
 }

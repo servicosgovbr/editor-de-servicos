@@ -30,7 +30,7 @@ class ServicoController {
         return new ModelAndView("index", "servico",
                 importadorV2.carregar(id)
                         .orElseGet(() -> importadorV1.carregar(id)
-                        .orElseThrow(RuntimeException::new)));
+                                .orElseThrow(() -> new RuntimeException("Não foi possível encontrar o arquivo referente ao serviço '" + id + "'"))));
     }
 
 }

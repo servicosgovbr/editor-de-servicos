@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ class Importador {
     @SneakyThrows
     void importaRepositorioDeCartas() {
         if (!deveImportar) {
-            log.info("Importação de cartas de serviço desligada (FLAGS_IMPORTAR_CARTAS=false).");
+            log.info("Importação de cartas de serviço desligada (FLAGS_IMPORTAR_CARTAS=false)");
             return;
         }
 
@@ -44,6 +45,7 @@ class Importador {
         Git.cloneRepository()
                 .setURI(repositorioCartas)
                 .setDirectory(repositorioCartasLocal)
+                .setProgressMonitor(new TextProgressMonitor())
                 .call();
     }
 

@@ -3,6 +3,7 @@ package br.gov.servicos.editor.servicos;
 import br.gov.servicos.editor.xml.ArquivoXml;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
+@Slf4j
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ImportadorServicoV1 {
@@ -35,9 +37,11 @@ class ImportadorServicoV1 {
     public Optional<Servico> carregar(String id) {
         File arquivo = new File(format("%s/cartas-servico/v1/servicos/%s.xml", repositorioCartasLocal.getPath(), id));
         if (!arquivo.exists()) {
+            log.info("[V1] Arquivo {} não encontrado", arquivo);
             return Optional.empty();
         }
 
+        log.info("[V1] Arquivo {} encontrado", arquivo);
         return carregar(new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first()));
     }
 

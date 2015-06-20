@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
-import java.nio.file.Files;
 
+import static java.nio.file.Files.createTempDirectory;
 import static lombok.AccessLevel.PRIVATE;
 
 @Configuration
@@ -18,7 +18,7 @@ public class RepositorioCartasConfig {
 
     @SneakyThrows
     RepositorioCartasConfig() {
-        this.local = Files.createTempDirectory("editor-de-servicos").toFile();
+        local = createTempDirectory("editor-de-servicos").toFile();
         local.deleteOnExit();
     }
 
