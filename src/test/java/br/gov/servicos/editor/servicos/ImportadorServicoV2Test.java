@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 
 import static br.gov.servicos.fixtures.TestData.SERVICO_V2;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
@@ -42,7 +41,7 @@ public class ImportadorServicoV2Test {
                         defaultCharset())));
 
         given(cartas.ultimaRevisao(id))
-                .willReturn(empty());
+                .willReturn(new Metadados().withVersao("2").withNovo(false));
 
         Servico servico = new ImportadorServicoV2(cartas).carregar(id).get();
 

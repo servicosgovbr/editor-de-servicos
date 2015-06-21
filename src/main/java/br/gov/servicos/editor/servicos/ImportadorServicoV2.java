@@ -31,19 +31,7 @@ class ImportadorServicoV2 {
                 .map(xml -> xml.select("servico").first())
                 .map(ArquivoXml::new)
                 .map(this::carregar)
-                .map(s -> {
-                    Metadados metadados = new Metadados()
-                            .withNovo(false)
-                            .withVersao("2");
-
-                    cartas.ultimaRevisao(id).ifPresent(revisao -> {
-                        metadados.setRevisao(revisao.getId().getName());
-                        metadados.setAutor(revisao.getAuthorIdent().getName());
-                        metadados.setHorario(revisao.getAuthorIdent().getWhen());
-                    });
-
-                    return s.withMetadados(metadados);
-                });
+                .map(s -> s.withMetadados(cartas.ultimaRevisao(id)));
     }
 
     @SneakyThrows

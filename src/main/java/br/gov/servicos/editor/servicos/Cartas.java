@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
@@ -63,27 +64,38 @@ public class Cartas {
         };
     }
 
-    public Optional<RevCommit> ultimaRevisao(String id) {
-        return comRepositorioAberto(new Function<Git, Optional<RevCommit>>() {
+    /**
+     * Equivalente a <code>git rev-parse ${id} | xargs git log -n 1</code>
+     */
+    public Metadados ultimaRevisao(String id) {
+        return comRepositorioAberto(new Function<Git, Metadados>() {
 
             @Override
             @SneakyThrows
-            public Optional<RevCommit> apply(Git git) {
+            public Metadados apply(Git git) {
 
                 return ofNullable(git.getRepository().getRef(R_HEADS + id).getObjectId())
-                        .flatMap(new Function<ObjectId, Optional<RevCommit>>() {
+                        .flatMap(new Function<ObjectId, Optional<Metadados>>() {
 
                             @Override
                             @SneakyThrows
-                            public Optional<RevCommit> apply(ObjectId branchRef) {
+                            public Optional<Metadados> apply(ObjectId branchRef) {
                                 Iterator<RevCommit> iterator = git.log().setMaxCount(1).add(branchRef).call().iterator();
 
                                 if (iterator.hasNext()) {
-                                    return ofNullable(iterator.next());
+                                    RevCommit commit = iterator.next();
+                                    return of(new Metadados()
+                                            .withNovo(false)
+                                            .withVersao("2")
+                                            .withRevisao(commit.getId().getName())
+                                            .withAutor(commit.getAuthorIdent().getName())
+                                            .withHorario(commit.getAuthorIdent().getWhen()));
                                 }
                                 return empty();
                             }
-                        });
+                        }).orElse(new Metadados()
+                                .withVersao("2")
+                                .withNovo(false));
             }
         });
     }
@@ -91,7 +103,7 @@ public class Cartas {
     @SneakyThrows
     private Optional<String> ler(File arquivo) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), defaultCharset()))) {
-            return Optional.of(reader.lines().collect(joining("\n")));
+            return of(reader.lines().collect(joining("\n")));
         }
     }
 
