@@ -55,11 +55,11 @@ public class Cartas {
         return () -> {
             File arquivo = caminhoParaServicoV2(id).toFile();
             if (arquivo.exists()) {
-                log.info("[V2] Arquivo {} encontrado", arquivo);
+                log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
             }
 
-            log.info("[V2] Arquivo {} não encontrado", arquivo);
+            log.info("Arquivo {} não encontrado", arquivo);
             return empty();
         };
     }

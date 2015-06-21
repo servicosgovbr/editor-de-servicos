@@ -37,11 +37,11 @@ class ImportadorServicoV1 {
     public Optional<Servico> carregar(String id) {
         File arquivo = new File(format("%s/cartas-servico/v1/servicos/%s.xml", repositorioCartasLocal.getPath(), id));
         if (!arquivo.exists()) {
-            log.info("[V1] Arquivo {} não encontrado", arquivo);
+            log.info("Arquivo {} não encontrado", arquivo);
             return Optional.empty();
         }
 
-        log.info("[V1] Arquivo {} encontrado", arquivo);
+        log.info("Arquivo {} encontrado", arquivo);
         return carregar(new ArquivoXml(Jsoup.parse(arquivo, defaultCharset().name()).select("servico").first()));
     }
 
