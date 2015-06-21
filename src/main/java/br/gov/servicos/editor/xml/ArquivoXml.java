@@ -81,8 +81,9 @@ public class ArquivoXml {
 
     @SuppressFBWarnings(value = "NP_BOOLEAN_RETURN_NULL", justification = "Campos não preenchidos não devem ser false")
     private Boolean paraBooleano(String valor) {
-        if (valor.equals("true") || valor.equals("false"))
+        if ("true".equals(valor) || "false".equals(valor)) {
             return parseBoolean(valor);
+        }
 
         return null;
     }

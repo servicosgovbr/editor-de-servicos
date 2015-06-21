@@ -92,7 +92,7 @@ class ImportadorServicoV1 {
 
     private String informacoesUteis(ArquivoXml doc) {
         return doc.coleta("informacoesUteis > informacaoUtil", x ->
-                format("* %s\n", x.atributo("link", "href").isEmpty()
+                format("* %s%n", x.atributo("link", "href").isEmpty()
                         ? x.texto("descricao")
                         : format("[%s](%s)", x.texto("descricao"), x.atributo("link", "href"))))
                 .stream()

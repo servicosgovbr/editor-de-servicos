@@ -106,12 +106,12 @@ public class ExportadorServicoV2 {
                     Element tempo = root.appendElement("tempo-total-estimado");
 
                     Optional.ofNullable(t.getTipo()).ifPresent(tipo -> {
-                        if (tipo.equals("entre")) {
+                        if ("entre".equals(tipo)) {
                             tempo.attr("tipo", tipo)
                                     .appendElement("minimo").attr("tipo", t.getEntreTipoMinimo()).text(t.getEntreMinimo()).parent()
                                     .appendElement("maximo").attr("tipo", t.getEntreTipoMaximo()).text(t.getEntreMaximo()).parent()
                                     .appendElement("excecoes").text(t.getExcecoes());
-                        } else if (tipo.equals("até")) {
+                        } else if ("até".equals(tipo)) {
                             tempo.attr("tipo", tipo)
                                     .appendElement("maximo").attr("tipo", t.getAteTipoMaximo()).text(t.getAteMaximo()).parent()
                                     .appendElement("excecoes").text(t.getExcecoes());

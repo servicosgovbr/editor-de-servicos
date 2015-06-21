@@ -66,7 +66,7 @@ class ImportadorServicoV2 {
                 .withSituacao(xml.texto("situacao"))
 
                 .withTempoEstimado(xml.converte("tempo-total-estimado", t -> {
-                    if (t.atributo("tipo").equals("entre")) {
+                    if ("entre".equals(t.atributo("tipo"))) {
                         return new TempoEstimado()
                                 .withTipo(t.atributo("tipo"))
                                 .withEntreTipoMinimo(t.atributo("minimo", "tipo"))
@@ -74,7 +74,7 @@ class ImportadorServicoV2 {
                                 .withEntreTipoMaximo(t.atributo("maximo", "tipo"))
                                 .withEntreMaximo(t.texto("maximo"))
                                 .withExcecoes(t.texto("excecoes"));
-                    } else if (t.atributo("tipo").equals("até")) {
+                    } else if ("até".equals(t.atributo("tipo"))) {
                         return new TempoEstimado()
                                 .withTipo(t.atributo("tipo"))
                                 .withAteTipoMaximo(t.atributo("maximo", "tipo"))
