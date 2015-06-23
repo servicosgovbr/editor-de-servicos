@@ -3,10 +3,7 @@ package br.gov.servicos.editor.frontend;
 import br.gov.servicos.editor.servicos.Servico;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
-import org.jsoup.nodes.DataNode;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.XmlDeclaration;
+import org.jsoup.nodes.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +32,9 @@ public class ExportadorServicoV2 {
                 .prettyPrint(true);
 
         document.children().remove();
+
         Element root = document
-                .appendChild(new XmlDeclaration("xml", "", false).attr("version", "1.0").attr("encoding", "UTF-8"))
+                .appendChild(new StandardXmlDeclaration())
                 .appendElement("servico")
                 .attr("versao", "2")
                 .appendElement("nome").text(servico.getNome()).parent()
