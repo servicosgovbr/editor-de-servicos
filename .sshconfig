@@ -12,7 +12,7 @@ RhostsRSAAuthentication no
 StrictHostKeyChecking no
 
 Host alpha
-  Hostname 54.207.59.83
+  Hostname 54.94.244.36
   User centos
   Port 22
   IdentityFile ./secrets/editordeservicos-kp.pem
