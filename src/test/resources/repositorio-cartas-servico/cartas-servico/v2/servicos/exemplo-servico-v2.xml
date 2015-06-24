@@ -16,12 +16,12 @@
     <areas-de-interesse>
         <area-de-interesse>
             <id>comercio-e-servicos</id>
-            <nome>Comércio e Serviços</nome>
+            <area>Comércio e Serviços</area>
         </area-de-interesse>
 
         <area-de-interesse>
             <id>comunicacoes</id>
-            <nome>Comunicações</nome>
+            <area>Comunicações</area>
         </area-de-interesse>
     </areas-de-interesse>
 

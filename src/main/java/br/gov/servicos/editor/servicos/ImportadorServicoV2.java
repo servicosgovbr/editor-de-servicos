@@ -45,7 +45,7 @@ class ImportadorServicoV2 {
                 .withNomesPopulares(xml.texto("nomes-populares"))
                 .withDescricao(xml.html("descricao"))
                 .withPalavrasChave(xml.texto("palavras-chave"))
-                .withAreasDeInteresse(xml.coleta("areas-de-interesse > area-de-interesse nome"))
+                .withAreasDeInteresse(xml.coleta("areas-de-interesse > area-de-interesse area"))
                 .withSegmentosDaSociedade(xml.coleta("segmentos-da-sociedade > segmento-da-sociedade nome"))
                 .withEventosDaLinhaDaVida(xml.coleta("eventos-da-linha-da-vida > evento-da-linha-da-vida nome"))
                 .withLegislacoes(xml.coleta("legislacao-relacionada > link", l -> l.atributo("href")))

@@ -157,6 +157,6 @@ public class ExportadorServicoV2 {
                 .stream()
                 .forEach(a -> areas.appendElement("area-de-interesse")
                         .appendElement("id").text(slugify.slugify(a)).parent()
-                        .appendElement("nome").text(a).parent());
+                        .appendElement("area").text(a).parent());
     }
 }
