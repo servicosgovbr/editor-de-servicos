@@ -35,7 +35,7 @@ public class UITest {
 
     @Before
     public void setUp() throws Exception {
-        baseUrl = "http://localhost:" + port;
+        baseUrl = "http://localhost:" + port + "/editar";
 
         driver = new HtmlUnitDriver(true);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);

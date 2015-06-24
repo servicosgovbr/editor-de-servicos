@@ -10,7 +10,7 @@
 
 <body>
 <section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
-    <form th:action="@{/servico/{id}(id=${servico.metadados.novo ? 'novo' : @slugify.slugify(servico.nome)})}"
+    <form th:action="@{/editar/servico/{id}(id=${servico.metadados.novo ? 'novo' : @slugify.slugify(servico.nome)})}"
           th:object="${servico}" method="post">
 
         <div th:replace="form/introducao :: #introducao"></div>

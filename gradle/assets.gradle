@@ -2,7 +2,7 @@ import asset.pipeline.*
 import asset.pipeline.fs.*
 
 def mainAssets = "$projectDir/src/main/assets"
-def staticAssets = "$buildDir/resources/main/static/assets"
+def staticAssets = "$buildDir/resources/main/static/editar/assets"
 
 buildscript {
     repositories {

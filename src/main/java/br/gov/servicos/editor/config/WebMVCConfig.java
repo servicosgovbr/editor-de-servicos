@@ -16,7 +16,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/editar/login").setViewName("login");
     }
 
     @Bean
@@ -29,14 +29,14 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    .antMatchers("/info").permitAll()
-                    .antMatchers("/health").permitAll()
-                    .antMatchers("/assets/**").permitAll()
-                    .antMatchers("/fonts/**").permitAll()
+                    .antMatchers("/editar/info").permitAll()
+                    .antMatchers("/editar/health").permitAll()
+                    .antMatchers("/editar/assets/**").permitAll()
+                    .antMatchers("/editar/fonts/**").permitAll()
                     .anyRequest().authenticated();
 
             http.formLogin()
-                    .loginPage("/login")
+                    .loginPage("/editar/login")
                     .permitAll();
 
             http.logout()

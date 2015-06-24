@@ -11,7 +11,7 @@
 <body>
 <div layout:fragment="corpo">
     <div id="login-form">
-        <form th:action="@{/login}" method="post"
+        <form th:action="@{/editar/login}" method="post"
               th:with="csrf = ${#httpServletRequest.getAttribute('CsrfToken')}">
 
             <h1>Login</h1>

@@ -7,7 +7,7 @@
 <body>
 <header role="banner" xmlns:th="http://www.thymeleaf.org">
     <div class="auto-grid" th:if="${#httpServletRequest.remoteUser}">
-        <form id="logout" th:action="@{/logout}" method="post">
+        <form id="logout" th:action="@{/editar/logout}" method="post">
             <span th:text="${#httpServletRequest.remoteUser}"></span>
             <button type="submit">
                 <i class="fa fa-sign-out"></i>&nbsp;

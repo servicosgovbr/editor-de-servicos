@@ -24,6 +24,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
+@RequestMapping("/editar")
 class IndexController {
 
     ExportadorServicoV2 exportadorV2;
@@ -60,7 +61,7 @@ class IndexController {
 
         cartas.salvarServicoV2(id, exportadorV2.exportar(servico), usuario);
 
-        return new RedirectView(format("/servico/%s", id));
+        return new RedirectView(format("/editar/servico/%s", id));
     }
 
 }

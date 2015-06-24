@@ -25,7 +25,7 @@ class ServicoController {
         this.importadorV2 = importadorV2;
     }
 
-    @RequestMapping(value = "/servico/{id}", method = GET)
+    @RequestMapping(value = "/editar/servico/{id}", method = GET)
     ModelAndView editar(@PathVariable("id") String id) throws IOException {
         return new ModelAndView("index", "servico",
                 importadorV2.carregar(id)
