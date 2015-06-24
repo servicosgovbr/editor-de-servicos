@@ -6,7 +6,7 @@ spring:
     cache: false
 
 server:
-  port: ${port:8080}
+  port: ${port:8090}
 
 flags:
   importar.cartas: true
