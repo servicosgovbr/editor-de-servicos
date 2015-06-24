@@ -1,12 +1,17 @@
 package br.gov.servicos.editor.config;
 
+import br.gov.servicos.editor.servicos.AreaDeInteresse;
 import br.gov.servicos.editor.servicos.Orgao;
+import com.github.slugify.Slugify;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 @Configuration
 public class ConteudoDeReferencia {
@@ -107,8 +112,8 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    Collection<String> areasDeInteresse() {
-        return asList(
+    Collection<AreaDeInteresse> areasDeInteresse() {
+        return areasInteresse(
                 "Administração",
                 "Agropecuária",
                 "Comércio e Serviços",
@@ -131,7 +136,19 @@ public class ConteudoDeReferencia {
                 "Segurança e Ordem Pública",
                 "Trabalho",
                 "Transportes",
-                "Urbanismo"
-        );
+                "Urbanismo");
     }
+
+
+    @SneakyThrows
+    private Collection<AreaDeInteresse> areasInteresse(String... areas) {
+        Slugify slug = new Slugify();
+        return Arrays.asList(areas).stream()
+                .map(area -> new AreaDeInteresse()
+                        .withId(slug.slugify(area))
+                        .withArea(area))
+                .collect(toList());
+    }
+
+
 }
