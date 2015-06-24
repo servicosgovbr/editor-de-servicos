@@ -8,6 +8,9 @@ spring:
 server:
   port: ${port:8090}
 
+management:
+  context-path: /editar
+
 flags:
   importar.cartas: true
   git.push: false
