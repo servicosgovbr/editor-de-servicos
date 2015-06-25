@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.xml.ArquivoXml;
+import com.github.slugify.Slugify;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import static java.util.Collections.*;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
@@ -27,10 +28,12 @@ import static lombok.AccessLevel.PRIVATE;
 class ImportadorServicoV1 {
 
     File repositorioCartasLocal;
+    Slugify slugify;
 
     @Autowired
-    public ImportadorServicoV1(File repositorioCartasLocal) {
+    public ImportadorServicoV1(File repositorioCartasLocal, Slugify slugify) {
         this.repositorioCartasLocal = repositorioCartasLocal;
+        this.slugify = slugify;
     }
 
     @SneakyThrows
@@ -59,7 +62,7 @@ class ImportadorServicoV1 {
                 .withDescricao(xml.html("descricao") + "\n\n" + informacoesUteis(xml))
                 .withOrgao(xml.converte("orgaoResponsavel", this::orgao))
                 .withEventosDaLinhaDaVida(xml.coleta("eventosDaLinhaDaVida > eventoDaLinhaDaVida > nome"))
-                .withAreasDeInteresse(xml.coleta("areasDeInteresse > areaDeInteresse > nome"))
+                .withAreasDeInteresse(areasDeInteresse(xml.coleta("areasDeInteresse > areaDeInteresse > nome")))
                 .withSegmentosDaSociedade(xml.coleta("segmentosDaSociedade > segmentoDaSociedade > nome",
                         ArquivoXml::texto,
                         x -> "Serviços aos Cidadãos".equals(x) ? "Cidadãos" : x,
@@ -82,6 +85,17 @@ class ImportadorServicoV1 {
                                                         .withDescricao(x.atributo("link", "href")))
                                                 .stream())
                                         .collect(toList())))));
+    }
+
+    private List<AreaDeInteresse> areasDeInteresse(List<String> areas) {
+        return Optional.ofNullable(areas)
+                .map(a -> a.stream()
+                        .map(area -> new AreaDeInteresse()
+                                .withId(slugify.slugify(area))
+                                .withArea(area))
+                        .collect(toList()))
+                .orElse(EMPTY_LIST);
+
     }
 
     private Orgao orgao(ArquivoXml doc) {

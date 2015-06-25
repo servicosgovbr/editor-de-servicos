@@ -1,9 +1,13 @@
 package br.gov.servicos.editor.frontend;
 
+import br.gov.servicos.editor.servicos.MapaVcge20;
 import br.gov.servicos.editor.servicos.Servico;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
-import org.jsoup.nodes.*;
+import org.jsoup.nodes.DataNode;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.StandardXmlDeclaration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +22,12 @@ import static lombok.AccessLevel.PRIVATE;
 public class ExportadorServicoV2 {
 
     Slugify slugify;
+    private MapaVcge20 mapaVcge20;
 
     @Autowired
-    public ExportadorServicoV2(Slugify slugify) {
+    public ExportadorServicoV2(Slugify slugify, MapaVcge20 mapaVcge20) {
         this.slugify = slugify;
+        this.mapaVcge20 = mapaVcge20;
     }
 
     public Document exportar(Servico servico) {
@@ -155,8 +161,11 @@ public class ExportadorServicoV2 {
         Element areas = root.appendElement("areas-de-interesse");
         Optional.ofNullable(servico.getAreasDeInteresse()).orElse(emptyList())
                 .stream()
+                .map(a -> this.mapaVcge20.areaDeInteresse(a.getId(), a.getArea()))
+                .flatMap(a -> a.stream())
                 .forEach(a -> areas.appendElement("area-de-interesse")
-                        .appendElement("id").text(slugify.slugify(a)).parent()
-                        .appendElement("area").text(a).parent());
+                        .appendElement("id").text(slugify.slugify(a.getArea())).parent()
+                        .appendElement("area").text(a.getArea()).parent()
+                        .appendElement("subArea").text(a.getSubArea()).parent());
     }
 }

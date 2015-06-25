@@ -36,8 +36,8 @@ public class MapaVcge20 {
                                     r -> r.get("from"),
                                     mapping(r -> new AreaDeInteresse()
                                                     .withId(slug.slugify(r.get("area") + "-" + r.get("subArea")))
-                                                    .withArea(r.get("area"))
-                                                    .withSubArea(r.get("subArea")),
+                                                    .withArea(r.get("area").trim())
+                                                    .withSubArea(r.get("subArea").trim()),
                                             toSet())));
         }
     }

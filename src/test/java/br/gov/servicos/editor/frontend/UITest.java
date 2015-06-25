@@ -53,6 +53,7 @@ public class UITest {
 
     @Test
     public void deveSeguirSequenciaSimplesDeEdicao() throws Exception {
+
         driver.get(baseUrl + "/");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
 

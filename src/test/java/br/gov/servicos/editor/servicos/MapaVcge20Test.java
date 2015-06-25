@@ -17,8 +17,7 @@ public class MapaVcge20Test extends TestCase {
         MapaVcge20 mapa = new Vcge20Config().getMapaVcge20();
         assertThat(mapa.areaDeInteresse("analise-de-risco-area-vegetal", "Análise de risco - área vegetal"), hasItem(new AreaDeInteresse()
                 .withId("agropecuaria")
-                .withArea("Agropecuária")
-                .withSubArea("")));
+                .withArea("Agropecuária")));
     }
 
 }

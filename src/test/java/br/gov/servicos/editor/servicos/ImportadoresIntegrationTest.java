@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.config.Vcge20Config;
 import br.gov.servicos.editor.frontend.ExportadorServicoV2;
 import br.gov.servicos.editor.xml.ArquivoXml;
 import com.github.slugify.Slugify;
@@ -22,10 +23,10 @@ public class ImportadoresIntegrationTest {
     @Before
     public void setUp() throws Exception {
         File repositorioCartasLocal = new ClassPathResource("repositorio-cartas-servico").getFile();
-        v1 = new ImportadorServicoV1(repositorioCartasLocal);
-        exportadorV2 = new ExportadorServicoV2(new Slugify());
+        Slugify slugify = new Slugify();
+        v1 = new ImportadorServicoV1(repositorioCartasLocal, slugify);
+        exportadorV2 = new ExportadorServicoV2(slugify, new Vcge20Config().getMapaVcge20());
         v2 = new ImportadorServicoV2(new Cartas(repositorioCartasLocal, false));
-
     }
 
     @Test
