@@ -11,14 +11,14 @@ Próximas entregas do Editor de Serviços
 - Esquema de usuários e permissões, versão 1 
     - Não inclui separação por órgão
 
-## Semana 20-24/julho
+## 4. Semana 20-24/julho
 - Publicador aceita edições ("Fila de alterações", primeira versão)
 
-## Difícil de estimar
+## 5. Difícil de estimar
 - Esquema de usuários e permissões, versão 2
     - é muito difícil de estimar pois depende de condições de integração com SIORG e/ou SIGEPE
 
-## +3 semanas
+## 6. +3 semanas
 -  "Fila de alterações", segunda versão
     - Mais clareza para o publicador (pessoa que autoriza publicação) sobre quais alterações são propostas numa determinada edição   
 
