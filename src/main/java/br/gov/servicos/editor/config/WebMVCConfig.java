@@ -67,7 +67,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
                     .withUser("cvillela@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                     .withUser("oliviaj@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                     .withUser("srosa@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
-                    .withUser("jkirchne@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
+                    .withUser("jkirchne@thoughtworks.com").password(hash).roles(PUBLICADOR)
             ;
         }
     }
