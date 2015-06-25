@@ -24,7 +24,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-@RequestMapping("/editar")
 class IndexController {
 
     ExportadorServicoV2 exportadorV2;
@@ -39,20 +38,25 @@ class IndexController {
     }
 
     @RequestMapping("/")
+    RedirectView root() {
+        return new RedirectView("/editar/");
+    }
+
+    @RequestMapping("/editar/")
     ModelAndView index() {
         return new ModelAndView("index", "servico", new Servico()
                 .withMetadados(new Metadados()
                         .withNovo(true)));
     }
 
-    @RequestMapping(value = "/servico/novo", method = POST)
+    @RequestMapping(value = "/editar/servico/novo", method = POST)
     RedirectView salvarNovo(@ModelAttribute("servico") Servico servico,
                             @AuthenticationPrincipal User usuario
     ) throws IOException, GitAPIException {
         return salvar(servico.getNome(), servico, usuario);
     }
 
-    @RequestMapping(value = "/servico/{id}", method = POST)
+    @RequestMapping(value = "/editar/servico/{id}", method = POST)
     RedirectView salvar(@PathVariable("id") String unsafeId,
                         @ModelAttribute("servico") Servico servico,
                         @AuthenticationPrincipal User usuario
