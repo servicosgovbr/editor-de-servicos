@@ -55,9 +55,7 @@ public class TestData {
                             new CanalDePrestacao().withTipo("Agendamento").withDescricao("")
                     ))))
             .withOrgao(new Orgao().withId("ministerio-da-justica-mj").withNome("Ministério da Justiça (MJ)"))
-            .withAreasDeInteresse(singletonList(new AreaDeInteresse()
-                    .withId("transportes")
-                    .withArea("Transportes")))
+            .withAreasDeInteresse(singletonList("Transportes"))
             .withEventosDaLinhaDaVida(asList("Viagem ao exterior", "Documentos e certidões"))
             .withSegmentosDaSociedade(singletonList("Cidadãos"))
             .withLegislacoes(emptyList());
@@ -71,12 +69,7 @@ public class TestData {
             .withDescricao("A CNH blah blah blah...")
             .withPalavrasChave("carta de motorista, carteira, carta, cnh, habilitação")
             .withAreasDeInteresse(
-                    asList(new AreaDeInteresse()
-                                    .withId("comercio-e-servicos")
-                                    .withArea("Comércio e Serviços"),
-                            new AreaDeInteresse()
-                                    .withId("comunicacoes")
-                                    .withArea("Comunicações")))
+                    asList("Comércio e Serviços", "Comunicações"))
             .withSegmentosDaSociedade(asList("Cidadãos", "Empresas"))
             .withEventosDaLinhaDaVida(asList("Documentos e certidões", "Contas e Impostos"))
             .withLegislacoes(asList(

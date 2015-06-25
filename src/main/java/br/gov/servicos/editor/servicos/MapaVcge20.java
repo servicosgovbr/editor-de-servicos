@@ -19,38 +19,29 @@ import static java.util.stream.Collectors.*;
 public class MapaVcge20 {
 
 
-    private Map<String, Set<AreaDeInteresse>> mapaVcge;
+    private final Slugify slugify;
+    private Map<String, Set<String>> mapaVcge;
 
     @SneakyThrows
-    public MapaVcge20(ClassPathResource areasInteresseCsv) {
+    public MapaVcge20(ClassPathResource areasInteresseCsv, Slugify slugify) {
+        this.slugify = slugify;
         this.mapaVcge = carregaMapa(areasInteresseCsv);
     }
 
-    private Map<String, Set<AreaDeInteresse>> carregaMapa(ClassPathResource areasInteresseCsv) throws IOException {
-        Slugify slug = new Slugify();
-
+    private Map<String, Set<String>> carregaMapa(ClassPathResource areasInteresseCsv) throws IOException {
         try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(IO.bufferedReader(areasInteresseCsv))) {
             return parser.getRecords().stream()
-                    .collect(
-                            groupingBy(
-                                    r -> r.get("from"),
-                                    mapping(r -> new AreaDeInteresse()
-                                                    .withId(slug.slugify(r.get("area") + "-" + r.get("subArea")))
-                                                    .withArea(r.get("area").trim())
-                                                    .withSubArea(r.get("subArea").trim()),
-                                            toSet())));
+                    .collect(groupingBy(
+                            r -> r.get("from"),
+                            mapping(r -> r.get("area").trim(), toSet())));
         }
     }
 
-    public Set<AreaDeInteresse> areaDeInteresse(String id, String areaInteresse) {
-        log.info(areaInteresse);
-
+    public Set<String> areaDeInteresse(String areaInteresse) {
         return Optional
-                .ofNullable(mapaVcge.get(id))
-                .orElse(new HashSet<AreaDeInteresse>() {{
-                    add(new AreaDeInteresse()
-                            .withId(id)
-                            .withArea(areaInteresse));
+                .ofNullable(mapaVcge.get(slugify.slugify(areaInteresse)))
+                .orElse(new HashSet<String>() {{
+                    add(areaInteresse);
                 }});
     }
 }

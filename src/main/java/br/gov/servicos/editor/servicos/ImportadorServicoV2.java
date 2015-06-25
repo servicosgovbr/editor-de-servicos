@@ -51,11 +51,7 @@ class ImportadorServicoV2 {
                 .withSolicitantes(xml.coleta("solicitantes > solicitante"))
                 .withGratuito(xml.textoAtivo("gratuito"))
                 .withSituacao(xml.texto("situacao"))
-                .withAreasDeInteresse(xml.coleta("areas-de-interesse > area-de-interesse", a ->
-                        new AreaDeInteresse()
-                                .withId(a.texto("id"))
-                                .withArea(a.texto("area"))
-                                .withSubArea(a.texto("subArea"))))
+                .withAreasDeInteresse(xml.coleta("areas-de-interesse > area-de-interesse area"))
                 .withTempoEstimado(xml.converte("tempo-total-estimado", t -> {
                     if ("entre".equals(t.atributo("tipo"))) {
                         return new TempoEstimado()

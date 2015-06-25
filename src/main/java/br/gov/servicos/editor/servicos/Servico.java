@@ -27,7 +27,7 @@ public class Servico {
     String situacao;
     List<Etapa> etapas;
     Orgao orgao;
-    List<AreaDeInteresse> areasDeInteresse;
+    List<String> areasDeInteresse;
     List<String> eventosDaLinhaDaVida;
     List<String> segmentosDaSociedade;
     List<String> legislacoes;

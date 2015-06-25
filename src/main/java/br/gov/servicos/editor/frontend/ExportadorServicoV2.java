@@ -161,11 +161,8 @@ public class ExportadorServicoV2 {
         Element areas = root.appendElement("areas-de-interesse");
         Optional.ofNullable(servico.getAreasDeInteresse()).orElse(emptyList())
                 .stream()
-                .map(a -> this.mapaVcge20.areaDeInteresse(a.getId(), a.getArea()))
-                .flatMap(a -> a.stream())
                 .forEach(a -> areas.appendElement("area-de-interesse")
-                        .appendElement("id").text(slugify.slugify(a.getArea())).parent()
-                        .appendElement("area").text(a.getArea()).parent()
-                        .appendElement("subArea").text(a.getSubArea()).parent());
+                        .appendElement("id").text(slugify.slugify(a)).parent()
+                        .appendElement("area").text(a).parent());
     }
 }

@@ -18,9 +18,9 @@
         <label th:for="${#ids.next('areasDeInteresse')}">
             <input type="checkbox"
                    th:field="*{areasDeInteresse}"
-                   th:value="${areaDeInteresse.area}"
+                   th:value="${areaDeInteresse}"
                    th:checked="${servico.areasDeInteresse?.contains(areaDeInteresse)}"/>
-            <span th:text="${areaDeInteresse.area}">Área de Interesse</span>
+            <span th:text="${areaDeInteresse}">Área de Interesse</span>
         </label>
     </th:block>
 

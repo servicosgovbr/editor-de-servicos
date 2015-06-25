@@ -15,9 +15,7 @@ public class MapaVcge20Test extends TestCase {
     @Test
     public void testAreaDeInteresse() throws Exception {
         MapaVcge20 mapa = new Vcge20Config().getMapaVcge20();
-        assertThat(mapa.areaDeInteresse("analise-de-risco-area-vegetal", "Análise de risco - área vegetal"), hasItem(new AreaDeInteresse()
-                .withId("agropecuaria")
-                .withArea("Agropecuária")));
+        assertThat(mapa.areaDeInteresse("Análise de risco - área vegetal"), hasItem("Agropecuária"));
     }
 
 }
