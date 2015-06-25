@@ -15,6 +15,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,9 +33,13 @@ public class UITest {
     int port;
 
     String baseUrl;
+    private String senha;
 
     @Before
     public void setUp() throws Exception {
+        senha = Optional.ofNullable(System.getenv("EDS_SENHA"))
+                .orElseThrow(() -> new IllegalArgumentException("Variável de ambiente EDS_SENHA deve ser informada"));
+
         baseUrl = "http://localhost:" + port + "/editar";
 
         driver = new HtmlUnitDriver(true);
@@ -51,8 +56,8 @@ public class UITest {
         driver.get(baseUrl + "/");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
 
-        driver.findElement(By.id("usuario")).sendKeys("user");
-        driver.findElement(By.id("senha")).sendKeys("user");
+        driver.findElement(By.id("usuario")).sendKeys("mauricio.formiga@planejamento.gov.br");
+        driver.findElement(By.id("senha")).sendKeys(senha);
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
