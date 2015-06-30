@@ -9,7 +9,7 @@
 Name:               editor-de-servicos
 Version:            %{version}
 Release:            1
-Summary:            Editor de Serviços
+Summary:            Editor de Servicos
 Group:              Applications
 License:            MIT
 Vendor:             ThoughtWorks, Inc
@@ -22,7 +22,7 @@ Source0:            %{_sourcedir}/%{name}-%{version}.jar
 Source1:            %{_sourcedir}/editor-de-servicos.default.config
 
 %description
-Editor de Serviços do Governo Federal do Brasil
+Editor de Servicos do Governo Federal do Brasil
 
 %prep
 
@@ -87,5 +87,5 @@ rm -rf %{buildroot}
 getent group %{_user} >/dev/null || groupadd -r %{_user}
 getent passwd %{_user} >/dev/null || \
     useradd -r -g %{_user} -d /home/%{_user} -s /sbin/nologin \
-    -c "Usuário para o serviço do Editor de Serviços" %{_user}
+    -c "Usuario para o servico do Editor de Servicos" %{_user}
 exit 0
