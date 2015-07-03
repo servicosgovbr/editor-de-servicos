@@ -25,16 +25,17 @@
             </button>
         </th:block>
 
-        <input type="text"
-               class="inline inline-xg"
-               th:if="${servico.solicitantes == null || servico.solicitantes.isEmpty()}"
-               th:field="*{solicitantes[0]}"
-               value=""
-               placeholder="Ex.: Deficientes físicos"/>
+        <th:block th:if="${servico.solicitantes == null || servico.solicitantes.isEmpty()}">
+            <input type="text"
+                   class="inline inline-xg"
+                   th:field="*{solicitantes[0]}"
+                   value=""
+                   placeholder="Ex.: Deficientes físicos"/>
 
-        <button type="submit" class="inline remove" name="removerSolicitante" th:value="0">
-            <span class="fa fa-times"></span>
-        </button>
+            <button type="submit" class="inline remove" name="removerSolicitante" th:value="0">
+                <span class="fa fa-times"></span>
+            </button>
+        </th:block>
     </p>
 
     <p>
