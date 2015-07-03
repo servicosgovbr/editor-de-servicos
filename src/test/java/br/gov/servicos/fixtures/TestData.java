@@ -10,7 +10,6 @@ public class TestData {
 
     public static final Servico SERVICO_V1 = new Servico()
             .withMetadados(new Metadados()
-                    .withNovo(false)
                     .withVersao("1"))
             .withNome("Passaporte")
             .withPalavrasChave("")
@@ -62,7 +61,6 @@ public class TestData {
 
     public static final Servico SERVICO_V2 = new Servico()
             .withMetadados(new Metadados()
-                    .withNovo(false)
                     .withVersao("2"))
             .withNome("Carteira Nacional de Habilitação (CNH)")
             .withNomesPopulares("carta de motorista, carteira, carta, cnh, habilitação")

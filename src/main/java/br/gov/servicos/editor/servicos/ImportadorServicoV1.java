@@ -51,7 +51,6 @@ class ImportadorServicoV1 {
     public Optional<Servico> carregar(ArquivoXml xml) {
         return Optional.of(new Servico()
                 .withMetadados(new Metadados()
-                        .withNovo(false)
                         .withVersao("1"))
                 .withNome(xml.texto("nome"))
                 .withNomesPopulares(xml.texto("nomesPopulares"))

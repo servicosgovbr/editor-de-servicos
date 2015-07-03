@@ -15,7 +15,6 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Metadados {
-    Boolean novo;
     String versao;
     String revisao;
     String autor;

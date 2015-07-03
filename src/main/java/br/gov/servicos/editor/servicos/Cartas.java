@@ -85,7 +85,6 @@ public class Cartas {
                                 if (iterator.hasNext()) {
                                     RevCommit commit = iterator.next();
                                     return of(new Metadados()
-                                            .withNovo(false)
                                             .withVersao("2")
                                             .withRevisao(commit.getId().getName())
                                             .withAutor(commit.getAuthorIdent().getName())
@@ -94,8 +93,7 @@ public class Cartas {
                                 return empty();
                             }
                         }).orElse(new Metadados()
-                                .withVersao("2")
-                                .withNovo(false));
+                                .withVersao("2"));
             }
         });
     }

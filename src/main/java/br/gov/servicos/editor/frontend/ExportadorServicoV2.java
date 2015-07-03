@@ -129,6 +129,8 @@ public class ExportadorServicoV2 {
         Element solicitantes = root.appendElement("solicitantes");
         Optional.ofNullable(servico.getSolicitantes()).orElse(emptyList())
                 .stream()
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
                 .forEach(s -> solicitantes.appendElement("solicitante").text(s));
     }
 

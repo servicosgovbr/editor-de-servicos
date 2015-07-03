@@ -41,7 +41,7 @@ public class ImportadorServicoV2Test {
                         defaultCharset())));
 
         given(cartas.ultimaRevisao(id))
-                .willReturn(new Metadados().withVersao("2").withNovo(false));
+                .willReturn(new Metadados().withVersao("2"));
 
         Servico servico = new ImportadorServicoV2(cartas).carregar(id).get();
 

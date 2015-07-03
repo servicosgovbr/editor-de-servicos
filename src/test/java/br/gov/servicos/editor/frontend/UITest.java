@@ -51,9 +51,7 @@ public class UITest {
         driver.close();
     }
 
-    @Test
-    public void deveSeguirSequenciaSimplesDeEdicao() throws Exception {
-
+    private void editar() {
         driver.get(baseUrl + "/");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
 
@@ -62,12 +60,29 @@ public class UITest {
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
+    }
+
+    @Test
+    public void deveAdicionarNovoSolicitante() throws Exception {
+        editar();
+
+        driver.findElement(By.id("solicitantes0")).sendKeys("Teste");
+        driver.findElement(By.xpath("//button[@name='add' and @value='solicitante']")).click();
+
+        assertThat(driver.findElement(By.id("solicitantes0")).getAttribute("value"), is("Teste"));
+        assertThat(driver.findElement(By.id("solicitantes1")).getAttribute("value"), is(""));
+    }
+
+    @Test
+    public void deveSeguirSequenciaSimplesDeEdicao() throws Exception {
+        editar();
 
         driver.findElement(By.id("nome")).clear();
         driver.findElement(By.id("nome")).sendKeys("Serviço 1");
         driver.findElement(By.id("nomesPopulares")).sendKeys("");
         driver.findElement(By.id("descricao")).sendKeys("O Serviço 1 facilita a ...");
-        driver.findElement(By.name("solicitantes")).sendKeys("Cidadãos maiores de 18 anos");
+        System.out.println(driver.getPageSource());
+        driver.findElement(By.name("solicitantes[0]")).sendKeys("Cidadãos maiores de 18 anos");
 
         driver.findElement(By.id("tempoEstimado.tipo1")).click();
         driver.findElement(By.id("tempoEstimado.entreMinimo")).sendKeys("12");
@@ -85,8 +100,6 @@ public class UITest {
         driver.findElement(By.id("palavrasChave")).sendKeys("serviço 1");
 
         driver.findElement(By.id("salvar")).click();
-
-        System.out.println(driver.getPageSource());
 
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
         assertThat(driver.findElement(By.id("nome")).getAttribute("value"), is("Serviço 1"));

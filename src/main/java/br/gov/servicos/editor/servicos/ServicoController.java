@@ -13,6 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
+@RequestMapping(value = "/editar/servico/", method = GET)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ServicoController {
 
@@ -25,7 +26,7 @@ class ServicoController {
         this.importadorV2 = importadorV2;
     }
 
-    @RequestMapping(value = "/editar/servico/{id}", method = GET)
+    @RequestMapping(value = "{id}")
     ModelAndView editar(@PathVariable("id") String id) throws IOException {
         return new ModelAndView("index", "servico",
                 importadorV2.carregar(id)

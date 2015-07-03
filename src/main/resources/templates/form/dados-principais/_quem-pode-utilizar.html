@@ -13,16 +13,16 @@
     </p>
 
     <p>
-        <th:block th:each="solicitante : *{solicitantes}">
-            <input type="text" th:field="*{solicitantes}" th:value="${solicitante}"
+        <th:block th:each="solicitante, row : *{solicitantes}">
+            <input type="text" th:field="*{solicitantes[__${row.index}__]}" th:value="${solicitante}"
                    placeholder="Ex.: Deficientes físicos"/>
         </th:block>
 
-        <input type="text" th:if="${servico.solicitantes == null || servico.solicitantes.isEmpty()}" th:field="*{solicitantes}" value="" placeholder="Ex.: Deficientes físicos"/>
+        <input type="text" th:if="${servico.solicitantes == null || servico.solicitantes.isEmpty()}" th:field="*{solicitantes[0]}" value="" placeholder="Ex.: Deficientes físicos"/>
     </p>
 
     <p>
-        <button disabled="disabled">
+        <button name="add" type="submit"  value="solicitante">
             <i class="fa fa-plus"></i>&nbsp;
             Adicionar solicitante
         </button>

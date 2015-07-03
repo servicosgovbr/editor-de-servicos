@@ -3,7 +3,6 @@ package br.gov.servicos.editor.frontend;
 import br.gov.servicos.editor.servicos.Cartas;
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Servico;
-import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +28,7 @@ public class IndexControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        controller = new IndexController(v2, cartas, new Slugify());
+        controller = new IndexController();
     }
 
     @Test
@@ -40,7 +39,7 @@ public class IndexControllerTest {
     @Test
     public void adicionaServicoVazioAoModel() throws Exception {
         assertThat(controller.index().getModelMap().get("servico"), is(
-                new Servico().withMetadados(new Metadados()
-                        .withNovo(true))));
+                new Servico().withMetadados(new Metadados())));
     }
+
 }
