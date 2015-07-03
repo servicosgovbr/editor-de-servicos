@@ -20,5 +20,5 @@ Por favor, garanta os seguintes requisitos para o dia do laboratório:
 
 A leitura prévia dos seguintes materiais será útil para a sua participação na oficina:
 
-+ [Dicas sobre como escrever melhores conteúdos para o Portal de Serviços](http://servicosgovbr.github.io/portal-de-servicos/conteudo/index.html)
++ [Dicas sobre como escrever melhores conteúdos para o Portal de Serviços](http://servicosgovbr.github.io/editor-de-servicos/conteudo/index.html)
 + [Descritivo dos campos para descrição dos serviços presentes no Editor](http://servicosgovbr.github.io/editor-de-servicos/conteudo/checklist.html)

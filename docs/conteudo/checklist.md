@@ -1,7 +1,11 @@
-# Lista de controle (checklist) para um serviço completo
+# Lista de conteúdos (checklist) para um serviço completo
 Para construir ou melhorar um serviço através do Editor é preciso considerar e construir os conteúdos para os tópicos abaixo relacionados. Estes deverão ser preenchidos, formando então a nova página do serviço no Portal de Serviços.
 
 #### 1. Nome do serviço
+Crie títulos claros e bem descritivos. Ao invés de "Passaporte" diga "Emitir seu passaporte", deixando claro a função daquele serviço.
+* Padronize os títulos para que tenham entre 20 e 65 letras (incluindo espaços). Essa sugestão se dá em função de mecanismos de busca cortarem nos seus resultados frases maiores do que isso e também para que tenhamos um padrão visual sempre que destacados.
+* Tenha certeza que o título do serviço criado é único, pois serviços com nomes muito parecisos podem confundir os cidadãos em uma lista de resultados, por exemplo.
+* Utilize o motivo do serviço no início do título, deixando claro para que ele serve nas primeiras palavras.
 
 #### 2. Nomes populares
 
