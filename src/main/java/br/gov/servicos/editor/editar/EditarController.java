@@ -46,8 +46,15 @@ public class EditarController {
     }
 
     @RequestMapping(params = {"add=solicitante"})
-    ModelAndView adicionarSolicitante(Servico servico, @AuthenticationPrincipal User usuario) {
+    ModelAndView adicionarSolicitante(Servico servico) {
         servico.getSolicitantes().add("");
+
+        return new ModelAndView("index", "servico", servico);
+    }
+
+    @RequestMapping(params = {"add=legislacao"})
+    ModelAndView adicionarLegislacao(Servico servico) {
+        servico.getLegislacoes().add("");
 
         return new ModelAndView("index", "servico", servico);
     }
