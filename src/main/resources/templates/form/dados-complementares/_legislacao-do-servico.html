@@ -26,7 +26,7 @@
 
         <input type="text"
                th:if="${servico.legislacoes == null || servico.legislacoes.isEmpty()}"
-               th:field="*{legislacoes}"
+               th:field="*{legislacoes[0]}"
                value=""
                placeholder="http://"/>
     </p>
