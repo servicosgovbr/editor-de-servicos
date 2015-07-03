@@ -51,7 +51,20 @@ public class UITest {
         driver.close();
     }
 
-    private void editar() {
+    @Test
+    public void caminhoFeliz() throws Exception {
+        irParaEdicao();
+        dadosPrincipais();
+        adicionarSolicitante();
+        preencherTempoEstimado();
+        preencherSituacao();
+        preencherEtapa();
+        adicionarNovaLegislacao();
+        salvarEConfirmar();
+        alterarCampoESalvarNovamente();
+    }
+
+    private void irParaEdicao() {
         driver.get(baseUrl + "/");
         assertThat(driver.getTitle(), is("Editor de Serviços - Acessar o editor de serviços"));
 
@@ -62,10 +75,7 @@ public class UITest {
         assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
     }
 
-    @Test
-    public void deveAdicionarNovoSolicitante() throws Exception {
-        editar();
-
+    public void adicionarSolicitante() throws Exception {
         driver.findElement(By.id("solicitantes0")).sendKeys("Teste");
         driver.findElement(By.xpath("//button[@name='adicionarSolicitante']")).click();
 
@@ -73,10 +83,7 @@ public class UITest {
         assertThat(driver.findElement(By.id("solicitantes1")).getAttribute("value"), is(""));
     }
 
-    @Test
-    public void deveAdicionarNovaLegislacao() throws Exception {
-        editar();
-
+    public void adicionarNovaLegislacao() throws Exception {
         driver.findElement(By.id("legislacoes0")).sendKeys("Teste");
         driver.findElement(By.xpath("//button[@name='adicionarLegislacao']")).click();
 
@@ -84,17 +91,35 @@ public class UITest {
         assertThat(driver.findElement(By.id("legislacoes1")).getAttribute("value"), is(""));
     }
 
-    @Test
-    public void deveSeguirSequenciaSimplesDeEdicao() throws Exception {
-        editar();
+    private void alterarCampoESalvarNovamente() {
+        driver.findElement(By.id("nomesPopulares")).sendKeys("serviço 1, um");
 
-        driver.findElement(By.id("nome")).clear();
-        driver.findElement(By.id("nome")).sendKeys("Serviço 1");
-        driver.findElement(By.id("nomesPopulares")).sendKeys("");
-        driver.findElement(By.id("descricao")).sendKeys("O Serviço 1 facilita a ...");
-        System.out.println(driver.getPageSource());
-        driver.findElement(By.name("solicitantes[0]")).sendKeys("Cidadãos maiores de 18 anos");
+        salvar();
+        assertThat(driver.findElement(By.id("nomesPopulares")).getAttribute("value"), is("serviço 1, um"));
+    }
 
+    private void salvarEConfirmar() {
+        salvar();
+
+        assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
+        assertThat(driver.findElement(By.id("nome")).getAttribute("value"), is("Serviço 1"));
+    }
+
+    private void salvar() {
+        driver.findElement(By.id("salvar")).click();
+    }
+
+    private void preencherEtapa() {
+        driver.findElement(By.name("etapas[0].titulo")).sendKeys("Agendar atendimento presencial");
+        driver.findElement(By.id("palavrasChave")).sendKeys("serviço 1");
+    }
+
+    private void preencherSituacao() {
+        driver.findElement(By.id("gratuito2")).click();
+        driver.findElement(By.id("situacao1")).click();
+    }
+
+    private void preencherTempoEstimado() {
         driver.findElement(By.id("tempoEstimado.tipo1")).click();
         driver.findElement(By.id("tempoEstimado.entreMinimo")).sendKeys("12");
         new Select(driver.findElement(By.id("tempoEstimado.entreTipoMinimo"))).selectByValue("dias úteis");
@@ -103,23 +128,14 @@ public class UITest {
         new Select(driver.findElement(By.id("tempoEstimado.entreTipoMaximo"))).selectByValue("dias úteis");
 
         driver.findElement(By.id("tempoEstimado.excecoes")).sendKeys("Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.");
+    }
 
-        driver.findElement(By.id("gratuito2")).click();
-        driver.findElement(By.id("situacao1")).click();
-
-        driver.findElement(By.name("etapas[0].titulo")).sendKeys("Agendar atendimento presencial");
-        driver.findElement(By.id("palavrasChave")).sendKeys("serviço 1");
-
-        driver.findElement(By.id("salvar")).click();
-
-        assertThat(driver.getTitle(), is("Editor de Serviços - Principal"));
-        assertThat(driver.findElement(By.id("nome")).getAttribute("value"), is("Serviço 1"));
-
-        driver.findElement(By.id("nomesPopulares")).sendKeys("serviço 1, um");
-
-        driver.findElement(By.id("salvar")).click();
-        assertThat(driver.findElement(By.id("nomesPopulares")).getAttribute("value"), is("serviço 1, um"));
-
+    private void dadosPrincipais() {
+        driver.findElement(By.id("nome")).clear();
+        driver.findElement(By.id("nome")).sendKeys("Serviço 1");
+        driver.findElement(By.id("nomesPopulares")).sendKeys("");
+        driver.findElement(By.id("descricao")).sendKeys("O Serviço 1 facilita a ...");
+        System.out.println(driver.getPageSource());
     }
 
 }
