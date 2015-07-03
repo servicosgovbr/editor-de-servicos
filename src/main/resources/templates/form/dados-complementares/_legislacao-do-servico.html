@@ -30,10 +30,15 @@
         </th:block>
 
         <input type="text"
+               class="inline inline-xg"
                th:if="${servico.legislacoes == null || servico.legislacoes.isEmpty()}"
                th:field="*{legislacoes[0]}"
                value=""
                placeholder="http://"/>
+
+        <button type="submit" class="inline remove" name="removerLegislacao" value="0">
+            <span class="fa fa-times"></span>
+        </button>
     </p>
 
     <p>

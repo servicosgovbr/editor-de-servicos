@@ -131,7 +131,7 @@ public class UITest {
         driver.findElement(By.id("etapas0.documentos0")).sendKeys("CPF");
 
         driver.findElement(By.name("adicionarDocumento")).click();
-        
+
         driver.findElement(By.id("etapas0.documentos1")).sendKeys("Comprovante de residência");
     }
 
