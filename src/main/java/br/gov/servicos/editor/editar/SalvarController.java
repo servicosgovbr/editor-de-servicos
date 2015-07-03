@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
@@ -24,14 +23,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @RequestMapping(value = "/editar/servico", method = POST)
-public class EditarController {
+public class SalvarController {
 
     ExportadorServicoV2 exportadorV2;
     Cartas cartas;
     Slugify slugify;
 
     @Autowired
-    public EditarController(ExportadorServicoV2 exportadorV2, Cartas cartas, Slugify slugify) {
+    public SalvarController(ExportadorServicoV2 exportadorV2, Cartas cartas, Slugify slugify) {
         this.exportadorV2 = exportadorV2;
         this.cartas = cartas;
         this.slugify = slugify;
@@ -43,20 +42,6 @@ public class EditarController {
         String id = servicoId(servico);
         cartas.salvarServicoV2(id, exportadorV2.exportar(servico), usuario);
         return new RedirectView(format("/editar/servico/%s", id));
-    }
-
-    @RequestMapping(params = {"add=solicitante"})
-    ModelAndView adicionarSolicitante(Servico servico) {
-        servico.getSolicitantes().add("");
-
-        return new ModelAndView("index", "servico", servico);
-    }
-
-    @RequestMapping(params = {"add=legislacao"})
-    ModelAndView adicionarLegislacao(Servico servico) {
-        servico.getLegislacoes().add("");
-
-        return new ModelAndView("index", "servico", servico);
     }
 
     private String servicoId(Servico servico) {

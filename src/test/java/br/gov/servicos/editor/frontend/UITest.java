@@ -67,10 +67,21 @@ public class UITest {
         editar();
 
         driver.findElement(By.id("solicitantes0")).sendKeys("Teste");
-        driver.findElement(By.xpath("//button[@name='add' and @value='solicitante']")).click();
+        driver.findElement(By.xpath("//button[@name='adicionarSolicitante']")).click();
 
         assertThat(driver.findElement(By.id("solicitantes0")).getAttribute("value"), is("Teste"));
         assertThat(driver.findElement(By.id("solicitantes1")).getAttribute("value"), is(""));
+    }
+
+    @Test
+    public void deveAdicionarNovaLegislacao() throws Exception {
+        editar();
+
+        driver.findElement(By.id("legislacoes0")).sendKeys("Teste");
+        driver.findElement(By.xpath("//button[@name='adicionarLegislacao']")).click();
+
+        assertThat(driver.findElement(By.id("legislacoes0")).getAttribute("value"), is("Teste"));
+        assertThat(driver.findElement(By.id("legislacoes1")).getAttribute("value"), is(""));
     }
 
     @Test

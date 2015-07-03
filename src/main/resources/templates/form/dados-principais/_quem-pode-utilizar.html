@@ -14,8 +14,15 @@
 
     <p>
         <th:block th:each="solicitante, row : *{solicitantes}">
-            <input type="text" th:field="*{solicitantes[__${row.index}__]}" th:value="${solicitante}"
+            <input type="text"
+                   class="inline inline-xg"
+                   th:field="*{solicitantes[__${row.index}__]}"
+                   th:value="${solicitante}"
                    placeholder="Ex.: Deficientes físicos"/>
+
+            <button type="submit" class="inline remove" name="removerSolicitante" th:value="${row.index}">
+                <span class="fa fa-times"></span>
+            </button>
         </th:block>
 
         <input type="text"
@@ -26,7 +33,7 @@
     </p>
 
     <p>
-        <button name="add" type="submit" value="solicitante">
+        <button name="adicionarSolicitante" type="submit">
             <i class="fa fa-plus"></i>&nbsp;
             Adicionar solicitante
         </button>
