@@ -18,7 +18,7 @@ class IndexController {
         return new RedirectView("/editar/");
     }
 
-    @RequestMapping("/editar/")
+    @RequestMapping("/editar")
     ModelAndView index() {
         return new ModelAndView("index", "servico", new Servico()
                 .withMetadados(new Metadados()));
