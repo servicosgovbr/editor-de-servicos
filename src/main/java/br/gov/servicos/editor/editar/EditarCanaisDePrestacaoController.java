@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.editar;
 
+import br.gov.servicos.editor.servicos.CanalDePrestacao;
 import br.gov.servicos.editor.servicos.Servico;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
@@ -13,21 +14,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @RequestMapping(value = "/editar/servico", method = POST)
-public class EditarDocumentosController {
+public class EditarCanaisDePrestacaoController {
 
-    @RequestMapping(params = {"adicionarDocumento"})
-    ModelAndView adicionarDocumento(Servico servico, @RequestParam("adicionarDocumento") int indiceEtapa) {
-        servico.getEtapas().get(indiceEtapa).getDocumentos().add("");
-
+    @RequestMapping(params = {"adicionarCanalDePrestacao"})
+    ModelAndView adicionarCanalDePrestacao(Servico servico, @RequestParam("adicionarCanalDePrestacao") int indice) {
+        servico.getEtapas().get(indice).getCanaisDePrestacao().add(new CanalDePrestacao());
         return new ModelAndView("index", "servico", servico);
     }
 
-    @RequestMapping(params = {"removerDocumento"})
-    ModelAndView removerDocumento(Servico servico, @RequestParam("removerDocumento") String indStr) {
+    @RequestMapping(params = {"removerCanalDePrestacao"})
+    ModelAndView removerCanalDePrestacao(Servico servico, @RequestParam("removerCanalDePrestacao") String indStr) {
         IndiceCampoDeEtapa indice = IndiceCampoDeEtapa.from(indStr);
         servico.getEtapas()
                 .get(indice.getIndiceEtapa())
-                .getDocumentos()
+                .getCanaisDePrestacao()
                 .remove(indice.getIndiceCampo());
         return new ModelAndView("index", "servico", servico);
     }

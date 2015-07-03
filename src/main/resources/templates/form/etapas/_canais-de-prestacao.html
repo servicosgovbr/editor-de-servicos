@@ -31,10 +31,9 @@
             Preferencial
         </label>
 
-        <a class="inline remove" href="#">
+        <button type="submit" class="inline remove" name="removerCanalDePrestacao" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCanal?.index ?: 0}__}">
             <span class="fa fa-times"></span>
-        </a>
-
+        </button>
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
@@ -56,14 +55,14 @@
             Preferencial
         </label>
 
-        <a class="inline remove" href="#">
-            <span class="fa fa-times"></span>
-        </a>
 
+        <button type="submit" class="inline remove" name="removerCanalDePrestacao" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCanal?.index ?: 0}__}">
+            <span class="fa fa-times"></span>
+        </button>
     </th:block>
 
     <p>
-        <button disabled="disabled">
+        <button name="adicionarCanalDePrestacao" th:value="${row?.index ?: 0}" type="submit">
             <i class="fa fa-plus"></i>&nbsp;
             Adicionar canal
         </button>
