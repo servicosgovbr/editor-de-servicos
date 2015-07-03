@@ -1,18 +1,24 @@
-# Oficina
-Para avaliarmos o Editor de Serviços e suas funções, realizaremos uma oficina de edição de serviços.
+# Laboratório
+Para avaliarmos o Editor de Serviços e suas funções, realizaremos um laboratório de edição de serviços. Será um dia para conhecer o Portal de Serviços e descrever serviços públicos importantes para os cidadãos utilizando o Editor de Serviços, uma ferramenta criada sob-medida para o servidor público federal.
 
-### Público:
-Estimamos entre 10 e 14 pessoas, sendo 2 por órgão, com um total de 5 a 7 órgãos participantes.
+###Objetivos
++ Mostrar, na prática, o funcionamento do Portal e do Editor. Vamos produzir no próprio encontro descrições aprimoradas de serviços selecionados. 
++ Receber o feedback qualificado dos principais utilizadores do Editor: vocês, servidores públicos. Desta forma, poderemos realizar os mais importantes aprimoramentos da ferramenta no prazo mais curto possível.
 
-### Preparação prévia:
-* A decidir: Quais materiais você cada servidor deverá trazer?
-* A decidir: Quantos serviços devem ser preparados previamente por cada servidor. 
+###Participantes
+Dois representantes de cada um dos sete órgãos selecionados e convidados exclusivamente. Os servidores destacados para esta atividade devem ter conhecimento e acesso aos detalhes de como funciona um ou mais serviços oferecidos pelo órgão aos cidadãos.
 
-### Data:
-A ser definida.
+###Organização
+Equipe de do Portal de Serviços (DGE/SLTI/MP e ThoughtWorks), representantes da ASEGE/MP e representantes da SEGEP/MP.
 
-### Local:
-A ser definido.
+###Preparação
+Por favor, garanta os seguintes requisitos para o dia do laboratório:
 
-### Horário:
-A ser definido.
++ Disponibilidade integral durante o dia do Laboratório.
++ Conhecimento prévio e materiais complementares sobre o funcionamento de um ou mais serviços prestados por seu órgão aos cidadãos. Precisaremos entender todas as etapas, requisitos, critérios de elegibilidade, resultados possíveis, etc. 
+
+
+A leitura prévia dos seguintes materiais será útil para a sua participação na oficina:
+
++ [Dicas sobre como escrever melhores conteúdos para o Portal de Serviços](http://servicosgovbr.github.io/portal-de-servicos/conteudo/index.html)
++ [Descritivo dos campos para descrição dos serviços presentes no Editor](http://servicosgovbr.github.io/editor-de-servicos/conteudo/checklist.html)
