@@ -112,6 +112,27 @@ public class UITest {
     private void preencherEtapa() {
         driver.findElement(By.name("etapas[0].titulo")).sendKeys("Agendar atendimento presencial");
         driver.findElement(By.id("palavrasChave")).sendKeys("serviço 1");
+
+        adicionarCustos();
+        adicionarDocumentos();
+    }
+
+    private void adicionarCustos() {
+        driver.findElement(By.id("etapas0.custos0.descricao")).sendKeys("Taxa de inscrição");
+        driver.findElement(By.id("etapas0.custos0.valor")).sendKeys("123,40");
+
+        driver.findElement(By.name("adicionarCusto")).click();
+
+        driver.findElement(By.id("etapas0.custos1.descricao")).sendKeys("Taxa de emissão");
+        driver.findElement(By.id("etapas0.custos0.valor")).sendKeys("3,40");
+    }
+
+    private void adicionarDocumentos() {
+        driver.findElement(By.id("etapas0.documentos0")).sendKeys("CPF");
+
+        driver.findElement(By.name("adicionarDocumento")).click();
+        
+        driver.findElement(By.id("etapas0.documentos1")).sendKeys("Comprovante de residência");
     }
 
     private void preencherSituacao() {

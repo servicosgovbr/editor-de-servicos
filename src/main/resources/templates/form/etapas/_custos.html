@@ -16,22 +16,22 @@
         <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
         R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].valor}" class="inline"/>
 
-        <a class="inline remove" href="#">
+        <button type="submit" class="inline remove" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
             <span class="fa fa-times"></span>
-        </a>
+        </button>
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.custos == null || etapas[__${row?.index ?: 0}__]?.custos.isEmpty()}">
         <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
         R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].valor}" class="inline"/>
 
-        <a class="inline remove" href="#">
+        <button type="submit" class="inline remove" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
             <span class="fa fa-times"></span>
-        </a>
+        </button>
     </th:block>
 
     <div>
-        <button disabled="disabled">
+        <button name="adicionarCusto" th:value="${row?.index ?: 0}" type="submit">
             <i class="fa fa-plus"></i>&nbsp;
             Adicionar custo
         </button>

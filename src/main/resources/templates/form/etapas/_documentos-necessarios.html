@@ -13,14 +13,18 @@
     </p>
 
     <th:block th:each="documento, rowDocs : *{etapas[__${row?.index ?: 0}__].documentos}">
-        <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].documentos[__${rowDocs.index}__]}" placeholder="Ex.: RG"/>
+        <input type="text" class="inline inline-xg" th:field="*{etapas[__${row?.index ?: 0}__].documentos[__${rowDocs.index}__]}" placeholder="Ex.: RG"/>
+
+        <button type="submit" class="inline remove" name="removerDocumento" th:value="${__${row?.index ?: 0}__ + ',' + __${rowDocs?.index ?: 0}__}">
+            <span class="fa fa-times"></span>
+        </button>
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.documentos == null || etapas[__${row?.index ?: 0}__]?.documentos.isEmpty()}">
         <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].documentos[0]}" placeholder="Ex.: RG"/>
     </th:block>
 
-    <button disabled="disabled">
+    <button name="adicionarDocumento" th:value="${row?.index ?: 0}" type="submit">
         <i class="fa fa-plus"></i>&nbsp;
         Adicionar Documento
     </button>
