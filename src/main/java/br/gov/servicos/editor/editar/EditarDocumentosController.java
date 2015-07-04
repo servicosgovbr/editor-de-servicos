@@ -26,9 +26,9 @@ public class EditarDocumentosController {
     ModelAndView removerDocumento(Servico servico, @RequestParam("removerDocumento") String indStr) {
         IndiceCampoDeEtapa indice = IndiceCampoDeEtapa.from(indStr);
         servico.getEtapas()
-                .get(indice.getIndiceEtapa())
+                .get(indice.getEtapa())
                 .getDocumentos()
-                .remove(indice.getIndiceCampo());
+                .remove(indice.getCampo());
         return new ModelAndView("index", "servico", servico);
     }
 

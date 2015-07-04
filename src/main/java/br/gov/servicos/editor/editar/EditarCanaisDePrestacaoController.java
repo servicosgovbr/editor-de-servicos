@@ -26,9 +26,9 @@ public class EditarCanaisDePrestacaoController {
     ModelAndView removerCanalDePrestacao(Servico servico, @RequestParam("removerCanalDePrestacao") String indStr) {
         IndiceCampoDeEtapa indice = IndiceCampoDeEtapa.from(indStr);
         servico.getEtapas()
-                .get(indice.getIndiceEtapa())
+                .get(indice.getEtapa())
                 .getCanaisDePrestacao()
-                .remove(indice.getIndiceCampo());
+                .remove(indice.getCampo());
         return new ModelAndView("index", "servico", servico);
     }
 
