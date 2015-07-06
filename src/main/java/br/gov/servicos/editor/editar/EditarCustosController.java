@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import static java.lang.Integer.parseInt;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -26,11 +25,9 @@ public class EditarCustosController {
 
     @RequestMapping(params = {"removerCusto"})
     ModelAndView removerCusto(Servico servico, @RequestParam("removerCusto") String indices) {
-        // TODO tratamento de erros
-        int indiceEtapa = parseInt(indices.split(",")[0]);
-        int indiceCusto = parseInt(indices.split(",")[1]);
+        IndiceCampoDeEtapa indiceEtapa = IndiceCampoDeEtapa.from(indices);
 
-        servico.getEtapas().get(indiceEtapa).getCustos().remove(indiceCusto);
+        servico.getEtapas().get(indiceEtapa.getEtapa()).getCustos().remove(indiceEtapa.getCampo());
 
         return new ModelAndView("index", "servico", servico);
     }

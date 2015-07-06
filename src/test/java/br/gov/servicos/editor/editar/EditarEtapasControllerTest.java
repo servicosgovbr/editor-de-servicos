@@ -29,4 +29,14 @@ public class EditarEtapasControllerTest {
         assertModelAttributeValue(mav, "servico", depois);
     }
 
+    @Test
+    public void deveRemoverEtapa() throws Exception {
+        Servico antes = new Servico().withEtapas(new ArrayList<>(asList(new Etapa(), new Etapa().withTitulo("blah"))));
+        Servico depois = new Servico().withEtapas(new ArrayList<>(asList(new Etapa())));
+
+        ModelAndView mav = controller.removerEtapa(antes, 1);
+
+        assertModelAttributeValue(mav, "servico", depois);
+    }
+
 }

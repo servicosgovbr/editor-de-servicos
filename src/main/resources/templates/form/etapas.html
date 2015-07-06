@@ -13,6 +13,13 @@
         <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
         <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
         <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
+
+        <p class="remove-med">
+            <button type="submit" name="removerEtapa" th:value="${row.index}">
+                <i class="fa fa-times"></i>&nbsp;
+                Remover etapa
+            </button>
+        </p>
     </th:block>
 
     <th:block th:if="${servico.etapas == null || servico.etapas.isEmpty()}">
@@ -27,6 +34,7 @@
             <i class="fa fa-plus"></i>&nbsp;
             Adicionar etapa
         </button>
+
     </p>
 
 </div>

@@ -16,6 +16,8 @@
   @include clear-paddings;
 }
 
+$cinza-claro: #f0f2f1;
+
 body {
   @include clear-all;
 }
@@ -85,16 +87,41 @@ header {
     color: $azul-regular;
   }
 
-  button.remove {
-    display: inline-block;
+  p.remove-med {
+
+
+    button {
+      background-color: lighten(red, 20%);
+      text-align: center;
+      color: white;
+      margin: 0;
+    }
+
+    &:hover{
+      &:after {
+        content: "Os dados serão descartados";
+        padding: 4px 8px;
+        height: 100%;
+        left: 10px;
+        color: #333;
+        background-color: $cinza-claro;
+        border-radius: $base-border-radius;
+        border-width: 0px;
+        margin: 0px;
+      }
+    }
+  }
+
+  button.remove-peq {
+    background-color: lighten(red, 20%);
+    text-align: center;
+    color: white;
     width: 1.5em;
     padding: 0.25em 0;
     margin-top: 5px;
     border-radius: $base-border-radius;
-    text-align: center;
-    background-color: lighten(red, 20%);
-    color: white;
     margin-left: em(10);
+    display: inline-block;
 
     &:hover {
       background-color: lighten(red, 10%);

@@ -5,6 +5,7 @@ import br.gov.servicos.editor.servicos.Servico;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -20,5 +21,13 @@ public class EditarEtapasController {
         servico.getEtapas().add(new Etapa());
         return new ModelAndView("index", "servico", servico);
     }
+
+    @RequestMapping(params = {"removerEtapa"})
+    ModelAndView removerEtapa(Servico servico, @RequestParam("removerEtapa") int indice) {
+        servico.getEtapas().remove(indice);
+        return new ModelAndView("index", "servico", servico);
+    }
+
+
 
 }

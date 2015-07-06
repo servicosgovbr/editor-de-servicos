@@ -16,7 +16,7 @@
         <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
         R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].valor}" class="inline"/>
 
-        <button type="submit" class="inline remove" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
+        <button type="submit" class="inline remove-peq" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
             <span class="fa fa-times"></span>
         </button>
     </th:block>
@@ -25,7 +25,7 @@
         <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
         R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].valor}" class="inline"/>
 
-        <button type="submit" class="inline remove" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
+        <button type="submit" class="inline remove-peq" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
             <span class="fa fa-times"></span>
         </button>
     </th:block>
