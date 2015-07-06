@@ -4,13 +4,13 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.experimental.FieldDefaults;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
@@ -62,7 +62,7 @@ public class ArquivoXml {
                         .map(e -> new ArquivoXml(e).converte(conversor))
                         .map(s -> asList(mapeadores).stream().reduce(Function::andThen).orElse(identity()).apply(s))
                         .collect(toList())
-        ).orElse(emptyList());
+        ).orElse(new ArrayList<T>());
     }
 
     public <T> T converte(Function<ArquivoXml, T> conversor) {
