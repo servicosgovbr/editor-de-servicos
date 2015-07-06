@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -55,9 +54,9 @@ class ImportadorServicoV1 {
                 .withNome(xml.texto("nome"))
                 .withNomesPopulares(xml.texto("nomesPopulares"))
                 .withPalavrasChave(xml.texto("palavrasChave"))
-                .withSolicitantes(emptyList())
+                .withSolicitantes(new ArrayList<>())
                 .withSituacao("")
-                .withLegislacoes(emptyList())
+                .withLegislacoes(new ArrayList<>())
                 .withDescricao(xml.html("descricao") + "\n\n" + informacoesUteis(xml))
                 .withOrgao(xml.converte("orgaoResponsavel", this::orgao))
                 .withEventosDaLinhaDaVida(xml.coleta("eventosDaLinhaDaVida > eventoDaLinhaDaVida > nome"))
@@ -67,11 +66,11 @@ class ImportadorServicoV1 {
                         x -> "Serviços aos Cidadãos".equals(x) ? "Cidadãos" : x,
                         x -> "Serviços às Empresas".equals(x) ? "Empresas" : x
                 ))
-                .withEtapas(singletonList(new Etapa()
+                .withEtapas(new ArrayList<>(singletonList(new Etapa()
                         .withTitulo("")
                         .withDescricao("")
                         .withDocumentos(new ArrayList<>())
-                        .withCustos(singletonList(new Custo().withDescricao("").withValor(xml.texto("custoTotalEstimado"))))
+                        .withCustos(new ArrayList<>(singletonList(new Custo().withDescricao("").withValor(xml.texto("custoTotalEstimado")))))
                         .withCanaisDePrestacao(
                                 Stream.concat(
                                         Stream.of(
@@ -83,7 +82,7 @@ class ImportadorServicoV1 {
                                                         .withTipo(x.atributo("tipo"))
                                                         .withDescricao(x.atributo("link", "href")))
                                                 .stream())
-                                        .collect(toList())))));
+                                        .collect(toList()))))));
     }
 
     private Orgao orgao(ArquivoXml doc) {
