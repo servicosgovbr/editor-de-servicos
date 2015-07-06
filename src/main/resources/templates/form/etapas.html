@@ -13,13 +13,6 @@
         <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
         <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
         <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
-
-        <p>
-            <button disabled="disabled">
-                <i class="fa fa-plus"></i>&nbsp;
-                Adicionar etapa
-            </button>
-        </p>
     </th:block>
 
     <th:block th:if="${servico.etapas == null || servico.etapas.isEmpty()}">
@@ -27,14 +20,14 @@
         <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
         <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
         <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
-
-        <p>
-            <button disabled="disabled">
-                <i class="fa fa-plus"></i>&nbsp;
-                Adicionar etapa
-            </button>
-        </p>
     </th:block>
+
+    <p>
+        <button type="submit" name="adicionarEtapa">
+            <i class="fa fa-plus"></i>&nbsp;
+            Adicionar etapa
+        </button>
+    </p>
 
 </div>
 </body>
