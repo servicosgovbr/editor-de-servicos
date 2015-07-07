@@ -16,8 +16,6 @@
   @include clear-paddings;
 }
 
-$cinza-claro: #f0f2f1;
-
 body {
   @include clear-all;
 }
@@ -77,7 +75,6 @@ header {
     padding-top: 25px;
   }
 
-
   h1 {
     font-size: em(22);
   }
@@ -89,7 +86,6 @@ header {
 
   p.remove-med {
 
-
     button {
       background-color: lighten(red, 20%);
       text-align: center;
@@ -97,7 +93,7 @@ header {
       margin: 0;
     }
 
-    &:hover{
+    &:hover {
       &:after {
         content: "Os dados serão descartados";
         padding: 4px 8px;
