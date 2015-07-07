@@ -4,20 +4,27 @@ import br.gov.servicos.editor.servicos.Etapa;
 import br.gov.servicos.editor.servicos.Servico;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import static br.gov.servicos.fixtures.TestData.USER;
 import static java.util.Arrays.asList;
-import static org.springframework.test.web.ModelAndViewAssert.assertModelAttributeValue;
+import static org.mockito.Mockito.verify;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EditarDocumentosControllerTest {
 
     EditarDocumentosController controller;
 
+    @Mock
+    SalvarController salvarController;
+
     @Before
     public void setUp() throws Exception {
-        controller = new EditarDocumentosController();
+        controller = new EditarDocumentosController(salvarController);
     }
 
     @Test
@@ -30,9 +37,9 @@ public class EditarDocumentosControllerTest {
                 asList(new Etapa().withDocumentos(
                         new ArrayList<>(asList("primeiro", "segundo", "")))));
 
-        ModelAndView mav = controller.adicionarDocumento(antes, 0);
+        controller.adicionarDocumento(antes, 0, USER);
 
-        assertModelAttributeValue(mav, "servico", depois);
+        verify(salvarController).salvar(depois, USER);
     }
 
     @Test
@@ -46,8 +53,8 @@ public class EditarDocumentosControllerTest {
                         new ArrayList<>(asList("primeiro", "terceiro")))));
 
 
-        ModelAndView mav = controller.removerDocumento(antes, "0,1");
+        controller.removerDocumento(antes, "0,1", USER);
 
-        assertModelAttributeValue(mav, "servico", depois);
+        verify(salvarController).salvar(depois, USER);
     }
 }

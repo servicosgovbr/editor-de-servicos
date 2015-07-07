@@ -11,10 +11,9 @@ import org.jsoup.nodes.StandardXmlDeclaration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 
 @Component
@@ -63,17 +62,17 @@ public class ExportadorServicoV2 {
     }
 
     private void situacaoDoServico(Servico servico, Element root) {
-        Optional.ofNullable(servico.getSituacao()).ifPresent(s ->
+        ofNullable(servico.getSituacao()).ifPresent(s ->
                 root.appendElement("situacao").text(s));
     }
 
     private void gratuito(Servico servico, Element root) {
-        Optional.ofNullable(servico.getGratuito()).ifPresent(o ->
+        ofNullable(servico.getGratuito()).ifPresent(o ->
                 root.appendElement("gratuito").text(o.toString()));
     }
 
     private void orgao(Servico servico, Element root) {
-        Optional.ofNullable(servico.getOrgao()).ifPresent(o ->
+        ofNullable(servico.getOrgao()).ifPresent(o ->
                 root.appendElement("orgao")
                         .appendElement("id").text(o.getId()).parent()
                         .appendElement("nome").text(o.getNome()));
@@ -81,35 +80,40 @@ public class ExportadorServicoV2 {
 
     private void etapas(Servico servico, Element root) {
         Element etapas = root.appendElement("etapas");
-        Optional.ofNullable(servico.getEtapas()).orElse(emptyList())
+        ofNullable(servico.getEtapas()).orElse(emptyList())
                 .stream()
                 .forEach(e -> {
                             Element etapa = etapas.appendElement("etapa")
-                                    .appendElement("titulo").text(e.getTitulo()).parent()
-                                    .appendElement("descricao").appendChild(new DataNode(e.getDescricao(), "")).parent()
-                                    .appendElement("documentos").parent();
+                                    .appendElement("titulo").text(ofNullable(e.getTitulo()).orElse("")).parent()
+                                    .appendElement("descricao").appendChild(new DataNode(ofNullable(e.getDescricao()).orElse(""), "")).parent();
 
-                            Element custos = etapa.appendElement("custos").attr("excecoes", Optional.ofNullable(e.getCustoTemExcecoes()).orElse(false).toString());
-                            e.getCustos().forEach(c ->
+                            Element documentos = etapa.appendElement("documentos");
+                            ofNullable(e.getDocumentos()).orElse(emptyList())
+                                    .stream()
+                                    .map(String::trim)
+                                    .forEach(s -> documentos.appendElement("documento").text(s));
+
+                            Element custos = etapa.appendElement("custos").attr("excecoes", ofNullable(e.getCustoTemExcecoes()).orElse(false).toString());
+                            ofNullable(e.getCustos()).orElse(emptyList()).forEach(c ->
                                     custos.appendElement("custo")
-                                            .appendElement("descricao").appendChild(new DataNode(c.getDescricao(), "")).parent()
-                                            .appendElement("valor").text(c.getValor()));
+                                            .appendElement("descricao").appendChild(new DataNode(ofNullable(c.getDescricao()).orElse(""), "")).parent()
+                                            .appendElement("valor").text(ofNullable(c.getValor()).orElse("")));
 
                             Element canais = etapa.appendElement("canais-de-prestacao");
-                            e.getCanaisDePrestacao().forEach(c ->
+                            ofNullable(e.getCanaisDePrestacao()).orElse(emptyList()).forEach(c ->
                                     canais.appendElement("canal-de-prestacao")
-                                            .attr("tipo", c.getTipo())
+                                            .attr("tipo", ofNullable(c.getTipo()).orElse(""))
                                             .attr("preferencial", valueOf(c.getPreferencial()))
-                                            .appendElement("descricao").text(c.getDescricao()));
+                                            .appendElement("descricao").text(ofNullable(c.getDescricao()).orElse("")));
                         }
                 );
     }
 
     private void tempoTotalEstimado(Servico servico, Element root) {
-        Optional.ofNullable(servico.getTempoEstimado()).ifPresent(t -> {
+        ofNullable(servico.getTempoEstimado()).ifPresent(t -> {
                     Element tempo = root.appendElement("tempo-total-estimado");
 
-                    Optional.ofNullable(t.getTipo()).ifPresent(tipo -> {
+                    ofNullable(t.getTipo()).ifPresent(tipo -> {
                         if ("entre".equals(tipo)) {
                             tempo.attr("tipo", tipo)
                                     .appendElement("minimo").attr("tipo", t.getEntreTipoMinimo()).text(t.getEntreMinimo()).parent()
@@ -127,24 +131,25 @@ public class ExportadorServicoV2 {
 
     private void solicitantes(Servico servico, Element root) {
         Element solicitantes = root.appendElement("solicitantes");
-        Optional.ofNullable(servico.getSolicitantes()).orElse(emptyList())
+        ofNullable(servico.getSolicitantes()).orElse(emptyList())
                 .stream()
                 .map(String::trim)
-                .filter(s -> !s.isEmpty())
                 .forEach(s -> solicitantes.appendElement("solicitante").text(s));
     }
 
     private void legislacaoRelacionada(Servico servico, Element root) {
         Element legislacao = root.appendElement("legislacao-relacionada");
-        Optional.ofNullable(servico.getLegislacoes()).orElse(emptyList())
+        ofNullable(servico.getLegislacoes()).orElse(emptyList())
                 .stream()
+                .map(String::trim)
                 .forEach(link -> legislacao.appendElement("link").attr("href", link));
     }
 
     private void eventosDaLinhaDaVida(Servico servico, Element root) {
         Element eventos = root.appendElement("eventos-da-linha-da-vida");
-        Optional.ofNullable(servico.getEventosDaLinhaDaVida()).orElse(emptyList())
+        ofNullable(servico.getEventosDaLinhaDaVida()).orElse(emptyList())
                 .stream()
+                .map(String::trim)
                 .forEach(e -> eventos.appendElement("evento-da-linha-da-vida")
                         .appendElement("id").text(slugify.slugify(e)).parent()
                         .appendElement("nome").text(e).parent());
@@ -152,8 +157,9 @@ public class ExportadorServicoV2 {
 
     private void segmentosDaSociedade(Servico servico, Element root) {
         Element segmentos = root.appendElement("segmentos-da-sociedade");
-        Optional.ofNullable(servico.getSegmentosDaSociedade()).orElse(emptyList())
+        ofNullable(servico.getSegmentosDaSociedade()).orElse(emptyList())
                 .stream()
+                .map(String::trim)
                 .forEach(s -> segmentos.appendElement("segmento-da-sociedade")
                         .appendElement("id").text(slugify.slugify(s)).parent()
                         .appendElement("nome").text(s).parent());
@@ -161,8 +167,9 @@ public class ExportadorServicoV2 {
 
     private void areasDeInteresse(Servico servico, Element root) {
         Element areas = root.appendElement("areas-de-interesse");
-        Optional.ofNullable(servico.getAreasDeInteresse()).orElse(emptyList())
+        ofNullable(servico.getAreasDeInteresse()).orElse(emptyList())
                 .stream()
+                .map(String::trim)
                 .forEach(a -> areas.appendElement("area-de-interesse")
                         .appendElement("id").text(slugify.slugify(a)).parent()
                         .appendElement("area").text(a).parent());

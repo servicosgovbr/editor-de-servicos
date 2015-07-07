@@ -1,6 +1,9 @@
 package br.gov.servicos.fixtures;
 
 import br.gov.servicos.editor.servicos.*;
+import br.gov.servicos.editor.usuarios.Papeis;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -95,5 +98,7 @@ public class TestData {
             .withOrgao(new Orgao().withId("ministerio-da-saude-ms").withNome("Ministério da Saúde"))
             .withGratuito(true)
             .withSituacao("Sim: serviço parcialmente eletrônico (partes presenciais, via telefone ou em papel)");
+
+    public static final User USER = new User("joao.silva@planejamento.gov.br", "1234", singletonList(new SimpleGrantedAuthority(Papeis.PUBLICADOR)));
 }
 

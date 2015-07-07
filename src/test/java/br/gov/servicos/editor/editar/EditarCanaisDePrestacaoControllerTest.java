@@ -5,20 +5,27 @@ import br.gov.servicos.editor.servicos.Etapa;
 import br.gov.servicos.editor.servicos.Servico;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import static br.gov.servicos.fixtures.TestData.USER;
 import static java.util.Arrays.asList;
-import static org.springframework.test.web.ModelAndViewAssert.assertModelAttributeValue;
+import static org.mockito.Mockito.verify;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EditarCanaisDePrestacaoControllerTest {
 
-    private EditarCanaisDePrestacaoController controller;
+    @Mock
+    SalvarController salvarController;
+
+    EditarCanaisDePrestacaoController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new EditarCanaisDePrestacaoController();
+        controller = new EditarCanaisDePrestacaoController(salvarController);
     }
 
     @Test
@@ -31,9 +38,9 @@ public class EditarCanaisDePrestacaoControllerTest {
                 asList(new Etapa().withCanaisDePrestacao(
                         new ArrayList<>(asList(new CanalDePrestacao(), new CanalDePrestacao())))));
 
-        ModelAndView mav = controller.adicionarCanalDePrestacao(antes, 0);
+        controller.adicionarCanalDePrestacao(antes, 0, USER);
 
-        assertModelAttributeValue(mav, "servico", depois);
+        verify(salvarController).salvar(depois, USER);
     }
 
     @Test
@@ -49,8 +56,8 @@ public class EditarCanaisDePrestacaoControllerTest {
                         new ArrayList<>(asList(new CanalDePrestacao().withDescricao("1"))))));
 
 
-        ModelAndView mav = controller.removerCanalDePrestacao(antes, "0,0");
+        controller.removerCanalDePrestacao(antes, "0,0", USER);
 
-        assertModelAttributeValue(mav, "servico", depois);
+        verify(salvarController).salvar(depois, USER);
     }
 }
