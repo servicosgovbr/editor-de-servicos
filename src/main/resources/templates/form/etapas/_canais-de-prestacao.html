@@ -13,7 +13,6 @@
     </p>
 
     <th:block th:each="canal, rowCanal : *{etapas[__${row?.index ?: 0}__].canaisDePrestacao}">
-
         <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].tipo}">
             <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
                     th:value="${tipo}"
@@ -37,16 +36,13 @@
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
-
         <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].tipo}">
             <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
                     th:value="${tipo}"
                     th:text="${tipo}">Tipo de canal</option>
         </select>
-
         <input class="inline inline-lg" type="text" placeholder="Ex.: www.orgao.gov.br"
                th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].descricao}"/>
-
         <label class="inline">
             <input type="checkbox"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].preferencial}"
@@ -54,8 +50,6 @@
                    th:checked="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].preferencial}"/>
             Preferencial
         </label>
-
-
         <button type="submit" class="inline remove-peq" name="removerCanalDePrestacao" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCanal?.index ?: 0}__}">
             <span class="fa fa-times"></span>
         </button>

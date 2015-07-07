@@ -85,7 +85,6 @@ header {
   }
 
   p.remove-med {
-
     button {
       background-color: lighten(red, 20%);
       text-align: center;
@@ -191,6 +190,12 @@ header {
   .aviso-salvo-em {
     font-size: em(13);
     margin-left: .5em;
+  }
+
+  .etapa {
+    margin-bottom: $base-spacing;
+    padding: 20px;
+    border: $base-border;
   }
 
 }

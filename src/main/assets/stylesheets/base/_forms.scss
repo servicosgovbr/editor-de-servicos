@@ -1,4 +1,4 @@
-fieldset {
+fieldset, .sub-secao {
   background-color: lighten($base-border-color, 10%);
   border: $base-border;
   margin: 0 0 $small-spacing;
@@ -65,6 +65,10 @@ input[type="checkbox"],
 input[type="radio"] {
   display: inline;
   margin-right: $small-spacing / 2;
+}
+
+.inline {
+    display:inline;
 }
 
 input[type="file"] {

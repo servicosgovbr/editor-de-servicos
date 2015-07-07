@@ -9,32 +9,45 @@
     <h2>Etapas para a realização deste serviço</h2>
 
     <th:block th:each="etapa, row : ${servico.etapas}">
-        <fieldset th:replace="form/etapas/_informacoes :: fieldset"></fieldset>
-        <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
-        <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
-        <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
+        <div class="etapa">
+            <div class="sub-secao">
+                <span class="fa fa-minus inline"></span>
+                <h3 class="inline" th:text="${'Etapa ' + (row.index + 1)}">Etapa X</h3>
+            </div>
 
-        <p class="remove-med">
-            <button type="submit" name="removerEtapa" th:value="${row.index}">
-                <i class="fa fa-times"></i>&nbsp;
-                Remover etapa
-            </button>
-        </p>
+            <div>
+                <fieldset th:replace="form/etapas/_informacoes :: fieldset"></fieldset>
+                <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
+                <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
+                <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
+
+                <p class="remove-med">
+                    <button type="submit" name="removerEtapa" th:value="${row.index}">
+                        Remover etapa
+                    </button>
+                </p>
+            </div>
+        </div>
     </th:block>
-
     <th:block th:if="${servico.etapas == null || servico.etapas.isEmpty()}">
-        <fieldset th:replace="form/etapas/_informacoes :: fieldset"></fieldset>
-        <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
-        <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
-        <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
+        <div class="etapa">
+            <div class="sub-secao">
+                <span class="fa fa-minus inline"></span>
+                <h3 class="inline">Etapa 1</h3>
+            </div>
+            <div>
+                <fieldset th:replace="form/etapas/_informacoes :: fieldset"></fieldset>
+                <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
+                <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
+                <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
+            </div>
+        </div>
     </th:block>
 
     <p>
         <button type="submit" name="adicionarEtapa">
-            <i class="fa fa-plus"></i>&nbsp;
             Adicionar etapa
         </button>
-
     </p>
 
 </div>
