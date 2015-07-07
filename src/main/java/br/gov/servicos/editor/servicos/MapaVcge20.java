@@ -1,7 +1,9 @@
 package br.gov.servicos.editor.servicos;
 
 import com.github.slugify.Slugify;
+import lombok.AccessLevel;
 import lombok.SneakyThrows;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -16,11 +18,11 @@ import java.util.Set;
 import static java.util.stream.Collectors.*;
 
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MapaVcge20 {
 
-
-    private final Slugify slugify;
-    private Map<String, Set<String>> mapaVcge;
+    Slugify slugify;
+    Map<String, Set<String>> mapaVcge;
 
     @SneakyThrows
     public MapaVcge20(ClassPathResource areasInteresseCsv, Slugify slugify) {
