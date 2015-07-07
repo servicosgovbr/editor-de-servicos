@@ -19,6 +19,15 @@
         <div th:replace="form/etapas :: #passo-3"></div>
         <div th:replace="form/dados-complementares :: #passo-4"></div>
 
+        <p>
+            <span th:text="${'Versão ' + (servico?.metadados?.versao ?: 'ainda não salva')}"></span>
+            <th:block th:if="*{metadados?.revisao}">
+                <span th:text="${'revisão ' + #strings.substring(servico?.metadados?.revisao, 0, 6)}"></span>,
+                <span th:text="${'por ' + servico?.metadados?.autor}"></span>,
+                <span th:text="${'em ' + #dates.format(servico?.metadados?.horario, 'dd/MMM/yyyy HH:mm')}"></span>
+            </th:block>
+        </p>
+
         <button id="salvar">
             <i class="fa fa-hdd-o"></i>&nbsp;
             Salvar
@@ -29,17 +38,10 @@
             Salvar e Enviar para publicação
         </button>
 
-        <button class="cancel" disabled="disabled">
+        <button class="cancel" disabled="disabled" style="float: right; margin-right: 0">
             <i class="fa fa-trash-o"></i>&nbsp;
             Descartar alterações
         </button>
-
-        <span th:text="${'Versão ' + (servico?.metadados?.versao ?: 'ainda não salva')}"></span>
-        <th:block th:if="*{metadados?.revisao}">
-            <span th:text="${'revisão ' + #strings.substring(servico?.metadados?.revisao, 0, 6)}"></span>,
-            <span th:text="${'por ' + servico?.metadados?.autor}"></span>,
-            <span th:text="${'em ' + #dates.format(servico?.metadados?.horario, 'dd/MMM/yyyy HH:mm')}"></span>
-        </th:block>
     </form>
 </section>
 <div class="modal">&nbsp;</div>
