@@ -11,10 +11,6 @@ set -o pipefail
 yum makecache fast -y
 yum install -y "editor-de-servicos-1.0.${SNAP_PIPELINE_COUNTER:-0}-1"
 
-cat <<-EOS > /etc/sysconfig/editor-de-servicos-overrides
-FLAGS_IMPORTAR_CARTAS=true
-EOS
-
 systemctl daemon-reload
 systemctl restart editor-de-servicos
 EOF

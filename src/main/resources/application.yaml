@@ -12,7 +12,6 @@ management:
   context-path: /editar
 
 flags:
-  importar.cartas: true
   git.push: false
 
 eds:
