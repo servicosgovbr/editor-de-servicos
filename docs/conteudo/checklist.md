@@ -6,12 +6,15 @@ Crie títulos claros e bem descritivos. Ao invés de "Passaporte" diga "Emitir s
 * Padronize os títulos para que tenham entre 20 e 65 letras (incluindo espaços). Essa sugestão se dá em função de mecanismos de busca cortarem nos seus resultados frases maiores do que isso e também para que tenhamos um padrão visual sempre que destacados.
 * Tenha certeza que o título do serviço criado é único, pois serviços com nomes muito parecisos podem confundir os cidadãos em uma lista de resultados, por exemplo.
 * Utilize o motivo do serviço no início do título, deixando claro para que ele serve nas primeiras palavras.
+* Se houver uma sigla para o serviço, como por exemplo "Prouni", utilize-o no fim do título entre parentes, da seguinte forma: Programa Universidade para Todos (Prouni).
 
 #### 2. Nomes populares
+São os nomes usados para descrever serviços, e que podem não ser oficiais, mas são como o cidadão pode conhecer o serviço em diferentes regiões do país. Um exemplo seria a "Carteira Nacional de Habilitação (CNH)", que também é conhecida como "Carteira de Motorista" ou "Carta de Motorista". Ao saber quais os nomes populares de um serviço, melhoramos a encontrabilidade do Portal através de buscadores e também tornamos a busca no Portal mais efetiva.
 
 #### 3. O que é?
 
 #### 4. Quem pode utilizar esse serviço
+Liste quais pessoas são elegíveis no uso deste serviço, ou quais os perfis de cidadãos que podem utilizar o serviço.
 
 #### 5. Tempo total estimado
 
