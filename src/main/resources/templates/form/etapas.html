@@ -13,6 +13,9 @@
             <div class="sub-secao">
                 <span class="fa fa-minus inline"></span>
                 <h3 class="inline" th:text="${'Etapa ' + (row.index + 1)}">Etapa X</h3>
+                <button class="inline remove-peq" type="submit" name="removerEtapa" th:value="${row.index}">
+                    <span class="fa fa-times"></span>
+                </button>
             </div>
 
             <div>
@@ -20,12 +23,6 @@
                 <fieldset th:replace="form/etapas/_custos :: fieldset"></fieldset>
                 <fieldset th:replace="form/etapas/_documentos-necessarios :: fieldset"></fieldset>
                 <fieldset th:replace="form/etapas/_canais-de-prestacao :: fieldset"></fieldset>
-
-                <p class="remove-med">
-                    <button type="submit" name="removerEtapa" th:value="${row.index}">
-                        Remover etapa
-                    </button>
-                </p>
             </div>
         </div>
     </th:block>

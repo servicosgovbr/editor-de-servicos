@@ -47,7 +47,6 @@ header {
       @include clear-margins;
     }
   }
-
 }
 
 #login-form {
@@ -84,14 +83,7 @@ header {
     color: $azul-regular;
   }
 
-  p.remove-med {
-    button {
-      background-color: lighten(red, 20%);
-      text-align: center;
-      color: white;
-      margin: 0;
-    }
-
+  .aviso-dados-descartados {
     &:hover {
       &:after {
         content: "Os dados serão descartados";
@@ -196,6 +188,9 @@ header {
     margin-bottom: $base-spacing;
     padding: 20px;
     border: $base-border;
-  }
 
+    .sub-secao > button.remove-peq {
+        float: right;
+    }
+  }
 }
