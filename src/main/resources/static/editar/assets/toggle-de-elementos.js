@@ -13,15 +13,6 @@ jQuery(function($) {
 
   $('input:radio.toggle').each(applicaToggle);
 
-  $('.etapa > .sub-secao').click(function() {
-    $(this).next()
-      .slideToggle();
-
-    $(this).find('> span.fa')
-      .toggleClass('fa-plus')
-      .toggleClass('fa-minus');
-  });
-
 });
 
 

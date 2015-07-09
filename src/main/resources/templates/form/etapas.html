@@ -11,7 +11,7 @@
     <th:block th:each="etapa, row : ${servico.etapas}">
         <div class="etapa">
             <div class="sub-secao">
-                <span class="fa fa-minus inline"></span>
+                <i class="fa fa-chevron-up"></i>&nbsp;
                 <h3 class="inline" th:text="${'Etapa ' + (row.index + 1)}">Etapa X</h3>
                 <button class="inline remove-peq" type="submit" name="removerEtapa" th:value="${row.index}">
                     <span class="fa fa-times"></span>
@@ -29,7 +29,7 @@
     <th:block th:if="${servico.etapas == null || servico.etapas.isEmpty()}">
         <div class="etapa">
             <div class="sub-secao">
-                <span class="fa fa-minus inline"></span>
+                <i class="fa fa-chevron-up"></i>&nbsp;
                 <h3 class="inline">Etapa 1</h3>
             </div>
             <div>

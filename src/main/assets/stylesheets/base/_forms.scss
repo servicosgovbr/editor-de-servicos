@@ -5,6 +5,18 @@ fieldset, .sub-secao {
   padding: $base-spacing;
 }
 
+.etapa {
+  background-color: lighten($base-border-color, 12%);
+}
+
+.sub-secao {
+  cursor: pointer;
+
+  .fa-chevron-up, .fa-chevron-down {
+    color: $azul-regular;
+  }
+}
+
 input,
 label,
 select {
