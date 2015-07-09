@@ -1,4 +1,4 @@
-jQuery(function($) {
+jQuery(function ($) {
 
   var applicaToggle = function () {
     var elementoAlvo = $('#' + this.id + '-toggle');
@@ -14,8 +14,3 @@ jQuery(function($) {
   $('input:radio.toggle').each(applicaToggle);
 
 });
-
-
-
-
-

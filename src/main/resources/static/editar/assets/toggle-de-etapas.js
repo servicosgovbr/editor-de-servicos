@@ -1,6 +1,6 @@
-jQuery(function($) {
+jQuery(function ($) {
 
-  $('.etapa > .sub-secao').click(function() {
+  $('.etapa > .sub-secao').click(function () {
     $(this).next()
       .slideToggle();
 

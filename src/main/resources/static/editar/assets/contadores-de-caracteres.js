@@ -1,4 +1,4 @@
-jQuery(function($) {
+jQuery(function ($) {
 
   var criaContador = function () {
     return '<div class="counter">Número de caracteres: <span id="' + this.id + '-counter"></span></div>';
