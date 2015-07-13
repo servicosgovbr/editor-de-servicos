@@ -11,7 +11,7 @@ import lombok.experimental.Wither;
 @AllArgsConstructor
 public class CanalDePrestacao {
     String tipo;
-    String caption;
+    String titulo;
     String referencia;
     Boolean preferencial;
 }

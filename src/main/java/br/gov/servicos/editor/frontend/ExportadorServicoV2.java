@@ -104,7 +104,7 @@ public class ExportadorServicoV2 {
                                     canais.appendElement("canal-de-prestacao")
                                             .attr("tipo", ofNullable(c.getTipo()).orElse(""))
                                             .attr("preferencial", valueOf(c.getPreferencial()))
-                                            .appendElement("caption").text(ofNullable(c.getCaption()).orElse("")).parent()
+                                            .appendElement("titulo").text(ofNullable(c.getTitulo()).orElse("")).parent()
                                             .appendElement("referencia").text(ofNullable(c.getReferencia()).orElse("")));
                         }
                 );

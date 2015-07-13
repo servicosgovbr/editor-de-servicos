@@ -32,10 +32,10 @@
             <span class="fa fa-times"></span>
         </button>
 
-        <label class="caption">
+        <label class="titulo">
             Texto para mostrar ao cidadão
             <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
-                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].caption}"/>
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].titulo}"/>
         </label>
 
         <label class="referencia">
@@ -65,10 +65,10 @@
             <span class="fa fa-times"></span>
         </button>
 
-        <label class="caption">
+        <label class="titulo">
             Texto para mostrar ao cidadão
             <input class="" type="text" placeholder="Ex.: Inscreva-se no programa"
-                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].caption}"/>
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].titulo}"/>
         </label>
 
         <label class="referencia">

@@ -86,7 +86,7 @@ class ImportadorServicoV2 {
                                         e.coleta("canais-de-prestacao canal-de-prestacao",
                                                 c -> new CanalDePrestacao()
                                                         .withTipo(c.atributo("tipo"))
-                                                        .withCaption(c.texto("canal-de-prestacao > caption"))
+                                                        .withTitulo(c.texto("canal-de-prestacao > titulo"))
                                                         .withReferencia(c.texto("canal-de-prestacao > referencia"))
                                                         .withPreferencial(c.atrituboAtivo("preferencial"))))))
 
