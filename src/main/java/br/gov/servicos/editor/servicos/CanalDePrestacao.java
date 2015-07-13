@@ -10,9 +10,8 @@ import lombok.experimental.Wither;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CanalDePrestacao {
-
     String tipo;
-    String descricao;
+    String caption;
+    String referencia;
     Boolean preferencial;
-
 }

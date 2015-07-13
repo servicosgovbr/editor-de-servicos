@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import static br.gov.servicos.fixtures.TestData.SERVICO_V2;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.of;
-import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -45,6 +45,6 @@ public class ImportadorServicoV2Test {
 
         Servico servico = new ImportadorServicoV2(cartas).carregar(id).get();
 
-        assertThat(servico, samePropertyValuesAs(SERVICO_V2));
+        assertThat(servico, is(SERVICO_V2));
     }
 }

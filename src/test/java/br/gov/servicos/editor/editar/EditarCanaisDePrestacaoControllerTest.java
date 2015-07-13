@@ -54,12 +54,12 @@ public class EditarCanaisDePrestacaoControllerTest {
         Servico antes = new Servico().withEtapas(
                 asList(new Etapa().withCanaisDePrestacao(
                         new ArrayList<>(
-                                asList(new CanalDePrestacao().withDescricao("0"),
-                                        new CanalDePrestacao().withDescricao("1"))))));
+                                asList(new CanalDePrestacao().withCaption("0").withReferencia("ref0"),
+                                        new CanalDePrestacao().withCaption("1").withReferencia("ref1"))))));
 
         Servico depois = new Servico().withEtapas(
                 asList(new Etapa().withCanaisDePrestacao(
-                        new ArrayList<>(asList(new CanalDePrestacao().withDescricao("1"))))));
+                        new ArrayList<>(asList(new CanalDePrestacao().withCaption("1").withReferencia("ref1"))))));
 
 
         assertThat(controller.removerCanalDePrestacao(antes, "0,0", USER).getUrl(), is("/#etapas[0].canaisDePrestacao"));

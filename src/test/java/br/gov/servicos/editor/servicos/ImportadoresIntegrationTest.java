@@ -11,7 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 
-import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class ImportadoresIntegrationTest {
@@ -35,6 +35,6 @@ public class ImportadoresIntegrationTest {
         Document doc = exportadorV2.exportar(servicoV1);
         Servico servicoV2 = v2.carregar(new ArquivoXml(doc));
 
-        assertThat(servicoV2.withMetadados(null), samePropertyValuesAs(servicoV1.withMetadados(null)));
+        assertThat(servicoV2.withMetadados(null), is(servicoV1.withMetadados(null)));
     }
 }

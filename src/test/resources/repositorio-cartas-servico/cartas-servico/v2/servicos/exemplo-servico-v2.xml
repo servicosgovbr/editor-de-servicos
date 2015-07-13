@@ -81,10 +81,10 @@
             </custos>
             <canais-de-prestacao>
                 <canal-de-prestacao tipo="Presencial" preferencial="true">
-                    <descricao>Posto de atendimento</descricao>
+                    <referencia>Posto de atendimento</referencia>
                 </canal-de-prestacao>
                 <canal-de-prestacao tipo="Telefone" preferencial="false">
-                    <descricao>555</descricao>
+                    <referencia>555</referencia>
                 </canal-de-prestacao>
             </canais-de-prestacao>
         </etapa>

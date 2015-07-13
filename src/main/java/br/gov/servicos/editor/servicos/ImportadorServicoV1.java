@@ -74,13 +74,14 @@ class ImportadorServicoV1 {
                         .withCanaisDePrestacao(
                                 Stream.concat(
                                         Stream.of(
-                                                new CanalDePrestacao().withTipo("Web").withDescricao(xml.texto("url")).withPreferencial(true),
-                                                new CanalDePrestacao().withTipo("Agendamento").withDescricao(xml.texto("urlAgendamento"))
+                                                new CanalDePrestacao().withTipo("Web").withCaption("").withReferencia(xml.texto("url")).withPreferencial(true),
+                                                new CanalDePrestacao().withTipo("Agendamento").withCaption("").withReferencia(xml.texto("urlAgendamento"))
                                         ),
                                         xml.coleta("canaisDePrestacao > canalDePrestacao",
                                                 x -> new CanalDePrestacao()
                                                         .withTipo(x.atributo("tipo"))
-                                                        .withDescricao(x.atributo("link", "href")))
+                                                        .withCaption("")
+                                                        .withReferencia(x.atributo("link", "href")))
                                                 .stream())
                                         .collect(toList()))))));
     }

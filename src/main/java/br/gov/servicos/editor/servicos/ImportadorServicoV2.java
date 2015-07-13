@@ -86,7 +86,8 @@ class ImportadorServicoV2 {
                                         e.coleta("canais-de-prestacao canal-de-prestacao",
                                                 c -> new CanalDePrestacao()
                                                         .withTipo(c.atributo("tipo"))
-                                                        .withDescricao(c.texto("canal-de-prestacao > descricao"))
+                                                        .withCaption(c.texto("canal-de-prestacao > caption"))
+                                                        .withReferencia(c.texto("canal-de-prestacao > referencia"))
                                                         .withPreferencial(c.atrituboAtivo("preferencial"))))))
 
                 .withOrgao(xml.converte("orgao",

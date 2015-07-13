@@ -5,7 +5,7 @@
 <head>
 </head>
 <body>
-<fieldset class="required">
+<fieldset class="required canal-prestacao">
     <a th:id="${'etapas[' + __${row?.index ?: 0}__ + '].canaisDePrestacao'}"></a>
     <h3>Canais de prestação</h3>
 
@@ -20,9 +20,6 @@
                     th:text="${tipo}">Tipo de canal</option>
         </select>
 
-        <input class="inline inline-lg" type="text" placeholder="Ex.: www.orgao.gov.br"
-               th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].descricao}"/>
-
         <label class="inline">
             <input type="checkbox"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].preferencial}"
@@ -34,6 +31,20 @@
         <button type="submit" class="inline remove-peq" name="removerCanalDePrestacao" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCanal?.index ?: 0}__}">
             <span class="fa fa-times"></span>
         </button>
+
+        <label class="caption">
+            Texto para mostrar ao cidadão
+            <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].caption}"/>
+        </label>
+
+        <label class="referencia">
+            <span>Link/URL</span>
+            <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].referencia}"/>
+        </label>
+
+
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
@@ -42,8 +53,7 @@
                     th:value="${tipo}"
                     th:text="${tipo}">Tipo de canal</option>
         </select>
-        <input class="inline inline-lg" type="text" placeholder="Ex.: www.orgao.gov.br"
-               th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].descricao}"/>
+
         <label class="inline">
             <input type="checkbox"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].preferencial}"
@@ -54,6 +64,18 @@
         <button type="submit" class="inline remove-peq" name="removerCanalDePrestacao" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCanal?.index ?: 0}__}">
             <span class="fa fa-times"></span>
         </button>
+
+        <label class="caption">
+            Texto para mostrar ao cidadão
+            <input class="" type="text" placeholder="Ex.: Inscreva-se no programa"
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].caption}"/>
+        </label>
+
+        <label class="referencia">
+            <span>Link/URL</span>
+            <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
+                   th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].referencia}"/>
+        </label>
     </th:block>
 
     <p>

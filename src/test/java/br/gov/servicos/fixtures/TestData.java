@@ -53,8 +53,8 @@ public class TestData {
                             .withDescricao("")
                             .withValor("R$ 156,07")))
                     .withCanaisDePrestacao(asList(
-                            new CanalDePrestacao().withTipo("Web").withDescricao("http://www.dpf.gov.br/servicos/passaporte/requerer-passaporte").withPreferencial(true),
-                            new CanalDePrestacao().withTipo("Agendamento").withDescricao("")
+                            new CanalDePrestacao().withTipo("Web").withCaption("").withReferencia("http://www.dpf.gov.br/servicos/passaporte/requerer-passaporte").withPreferencial(true),
+                            new CanalDePrestacao().withTipo("Agendamento").withCaption("").withReferencia("")
                     ))))
             .withOrgao(new Orgao().withId("ministerio-da-justica-mj").withNome("Ministério da Justiça (MJ)"))
             .withAreasDeInteresse(singletonList("Transportes"))
@@ -91,8 +91,8 @@ public class TestData {
                             .withDocumentos(asList("RG", "CPF", "Termo de conclusão de curso no CFC"))
                             .withCustos(singletonList(new Custo().withDescricao("Taxa de emissão").withValor("78,50")))
                             .withCanaisDePrestacao(asList(
-                                    new CanalDePrestacao().withDescricao("Posto de atendimento").withPreferencial(true).withTipo("Presencial"),
-                                    new CanalDePrestacao().withDescricao("555").withPreferencial(false).withTipo("Telefone")
+                                    new CanalDePrestacao().withCaption("").withReferencia("Posto de atendimento").withPreferencial(true).withTipo("Presencial"),
+                                    new CanalDePrestacao().withCaption("").withReferencia("555").withPreferencial(false).withTipo("Telefone")
                             ))
             ))
             .withOrgao(new Orgao().withId("ministerio-da-saude-ms").withNome("Ministério da Saúde"))
