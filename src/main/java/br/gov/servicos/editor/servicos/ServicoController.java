@@ -17,12 +17,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ServicoController {
 
-    ImportadorServicoV1 importadorV1;
     ImportadorServicoV2 importadorV2;
 
     @Autowired
-    ServicoController(ImportadorServicoV1 importadorV1, ImportadorServicoV2 importadorV2) {
-        this.importadorV1 = importadorV1;
+    ServicoController(ImportadorServicoV2 importadorV2) {
         this.importadorV2 = importadorV2;
     }
 
@@ -30,8 +28,7 @@ class ServicoController {
     ModelAndView editar(@PathVariable("id") String id) throws IOException {
         return new ModelAndView("index", "servico",
                 importadorV2.carregar(id)
-                        .orElseGet(() -> importadorV1.carregar(id)
-                                .orElseThrow(() -> new RuntimeException("Não foi possível encontrar o arquivo referente ao serviço '" + id + "'"))));
+                        .orElseThrow(() -> new RuntimeException("Não foi possível encontrar o arquivo referente ao serviço '" + id + "'")));
     }
 
 }
