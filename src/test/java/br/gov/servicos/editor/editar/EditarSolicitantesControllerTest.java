@@ -6,12 +6,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 
 import static br.gov.servicos.fixtures.TestData.USER;
 import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EditarSolicitantesControllerTest {
@@ -24,6 +29,7 @@ public class EditarSolicitantesControllerTest {
     @Before
     public void setUp() throws Exception {
         controller = new EditarSolicitantesController(salvarController);
+        when(salvarController.salvar(anyObject(), anyObject())).thenReturn(new RedirectView("/"));
     }
 
     @Test
@@ -31,7 +37,7 @@ public class EditarSolicitantesControllerTest {
         Servico antes = new Servico().withSolicitantes(new ArrayList<>(asList("primeiro", "segundo")));
         Servico depois = antes.withSolicitantes(new ArrayList<>(asList("primeiro", "segundo", "")));
 
-        controller.adicionarSolicitante(antes, USER);
+        assertThat(controller.adicionarSolicitante(antes, USER).getUrl(), is("/#solicitantes"));
 
         verify(salvarController).salvar(depois, USER);
     }
@@ -41,7 +47,7 @@ public class EditarSolicitantesControllerTest {
         Servico antes = new Servico().withSolicitantes(new ArrayList<>(asList("primeiro", "segundo")));
         Servico depois = antes.withSolicitantes(new ArrayList<>(asList("primeiro")));
 
-        controller.removerSolicitante(antes, 1, USER);
+        assertThat(controller.removerSolicitante(antes, 1, USER).getUrl(), is("/#solicitantes"));
 
         verify(salvarController).salvar(depois, USER);
     }

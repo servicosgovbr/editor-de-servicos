@@ -8,12 +8,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 
 import static br.gov.servicos.fixtures.TestData.USER;
 import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EditarCanaisDePrestacaoControllerTest {
@@ -26,6 +31,7 @@ public class EditarCanaisDePrestacaoControllerTest {
     @Before
     public void setUp() throws Exception {
         controller = new EditarCanaisDePrestacaoController(salvarController);
+        when(salvarController.salvar(anyObject(), anyObject())).thenReturn(new RedirectView("/"));
     }
 
     @Test
@@ -38,7 +44,7 @@ public class EditarCanaisDePrestacaoControllerTest {
                 asList(new Etapa().withCanaisDePrestacao(
                         new ArrayList<>(asList(new CanalDePrestacao(), new CanalDePrestacao())))));
 
-        controller.adicionarCanalDePrestacao(antes, 0, USER);
+        assertThat(controller.adicionarCanalDePrestacao(antes, 0, USER).getUrl(), is("/#etapas[0].canaisDePrestacao"));
 
         verify(salvarController).salvar(depois, USER);
     }
@@ -56,7 +62,7 @@ public class EditarCanaisDePrestacaoControllerTest {
                         new ArrayList<>(asList(new CanalDePrestacao().withDescricao("1"))))));
 
 
-        controller.removerCanalDePrestacao(antes, "0,0", USER);
+        assertThat(controller.removerCanalDePrestacao(antes, "0,0", USER).getUrl(), is("/#etapas[0].canaisDePrestacao"));
 
         verify(salvarController).salvar(depois, USER);
     }

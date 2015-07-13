@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 
+import static java.lang.Integer.max;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -34,7 +35,8 @@ public class EditarEtapasController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getEtapas().add(new Etapa());
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + max(servico.getEtapas().size() - 1, 0)+ "]");
     }
 
     @RequestMapping(params = {"removerEtapa"})
@@ -44,7 +46,8 @@ public class EditarEtapasController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getEtapas().remove(indice);
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + max(indice - 1, 0)+ "]");
     }
 
 }

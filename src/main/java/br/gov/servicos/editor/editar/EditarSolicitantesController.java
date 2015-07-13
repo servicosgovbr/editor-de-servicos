@@ -33,7 +33,8 @@ public class EditarSolicitantesController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getSolicitantes().add("");
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#solicitantes");
     }
 
     @RequestMapping(params = {"removerSolicitante"})
@@ -43,7 +44,8 @@ public class EditarSolicitantesController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getSolicitantes().remove(indice);
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#solicitantes");
     }
 
 }

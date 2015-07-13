@@ -30,11 +30,12 @@ public class EditarDocumentosController {
     @RequestMapping(params = {"adicionarDocumento"})
     RedirectView adicionarDocumento(
             Servico servico,
-            @RequestParam("adicionarDocumento") int indiceEtapa,
+            @RequestParam("adicionarDocumento") int indice,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
-        servico.getEtapas().get(indiceEtapa).getDocumentos().add("");
-        return salvar.salvar(servico, usuario);
+        servico.getEtapas().get(indice).getDocumentos().add("");
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + indice + "].documentos");
     }
 
     @RequestMapping(params = {"removerDocumento"})
@@ -48,7 +49,8 @@ public class EditarDocumentosController {
                 .get(indice.getEtapa())
                 .getDocumentos()
                 .remove(indice.getCampo());
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + indice.getEtapa() + "].documentos");
     }
 
 }

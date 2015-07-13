@@ -8,12 +8,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 
 import static br.gov.servicos.fixtures.TestData.USER;
 import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EditarCustosControllerTest {
@@ -27,6 +32,7 @@ public class EditarCustosControllerTest {
     @Before
     public void setUp() throws Exception {
         controller = new EditarCustosController(salvarController);
+        when(salvarController.salvar(anyObject(), anyObject())).thenReturn(new RedirectView("/"));
     }
 
     @Test
@@ -44,7 +50,7 @@ public class EditarCustosControllerTest {
                                 new Custo().withDescricao("segundo"),
                                 new Custo())))));
 
-        controller.adicionarCusto(antes, 0, USER);
+        assertThat(controller.adicionarCusto(antes, 0, USER).getUrl(), is("/#etapas[0].custos"));
 
         verify(salvarController).salvar(depois, USER);
     }
@@ -65,7 +71,7 @@ public class EditarCustosControllerTest {
                                 new Custo().withDescricao("terceiro"))))));
 
 
-        controller.removerCusto(antes, "0,1", USER);
+        assertThat(controller.removerCusto(antes, "0,1", USER).getUrl(), is("/#etapas[0].custos"));
 
         verify(salvarController).salvar(depois, USER);
     }

@@ -35,7 +35,8 @@ public class EditarCanaisDePrestacaoController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getEtapas().get(indice).getCanaisDePrestacao().add(new CanalDePrestacao());
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + indice + "].canaisDePrestacao");
     }
 
     @RequestMapping(params = {"removerCanalDePrestacao"})
@@ -50,7 +51,8 @@ public class EditarCanaisDePrestacaoController {
                 .getCanaisDePrestacao()
                 .remove(indice.getCampo());
 
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + indice.getEtapa() + "].canaisDePrestacao");
     }
 
 }

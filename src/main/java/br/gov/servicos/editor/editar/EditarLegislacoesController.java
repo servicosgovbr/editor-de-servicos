@@ -33,7 +33,8 @@ public class EditarLegislacoesController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getLegislacoes().add("");
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#legislacoes");
     }
 
     @RequestMapping(params = {"removerLegislacao"})
@@ -43,7 +44,8 @@ public class EditarLegislacoesController {
             @AuthenticationPrincipal User usuario
     ) throws IOException {
         servico.getLegislacoes().remove(indice);
-        return salvar.salvar(servico, usuario);
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#legislacoes");
     }
 
 }

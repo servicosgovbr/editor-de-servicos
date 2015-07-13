@@ -31,11 +31,12 @@ public class EditarCustosController {
     @RequestMapping(params = {"adicionarCusto"})
     RedirectView adicionarCusto(
             Servico servico,
-            @RequestParam("adicionarCusto") int indiceEtapa,
+            @RequestParam("adicionarCusto") int indice,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
-        servico.getEtapas().get(indiceEtapa).getCustos().add(new Custo());
-        return salvar.salvar(servico, usuario);
+        servico.getEtapas().get(indice).getCustos().add(new Custo());
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + indice + "].custos");
     }
 
     @RequestMapping(params = {"removerCusto"})
@@ -44,9 +45,10 @@ public class EditarCustosController {
             @RequestParam("removerCusto") String indices,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
-        IndiceCampoDeEtapa indiceEtapa = IndiceCampoDeEtapa.from(indices);
-        servico.getEtapas().get(indiceEtapa.getEtapa()).getCustos().remove(indiceEtapa.getCampo());
-        return salvar.salvar(servico, usuario);
+        IndiceCampoDeEtapa indice = IndiceCampoDeEtapa.from(indices);
+        servico.getEtapas().get(indice.getEtapa()).getCustos().remove(indice.getCampo());
+        String url = salvar.salvar(servico, usuario).getUrl();
+        return new RedirectView(url + "#etapas[" + indice.getEtapa() + "].custos");
     }
 
 }
