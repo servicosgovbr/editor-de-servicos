@@ -5,9 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static br.gov.servicos.editor.usuarios.Papeis.ADMIN;
-import static br.gov.servicos.editor.usuarios.Papeis.PUBLICADOR;
-import static br.gov.servicos.editor.usuarios.Papeis.SUPER;
+import static br.gov.servicos.editor.usuarios.Papeis.*;
 
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -27,11 +25,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.formLogin()
-                .loginPage("/editar/login")
-                .permitAll();
-
-        http.logout()
-                .permitAll();
+                .loginPage("/editar/login").permitAll().and()
+                .logout().logoutUrl("/editar/logout").logoutSuccessUrl("/editar/login").permitAll();
     }
 
     @Override
