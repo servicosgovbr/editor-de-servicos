@@ -13,7 +13,7 @@
         Informe os canais de prestação disponíveis para esta etapa.
     </p>
 
-    <th:block th:each="canal, rowCanal : *{etapas[__${row?.index ?: 0}__].canaisDePrestacao}">
+    <div class="grupo-canal-prestacao" th:each="canal, rowCanal : *{etapas[__${row?.index ?: 0}__].canaisDePrestacao}">
         <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].tipo}">
             <option value="">Selecione…</option>
             <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
@@ -44,11 +44,9 @@
             <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].referencia}"/>
         </label>
+    </div>
 
-
-    </th:block>
-
-    <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
+    <div class="grupo-canal-prestacao" th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
         <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].tipo}">
             <option value="">Selecione…</option>
             <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
@@ -78,7 +76,7 @@
             <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].referencia}"/>
         </label>
-    </th:block>
+    </div>
 
     <p>
         <button name="adicionarCanalDePrestacao" th:value="${row?.index ?: 0}" type="submit">
