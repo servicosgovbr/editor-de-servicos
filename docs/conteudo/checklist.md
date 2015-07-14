@@ -9,14 +9,18 @@ Crie títulos claros e bem descritivos. Ao invés de "Passaporte" diga "Emitir s
 * Se houver uma sigla para o serviço, como por exemplo "Prouni", utilize-o no fim do título entre parentes, da seguinte forma: Programa Universidade para Todos (Prouni).
 
 #### 2. Nomes populares
-São os nomes usados para descrever serviços, e que podem não ser oficiais, mas são como o cidadão pode conhecer o serviço em diferentes regiões do país. Um exemplo seria a "Carteira Nacional de Habilitação (CNH)", que também é conhecida como "Carteira de Motorista" ou "Carta de Motorista". Ao saber quais os nomes populares de um serviço, melhoramos a encontrabilidade do Portal através de buscadores e também tornamos a busca no Portal mais efetiva.
+São os nomes usados para descrever serviços, e que podem não ser oficiais, mas são como o cidadão pode conhecer o serviço em diferentes regiões do país. 
+* Um exemplo seria a "Carteira Nacional de Habilitação (CNH)", que também é conhecida como "Carteira de Motorista" ou "Carta de Motorista". 
+* Ao saber quais os nomes populares de um serviço, melhoramos a encontrabilidade do Portal através de buscadores e também tornamos a busca no Portal mais efetiva.
 
 #### 3. O que é?
+Descreva o que este serviço faz. Escreva uma descrição sintética do serviço, contendo o resultado que será entregue ao cidadão. É fundamental que se explicite também qual o direito que o solicitante passa a poder exercer ou qual o dever que passa a cumprir.
 
 #### 4. Quem pode utilizar esse serviço
-Liste quais pessoas são elegíveis no uso deste serviço, ou quais os perfis de cidadãos que podem utilizar o serviço.
+Liste quais pessoas são elegíveis no uso deste serviço, e quais os perfis de cidadãos que podem utilizar o serviço. Coloque quantos solicitantes quanto necessário.
 
 #### 5. Tempo total estimado
+Inclua o tempo estimado que este serviço leva para ser finalizado. Utilize a métrica que tempo que melhor funcionar para o cenário em que você se encontra (minutos, dias úteis, meses). Se houver exceções quanto ao tempo 
 
 #### 6. Custo estimado
 
