@@ -1,7 +1,11 @@
 jQuery(function ($) {
 
+  var id = function(str) {
+    return str.replace(/\./, '_') + '-counter';
+  }
+
   var criaContador = function () {
-    return '<div class="counter">Número de caracteres: <span id="' + this.id + '-counter"></span></div>';
+    return '<div class="counter">Número de caracteres: <span id="' + id(this.id) + '"></span></div>';
   };
 
   var ativaContador = function () {
@@ -9,11 +13,12 @@ jQuery(function ($) {
     $(this).removeAttr('maxlength');
 
     var opcoes = {
-      counter: '#' + this.id + '-counter',
+      counter: '#' + id(this.id),
       countDirection: 'down',
       maxCount: maxLength
     };
 
+    console.log(opcoes);
     $(this).simplyCountable(opcoes);
   };
 
