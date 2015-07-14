@@ -29,6 +29,16 @@ Trabalharemos juntos na edição dos serviços, aprendendo na prática a utiliza
 * Enquanto um dos participantes estará editando o serviço no computador, o outro deverá auxiliar com as informações.
 * O facilitador da dupla deverá anotar todos os pontos-chave percebidos durante a edição de um serviço. Pontos de melhoria, pontos que já estão bons, pontos de dúvida.
 * Cada dupla deverá tentar editar o serviço sem pedir suporte para o facilitador.
+* Falar para o facilitador sempre que tiver alguma dúvida.
+* Celular desligado e foco total no Editor.
+
+
+### Materiais
+* Adesivos de identificação
+* Pranchetas com material para facilitadores realizarem anotações
+* Canetas comuns
+* Canetinhas Sharpie
+* 8 computadores com acesso à internet
 
 
 ### Grupos
@@ -56,10 +66,3 @@ Trabalharemos juntos na edição dos serviços, aprendendo na prática a utiliza
 * Participantes: Servidor Órgão 7 + Esaú
 * Facilitador: Fabrício (Anotador)
 * Participantes: Servidor Órgão 7 + Isabel
-
-### Materiais
-* Adesivos de identificação
-* Pranchetas com material para facilitadores realizarem anotações
-* Canetas comuns
-* Canetinhas Sharpie
-* 8 computadores com acesso à internet

@@ -20,28 +20,42 @@ Descreva o que este serviço faz. Escreva uma descrição sintética do serviço
 Liste quais pessoas são elegíveis no uso deste serviço, e quais os perfis de cidadãos que podem utilizar o serviço. Coloque quantos solicitantes quanto necessário.
 
 #### 5. Tempo total estimado
-Inclua o tempo estimado que este serviço leva para ser finalizado. Utilize a métrica que tempo que melhor funcionar para o cenário em que você se encontra (minutos, dias úteis, meses). Se houver exceções quanto ao tempo 
+Inclua o tempo estimado que este serviço leva para ser finalizado. Utilize a métrica que tempo que melhor funcionar para o cenário em que você se encontra (minutos, dias úteis, meses). Se houver exceções quanto ao tempo, precise para que o cidadão possa ser bem informado.
 
 #### 6. Custo estimado
+Selecione se o serviço este é gratuito para o cidadão. Se não for, nas etapas do serviço será possível complementar com os custos de cada etapa.
 
 #### 7. Disponibilidade do serviço em meio eletrônico
+Este serviço é eletrônico e pode ser completamente realizado através da internet? Ou parcialmente? Preencha com a informação mais precisa possível.
 
 #### 8. Etapas para a realização de um serviço
+Cada serviço possui etapas para a sua realização. Cada etapa deverá possuir as seguintes informações: 
 
-#### 9. Custos possíveis para a realização de um serviço
+##### 8.1. Título 
+Cada etapa deverá conter um título, que deve ser breve e bem explicativo.
 
-#### 10. Documentos necessários para a realização de um serviço
+##### 8.2. Descrição 
+Cada etapa poderá conter uma descrição, quando necessário.
 
-#### 11. Canais de prestação do serviço
+##### 8.3. Custos possíveis para a realização de um serviço
+Se houver custos para o cidadão, inclua-os separadamente com uma descrição e valor, para a maior compreensão do cidadão.
 
-#### 12. Órgão responsável pelo serviço
+##### 8.4. Documentos necessários para a realização de um serviço
+Quais documentos são necessários para esta etapa do serviço? Inclua-os separadamente para a maior compreensão do cidadão.
 
-#### 13. Segmentos da sociedade impactados por este serviço
+##### 8.5. Canais de prestação do serviço
+Quais são as formas que o cidadão poderá obter este serviço? Seja web, seja presencial, inclua todas as formas deste serviço ser prestado. E se possível, escolha o canal preferencial para que o cidadão obtenha este serviço.
 
-#### 14. Áreas de interesse 
+#### 9. Órgão responsável pelo serviço
+Selecione o órgão responsável pelo serviço. Este item não será mais preenchido pelo servidor público no futuro, pois será automático a partir do seu cadastro.
 
-#### 15. Eventos da linha da vida
+#### 10. Segmentos da sociedade impactados por este serviço
+Selecione um ou mais segmentos da sociedade que serão impactados por este serviço. Este tipo de informação nos ajuda a entregar a informação de forma mais prática futuramente.
 
-#### 16. Palavras-chave
+#### 11. Áreas de interesse 
 
-#### 17. Legislação de um serviço
+#### 12. Eventos da linha da vida
+
+#### 13. Palavras-chave
+
+#### 14. Legislação de um serviço
