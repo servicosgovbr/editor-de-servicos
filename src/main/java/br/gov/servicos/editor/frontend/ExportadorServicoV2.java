@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.servicos.MapaVcge20;
 import br.gov.servicos.editor.servicos.Servico;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
@@ -21,12 +20,10 @@ import static lombok.AccessLevel.PRIVATE;
 public class ExportadorServicoV2 {
 
     Slugify slugify;
-    private MapaVcge20 mapaVcge20;
 
     @Autowired
-    public ExportadorServicoV2(Slugify slugify, MapaVcge20 mapaVcge20) {
+    public ExportadorServicoV2(Slugify slugify) {
         this.slugify = slugify;
-        this.mapaVcge20 = mapaVcge20;
     }
 
     public Document exportar(Servico servico) {
