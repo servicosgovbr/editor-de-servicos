@@ -15,6 +15,7 @@
 
     <th:block th:each="canal, rowCanal : *{etapas[__${row?.index ?: 0}__].canaisDePrestacao}">
         <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].tipo}">
+            <option value="">Selecione…</option>
             <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
                     th:value="${tipo}"
                     th:text="${tipo}">Tipo de canal</option>
@@ -49,6 +50,7 @@
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.canaisDePrestacao == null || etapas[__${row?.index ?: 0}__]?.canaisDePrestacao?.isEmpty()}">
         <select class="inline" th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].tipo}">
+            <option value="">Selecione…</option>
             <option th:each="tipo : ${@tiposDeCanalDePrestacao}"
                     th:value="${tipo}"
                     th:text="${tipo}">Tipo de canal</option>
