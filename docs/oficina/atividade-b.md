@@ -33,14 +33,6 @@ Trabalharemos juntos na edição dos serviços, aprendendo na prática a utiliza
 * Celular desligado e foco total no Editor.
 
 
-### Materiais
-* Adesivos de identificação
-* Pranchetas com material para facilitadores realizarem anotações
-* Canetas comuns
-* Canetinhas Sharpie
-* 8 computadores com acesso à internet
-
-
 ### Grupos
 
 **Grupo A**
