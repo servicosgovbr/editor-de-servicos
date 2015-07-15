@@ -53,9 +53,13 @@ Selecione o órgão responsável pelo serviço. Este item não será mais preenc
 Selecione um ou mais segmentos da sociedade que serão impactados por este serviço. Este tipo de informação nos ajuda a entregar a informação de forma mais prática futuramente.
 
 #### 11. Áreas de interesse 
+Selecione as áreas de interesse que fazem interesse para este serviço. As áreas de interesse são os tipos de informação que está relacionado ao serviço. Selecione ao menos uma área de interesse.
 
 #### 12. Eventos da linha da vida
+Os eventos da linha da vida são os tipos de informação que acontecem na vida de um cidadão e que estão relacionados a este serviço. Selecione ao menos um evento da linha da vida.
 
 #### 13. Palavras-chave
+Descreva pelo menos três palavras que tem relação com o serviço. Isso será útil para melhorar as ferramentas de busca internas e externas ao portal.
 
 #### 14. Legislação de um serviço
+Neste campo você deve colocar o link da legislação que rege este serviço. Este link deve obrigatoriamente vir do site LEXML.
