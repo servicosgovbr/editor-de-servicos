@@ -20,7 +20,8 @@
         <div th:replace="form/dados-complementares :: #passo-4"></div>
 
         <p th:if="*{metadados?.revisao}"
-           th:text="|Última edição por ${servico?.metadados?.autor}, em ${#dates.format(servico?.metadados?.horario, 'dd/MMM/yyyy HH:mm')}|">
+           th:with="data = ${#dates.format(servico?.metadados?.horario, 'dd/MMM/yyyy HH:mm')}"
+           th:text="|Última edição por ${servico?.metadados?.autor}, em ${data}|">
         </p>
 
         <button id="salvar">
