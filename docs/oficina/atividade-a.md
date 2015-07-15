@@ -8,9 +8,3 @@ Cada participante deve se apresentar e apresentar o órgão que representa.
 
 **Parte 2: Conversa**
 Queremos ouvir o que vocês tem visto sobre melhores práticas e ideias para descrever serviços.
-
-### Materiais
-* Post-its
-* Adesivos de identificação
-* Folhas A4
-* Canetinhas Sharpie
