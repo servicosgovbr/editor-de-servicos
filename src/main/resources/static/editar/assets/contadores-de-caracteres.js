@@ -5,7 +5,7 @@ jQuery(function ($) {
   }
 
   var criaContador = function () {
-    return '<div class="counter">Número de caracteres: <span id="' + id(this.id) + '"></span></div>';
+    return '<div class="counter">Caracteres restantes: <span id="' + id(this.id) + '"></span></div>';
   };
 
   var ativaContador = function () {
