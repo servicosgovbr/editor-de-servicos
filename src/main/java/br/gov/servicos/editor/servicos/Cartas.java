@@ -250,7 +250,7 @@ public class Cartas {
     @SneakyThrows
     private void escreve(Document document, Path arquivo) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
-            writer.write(document.toString());
+            writer.write(document.toString().replace("xsi:schemalocation", "xsi:schemaLocation")); // TODO: Jsoup faz lowercase de atributos :(
         }
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }
