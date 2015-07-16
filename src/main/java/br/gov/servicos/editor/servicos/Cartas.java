@@ -140,7 +140,7 @@ public class Cartas {
     @SneakyThrows
     private void push(Git git, String id) {
         log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-        if (fazerPush) {
+        if (fazerPush && !id.equals("novo")) {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
                     .setRefSpecs(new RefSpec(id + ":" + id))
