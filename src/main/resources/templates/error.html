@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Erro</title>
+</head>
+
+<body>
+<section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
+
+    <h1><i class="fa fa-bomb"></i> Ocorreu um erro</h1>
+
+    <p>
+        A aplicação detectou uma falha inesperada. Por favor, tente a operação novamente.
+    </p>
+
+    <p>
+        Caso a falha persista, entre em contato com o suporte utilizando o identificador
+        <span class="ticket-erro" th:text="${#httpServletRequest.getAttribute('req.ticket').substring(24)}"></span>.
+    </p>
+
+</section>
+<div class="modal">&nbsp;</div>
+</body>
+</html>
