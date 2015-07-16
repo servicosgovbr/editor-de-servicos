@@ -39,6 +39,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .withUser("mauricio.formiga@planejamento.gov.br").password(hash).roles(SUPER).and()
                 .withUser("fabricio.fontenele@planejamento.gov.br").password(hash).roles(SUPER).and()
+
                 .withUser("silvia.belarmino@planejamento.gov.br").password(hash).roles(ADMIN).and()
                 .withUser("everson.aguiar@planejamento.gov.br").password(hash).roles(ADMIN).and()
 
@@ -46,9 +47,14 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("oliviaj@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                 .withUser("srosa@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                 .withUser("jkirchne@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
-                .withUser("joelson.vellozo@planejamento.gov.br").password(hash).roles(PUBLICADOR).and()
 
                 // usuarios da oficina 16/jul
+
+                .withUser("andrea.ricciardi@planejamento.gov.br").password(hash2).roles(PUBLICADOR).and()
+                .withUser("joelson.vellozo@planejamento.gov.br").password(hash2).roles(PUBLICADOR).and()
+                .withUser("bruno.palvarini@planejamento.gov.br").password(hash2).roles(PUBLICADOR).and()
+                .withUser("izabel.garcia@planejamento.gov.br").password(hash2).roles(PUBLICADOR).and()
+                .withUser("esau.mendes@planejamento.gov.br").password(hash2).roles(PUBLICADOR).and()
                 .withUser("martins@aneel.gov.br").password(hash2).roles(PUBLICADOR).and()
                 .withUser("alysson@aneel.gov.br").password(hash2).roles(PUBLICADOR).and()
                 .withUser("monica.ribeiro@mds.gov.br").password(hash2).roles(PUBLICADOR).and()
