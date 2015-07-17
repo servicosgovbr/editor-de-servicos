@@ -23,7 +23,7 @@
                    class="inline inline-xg"
                    th:field="*{legislacoes[__${row.index}__]}"
                    th:value="${legislacao}"
-                   placeholder="http://"/>
+                   />
 
             <button type="submit" class="inline remove-peq" name="removerLegislacao" th:value="${row.index}">
                 <span class="fa fa-times"></span>
@@ -35,7 +35,7 @@
                    class="inline inline-xg"
                    th:field="*{legislacoes[0]}"
                    value=""
-                   placeholder="http://"/>
+                   />
 
             <button type="submit" class="inline remove-peq" name="removerLegislacao" value="0">
                 <span class="fa fa-times"></span>

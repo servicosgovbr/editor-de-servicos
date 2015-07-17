@@ -14,7 +14,7 @@
     </p>
 
     <th:block th:each="custo, rowCusto : *{etapas[__${row?.index ?: 0}__].custos}">
-        <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
+        <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].descricao}" type="text"/>
         R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[__${rowCusto.index}__].valor}" class="inline"/>
 
         <button type="submit" class="inline remove-peq" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">
@@ -23,7 +23,7 @@
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.custos == null || etapas[__${row?.index ?: 0}__]?.custos.isEmpty()}">
-        <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].descricao}" type="text" placeholder="Ex.: Taxa de emissão"/>
+        <input class="inline inline-lg" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].descricao}" type="text"/>
         R$ <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].custos[0].valor}" class="inline"/>
 
         <button type="submit" class="inline remove-peq" name="removerCusto" th:value="${__${row?.index ?: 0}__ + ',' + __${rowCusto?.index ?: 0}__}">

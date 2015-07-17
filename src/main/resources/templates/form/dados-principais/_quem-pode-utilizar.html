@@ -19,7 +19,7 @@
                    class="inline inline-xg"
                    th:field="*{solicitantes[__${row.index}__]}"
                    th:value="${solicitante}"
-                   placeholder="Ex.: Deficientes físicos"/>
+                   />
 
             <button type="submit" class="inline remove-peq" name="removerSolicitante" th:value="${row.index}">
                 <span class="fa fa-times"></span>
@@ -31,7 +31,7 @@
                    class="inline inline-xg"
                    th:field="*{solicitantes[0]}"
                    value=""
-                   placeholder="Ex.: Deficientes físicos"/>
+                   />
 
             <button type="submit" class="inline remove-peq" name="removerSolicitante" th:value="0">
                 <span class="fa fa-times"></span>

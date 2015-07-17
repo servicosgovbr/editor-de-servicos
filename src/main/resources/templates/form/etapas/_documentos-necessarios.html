@@ -14,7 +14,7 @@
     </p>
 
     <th:block th:each="documento, rowDocs : *{etapas[__${row?.index ?: 0}__].documentos}">
-        <input type="text" class="inline inline-xg" th:field="*{etapas[__${row?.index ?: 0}__].documentos[__${rowDocs.index}__]}" placeholder="Ex.: RG"/>
+        <input type="text" class="inline inline-xg" th:field="*{etapas[__${row?.index ?: 0}__].documentos[__${rowDocs.index}__]}"/>
 
         <button type="submit" class="inline remove-peq" name="removerDocumento" th:value="${__${row?.index ?: 0}__ + ',' + __${rowDocs?.index ?: 0}__}">
             <span class="fa fa-times"></span>
@@ -22,7 +22,7 @@
     </th:block>
 
     <th:block th:if="*{etapas[__${row?.index ?: 0}__]?.documentos == null || etapas[__${row?.index ?: 0}__]?.documentos.isEmpty()}">
-        <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].documentos[0]}" placeholder="Ex.: RG"/>
+        <input type="text" th:field="*{etapas[__${row?.index ?: 0}__].documentos[0]}"/>
     </th:block>
 
     <button name="adicionarDocumento" th:value="${row?.index ?: 0}" type="submit">

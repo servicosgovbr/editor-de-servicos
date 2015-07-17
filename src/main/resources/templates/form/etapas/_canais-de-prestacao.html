@@ -35,13 +35,13 @@
 
         <label class="titulo">
             Texto para mostrar ao cidadão
-            <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
+            <input class="" type="text"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].titulo}"/>
         </label>
 
         <label class="referencia">
             <span>Link/URL</span>
-            <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
+            <input class="" type="text"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[__${rowCanal.index}__].referencia}"/>
         </label>
     </div>
@@ -67,13 +67,13 @@
 
         <label class="titulo">
             Texto para mostrar ao cidadão
-            <input class="" type="text" placeholder="Ex.: Inscreva-se no programa"
+            <input class="" type="text"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].titulo}"/>
         </label>
 
         <label class="referencia">
             <span>Link/URL</span>
-            <input class="" type="text" placeholder="Ex.: www.orgao.gov.br"
+            <input class="" type="text"
                    th:field="*{etapas[__${row?.index ?: 0}__].canaisDePrestacao[0].referencia}"/>
         </label>
     </div>
