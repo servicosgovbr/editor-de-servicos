@@ -21,8 +21,7 @@ public class ConteudoDeReferencia {
                 "Caixa postal",
                 "Aplicativo móvel",
                 "SMS",
-                "Fax",
-                "Rede social"
+                "Fax"
         );
     }
 
