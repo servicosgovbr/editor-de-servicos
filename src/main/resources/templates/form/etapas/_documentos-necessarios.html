@@ -7,7 +7,7 @@
 <body>
 <fieldset>
     <a th:id="${'etapas[' + __${row?.index ?: 0}__ + '].documentos'}"></a>
-    <h3>Documentos necessários</h3>
+    <h3>Documentação necessária</h3>
 
     <p>
         Adicione documentos, certidões ou declarações necessárias para esta etapa:
@@ -27,7 +27,7 @@
 
     <button name="adicionarDocumento" th:value="${row?.index ?: 0}" type="submit">
         <i class="fa fa-plus"></i>&nbsp;
-        Adicionar Documento
+        Adicionar documentação
     </button>
 
 </fieldset>
