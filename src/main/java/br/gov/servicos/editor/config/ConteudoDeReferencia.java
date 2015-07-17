@@ -18,7 +18,7 @@ public class ConteudoDeReferencia {
                 "Presencial",
                 "Telefone",
                 "E-mail",
-                "Caixa postal",
+                "Postal",
                 "Aplicativo móvel",
                 "SMS",
                 "Fax"
