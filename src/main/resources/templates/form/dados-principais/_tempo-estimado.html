@@ -13,17 +13,17 @@
         do dever descrito neste serviço?
     </p>
 
-    <label th:for="*{#ids.next('tempoEstimado.tipo')}">
-        <input type="radio"
-               th:value="entre"
-               th:field="*{tempoEstimado.tipo}"
-               th:checked="${servico.tempoEstimado?.tipo == 'entre'}"/>
+    <select id="tempoEstimado-tipo" class="inline" th:field="*{tempoEstimado.tipo}">
+        <option value="">Selecione…</option>
+        <option value="entre">Entre</option>
+        <option value="até">Até</option>
+    </select>
 
-        Entre
-
+    <span id="tempoEstimado-entre" class="tempoEstimado-selecao" style="display: none">
         <input class="inline" type="text" th:field="*{tempoEstimado.entreMinimo}"/>
 
         <select class="inline" th:field="*{tempoEstimado.entreTipoMinimo}">
+            <option value="">Selecione…</option>
             <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
                     th:selected="${servico.tempoEstimado?.entreTipoMinimo == medida}"></option>
         </select>
@@ -33,26 +33,21 @@
         <input class="inline" type="text" th:field="*{tempoEstimado.entreMaximo}"/>
 
         <select class="inline" th:field="*{tempoEstimado.entreTipoMaximo}">
+            <option value="">Selecione…</option>
             <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
                     th:selected="${servico.tempoEstimado?.entreTipoMaximo == medida}"></option>
         </select>
-    </label>
+    </span>
 
-    <label th:for="*{#ids.next('tempoEstimado.tipo')}">
-        <input type="radio"
-               th:value="até"
-               th:field="*{tempoEstimado.tipo}"
-               th:checked="${servico.tempoEstimado?.tipo == 'até'}"/>
-
-        Até
-
+    <span id="tempoEstimado-até" class="tempoEstimado-selecao" style="display: none">
         <input class="inline" type="text" th:field="*{tempoEstimado.ateMaximo}"/>
 
         <select class="inline" th:field="*{tempoEstimado.ateTipoMaximo}">
+            <option value="">Selecione…</option>
             <option th:each="medida : ${@medidasDeTempo}" th:value="${medida}" th:text="${medida}"
                     th:selected="${servico.tempoEstimado?.ateTipoMaximo == medida}"></option>
         </select>
-    </label>
+    </span>
 
     <p>
         Existem exceções ao tempo estimado? Quais?

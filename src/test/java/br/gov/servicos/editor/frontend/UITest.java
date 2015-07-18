@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Main.class)
@@ -33,7 +34,7 @@ public class UITest {
     int port;
 
     String baseUrl;
-    private String senha;
+    String senha;
 
     @Before
     public void setUp() throws Exception {
@@ -141,12 +142,14 @@ public class UITest {
     }
 
     private void preencherTempoEstimado() {
-        driver.findElement(By.id("tempoEstimado.tipo1")).click();
-        driver.findElement(By.id("tempoEstimado.entreMinimo")).sendKeys("12");
-        new Select(driver.findElement(By.id("tempoEstimado.entreTipoMinimo"))).selectByValue("dias úteis");
+        new Select(driver.findElement(By.id("tempoEstimado-tipo"))).selectByValue("entre");
+        assertTrue(driver.findElement(By.id("tempoEstimado-entre")).isDisplayed());
 
-        driver.findElement(By.id("tempoEstimado.entreMaximo")).sendKeys("18");
-        new Select(driver.findElement(By.id("tempoEstimado.entreTipoMaximo"))).selectByValue("dias úteis");
+        driver.findElement(By.id("tempoEstimado.entreMinimo")).sendKeys("30");
+        new Select(driver.findElement(By.id("tempoEstimado.entreTipoMinimo"))).selectByValue("minutos");
+
+        driver.findElement(By.id("tempoEstimado.entreMaximo")).sendKeys("2");
+        new Select(driver.findElement(By.id("tempoEstimado.entreTipoMaximo"))).selectByValue("horas");
 
         driver.findElement(By.id("tempoEstimado.excecoes")).sendKeys("Para solicitantes dos tipos C, D e E, o processo pode levar mais tempo.");
     }
