@@ -5,7 +5,7 @@
 <head>
 </head>
 <body>
-<fieldset class="servico-gratuito-nao-toggle" th:style="${servico.gratuito ? 'display: none' : 'display: block'}">
+<fieldset class="servico-gratuito-nao-toggle" th:style="${servico.gratuito != null and servico.gratuito ? 'display: none' : 'display: block'}">
     <a th:id="${'etapas[' + __${row?.index ?: 0}__ + '].custos'}"></a>
     <h3>Custos desta etapa do serviço</h3>
 

@@ -49,7 +49,9 @@ public class UITest {
 
     @After
     public void tearDown() throws Exception {
-        driver.close();
+        if (driver != null) {
+            driver.close();
+        }
     }
 
     @Test
@@ -137,7 +139,7 @@ public class UITest {
     }
 
     private void preencherSituacao() {
-        driver.findElement(By.id("gratuito2")).click();
+        driver.findElement(By.id("servico-gratuito-nao")).click();
         driver.findElement(By.id("situacao1")).click();
     }
 
