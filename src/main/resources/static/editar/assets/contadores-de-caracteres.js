@@ -18,7 +18,6 @@ jQuery(function ($) {
       maxCount: maxLength
     };
 
-    console.log(opcoes);
     $(this).simplyCountable(opcoes);
   };
 
