@@ -67,7 +67,6 @@ public class ConteudoDeReferencia {
         return asList(
                 "minutos",
                 "horas",
-                "dias",
                 "dias corridos",
                 "dias úteis",
                 "meses"
