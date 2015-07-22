@@ -65,7 +65,7 @@ var EditorMarkdown = {
 	this.caracteres = m.prop(500);
   },
 
-  view: function(ctrl, args) {
+  view: function(ctrl) {
     return m('', [
       m('.editor-barra-ferramentas', [
         m('a', {
@@ -92,7 +92,7 @@ var DadosBasicos = {
     this.servico = args.servico;
   },
 
-  view: function (ctrl, args) {
+  view: function (ctrl) {
     return m('#dados-principais', [
       m('h2', 'Dados Principais'),
 
@@ -133,7 +133,7 @@ var Solicitantes = {
     };
 
   },
-  view: function (ctrl, args) {
+  view: function (ctrl) {
     return m('#solicitantes', [
       m('h2', 'Quem pode utilizar este serviço?'),
 
@@ -183,7 +183,7 @@ var TempoTotalEstimado = {
       this.servico.tempoTotalEstimado.tipo(e.target.value);
     };
   },
-  view: function (ctrl, args) {
+  view: function (ctrl) {
     var unidades = [
       m("option[value='']", "Selecione…"),
       m("option[value='minutos']", "minutos"),
@@ -259,7 +259,7 @@ var OrgaoResponsavel = {
   controller: function() {
   	this.orgaos = m.request({ method: 'GET', url: '/editar/api/orgaos' });
   },
-  view: function(ctrl, args) {
+  view: function(ctrl) {
     return m('', [
       m("h3", "Órgão responsável"),
       m("select", ctrl.orgaos().map(function(orgao) {
@@ -273,13 +273,30 @@ var SegmentosDaSociedade = {
   controller: function() {
     this.segmentosDaSociedade = m.request({ method: 'GET', url: '/editar/api/segmentos-da-sociedade' });
   },
-  view: function(ctrl, args) {
+  view: function(ctrl) {
     return m('', [
       m("h3", "Segmentos da sociedade"),
       m("", ctrl.segmentosDaSociedade().map(function(segmento) {
         return m('label', [
           m("input[type=checkbox]", { value: segmento }),
           segmento
+        ]);
+      }))
+    ]);
+  }
+};
+
+var EventosDaLinhaDaVida = {
+  controller: function() {
+    this.eventosDaLinhaDaVida = m.request({ method: 'GET', url: '/editar/api/eventos-da-linha-da-vida' });
+  },
+  view: function(ctrl) {
+    return m('', [
+      m("h3", "Eventos da linha da vida"),
+      m("", ctrl.eventosDaLinhaDaVida().map(function(evento) {
+        return m('label', [
+          m("input[type=checkbox]", { value: evento }),
+          evento
         ]);
       }))
     ]);
@@ -294,8 +311,9 @@ var DadosComplementares = {
       m('h2', 'Dados Complementares'),
 
       m('fieldset', [
-        m.component(OrgaoResponsavel, {}),
-        m.component(SegmentosDaSociedade, {})
+        m.component(OrgaoResponsavel),
+        m.component(SegmentosDaSociedade),
+        m.component(EventosDaLinhaDaVida)
       ])
     ]);
   }
