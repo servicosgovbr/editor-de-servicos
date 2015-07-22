@@ -124,7 +124,7 @@ var DadosBasicos = {
       ])
     ]);
   }
-}
+};
 
 var Solicitantes = {
   controller: function (args) {
