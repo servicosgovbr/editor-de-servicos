@@ -21,6 +21,10 @@ var EditorDeServicos = {
         tempoTotalEstimado: ctrl.servico.tempoTotalEstimado()
       }),
 
+      m.component(Etapas, {
+        etapas: ctrl.servico.etapas()
+      }),
+
       m.component(DadosComplementares, {
         servico: ctrl.servico
       }),

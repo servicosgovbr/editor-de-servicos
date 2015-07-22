@@ -7,6 +7,12 @@ models.id = (function() {
   }
 })();
 
+models.Etapa = function(data) {
+  var data = (data || {});
+  this.id = models.id('etapa');
+  this.titulo = m.prop(data.titulo || '');
+};
+
 models.Solicitante = function (data) {
   var data = (data || {});
   this.id = models.id('solicitante');
@@ -22,6 +28,7 @@ models.Servico = function (data) {
   this.descricao = m.prop(data.descricao || '');
   this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new models.TempoTotalEstimado());
+  this.etapas = m.prop(data.etapas || []);
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
