@@ -255,6 +255,34 @@ var TempoTotalEstimado = {
   }
 };
 
+var OrgaoResponsavel = {
+  controller: function() {
+  	this.orgaos = m.request({ method: 'GET', url: '/editar/api/orgaos' });
+  },
+  view: function(ctrl, args) {
+    return m('', [
+      m("h3", "Órgão responsável"),
+      m("select[id='orgao'][name='orgao']", ctrl.orgaos().map(function(orgao, i) {
+        return m("option", { value: orgao.id }, orgao.nome);
+      }))
+    ]);
+  }
+}
+
+var DadosComplementares = {
+  controller: function() {
+  },
+  view: function(ctrl, args) {
+    return m('#dados-complementares', [
+      m('h2', 'Dados Complementares'),
+
+      m('fieldset', [
+      	m.component(OrgaoResponsavel, {}),
+      ])
+    ]);
+  }
+};
+
 var EditorDeServicos = {
   controller: function () {
     this.servico = new models.Servico();
@@ -275,6 +303,10 @@ var EditorDeServicos = {
       }),
 
       m.component(TempoTotalEstimado, {
+        servico: ctrl.servico
+      }),
+
+      m.component(DadosComplementares, {
         servico: ctrl.servico
       }),
 

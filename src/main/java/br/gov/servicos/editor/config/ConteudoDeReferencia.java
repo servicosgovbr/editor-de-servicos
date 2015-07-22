@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 public class ConteudoDeReferencia {
 
     @Bean
-    Collection<String> tiposDeCanalDePrestacao() {
+    public Collection<String> tiposDeCanalDePrestacao() {
         return asList(
                 "Web",
                 "Presencial",
@@ -26,7 +26,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    Collection<Orgao> orgaos() {
+    public Collection<Orgao> orgaos() {
         return asList(
                 new Orgao("arquivo-nacional-an", "Arquivo Nacional (AN)"),
                 new Orgao("banco-central-do-brasil-bcb", "Banco Central do Brasil (BCB)"),
@@ -74,7 +74,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    Collection<String> segmentosDaSociedade() {
+    public Collection<String> segmentosDaSociedade() {
         return asList(
                 "Cidadãos",
                 "Empresas",
@@ -84,7 +84,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    Collection<String> eventosDaLinhaDaVida() {
+    public Collection<String> eventosDaLinhaDaVida() {
         return asList(
                 "Apoio financeiro e crédito",
                 "Aposentadoria",
@@ -105,7 +105,7 @@ public class ConteudoDeReferencia {
     }
 
     @Bean
-    Collection<String> areasDeInteresse() {
+    public Collection<String> areasDeInteresse() {
         return asList(
                 "Administração",
                 "Agropecuária",

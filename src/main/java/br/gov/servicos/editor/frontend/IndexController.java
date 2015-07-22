@@ -3,11 +3,8 @@ package br.gov.servicos.editor.frontend;
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Servico;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -16,6 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class IndexController {
+
     @RequestMapping("/")
     RedirectView root() {
         return new RedirectView("/editar/");
@@ -25,11 +23,5 @@ class IndexController {
     ModelAndView index() {
         return new ModelAndView("index", "servico", new Servico()
                 .withMetadados(new Metadados()));
-    }
-
-    @RequestMapping("/editar/api/usuario")
-    @ResponseBody
-    User usuario(@AuthenticationPrincipal User usuario) {
-        return usuario;
     }
 }
