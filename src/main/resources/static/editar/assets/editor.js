@@ -1,17 +1,26 @@
 var models = {};
 
+models.id = (function() {
+  var counter = 0;
+    return function(base) {
+      return(base + '-' + counter++);
+  }
+})();
+
 models.Solicitante = function (data) {
   var data = (data || {});
+  this.id = models.id('solicitante');
   this.descricao = m.prop(data.descricao || '');
   this.requisitos = m.prop(data.requisitos || '');
 };
 
 models.Servico = function (data) {
   var data = (data || {});
+  this.id = models.id('servico');
   this.nome = m.prop(data.nome || '');
   this.nomesPopulares = m.prop(data.nomesPopulares || '');
   this.descricao = m.prop(data.descricao || '');
-  this.solicitantes = (data.solicitantes || []);
+  this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new models.TempoTotalEstimado());
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
@@ -23,6 +32,7 @@ models.Servico = function (data) {
 
 models.TempoTotalEstimado = function(data) {
   var data = (data || {});
+  this.id = models.id('tempo-total-estimado');
   this.tipo = m.prop(data.tipo || '');
   this.entreMinimo = m.prop(data.entreMinimo || '');
   this.entreTipoMinimo = m.prop(data.entreTipoMinimo || '');
@@ -128,14 +138,14 @@ var DadosBasicos = {
 
 var Solicitantes = {
   controller: function (args) {
-    this.servico = args.servico;
+    this.solicitantes = args.solicitantes;
 
     this.adicionar = function() {
-      this.servico.solicitantes.push(new models.Solicitante());
+      this.solicitantes.push(new models.Solicitante());
     };
 
     this.remover = function(i) {
-      this.servico.solicitantes.splice(i, 1);
+      this.solicitantes.splice(i, 1);
     };
 
   },
@@ -143,8 +153,10 @@ var Solicitantes = {
     return m('#solicitantes', [
       m('h2', 'Quem pode utilizar este serviço?'),
 
-      ctrl.servico.solicitantes.map(function(s, i) {
-        return m('fieldset', [
+      ctrl.solicitantes.map(function(s, i) {
+        return m('fieldset', {
+          key: s.id
+        }, [
           m('h3', 'Solicitante'),
 
           m("input.inline.inline-xg[type='text']", {
@@ -469,7 +481,7 @@ var EditorDeServicos = {
       }),
 
       m.component(Solicitantes, {
-        servico: ctrl.servico
+        solicitantes: ctrl.servico.solicitantes()
       }),
 
       m.component(TempoTotalEstimado, {
