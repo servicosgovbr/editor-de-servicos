@@ -30,9 +30,9 @@ class ApiController {
         return ref.areasDeInteresse();
     }
 
-    @RequestMapping("/eventos-das-linhas-da-vida")
+    @RequestMapping("/eventos-da-linha-da-vida")
     @ResponseBody
-    Collection<String> eventosDasLinhasDaVida(ConteudoDeReferencia ref) {
+    Collection<String> eventosDaLinhaDaVida(ConteudoDeReferencia ref) {
         return ref.eventosDaLinhaDaVida();
     }
 

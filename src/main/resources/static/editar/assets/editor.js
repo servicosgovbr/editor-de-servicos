@@ -262,12 +262,29 @@ var OrgaoResponsavel = {
   view: function(ctrl, args) {
     return m('', [
       m("h3", "Órgão responsável"),
-      m("select[id='orgao'][name='orgao']", ctrl.orgaos().map(function(orgao, i) {
+      m("select", ctrl.orgaos().map(function(orgao) {
         return m("option", { value: orgao.id }, orgao.nome);
       }))
     ]);
   }
-}
+};
+
+var SegmentosDaSociedade = {
+  controller: function() {
+    this.segmentosDaSociedade = m.request({ method: 'GET', url: '/editar/api/segmentos-da-sociedade' });
+  },
+  view: function(ctrl, args) {
+    return m('', [
+      m("h3", "Segmentos da sociedade"),
+      m("", ctrl.segmentosDaSociedade().map(function(segmento) {
+        return m('label', [
+          m("input[type=checkbox]", { value: segmento }),
+          segmento
+        ]);
+      }))
+    ]);
+  }
+};
 
 var DadosComplementares = {
   controller: function() {
@@ -277,7 +294,8 @@ var DadosComplementares = {
       m('h2', 'Dados Complementares'),
 
       m('fieldset', [
-      	m.component(OrgaoResponsavel, {}),
+        m.component(OrgaoResponsavel, {}),
+        m.component(SegmentosDaSociedade, {})
       ])
     ]);
   }
