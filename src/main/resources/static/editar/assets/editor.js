@@ -12,7 +12,7 @@ models.Servico = function (data) {
   this.nomesPopulares = m.prop(data.nomesPopulares || '');
   this.descricao = m.prop(data.descricao || '');
   this.solicitantes = (data.solicitantes || []);
-  this.tempoTotalEstimado = (data.tempoTotalEstimado || new models.TempoTotalEstimado());
+  this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new models.TempoTotalEstimado());
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
@@ -179,10 +179,10 @@ var Solicitantes = {
 
 var TempoTotalEstimado = {
   controller: function (args) {
-    this.servico = args.servico;
+    this.tempoTotalEstimado = args.tempoTotalEstimado;
 
     this.modificarTipo = function(e) {
-      this.servico.tempoTotalEstimado.tipo(e.target.value);
+      this.tempoTotalEstimado.tipo(e.target.value);
     };
   },
   view: function (ctrl) {
@@ -209,48 +209,48 @@ var TempoTotalEstimado = {
         ' ',
         m('span.ateTipo', {
           style: {
-            display: ctrl.servico.tempoTotalEstimado.tipo() == 'até' ? 'inline' : 'none'
+            display: ctrl.tempoTotalEstimado.tipo() == 'até' ? 'inline' : 'none'
           }
         }, [
           m("input.inline[type='text']", {
-            value: ctrl.servico.tempoTotalEstimado.ateMaximo(),
-            onchange: m.withAttr('value', ctrl.servico.tempoTotalEstimado.ateMaximo)
+            value: ctrl.tempoTotalEstimado.ateMaximo(),
+            onchange: m.withAttr('value', ctrl.tempoTotalEstimado.ateMaximo)
           }),
           " ",
           m("select.inline", {
-            onchange: m.withAttr('value', ctrl.servico.tempoTotalEstimado.ateTipoMaximo)
+            onchange: m.withAttr('value', ctrl.tempoTotalEstimado.ateTipoMaximo)
           }, unidades),
         ]),
         m('span.entreTipo', {
           style: {
-            display: ctrl.servico.tempoTotalEstimado.tipo() == 'entre' ? 'inline' : 'none'
+            display: ctrl.tempoTotalEstimado.tipo() == 'entre' ? 'inline' : 'none'
           }
         }, [
           m("input.inline[type='text']", {
-            value: ctrl.servico.tempoTotalEstimado.entreMinimo(),
-            onchange: m.withAttr('value', ctrl.servico.tempoTotalEstimado.entreMinimo)
+            value: ctrl.tempoTotalEstimado.entreMinimo(),
+            onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMinimo)
           }),
           " ",
           m("select.inline", {
-            onchange: m.withAttr('value', ctrl.servico.tempoTotalEstimado.entreTipoMinimo)
+            onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreTipoMinimo)
           }, unidades),
 
           " e ",
           m("input.inline[type='text']", {
-            value: ctrl.servico.tempoTotalEstimado.entreMaximo(),
-            onchange: m.withAttr('value', ctrl.servico.tempoTotalEstimado.entreMaximo)
+            value: ctrl.tempoTotalEstimado.entreMaximo(),
+            onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMaximo)
           }),
           " ",
           m("select.inline", {
-            onchange: m.withAttr('value', ctrl.servico.tempoTotalEstimado.entreTipoMaximo)
+            onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreTipoMaximo)
           }, unidades)
         ]),
 
         m("p", "Existem exceções ao tempo estimado? Quais?"),
         m.component(EditorMarkdown, {
           rows: 5,
-          oninput: m.withAttr('value', ctrl.servico.tempoTotalEstimado.excecoes),
-          value: ctrl.servico.tempoTotalEstimado.excecoes()
+          oninput: m.withAttr('value', ctrl.tempoTotalEstimado.excecoes),
+          value: ctrl.tempoTotalEstimado.excecoes()
         })
       ])
     ]);
@@ -473,7 +473,7 @@ var EditorDeServicos = {
       }),
 
       m.component(TempoTotalEstimado, {
-        servico: ctrl.servico
+        tempoTotalEstimado: ctrl.servico.tempoTotalEstimado()
       }),
 
       m.component(DadosComplementares, {
