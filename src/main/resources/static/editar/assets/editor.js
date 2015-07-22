@@ -17,6 +17,7 @@ models.Servico = function (data) {
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
   this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
+  this.palavrasChave = m.prop(data.palavrasChave || '');
 };
 
 models.TempoTotalEstimado = function(data) {
@@ -376,6 +377,21 @@ var AreasDeInteresse = {
   }
 };
 
+var PalavrasChave = {
+  controller: function(args) {
+    this.servico = args.servico;
+  },
+  view: function(ctrl) {
+    return m('', [
+      m('h3', 'Palavras-chave'),
+      m('input[type=text]', {
+        onchange: m.withAttr('value', ctrl.servico.palavrasChave),
+        value: ctrl.servico.palavrasChave()
+      })
+    ]);
+  }
+};
+
 var DadosComplementares = {
   controller: function(args) {
     this.servico = args.servico;
@@ -389,6 +405,7 @@ var DadosComplementares = {
         m.component(SegmentosDaSociedade, { servico: ctrl.servico }),
         m.component(EventosDaLinhaDaVida, { servico: ctrl.servico }),
         m.component(AreasDeInteresse, { servico: ctrl.servico }),
+        m.component(PalavrasChave, { servico: ctrl.servico })
       ])
     ]);
   }
