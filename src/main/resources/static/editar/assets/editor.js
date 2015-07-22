@@ -14,6 +14,7 @@ models.Servico = function (data) {
   this.solicitantes = (data.solicitantes || []);
   this.tempoTotalEstimado = (data.tempoTotalEstimado || new models.TempoTotalEstimado());
   this.orgao = m.prop(data.orgao || '');
+  this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
 };
 
 models.TempoTotalEstimado = function(data) {
@@ -154,12 +155,8 @@ var Solicitantes = {
           ]),
 
           m('h3', 'Requisitos'),
-          m('textarea', {
+          m.component(EditorMarkdown, {
             rows: 5,
-            style: {
-              maxWidth: '100%',
-              width: '100%'
-            },
             value: s.requisitos(),
             onchange: m.withAttr('value', s.requisitos)
           })
@@ -277,7 +274,21 @@ var OrgaoResponsavel = {
 };
 
 var SegmentosDaSociedade = {
-  controller: function() {
+  controller: function(args) {
+    this.servico = args.servico;
+
+    this.adicionar = function(e) {
+      var segmento = e.target.value;
+      var segmentos = this.servico.segmentosDaSociedade();
+
+      segmentos = _.without(segmentos, segmento);
+      if (e.target.checked) {
+        segmentos.push(segmento);
+      }
+
+      this.servico.segmentosDaSociedade(segmentos);
+    };
+
     this.segmentosDaSociedade = m.request({ method: 'GET', url: '/editar/api/segmentos-da-sociedade' });
   },
   view: function(ctrl) {
@@ -285,7 +296,11 @@ var SegmentosDaSociedade = {
       m("h3", "Segmentos da sociedade"),
       m("", ctrl.segmentosDaSociedade().map(function(segmento) {
         return m('label', [
-          m("input[type=checkbox]", { value: segmento }),
+          m("input[type=checkbox]", {
+            value: segmento,
+            checked: _.contains(ctrl.servico.segmentosDaSociedade(), segmento),
+            onchange: ctrl.adicionar.bind(ctrl)
+		  }),
           segmento
         ]);
       }))
@@ -294,7 +309,8 @@ var SegmentosDaSociedade = {
 };
 
 var EventosDaLinhaDaVida = {
-  controller: function() {
+  controller: function(args) {
+    this.servico = args.servico;
     this.eventosDaLinhaDaVida = m.request({ method: 'GET', url: '/editar/api/eventos-da-linha-da-vida' });
   },
   view: function(ctrl) {
@@ -311,7 +327,8 @@ var EventosDaLinhaDaVida = {
 };
 
 var AreasDeInteresse = {
-  controller: function() {
+  controller: function(args) {
+    this.servico = args.servico;
     this.areasDeInteresse = m.request({ method: 'GET', url: '/editar/api/areas-de-interesse' });
   },
   view: function(ctrl) {
@@ -337,9 +354,9 @@ var DadosComplementares = {
 
       m('fieldset', [
         m.component(OrgaoResponsavel, { servico: ctrl.servico }),
-        m.component(SegmentosDaSociedade),
-        m.component(EventosDaLinhaDaVida),
-        m.component(AreasDeInteresse),
+        m.component(SegmentosDaSociedade, { servico: ctrl.servico }),
+        m.component(EventosDaLinhaDaVida, { servico: ctrl.servico }),
+        m.component(AreasDeInteresse, { servico: ctrl.servico }),
       ])
     ]);
   }
