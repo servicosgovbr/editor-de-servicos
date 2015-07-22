@@ -48,25 +48,44 @@ var Cabecalho = {
   }
 };
 
-var EditorMarkdown = function (config) {
-  return [
-    m('.editor-barra-ferramentas', [
-      m('a', {
-        alt: 'Adicionar link',
-        title: 'Adicionar link',
-        href: 'javascript:void(0)'
-      }, [m('i.fa.fa-link')]),
+var EditorMarkdown = {
 
-      m('a', {
-        alt: 'Adicionar item de lista',
-        title: 'Adicionar item de lista',
-        href: 'javascript:void(0)'
-      }, [m('i.fa.fa-list')])
+  controller: function(args) {
+	this.config = _.extend((args || {}), {
+	  style: {
+	    maxWidth: '100%',
+	    width: '100%'
+	  },
 
-    ]),
-    m('textarea', config)
-  ];
-}
+	  onkeyup: m.withAttr('value', function(txt) {
+	    this.caracteres(500 - txt.length);
+	  }.bind(this))
+	});
+
+	this.caracteres = m.prop(500);
+  },
+
+  view: function(ctrl, args) {
+    return m('', [
+      m('.editor-barra-ferramentas', [
+        m('a', {
+          alt: 'Adicionar link',
+          title: 'Adicionar link',
+          href: 'javascript:void(0)'
+        }, [m('i.fa.fa-link')]),
+
+        m('a', {
+          alt: 'Adicionar item de lista',
+          title: 'Adicionar item de lista',
+          href: 'javascript:void(0)'
+        }, [m('i.fa.fa-list')])
+      ]),
+
+      m('textarea', ctrl.config),
+      m('.counter', ['Caracteres restantes: ', m('span', ctrl.caracteres())])
+    ]);
+  }
+};
 
 var DadosBasicos = {
   controller: function (args) {
@@ -91,12 +110,8 @@ var DadosBasicos = {
         }),
 
         m('h3', 'Descrição do serviço'),
-        new EditorMarkdown({
+        m.component(EditorMarkdown, {
           rows: 10,
-          style: {
-            maxWidth: '100%',
-            width: '100%'
-          },
           oninput: m.withAttr('value', ctrl.servico.descricao),
           value: ctrl.servico.descricao()
         })
@@ -230,12 +245,8 @@ var TempoTotalEstimado = {
         ]),
 
         m("p", "Existem exceções ao tempo estimado? Quais?"),
-        new EditorMarkdown({
+        m.component(EditorMarkdown, {
           rows: 5,
-          style: {
-            maxWidth: '100%',
-            width: '100%'
-          },
           oninput: m.withAttr('value', ctrl.servico.tempoTotalEstimado.excecoes),
           value: ctrl.servico.tempoTotalEstimado.excecoes()
         })
