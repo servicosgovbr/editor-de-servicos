@@ -303,6 +303,23 @@ var EventosDaLinhaDaVida = {
   }
 };
 
+var AreasDeInteresse = {
+  controller: function() {
+    this.areasDeInteresse = m.request({ method: 'GET', url: '/editar/api/areas-de-interesse' });
+  },
+  view: function(ctrl) {
+    return m('', [
+      m("h3", "Áreas de interesse"),
+      m("", ctrl.areasDeInteresse().map(function(area) {
+        return m('label', [
+          m("input[type=checkbox]", { value: area }),
+          area
+        ]);
+      }))
+    ]);
+  }
+};
+
 var DadosComplementares = {
   controller: function() {
   },
@@ -313,7 +330,8 @@ var DadosComplementares = {
       m('fieldset', [
         m.component(OrgaoResponsavel),
         m.component(SegmentosDaSociedade),
-        m.component(EventosDaLinhaDaVida)
+        m.component(EventosDaLinhaDaVida),
+        m.component(AreasDeInteresse),
       ])
     ]);
   }
