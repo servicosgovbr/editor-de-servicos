@@ -15,6 +15,7 @@ models.Servico = function (data) {
   this.tempoTotalEstimado = (data.tempoTotalEstimado || new models.TempoTotalEstimado());
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
+  this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
 };
 
 models.TempoTotalEstimado = function(data) {
@@ -53,18 +54,18 @@ var Cabecalho = {
 var EditorMarkdown = {
 
   controller: function(args) {
-	this.config = _.extend((args || {}), {
-	  style: {
-	    maxWidth: '100%',
-	    width: '100%'
-	  },
+    this.config = _.extend((args || {}), {
+      style: {
+        maxWidth: '100%',
+        width: '100%'
+      },
 
-	  onkeyup: m.withAttr('value', function(txt) {
-	    this.caracteres(500 - txt.length);
-	  }.bind(this))
-	});
+      onkeyup: m.withAttr('value', function(txt) {
+        this.caracteres(500 - txt.length);
+      }.bind(this))
+    });
 
-	this.caracteres = m.prop(500);
+    this.caracteres = m.prop(500);
   },
 
   view: function(ctrl) {
@@ -256,7 +257,7 @@ var TempoTotalEstimado = {
 var OrgaoResponsavel = {
   controller: function(args) {
     this.servico = args.servico;
-  	this.orgaos = m.request({ method: 'GET', url: '/editar/api/orgaos' });
+    this.orgaos = m.request({ method: 'GET', url: '/editar/api/orgaos' });
   },
   view: function(ctrl) {
     return m('', [
@@ -300,7 +301,7 @@ var SegmentosDaSociedade = {
             value: segmento,
             checked: _.contains(ctrl.servico.segmentosDaSociedade(), segmento),
             onchange: ctrl.adicionar.bind(ctrl)
-		  }),
+          }),
           segmento
         ]);
       }))
@@ -311,14 +312,29 @@ var SegmentosDaSociedade = {
 var EventosDaLinhaDaVida = {
   controller: function(args) {
     this.servico = args.servico;
+
     this.eventosDaLinhaDaVida = m.request({ method: 'GET', url: '/editar/api/eventos-da-linha-da-vida' });
+    this.adicionar = function(e) {
+        var evento = e.target.value;
+        var eventos = this.servico.eventosDaLinhaDaVida();
+
+        eventos = _.without(eventos, evento);
+        if (e.target.checked) {
+            eventos.push(evento);
+        }
+        this.servico.eventosDaLinhaDaVida(eventos);
+    }
   },
   view: function(ctrl) {
     return m('', [
       m("h3", "Eventos da linha da vida"),
       m("", ctrl.eventosDaLinhaDaVida().map(function(evento) {
         return m('label', [
-          m("input[type=checkbox]", { value: evento }),
+          m("input[type=checkbox]", {
+            value: evento,
+            checked: _.contains(ctrl.servico.eventosDaLinhaDaVida(), evento),
+            onchange: ctrl.adicionar.bind(ctrl)
+          }),
           evento
         ]);
       }))
