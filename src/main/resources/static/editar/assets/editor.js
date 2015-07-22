@@ -18,6 +18,7 @@ models.Servico = function (data) {
   this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
   this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
   this.palavrasChave = m.prop(data.palavrasChave || '');
+  this.legislacoes = m.prop(data.legislacoes || []);
 };
 
 models.TempoTotalEstimado = function(data) {
@@ -170,7 +171,7 @@ var Solicitantes = {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m("i.fa.fa-plus"),
-        " Novo solicitante "
+        " Adicionar solicitante "
       ])
     ]);
   }
@@ -392,6 +393,46 @@ var PalavrasChave = {
   }
 };
 
+var Legislacao = {
+  controller: function(args) {
+    this.servico = args.servico;
+
+    this.adicionar = function() {
+      this.servico.legislacoes().push('');
+    };
+
+    this.remover = function(i) {
+      this.servico.legislacoes().splice(i, 1);
+    };
+  },
+  view: function(ctrl) {
+    return m('', [
+      m('h3', 'Legislações relacionadas ao serviço'),
+      m('.legislacoes', ctrl.servico.legislacoes().map(function(legislacao, i) {
+        return [
+          m('input.inline.inline-xg[type=text]', {
+            value: legislacao,
+            onchange: function(e) {
+              ctrl.servico.legislacoes()[i] = e.target.value;
+            }
+          }),
+          m('button.inline.remove-peq', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, [
+            m("span.fa.fa-times")
+          ])
+        ];
+      })),
+      m('button.adicionar-legislacao', {
+        onclick: ctrl.adicionar.bind(ctrl)
+      }, [
+        m("i.fa.fa-plus"),
+        " Adicionar legislação "
+      ])
+    ]);
+  }
+};
+
 var DadosComplementares = {
   controller: function(args) {
     this.servico = args.servico;
@@ -405,7 +446,8 @@ var DadosComplementares = {
         m.component(SegmentosDaSociedade, { servico: ctrl.servico }),
         m.component(EventosDaLinhaDaVida, { servico: ctrl.servico }),
         m.component(AreasDeInteresse, { servico: ctrl.servico }),
-        m.component(PalavrasChave, { servico: ctrl.servico })
+        m.component(PalavrasChave, { servico: ctrl.servico }),
+        m.component(Legislacao, { servico: ctrl.servico })
       ])
     ]);
   }
