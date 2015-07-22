@@ -29,14 +29,16 @@ models.TempoTotalEstimado = function(data) {
 
 var Cabecalho = {
   controller: function () {
-    this.login = 'cvillela@thoughtworks.com';
+    this.login = m.request({ method: 'GET', url:'/editar/api/usuario' }).then(function(data) {
+      return data.username;
+    });
   },
 
   view: function (ctrl) {
     return m('header', [
       m('.auto-grid', [
         m('#logout', [
-          m('span', [' ', ctrl.login, ' ']),
+          m('span', [' ', ctrl.login(), ' ']),
           m('button', [
             m('i.fa.fa-sign-out'), m.trust('&nbsp; Sair'),
           ])
