@@ -21,12 +21,28 @@ models.Documentacao = function(data) {
   this.outrosCasos = m.prop(data.outrosCasos || []);
 };
 
+models.Custo = function(data) {
+  var data = (data || {});
+  this.id = models.id('custos');
+  this.descricao = m.prop(data.descricao || '');
+  this.moeda = m.prop(data.moeda || '');
+  this.valor = m.prop(data.valor || '');
+};
+
+models.Custos = function(data) {
+  var data = (data || {});
+  this.id = models.id('custos');
+  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: [ new models.Custo({descricao: 'custo 1', moeda: 'R$', valor: '10,00'})]}));
+  this.outrosCasos = m.prop(data.outrosCasos || [ new models.Caso(({ descricao: 'No exterior', campos: [ new models.Custo({descricao: 'custo 2', moeda: 'US$', valor: '25,99'})]}))]);
+};
+
 models.Etapa = function(data) {
   var data = (data || {});
   this.id = models.id('etapa');
   this.titulo = m.prop(data.titulo || '');
   this.descricao = m.prop(data.descricao || '');
   this.documentacao = m.prop(data.documentacao || new models.Documentacao());
+  this.custos = m.prop(data.custos || new models.Custos());
 };
 
 models.Solicitante = function (data) {

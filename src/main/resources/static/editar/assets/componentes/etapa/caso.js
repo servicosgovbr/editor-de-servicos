@@ -1,7 +1,9 @@
 var etapa = etapa || {};
 
 etapa.Caso = function(componente) {
+
   return {
+
     controller: function(args) {
       this.caso = args.caso;
       this.padrao = args.padrao || false;
