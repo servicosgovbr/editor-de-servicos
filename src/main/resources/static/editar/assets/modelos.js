@@ -60,7 +60,7 @@ models.Etapa = function(data) {
   this.descricao = m.prop(data.descricao || '');
   this.documentos = m.prop(data.documentos || new models.Documentos());
   this.custos = m.prop(data.custos || new models.Custos());
-  this.canaisDePrestacao = m.prop(data.custos || new models.CanaisDePrestacao());
+  this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new models.CanaisDePrestacao());
 };
 
 models.Solicitante = function (data) {

@@ -48,7 +48,7 @@ class ApiController {
         return ref.segmentosDaSociedade();
     }
 
-    @RequestMapping("/tipos-de-canais-de-prestacao")
+    @RequestMapping("/tipos-de-canal-de-prestacao")
     @ResponseBody
     Collection<String> tiposDeCanalDePrestacao(ConteudoDeReferencia ref) {
         return ref.tiposDeCanalDePrestacao();

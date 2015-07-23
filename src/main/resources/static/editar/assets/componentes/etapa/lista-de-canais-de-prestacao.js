@@ -5,6 +5,8 @@ etapa.ListaDeCanaisDePrestacao = {
   controller: function(args) {
     this.canaisDePrestacao = args.campos;
 
+    this.tiposDeCanalDePrestacao = m.request({ method: 'GET', url: '/editar/api/tipos-de-canal-de-prestacao' });
+
     this.adicionar = function() {
       this.canaisDePrestacao().push(new models.CanalDePrestacao());
     };
@@ -18,7 +20,14 @@ etapa.ListaDeCanaisDePrestacao = {
     return m('.canais-de-prestacao', [
       ctrl.canaisDePrestacao().map(function(canalDePrestacao, i) {
         return m('.canal-de-prestacao', [
-          m('select', [ m('option', 'Selecione...')]),
+          m('select', {
+            onchange: m.withAttr('value', ctrl.canaisDePrestacao()[i].tipo)
+          }, [m('option', {value: ''}, 'Selecione...')].concat(ctrl.tiposDeCanalDePrestacao().map(function(tipoCanal){
+            return m('option', {
+              value: tipoCanal,
+              selected: ctrl.canaisDePrestacao()[i].tipo() == tipoCanal
+            }, tipoCanal)
+          }))),
           ' ',
           m('input.inline.inline-lg[type=text]', {
             value: canalDePrestacao.descricao(),
