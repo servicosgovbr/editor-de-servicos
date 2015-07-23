@@ -14,11 +14,7 @@ var DadosBasicos = {
           value: ctrl.servico.nome()
         }),
 
-        m('h3', 'Nomes populares'),
-        m('input[type=text]', {
-          onchange: m.withAttr('value', ctrl.servico.nomesPopulares),
-          value: ctrl.servico.nomesPopulares()
-        }),
+        m.component(NomesPopulares, { nomesPopulares: ctrl.servico.nomesPopulares }),
 
         m('h3', 'Descrição do serviço'),
         m.component(EditorMarkdown, {

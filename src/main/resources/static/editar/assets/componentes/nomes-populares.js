@@ -1,24 +1,24 @@
-var PalavrasChave = {
+var NomesPopulares = {
   controller: function(args) {
-    this.palavrasChave = args.palavrasChave;
+    this.nomesPopulares = args.nomesPopulares;
 
     this.adicionar = function() {
-      this.palavrasChave().push('');
+      this.nomesPopulares().push('');
     };
 
     this.remover = function(i) {
-      this.palavrasChave().splice(i, 1);
+      this.nomesPopulares().splice(i, 1);
     };
   },
   view: function(ctrl) {
     return m('', [
-      m('h3', 'Palavras-chave'),
-      m('.palavrasChave', ctrl.palavrasChave().map(function(legislacao, i) {
+      m('h3', 'Nomes populares'),
+      m('.nomesPopulares', ctrl.nomesPopulares().map(function(legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
             value: legislacao,
             onchange: function(e) {
-              ctrl.palavrasChave()[i] = e.target.value;
+              ctrl.nomesPopulares()[i] = e.target.value;
             }
           }),
           m('button.inline.remove-peq', {
@@ -28,11 +28,11 @@ var PalavrasChave = {
           ])
         ];
       })),
-      m('button.adicionar-palavra-chave', {
+      m('button.adicionar-nome-popular', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m("i.fa.fa-plus"),
-        " Adicionar palavra-chave "
+        " Adicionar nome popular "
       ])
     ]);
   }

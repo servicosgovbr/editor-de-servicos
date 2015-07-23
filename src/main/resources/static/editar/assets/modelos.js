@@ -24,7 +24,7 @@ models.Servico = function (data) {
   var data = (data || {});
   this.id = models.id('servico');
   this.nome = m.prop(data.nome || '');
-  this.nomesPopulares = m.prop(data.nomesPopulares || '');
+  this.nomesPopulares = m.prop(data.nomesPopulares || []);
   this.descricao = m.prop(data.descricao || '');
   this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new models.TempoTotalEstimado());
@@ -33,7 +33,7 @@ models.Servico = function (data) {
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
   this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
-  this.palavrasChave = m.prop(data.palavrasChave || '');
+  this.palavrasChave = m.prop(data.palavrasChave || []);
   this.legislacoes = m.prop(data.legislacoes || []);
 };
 
