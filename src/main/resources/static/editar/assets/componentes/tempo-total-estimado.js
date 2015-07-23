@@ -70,7 +70,7 @@ var TempoTotalEstimado = {
         }, unidades)
       ]),
 
-      m("p", "Existem exceções ao tempo estimado? Quais?"),
+      m("p", "Comentários sobre o tempo estimado"),
 
       m.component(EditorMarkdown, {
         rows: 5,
