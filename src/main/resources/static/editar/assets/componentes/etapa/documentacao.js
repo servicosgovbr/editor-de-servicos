@@ -10,8 +10,8 @@ etapa.Documentacao = {
     return m('#' + ctrl.documentacao().id, [
       m('h3', 'Documentação necessária'),
 
-      m.component(new etapa.Caso(etapa.Documentos), { padrao: true, caso: ctrl.documentacao().casoPadrao }),
-      m.component(new etapa.Casos(etapa.Documentos), { casos: ctrl.documentacao().outrosCasos })
+      m.component(new etapa.Caso(etapa.ListaDeDocumentos), { padrao: true, caso: ctrl.documentacao().casoPadrao }),
+      m.component(new etapa.Casos(etapa.ListaDeDocumentos), { casos: ctrl.documentacao().outrosCasos })
     ]);
   }
 

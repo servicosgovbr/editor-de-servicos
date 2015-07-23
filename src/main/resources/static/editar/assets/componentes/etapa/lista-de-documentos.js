@@ -1,6 +1,6 @@
 var etapa = etapa || {};
 
-etapa.Documentos = {
+etapa.ListaDeDocumentos = {
 
   controller: function(args) {
     this.documentos = args.campos;
