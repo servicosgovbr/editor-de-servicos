@@ -1,17 +1,17 @@
 var etapa = etapa || {};
 
-etapa.Documentacao = {
+etapa.Documentos = {
 
   controller: function(args) {
-    this.documentacao = args.documentacao;
+    this.documentos = args.documentos;
   },
 
   view: function(ctrl) {
-    return m('#' + ctrl.documentacao().id, [
+    return m('#' + ctrl.documentos().id, [
       m('h3', 'Documentação necessária'),
 
-      m.component(new etapa.Caso(etapa.ListaDeDocumentos), { padrao: true, caso: ctrl.documentacao().casoPadrao }),
-      m.component(new etapa.Casos(etapa.ListaDeDocumentos), { casos: ctrl.documentacao().outrosCasos })
+      m.component(new etapa.Caso(etapa.ListaDeDocumentos), { padrao: true, caso: ctrl.documentos().casoPadrao }),
+      m.component(new etapa.Casos(etapa.ListaDeDocumentos), { casos: ctrl.documentos().outrosCasos })
     ]);
   }
 

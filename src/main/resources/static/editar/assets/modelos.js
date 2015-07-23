@@ -14,16 +14,16 @@ models.Caso = function(data) {
   this.campos = m.prop(data.campos || []);
 };
 
-models.Documentacao = function(data) {
+models.Documentos = function(data) {
   var data = (data || {});
-  this.id = models.id('documentacao');
+  this.id = models.id('documentos');
   this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: []}));
   this.outrosCasos = m.prop(data.outrosCasos || []);
 };
 
 models.Custo = function(data) {
   var data = (data || {});
-  this.id = models.id('custos');
+  this.id = models.id('custo');
   this.descricao = m.prop(data.descricao || '');
   this.moeda = m.prop(data.moeda || '');
   this.valor = m.prop(data.valor || '');
@@ -41,7 +41,7 @@ models.Etapa = function(data) {
   this.id = models.id('etapa');
   this.titulo = m.prop(data.titulo || '');
   this.descricao = m.prop(data.descricao || '');
-  this.documentacao = m.prop(data.documentacao || new models.Documentacao());
+  this.documentos = m.prop(data.documentos || new models.Documentos());
   this.custos = m.prop(data.custos || new models.Custos());
 };
 
