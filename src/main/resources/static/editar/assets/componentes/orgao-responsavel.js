@@ -9,7 +9,7 @@ var OrgaoResponsavel = {
     return m('fieldset#orgao-responsavel', [
       m("h3", "Órgão responsável"),
       m("select", {
-        onchange: function(e) { ctrl.orgao(e.target.value); }
+        onchange: m.withAttr('value', ctrl.orgao)
       }, [m('option', {value: ''}, 'Selecione...')].concat(ctrl.todosOrgaos().map(function(orgao) {
         return m('option', {
           value: orgao.id,
