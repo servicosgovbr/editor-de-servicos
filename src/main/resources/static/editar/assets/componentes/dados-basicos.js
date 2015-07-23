@@ -8,12 +8,7 @@ var DadosBasicos = {
       m('h2', 'Dados Principais'),
 
       m('fieldset', [
-        m('h3', 'Nome do serviço'),
-        m('input[type=text]', {
-          onchange: m.withAttr('value', ctrl.servico.nome),
-          value: ctrl.servico.nome()
-        }),
-
+        m.component(Nome, { nome: ctrl.servico.nome }),
         m.component(NomesPopulares, { nomesPopulares: ctrl.servico.nomesPopulares }),
 
         m('h3', 'Descrição do serviço'),
