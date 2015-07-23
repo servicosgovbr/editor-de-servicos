@@ -13,7 +13,7 @@ etapa.Documentacao = {
       m.component(new etapa.Caso(etapa.Documentos), { padrao: true, caso: ctrl.documentacao().casoPadrao }),
 
       ctrl.documentacao().outrosCasos().map(function(caso) {
-        return m.component(etapa.Caso, { caso: caso });
+        return m.component(new etapa.Caso(etapa.Documentos), { caso: m.prop(caso) });
       })
     ]);
   }
