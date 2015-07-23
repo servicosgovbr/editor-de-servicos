@@ -11,6 +11,7 @@ models.Etapa = function(data) {
   var data = (data || {});
   this.id = models.id('etapa');
   this.titulo = m.prop(data.titulo || '');
+  this.descricao = m.prop(data.descricao || '');
 };
 
 models.Solicitante = function (data) {
