@@ -1,4 +1,5 @@
 var Legislacoes = {
+
   controller: function(args) {
     this.legislacoes = args.legislacoes;
 
@@ -10,6 +11,7 @@ var Legislacoes = {
       this.legislacoes().splice(i, 1);
     };
   },
+
   view: function(ctrl) {
     return m('', [
       m('h3', 'Legislações relacionadas ao serviço'),

@@ -1,4 +1,5 @@
 var NomesPopulares = {
+
   controller: function(args) {
     this.nomesPopulares = args.nomesPopulares;
 
@@ -10,6 +11,7 @@ var NomesPopulares = {
       this.nomesPopulares().splice(i, 1);
     };
   },
+
   view: function(ctrl) {
     return m('', [
       m('h3', 'Nomes populares'),

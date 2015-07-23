@@ -1,4 +1,5 @@
 var TempoTotalEstimado = {
+
   controller: function (args) {
     this.tempoTotalEstimado = args.tempoTotalEstimado;
 
@@ -6,6 +7,7 @@ var TempoTotalEstimado = {
       this.tempoTotalEstimado.tipo(e.target.value);
     };
   },
+
   view: function (ctrl) {
     var unidades = [
       m("option[value='']", "Selecione…"),

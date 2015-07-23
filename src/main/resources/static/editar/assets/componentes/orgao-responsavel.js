@@ -1,8 +1,10 @@
 var OrgaoResponsavel = {
+
   controller: function(args) {
     this.orgao = args.orgao;
     this.orgaos = m.request({ method: 'GET', url: '/editar/api/orgaos' });
   },
+
   view: function(ctrl) {
     return m('', [
       m("h3", "Órgão responsável"),

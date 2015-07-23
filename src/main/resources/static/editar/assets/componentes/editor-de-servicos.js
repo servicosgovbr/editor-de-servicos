@@ -1,4 +1,5 @@
 var EditorDeServicos = {
+
   controller: function () {
     this.servico = new models.Servico();
 

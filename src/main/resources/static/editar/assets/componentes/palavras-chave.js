@@ -1,4 +1,5 @@
 var PalavrasChave = {
+
   controller: function(args) {
     this.palavrasChave = args.palavrasChave;
 
@@ -10,6 +11,7 @@ var PalavrasChave = {
       this.palavrasChave().splice(i, 1);
     };
   },
+
   view: function(ctrl) {
     return m('', [
       m('h3', 'Palavras-chave'),

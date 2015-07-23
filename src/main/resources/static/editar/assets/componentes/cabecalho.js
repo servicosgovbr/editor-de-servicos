@@ -1,4 +1,5 @@
 var Cabecalho = {
+
   controller: function () {
     this.login = m.request({ method: 'GET', url:'/editar/api/usuario' }).then(function(data) {
       return data.username;

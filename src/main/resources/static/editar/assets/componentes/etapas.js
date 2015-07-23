@@ -1,4 +1,5 @@
 var Etapas = {
+
   controller: function(args) {
     this.etapas = args.etapas;
 

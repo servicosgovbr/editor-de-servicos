@@ -1,4 +1,5 @@
 var AreasDeInteresse = {
+
   controller: function(args) {
     this.areasDeInteresse = args.areasDeInteresse;
     this.todasAreasDeInteresse = m.request({ method: 'GET', url: '/editar/api/areas-de-interesse' });
@@ -14,6 +15,7 @@ var AreasDeInteresse = {
       this.areasDeInteresse(areas);
     }
   },
+
   view: function(ctrl) {
     return m('', [
       m("h3", "Áreas de interesse"),

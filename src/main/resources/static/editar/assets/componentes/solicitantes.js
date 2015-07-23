@@ -1,4 +1,5 @@
 var Solicitantes = {
+
   controller: function (args) {
     this.solicitantes = args.solicitantes;
 
@@ -9,8 +10,8 @@ var Solicitantes = {
     this.remover = function(i) {
       this.solicitantes.splice(i, 1);
     };
-
   },
+
   view: function (ctrl) {
     return m('#solicitantes', [
       m('h2', 'Quem pode utilizar este serviço?'),

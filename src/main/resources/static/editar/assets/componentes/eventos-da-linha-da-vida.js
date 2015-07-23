@@ -1,4 +1,5 @@
 var EventosDaLinhaDaVida = {
+
   controller: function(args) {
     this.eventosDaLinhaDaVida = args.eventosDaLinhaDaVida;
 

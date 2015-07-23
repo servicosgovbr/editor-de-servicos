@@ -1,7 +1,9 @@
 var DadosComplementares = {
+
   controller: function(args) {
     this.servico = args.servico;
   },
+
   view: function(ctrl) {
     return m('#dados-complementares', [
       m('h2', 'Dados Complementares'),

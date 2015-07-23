@@ -1,4 +1,5 @@
 var SegmentosDaSociedade = {
+
   controller: function(args) {
     this.segmentosDaSociedade = args.segmentosDaSociedade;
 
@@ -16,6 +17,7 @@ var SegmentosDaSociedade = {
 
     this.todosOsSegmentosDaSociedade = m.request({ method: 'GET', url: '/editar/api/segmentos-da-sociedade' });
   },
+
   view: function(ctrl) {
     return m('', [
       m("h3", "Segmentos da sociedade"),
