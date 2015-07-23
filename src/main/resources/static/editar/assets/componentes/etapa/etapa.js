@@ -7,7 +7,7 @@ var Etapa = {
   },
 
   view: function(ctrl) {
-    return m('.etapa', [
+    return m('.etapa#' + ctrl.etapa.id, [
       m.component(etapa.Titulo, { titulo: ctrl.etapa.titulo }),
       m.component(etapa.Descricao, { descricao: ctrl.etapa.descricao }),
     ])
