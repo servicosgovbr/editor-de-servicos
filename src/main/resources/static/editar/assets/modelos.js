@@ -17,8 +17,8 @@ models.Caso = function(data) {
 models.Documentacao = function(data) {
   var data = (data || {});
   this.id = models.id('documentacao');
-  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: ['RG', 'CPF']}));
-  this.outrosCasos = m.prop(data.outrosCasos || [ new models.Caso({ descricao: 'Menores de 18 anos', campos: ['Foto 3x4', 'Certidão de nascimento']}) ]);
+  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: []}));
+  this.outrosCasos = m.prop(data.outrosCasos || []);
 };
 
 models.Etapa = function(data) {
