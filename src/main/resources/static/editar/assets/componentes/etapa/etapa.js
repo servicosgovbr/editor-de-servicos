@@ -12,6 +12,7 @@ var Etapa = {
       m.component(etapa.Descricao, { descricao: ctrl.etapa.descricao }),
       m.component(etapa.Documentos , { documentos: ctrl.etapa.documentos }),
       m.component(etapa.Custos, { custos: ctrl.etapa.custos }),
+      m.component(etapa.CanaisDePrestacao, { canaisDePrestacao: ctrl.etapa.canaisDePrestacao }),
     ])
   }
 };

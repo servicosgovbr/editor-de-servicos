@@ -14,6 +14,20 @@ models.Caso = function(data) {
   this.campos = m.prop(data.campos || []);
 };
 
+models.CanaisDePrestacao = function(data) {
+  var data = (data || {});
+  this.id = models.id('canais-de-prestacao');
+  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: []}));
+  this.outrosCasos = m.prop(data.outrosCasos || []);
+};
+
+models.CanalDePrestacao = function(data) {
+  var data = (data || {});
+  this.id = models.id('canal-de-prestacao');
+  this.tipo = m.prop(data.tipo || '');
+  this.descricao = m.prop(data.tipo || '');
+};
+
 models.Documentos = function(data) {
   var data = (data || {});
   this.id = models.id('documentos');
@@ -32,8 +46,8 @@ models.Custo = function(data) {
 models.Custos = function(data) {
   var data = (data || {});
   this.id = models.id('custos');
-  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: [ new models.Custo({descricao: 'custo 1', moeda: 'R$', valor: '10,00'})]}));
-  this.outrosCasos = m.prop(data.outrosCasos || [ new models.Caso(({ descricao: 'No exterior', campos: [ new models.Custo({descricao: 'custo 2', moeda: 'US$', valor: '25,99'})]}))]);
+  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ descricao: 'Para todos os casos', campos: []}));
+  this.outrosCasos = m.prop(data.outrosCasos || []);
 };
 
 models.Etapa = function(data) {
@@ -43,6 +57,7 @@ models.Etapa = function(data) {
   this.descricao = m.prop(data.descricao || '');
   this.documentos = m.prop(data.documentos || new models.Documentos());
   this.custos = m.prop(data.custos || new models.Custos());
+  this.canaisDePrestacao = m.prop(data.custos || new models.CanaisDePrestacao());
 };
 
 models.Solicitante = function (data) {
@@ -60,7 +75,7 @@ models.Servico = function (data) {
   this.descricao = m.prop(data.descricao || '');
   this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new models.TempoTotalEstimado());
-  this.etapas = m.prop(data.etapas || []);
+  this.etapas = m.prop(data.etapas || [new models.Etapa()]);
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.eventosDaLinhaDaVida = m.prop(data.eventosDaLinhaDaVida || []);
