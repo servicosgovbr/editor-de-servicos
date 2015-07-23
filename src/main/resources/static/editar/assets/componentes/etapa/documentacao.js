@@ -11,10 +11,7 @@ etapa.Documentacao = {
       m('h3', 'Documentação necessária'),
 
       m.component(new etapa.Caso(etapa.Documentos), { padrao: true, caso: ctrl.documentacao().casoPadrao }),
-
-      ctrl.documentacao().outrosCasos().map(function(caso) {
-        return m.component(new etapa.Caso(etapa.Documentos), { caso: m.prop(caso) });
-      })
+      m.component(new etapa.Casos(etapa.Documentos), { casos: ctrl.documentacao().outrosCasos })
     ]);
   }
 

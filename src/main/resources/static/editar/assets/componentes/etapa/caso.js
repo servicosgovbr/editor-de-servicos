@@ -18,7 +18,9 @@ etapa.Caso = function(componente) {
         });
       }
 
-      return m('#' + ctrl.caso().id, [
+      return m('#' + ctrl.caso().id, {
+        key: ctrl.caso().id
+      }, [
         titulo,
         m.component(componente, { campos: ctrl.caso().campos })
       ])
