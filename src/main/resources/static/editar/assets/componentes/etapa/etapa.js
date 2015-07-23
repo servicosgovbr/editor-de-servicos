@@ -10,6 +10,7 @@ var Etapa = {
     return m('.etapa#' + ctrl.etapa.id, [
       m.component(etapa.Titulo, { titulo: ctrl.etapa.titulo }),
       m.component(etapa.Descricao, { descricao: ctrl.etapa.descricao }),
+      m.component(etapa.Documentacao , { documentacao: ctrl.etapa.documentacao }),
     ])
   }
 };

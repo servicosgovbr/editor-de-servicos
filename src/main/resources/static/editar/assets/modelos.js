@@ -7,11 +7,25 @@ models.id = (function() {
   }
 })();
 
+models.Caso = function(data) {
+  var data = (data || {});
+  this.id = models.id('caso');
+  this.campos = m.prop(data.campos || []);
+};
+
+models.Documentacao = function(data) {
+  var data = (data || {});
+  this.id = models.id('documentacao');
+  this.casoPadrao = m.prop(data.casoPadrao || new models.Caso({ campos: ['RG', 'CPF']}));
+  this.outrosCasos = m.prop(data.outrosCasos || []);
+};
+
 models.Etapa = function(data) {
   var data = (data || {});
   this.id = models.id('etapa');
   this.titulo = m.prop(data.titulo || '');
   this.descricao = m.prop(data.descricao || '');
+  this.documentacao = m.prop(data.documentacao || new models.Documentacao());
 };
 
 models.Solicitante = function (data) {
