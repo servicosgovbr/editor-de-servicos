@@ -1,9 +1,12 @@
 var models = {};
 
 models.id = (function() {
-  var counter = 0;
-    return function(base) {
-      return(base + '-' + counter++);
+  var counters = {};
+  return function(base) {
+    if (!counters[base]) {
+      counters[base] = 0;
+    }
+    return base + '-' + counters[base]++;
   }
 })();
 
