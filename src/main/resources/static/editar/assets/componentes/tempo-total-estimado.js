@@ -55,10 +55,6 @@ var TempoTotalEstimado = {
           value: ctrl.tempoTotalEstimado.entreMinimo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMinimo)
         }),
-        " ",
-        m("select.inline", {
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreTipoMinimo)
-        }, unidades),
         " e ",
         m("input.inline[type='text']", {
           value: ctrl.tempoTotalEstimado.entreMaximo(),
@@ -70,12 +66,10 @@ var TempoTotalEstimado = {
         }, unidades)
       ]),
 
-      m("p", "Comentários sobre o tempo estimado"),
-
       m.component(EditorMarkdown, {
         rows: 5,
-        oninput: m.withAttr('value', ctrl.tempoTotalEstimado.excecoes),
-        value: ctrl.tempoTotalEstimado.excecoes()
+        oninput: m.withAttr('value', ctrl.tempoTotalEstimado.descricao),
+        value: ctrl.tempoTotalEstimado.descricao()
       })
     ]);
   }

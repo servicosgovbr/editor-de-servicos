@@ -92,10 +92,9 @@ models.TempoTotalEstimado = function(data) {
   this.id = models.id('tempo-total-estimado');
   this.tipo = m.prop(data.tipo || '');
   this.entreMinimo = m.prop(data.entreMinimo || '');
-  this.entreTipoMinimo = m.prop(data.entreTipoMinimo || '');
   this.ateMaximo = m.prop(data.ateMaximo || '');
   this.ateTipoMaximo = m.prop(data.ateTipoMaximo || '');
   this.entreMaximo = m.prop(data.entreMaximo || '');
   this.entreTipoMaximo = m.prop(data.entreTipoMaximo || '');
-  this.excecoes = m.prop(data.excecoes || '');
+  this.descricao = m.prop(data.descricao || '');
 };
