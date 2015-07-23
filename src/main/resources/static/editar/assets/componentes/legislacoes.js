@@ -1,24 +1,24 @@
 var Legislacoes = {
   controller: function(args) {
-    this.servico = args.servico;
+    this.legislacoes = args.legislacoes;
 
     this.adicionar = function() {
-      this.servico.legislacoes().push('');
+      this.legislacoes().push('');
     };
 
     this.remover = function(i) {
-      this.servico.legislacoes().splice(i, 1);
+      this.legislacoes().splice(i, 1);
     };
   },
   view: function(ctrl) {
     return m('', [
       m('h3', 'Legislações relacionadas ao serviço'),
-      m('.legislacoes', ctrl.servico.legislacoes().map(function(legislacao, i) {
+      m('.legislacoes', ctrl.legislacoes().map(function(legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
             value: legislacao,
             onchange: function(e) {
-              ctrl.servico.legislacoes()[i] = e.target.value;
+              ctrl.legislacoes()[i] = e.target.value;
             }
           }),
           m('button.inline.remove-peq', {

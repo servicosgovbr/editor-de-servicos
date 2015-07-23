@@ -7,12 +7,12 @@ var DadosComplementares = {
       m('h2', 'Dados Complementares'),
 
       m('fieldset', [
-        m.component(OrgaoResponsavel, { servico: ctrl.servico }),
-        m.component(SegmentosDaSociedade, { servico: ctrl.servico }),
-        m.component(EventosDaLinhaDaVida, { servico: ctrl.servico }),
-        m.component(AreasDeInteresse, { servico: ctrl.servico }),
-        m.component(PalavrasChave, { servico: ctrl.servico }),
-        m.component(Legislacoes, { servico: ctrl.servico })
+        m.component(OrgaoResponsavel, { orgao: ctrl.servico.orgao }),
+        m.component(SegmentosDaSociedade, { segmentosDaSociedade: ctrl.servico.segmentosDaSociedade }),
+        m.component(EventosDaLinhaDaVida, { eventosDaLinhaDaVida: ctrl.servico.eventosDaLinhaDaVida }),
+        m.component(AreasDeInteresse, { areasDeInteresse: ctrl.servico.areasDeInteresse }),
+        m.component(PalavrasChave, { palavrasChave: ctrl.servico.palavrasChave }),
+        m.component(Legislacoes, { legislacoes: ctrl.servico.legislacoes })
       ])
     ]);
   }
