@@ -13,8 +13,8 @@ var Solicitantes = {
   },
 
   view: function (ctrl) {
-    return m('#solicitantes', [
-      m('h2', 'Quem pode utilizar este serviço?'),
+    return m('fieldset#solicitantes', [
+      m('h3', 'Quem pode utilizar este serviço?'),
 
       ctrl.solicitantes.map(function(s, i) {
         return m('fieldset', {

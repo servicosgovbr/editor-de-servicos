@@ -9,35 +9,42 @@ var EditorDeServicos = {
   },
 
   view: function (ctrl) {
-    return m('#principal.auto-grid', [
-      m.component(DadosBasicos, {
+    return m('', [
+      m.component(MenuLateral, {
         servico: ctrl.servico
       }),
 
-      m.component(Solicitantes, {
-        solicitantes: ctrl.servico.solicitantes()
-      }),
+      m('#principal.auto-grid', [
 
-      m.component(TempoTotalEstimado, {
-        tempoTotalEstimado: ctrl.servico.tempoTotalEstimado()
-      }),
+        m.component(DadosBasicos, {
+          servico: ctrl.servico
+        }),
 
-      m.component(Etapas, {
-        etapas: ctrl.servico.etapas()
-      }),
+        m.component(Solicitantes, {
+          solicitantes: ctrl.servico.solicitantes()
+        }),
 
-      m.component(DadosComplementares, {
-        servico: ctrl.servico
-      }),
+        m.component(TempoTotalEstimado, {
+          tempoTotalEstimado: ctrl.servico.tempoTotalEstimado()
+        }),
 
-      m('button', {
-        onclick: ctrl.debug.bind(ctrl.servico),
-        style: {
-          backgroundColor: '#d00'
-        }
-      }, [
-        m("i.fa.fa-bug"),
-        " Debug "
+        m.component(Etapas, {
+          etapas: ctrl.servico.etapas()
+        }),
+
+        m.component(DadosComplementares, {
+          servico: ctrl.servico
+        }),
+
+        m('button', {
+          onclick: ctrl.debug.bind(ctrl.servico),
+          style: {
+            backgroundColor: '#d00'
+          }
+        }, [
+          m("i.fa.fa-bug"),
+          " Debug "
+        ])
       ])
     ]);
   }

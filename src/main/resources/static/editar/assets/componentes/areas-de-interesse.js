@@ -17,7 +17,7 @@ var AreasDeInteresse = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#areas-de-interesse', [
       m("h3", "Áreas de interesse"),
       m("", ctrl.todasAreasDeInteresse().map(function(area) {
         return m('label', [

@@ -13,9 +13,9 @@ var Legislacoes = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#legislacoes', [
       m('h3', 'Legislações relacionadas ao serviço'),
-      m('.legislacoes', ctrl.legislacoes().map(function(legislacao, i) {
+      ctrl.legislacoes().map(function(legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
             value: legislacao,
@@ -29,7 +29,7 @@ var Legislacoes = {
             m("span.fa.fa-times")
           ])
         ];
-      })),
+      }),
       m('button.adicionar-legislacao', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [

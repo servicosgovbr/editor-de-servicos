@@ -5,7 +5,7 @@ var Nome = {
   },
 
   view: function(ctrl) {
-    return m('#nome', [
+    return m('fieldset#nome', [
       m('h3', 'Nome do serviço'),
       m('input[type=text]', {
         onchange: m.withAttr('value', ctrl.nome),

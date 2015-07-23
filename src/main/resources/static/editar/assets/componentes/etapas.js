@@ -13,10 +13,10 @@ var Etapas = {
   },
 
   view: function(ctrl) {
-    return m('#etapas', [
-      m('h2', 'Etapas'),
+    return m('fieldset#etapas', [
+      m('h3', 'Etapas'),
 
-      m('fieldset', ctrl.etapas.map(function(etapa, i) {
+      ctrl.etapas.map(function(etapa, i) {
         return m('span', {
           key: etapa.id
         }, [
@@ -28,7 +28,7 @@ var Etapas = {
             m("span.fa.fa-times"), ' Remover etapa '
           ])
         ]);
-      })),
+      }),
 
       m("button.adicionar-etapa", {
         onclick: ctrl.adicionar.bind(ctrl)

@@ -13,7 +13,7 @@ var PalavrasChave = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#palavras-chave', [
       m('h3', 'Palavras-chave'),
       m('.palavrasChave', ctrl.palavrasChave().map(function(legislacao, i) {
         return [

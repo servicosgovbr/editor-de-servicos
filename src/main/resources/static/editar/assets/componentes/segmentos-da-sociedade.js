@@ -19,7 +19,7 @@ var SegmentosDaSociedade = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#segmentos-da-sociedade', [
       m("h3", "Segmentos da sociedade"),
       m("", ctrl.todosOsSegmentosDaSociedade().map(function(segmento) {
         return m('label', [

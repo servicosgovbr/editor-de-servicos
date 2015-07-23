@@ -199,3 +199,34 @@ header {
     }
   }
 }
+
+body#novo {
+  #menu-lateral {
+    padding: 10px;
+    position: absolute;
+    left: 0px;
+    top: 40px;
+    bottom: 0px;
+    width: 320px;
+
+    a {
+      color: black;
+      width: 100%;
+      display: block;
+      line-height: 2.25em;
+    }
+
+    ul li {
+      margin-left: 10px;
+    }
+  }
+
+  #principal {
+    position: absolute;
+    overflow-y: auto;
+    left: 320px;
+    top: 40px;
+    width: 100%;
+    bottom: 0px;
+  }
+}

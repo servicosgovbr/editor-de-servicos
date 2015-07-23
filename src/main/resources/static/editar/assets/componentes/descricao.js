@@ -5,7 +5,7 @@ var Descricao = {
   },
 
   view: function(ctrl) {
-    return m('#descricao', [
+    return m('fieldset#descricao', [
       m('h3', 'Descrição do serviço'),
       m.component(EditorMarkdown, {
         rows: 10,

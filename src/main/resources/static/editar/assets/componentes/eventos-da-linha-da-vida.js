@@ -19,7 +19,7 @@ var EventosDaLinhaDaVida = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#eventos-da-linha-da-vida', [
       m("h3", "Eventos da linha da vida"),
       m("", ctrl.todosEventosDaLinhaDaVida().map(function(evento) {
         return m('label', [

@@ -13,9 +13,10 @@ var NomesPopulares = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#nomes-populares', [
       m('h3', 'Nomes populares'),
-      m('.nomesPopulares', ctrl.nomesPopulares().map(function(legislacao, i) {
+
+      ctrl.nomesPopulares().map(function(legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
             value: legislacao,
@@ -29,7 +30,8 @@ var NomesPopulares = {
             m("span.fa.fa-times")
           ])
         ];
-      })),
+      }),
+
       m('button.adicionar-nome-popular', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [

@@ -6,7 +6,7 @@ var OrgaoResponsavel = {
   },
 
   view: function(ctrl) {
-    return m('', [
+    return m('fieldset#orgao-responsavel', [
       m("h3", "Órgão responsável"),
       m("select", {
         onchange: function(e) { ctrl.orgao(e.target.value); }
