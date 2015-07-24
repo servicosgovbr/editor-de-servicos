@@ -25,7 +25,8 @@ var EditorDeServicos = {
         }),
 
         m.component(Etapas, {
-          etapas: ctrl.servico.etapas()
+          etapas: ctrl.servico.etapas(),
+          gratuidade: ctrl.servico.gratuidade
         }),
 
         m.component(DadosComplementares, {

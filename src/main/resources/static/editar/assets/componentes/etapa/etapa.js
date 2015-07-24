@@ -4,6 +4,7 @@ var Etapa = {
 
   controller: function(args) {
     this.etapa = args.etapa;
+    this.gratuidade = args.gratuidade;
   },
 
   view: function(ctrl) {
@@ -11,7 +12,7 @@ var Etapa = {
       m.component(etapa.Titulo, { titulo: ctrl.etapa.titulo }),
       m.component(etapa.Descricao, { descricao: ctrl.etapa.descricao }),
       m.component(etapa.Documentos , { documentos: ctrl.etapa.documentos }),
-      m.component(etapa.Custos, { custos: ctrl.etapa.custos }),
+      ctrl.gratuidade() ? null : m.component(etapa.Custos, { custos: ctrl.etapa.custos }),
       m.component(etapa.CanaisDePrestacao, { canaisDePrestacao: ctrl.etapa.canaisDePrestacao }),
     ])
   }

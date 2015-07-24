@@ -2,6 +2,7 @@ var Etapas = {
 
   controller: function(args) {
     this.etapas = args.etapas;
+    this.gratuidade = args.gratuidade;
 
     this.adicionar = function() {
       this.etapas.push(new models.Etapa());
@@ -20,7 +21,10 @@ var Etapas = {
         return m('span', {
           key: etapa.id
         }, [
-          m.component(Etapa, { etapa: etapa }),
+          m.component(Etapa, {
+            etapa: etapa,
+            gratuidade: ctrl.gratuidade
+          }),
 
           m('button', {
             onclick: ctrl.remover.bind(ctrl, i)
