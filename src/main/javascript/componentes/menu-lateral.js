@@ -13,6 +13,7 @@ module.exports = {
           m('a[href="#dados-basicos"]', 'Dados básicos'),
           m('ul', [
             m('li', m('a[href="#nome"]', 'Nome')),
+            m('li', m('a[href="#sigla"]', 'Sigla')),
             m('li', m('a[href="#nomes-populares"]', 'Nomes populares')),
             m('li', m('a[href="#descricao"]', 'Descrição')),
             m('li', m('a[href="#tempo-total-estimado"]', 'Tempo total estimado')),

@@ -11,6 +11,9 @@ module.exports = {
       m.component(require('componentes/nome'), {
         nome: ctrl.servico.nome
       }),
+      m.component(require('componentes/sigla'), {
+        sigla: ctrl.servico.sigla
+      }),
       m.component(require('componentes/nomes-populares'), {
         nomesPopulares: ctrl.servico.nomesPopulares
       }),

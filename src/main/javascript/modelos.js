@@ -83,6 +83,7 @@ exports.Servico = function (config) {
   var data = (config || {});
   this.id = exports.id('servico');
   this.nome = m.prop(data.nome || '');
+  this.sigla = m.prop(data.sigla || '');
   this.nomesPopulares = m.prop(data.nomesPopulares || []);
   this.descricao = m.prop(data.descricao || '');
   this.gratuidade = m.prop(data.gratuidade || false);
