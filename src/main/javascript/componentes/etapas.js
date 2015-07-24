@@ -30,7 +30,7 @@ module.exports = {
             gratuidade: ctrl.gratuidade
           }),
 
-          m('button', {
+          m('button.inline.remover', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
             m('span.fa.fa-times'),

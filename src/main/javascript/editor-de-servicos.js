@@ -37,11 +37,8 @@ module.exports = {
           servico: ctrl.servico
         }),
 
-        m('button', {
-          onclick: ctrl.debug.bind(ctrl.servico),
-          style: {
-            backgroundColor: '#d00'
-          }
+        m('button.debug', {
+          onclick: ctrl.debug.bind(ctrl.servico)
         }, [
           m('i.fa.fa-bug'),
           ' Debug '

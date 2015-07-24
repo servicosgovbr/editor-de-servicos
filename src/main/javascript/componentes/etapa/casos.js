@@ -26,7 +26,7 @@ module.exports = function (componente) {
             m.component(new Caso(componente), {
               caso: m.prop(caso)
             }),
-            m('button.inline', {
+            m('button.inline.remover', {
               onclick: ctrl.remover.bind(ctrl, i)
             }, [
               m('span.fa.fa-times'),
