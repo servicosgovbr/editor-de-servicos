@@ -25,7 +25,7 @@ module.exports = {
           m('ul', ctrl.servico.etapas().map(function (etapa) {
             return m('li', m('a', {
               href: '#' + etapa.id
-            }, etapa.titulo() || '(sem título)'));
+            }, etapa.titulo() || m('em', '(sem título)')));
           }))
         ]),
         m('li', [
