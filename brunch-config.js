@@ -40,6 +40,9 @@ module.exports.config = {
     },
     sass: {
       debug: 'comments'
+    },
+    cleanCss: {
+      removeEmpty: true
     }
   }
 };
