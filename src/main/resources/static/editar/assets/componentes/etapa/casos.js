@@ -31,7 +31,7 @@ etapa.Casos = function(componente)  {
         m('button.adicionar-caso', {
           onclick: ctrl.adicionar.bind(ctrl)
         }, [
-          m('i.fa.fa-plus'),
+          m('i.fa.fa-indent'),
           ' Adicionar caso '
         ])
       ]);
