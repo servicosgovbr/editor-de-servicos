@@ -1,0 +1,22 @@
+{
+  "name": "editor-de-servicos",
+  "version": "1.0.0",
+  "description": "Editor do Portal de Serviços do Governo Federal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/servicosgovbr/editor-de-servicos.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/servicosgovbr/editor-de-servicos/issues"
+  },
+  "homepage": "https://github.com/servicosgovbr/editor-de-servicos#readme",
+  "dependencies": {
+    "auto-reload-brunch": "^1.8.0",
+    "brunch": "^1.8.3",
+    "javascript-brunch": "^1.7.1",
+    "js-beautify": "^1.5.10",
+    "jshint-brunch": "^1.8.0",
+    "uglify-js-brunch": "^1.7.8"
+  }
+}
