@@ -12,4 +12,6 @@ _book
 .sass-cache
 node_modules
 src/main/resources/static/editar/assets/app.js
-src/main/resources/static/editar/assets/app.js.map
+novo.css
+vendor.js
+*.map

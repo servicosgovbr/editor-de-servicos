@@ -14,9 +14,11 @@
   "dependencies": {
     "auto-reload-brunch": "^1.8.0",
     "brunch": "^1.8.3",
+    "css-brunch": "^1.7.0",
     "javascript-brunch": "^1.7.1",
     "js-beautify": "^1.5.10",
     "jshint-brunch": "^1.8.0",
+    "sass-brunch": "^1.8.10",
     "uglify-js-brunch": "^1.7.8"
   }
 }
