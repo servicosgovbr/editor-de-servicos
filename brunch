@@ -1,1 +1,4 @@
-DEBUG='*' ./node_modules/.bin/brunch $*
+which npm > /dev/null || (echo 'npm não instalado!' && exit 1)
+[ -f './node_modules/.bin/brunch' ] || (echo 'pacotes npm não instalados!' && exit 2)
+
+./node_modules/.bin/brunch $*
