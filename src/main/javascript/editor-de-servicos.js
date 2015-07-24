@@ -24,6 +24,21 @@ var itemSimples = function(item) {
   return m('item', item);
 };
 
+var etapa = function(e) {
+  return m('etapa', [
+    m('titulo', e.titulo()),
+    m('descricao', e.descricao()),
+    m('documentos', [
+      m('default', e.documentos().casoPadrao().campos().map(itemSimples)),
+      e.documentos().outrosCasos().map(function(caso) {
+        return m('caso', { descricao: caso.descricao() }, caso.campos().map(itemSimples));
+      })
+    ]),
+    m('custos', []),
+    m('canais-de-prestacao', [])
+  ]);
+};
+
 module.exports = {
 
   controller: function () {
@@ -48,7 +63,7 @@ module.exports = {
           montaTempoEstimado(this.tempoTotalEstimado()),
           m('descricao', this.tempoTotalEstimado().descricao())
         ]),
-        m('etapas', [ /* TODO */ ]),
+        m('etapas', this.etapas().map(etapa)),
         m('orgao', { id: this.orgao() }),
         m('segmentos-da-sociedade', this.segmentosDaSociedade().map(itemSimples)),
         m('eventos-da-linha-da-vida', this.eventosDaLinhaDaVida().map(itemSimples)),
