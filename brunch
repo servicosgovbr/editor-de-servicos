@@ -1,0 +1,1 @@
+DEBUG='*' ./node_modules/.bin/brunch $*
