@@ -46,7 +46,7 @@ module.exports = {
         ]);
       }),
 
-      m('button.adicionar-solicitante', {
+      m('button.adicionar.adicionar-solicitante', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

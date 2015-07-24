@@ -34,7 +34,7 @@ module.exports = function (componente) {
             ])
           ];
         }),
-        m('button.adicionar-caso', {
+        m('button.adicionar.adicionar-caso', {
           onclick: ctrl.adicionar.bind(ctrl)
         }, [
           m('i.fa.fa-indent'),

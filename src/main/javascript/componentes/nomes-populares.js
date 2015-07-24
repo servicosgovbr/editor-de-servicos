@@ -34,7 +34,7 @@ module.exports = {
         ];
       }),
 
-      m('button.adicionar-nome-popular', {
+      m('button.adicionar.adicionar-nome-popular', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

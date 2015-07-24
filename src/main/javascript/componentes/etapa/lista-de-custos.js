@@ -42,7 +42,7 @@ module.exports = {
           ])
         ]);
       }),
-      m('button.adicionar-custo', {
+      m('button.adicionar.adicionar-custo', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

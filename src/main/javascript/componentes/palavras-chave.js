@@ -32,7 +32,7 @@ module.exports = {
           ])
         ];
       })),
-      m('button.adicionar-palavra-chave', {
+      m('button.adicionar.adicionar-palavra-chave', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

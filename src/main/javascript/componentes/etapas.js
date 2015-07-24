@@ -39,7 +39,7 @@ module.exports = {
         ]);
       }),
 
-      m('button.adicionar-etapa', {
+      m('button.adicionar.adicionar-etapa', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

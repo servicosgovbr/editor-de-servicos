@@ -48,7 +48,7 @@ module.exports = {
           ])
         ]);
       }),
-      m('button.adicionar-canal-de-prestacao', {
+      m('button.adicionar.adicionar-canal-de-prestacao', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

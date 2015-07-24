@@ -32,7 +32,7 @@ module.exports = {
           ])
         ];
       }),
-      m('button.adicionar-legislacao', {
+      m('button.adicionar.adicionar-legislacao', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),

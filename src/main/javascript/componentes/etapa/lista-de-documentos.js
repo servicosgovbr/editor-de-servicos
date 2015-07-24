@@ -31,7 +31,7 @@ module.exports = {
           ])
         ];
       }),
-      m('button.adicionar-documento', {
+      m('button.adicionar.adicionar-documento', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),
