@@ -5,7 +5,7 @@ fieldset, .sub-secao {
   padding: $base-spacing;
 }
 
-.etapa {
+#solicitantes > fieldset, #etapas > span > fieldset {
   background-color: lighten($base-border-color, 12%);
 }
 

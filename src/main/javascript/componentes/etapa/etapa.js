@@ -8,7 +8,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('.etapa#' + ctrl.etapa.id, [
+    return m('fieldset#' + ctrl.etapa.id, [
       m.component(require('componentes/etapa/titulo'), {
         titulo: ctrl.etapa.titulo
       }),
