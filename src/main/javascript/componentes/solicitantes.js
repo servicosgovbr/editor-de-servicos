@@ -21,7 +21,7 @@ module.exports = {
       m('h3', 'Quem pode utilizar este serviço?'),
 
       ctrl.solicitantes.map(function (s, i) {
-        return m('fieldset', {
+        return m('fieldset#' + s.id, {
           key: s.id
         }, [
           m('h3', 'Solicitante'),

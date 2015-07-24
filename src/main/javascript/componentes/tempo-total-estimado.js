@@ -33,12 +33,12 @@ module.exports = {
 
       ' ',
 
-      m('span.ateTipo', {
+      m('span.tipo-ate', {
         style: {
           display: ctrl.tempoTotalEstimado.tipo() === 'até' ? 'inline' : 'none'
         }
       }, [
-        m('input.inline[type="text"]', {
+        m('input.ate-maximo.inline[type="text"]', {
           value: ctrl.tempoTotalEstimado.ateMaximo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado.ateMaximo)
         }),
@@ -48,17 +48,17 @@ module.exports = {
         }, unidades),
       ]),
 
-      m('span.entreTipo', {
+      m('span.tipo-entre', {
         style: {
           display: ctrl.tempoTotalEstimado.tipo() === 'entre' ? 'inline' : 'none'
         }
       }, [
-        m('input.inline[type="text"]', {
+        m('input.entre-minimo.inline[type="text"]', {
           value: ctrl.tempoTotalEstimado.entreMinimo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMinimo)
         }),
         ' e ',
-        m('input.inline[type="text"]', {
+        m('input.entre-minimo.inline[type="text"]', {
           value: ctrl.tempoTotalEstimado.entreMaximo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMaximo)
         }),
