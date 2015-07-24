@@ -24,10 +24,6 @@ var EditorDeServicos = {
           solicitantes: ctrl.servico.solicitantes()
         }),
 
-        m.component(TempoTotalEstimado, {
-          tempoTotalEstimado: ctrl.servico.tempoTotalEstimado()
-        }),
-
         m.component(Etapas, {
           etapas: ctrl.servico.etapas()
         }),

@@ -8,7 +8,9 @@ var DadosBasicos = {
     return m('#dados-basicos', [
       m.component(Nome, { nome: ctrl.servico.nome }),
       m.component(NomesPopulares, { nomesPopulares: ctrl.servico.nomesPopulares }),
-      m.component(Descricao, { descricao: ctrl.servico.descricao })
+      m.component(Descricao, { descricao: ctrl.servico.descricao }),
+      m.component(TempoTotalEstimado, { tempoTotalEstimado: ctrl.servico.tempoTotalEstimado() }),
+      m.component(Gratuidade, { gratuidade: ctrl.servico.gratuidade }),
     ]);
   }
 };

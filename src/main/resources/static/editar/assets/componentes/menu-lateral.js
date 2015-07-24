@@ -13,10 +13,11 @@ var MenuLateral = {
             m('li', m('a[href="#nome"]', 'Nome')),
             m('li', m('a[href="#nomes-populares"]', 'Nomes populares')),
             m('li', m('a[href="#descricao"]', 'Descrição')),
+            m('li', m('a[href="#tempo-total-estimado"]', 'Tempo total estimado')),
+            m('li', m('a[href="#gratuidade"]', 'Gratuidade')),
           ])
         ]),
         m('li', m('a[href="#solicitantes"]', 'Solicitantes')),
-        m('li', m('a[href="#tempo-total-estimado"]', 'Tempo total estimado')),
         m('li', [
           m('a[href="#etapas"]', 'Etapas'),
           m('ul', ctrl.servico.etapas().map(function(etapa) {

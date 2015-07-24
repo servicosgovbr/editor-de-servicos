@@ -76,6 +76,7 @@ models.Servico = function (data) {
   this.nome = m.prop(data.nome || '');
   this.nomesPopulares = m.prop(data.nomesPopulares || []);
   this.descricao = m.prop(data.descricao || '');
+  this.gratuidade = m.prop(data.gratuidade || false);
   this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new models.TempoTotalEstimado());
   this.etapas = m.prop(data.etapas || [new models.Etapa()]);
