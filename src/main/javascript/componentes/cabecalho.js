@@ -5,12 +5,27 @@ module.exports = {
   controller: function (args) {
     this.servico = args.servico;
 
-    this.debug = function () {
-      var xml = require('componentes/xml').converterParaXML(this);
-      console.log(this); // jshint ignore:line
-      console.log(JSON.stringify(this)); // jshint ignore:line
-      console.log(xml); // jshint ignore:line
-      console.log(new XMLSerializer().serializeToString(xml)); // jshint ignore:line
+    this.salvar = function () {
+      var xml = require('componentes/xml').converterParaXML(this.servico);
+
+      m.request({
+          method: 'POST',
+          url: '/editar/v3/servico',
+          data: xml,
+          config: function (xhr) {
+            xhr.setRequestHeader('Accepts', 'application/xml');
+            xhr.setRequestHeader('Content-Type', 'application/xml');
+          },
+          serialize: function (svc) {
+            return new XMLSerializer().serializeToString(svc);
+          },
+          deserialize: function (data) {
+            return data;
+          }
+        })
+        .then(function (resultado) {
+          console.log(resultado); // jshint ignore:line
+        });
     };
 
     this.login = m.request({
@@ -31,9 +46,9 @@ module.exports = {
       m('', [
         m('.ferramentas', [
           m('button.inline.debug', {
-            onclick: ctrl.debug.bind(ctrl.servico)
+            onclick: ctrl.salvar.bind(ctrl)
           }, [
-            m('i.fa.fa-bug')
+            m('i.fa.fa-save')
           ]),
         ]),
 

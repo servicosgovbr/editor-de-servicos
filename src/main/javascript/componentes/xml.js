@@ -27,9 +27,7 @@ var tempoTotalEstimado = function (tempoEstimado) {
     });
   }
 
-  return m('tempo-total-estimado', {
-    tipo: tempoEstimado.tipo()
-  }, [
+  return m('tempo-total-estimado', [
     limite,
     m('descricao', tempoEstimado.descricao())
   ]);
