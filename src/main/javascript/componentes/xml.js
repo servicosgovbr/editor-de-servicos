@@ -1,5 +1,17 @@
 'use strict';
 
+function cdata(doc, selector) {
+
+  var elements = doc.querySelectorAll(selector);
+
+  _.each(elements, function (el) {
+    var content = el.innerHTML;
+    el.innerHTML = '';
+    el.appendChild(doc.createCDATASection(content));
+  });
+
+}
+
 var montaTempoEstimado = function (tempoEstimado) {
 
   if (tempoEstimado.tipo() === 'entre') {
@@ -41,8 +53,8 @@ var etapa = function (e) {
 
 exports.converter = function (servico) {
 
-  var xml = document.createDocumentFragment();
-  m.render(xml, m('servico', {
+  var doc = document.implementation.createDocument('http://servicos.gov.br/v3/schema', '');
+  m.render(doc, m('servico', {
     xmlns: 'http://servicos.gov.br/v3/schema'
   }, [
     m('nome', servico.nome()),
@@ -72,5 +84,10 @@ exports.converter = function (servico) {
     m('legislacoes', servico.legislacoes().map(itemSimples))
   ]));
 
-  return xml;
+  cdata(doc, 'servico > descricao');
+  cdata(doc, 'servico > tempo-total-estimado > descricao');
+  cdata(doc, 'servico > solicitantes > solicitante > requisitos');
+  cdata(doc, 'servico > etapas > etapa > descricao');
+
+  return doc;
 };
