@@ -5,7 +5,10 @@ function cdata(doc, selector) {
   var elements = doc.querySelectorAll(selector);
 
   _.each(elements, function (el) {
-    var content = el.innerHTML;
+    var content = '';
+    for(var i = 0; i < el.childNodes.length; i++) {
+      content += el.childNodes[0].nodeValue;
+    }
     el.innerHTML = '';
     el.appendChild(doc.createCDATASection(content));
   });
