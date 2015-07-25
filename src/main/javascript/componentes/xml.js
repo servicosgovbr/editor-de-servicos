@@ -67,13 +67,31 @@ var custos = function (e) {
   ]);
 };
 
+var canalDePrestacao = function (e) {
+  return m('canal-de-prestacao', [
+   m('tipo', e.tipo()),
+   m('descricao', e.descricao())
+ ]);
+};
+
+var canaisDePrestacao = function (e) {
+  return m('canais-de-prestacao', [
+    m('default', e.casoPadrao().campos().map(canalDePrestacao)),
+    e.outrosCasos().map(function (caso) {
+      return m('caso', {
+        descricao: caso.descricao()
+      }, caso.campos().map(canalDePrestacao));
+    })
+  ]);
+};
+
 var etapa = function (e) {
   return m('etapa', [
     m('titulo', e.titulo()),
     m('descricao', e.descricao()),
     documentos(e.documentos()),
     custos(e.custos()),
-    m('canais-de-prestacao', [])
+    canaisDePrestacao(e.canaisDePrestacao())
   ]);
 };
 
