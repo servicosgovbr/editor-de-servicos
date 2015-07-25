@@ -1,40 +1,42 @@
 'use strict';
 
 function cdata(doc, selector) {
+  _(doc.querySelectorAll(selector)).each(function (el) {
+    var content = _(el.childNodes).map(function (cn) {
+      return cn.nodeValue;
+    }).join('');
 
-  var elements = doc.querySelectorAll(selector);
-
-  _.each(elements, function (el) {
-    var content = '';
-    for(var i = 0; i < el.childNodes.length; i++) {
-      content += el.childNodes[0].nodeValue;
-    }
     el.innerHTML = '';
     el.appendChild(doc.createCDATASection(content));
   });
-
 }
 
-var montaTempoEstimado = function (tempoEstimado) {
-
+var tempoTotalEstimado = function (tempoEstimado) {
+  var limite;
   if (tempoEstimado.tipo() === 'entre') {
-    return m('entre', {
+    limite = m('entre', {
       min: tempoEstimado.entreMinimo(),
       max: tempoEstimado.entreMaximo(),
       unidade: tempoEstimado.entreTipoMaximo()
     });
 
   } else if (tempoEstimado.tipo() === 'até') {
-    return m('ate', {
+    limite = m('ate', {
       max: tempoEstimado.ateMaximo(),
       unidade: tempoEstimado.ateTipoMaximo()
     });
   }
 
+  return m('tempo-total-estimado', {
+    tipo: tempoEstimado.tipo()
+  }, [
+    limite,
+    m('descricao', tempoEstimado.descricao())
+  ]);
 };
 
-var itemSimples = function (item) {
-  return m('item', item);
+var item = function (i) {
+  return m('item', i);
 };
 
 var casos = function (e, nome, itemRender) {
@@ -49,7 +51,7 @@ var casos = function (e, nome, itemRender) {
 };
 
 var documentos = function (e) {
-  return casos(e, 'documentos', itemSimples);
+  return casos(e, 'documentos', item);
 };
 
 var custo = function (e) {
@@ -85,6 +87,15 @@ var etapa = function (e) {
   ]);
 };
 
+var solicitantes = function (sol) {
+  return m('solicitantes', sol.map(function (s) {
+    return m('solicitante', [
+        m('descricao', s.descricao()),
+        m('requisitos', s.requisitos())
+      ]);
+  }));
+};
+
 exports.converter = function (servico) {
 
   var doc = document.implementation.createDocument('http://servicos.gov.br/v3/schema', '');
@@ -93,29 +104,19 @@ exports.converter = function (servico) {
   }, [
     m('nome', servico.nome()),
     m('sigla', servico.sigla()),
-    m('nomes-populares', servico.nomesPopulares().map(itemSimples)),
+    m('nomes-populares', servico.nomesPopulares().map(item)),
     m('descricao', servico.descricao()),
-    m('solicitantes', servico.solicitantes().map(function (s) {
-      return m('solicitante', [
-        m('descricao', s.descricao()),
-        m('requisitos', s.requisitos())
-      ]);
-    })),
-    m('tempo-total-estimado', {
-      tipo: servico.tempoTotalEstimado().tipo()
-    }, [
-      montaTempoEstimado(servico.tempoTotalEstimado()),
-      m('descricao', servico.tempoTotalEstimado().descricao())
-    ]),
+    solicitantes(servico.solicitantes()),
+    tempoTotalEstimado(servico.tempoTotalEstimado()),
     m('etapas', servico.etapas().map(etapa)),
     m('orgao', {
       id: servico.orgao()
     }),
-    m('segmentos-da-sociedade', servico.segmentosDaSociedade().map(itemSimples)),
-    m('eventos-da-linha-da-vida', servico.eventosDaLinhaDaVida().map(itemSimples)),
-    m('areas-de-interesse', servico.areasDeInteresse().map(itemSimples)),
-    m('palavras-chave', servico.palavrasChave().map(itemSimples)),
-    m('legislacoes', servico.legislacoes().map(itemSimples))
+    m('segmentos-da-sociedade', servico.segmentosDaSociedade().map(item)),
+    m('eventos-da-linha-da-vida', servico.eventosDaLinhaDaVida().map(item)),
+    m('areas-de-interesse', servico.areasDeInteresse().map(item)),
+    m('palavras-chave', servico.palavrasChave().map(item)),
+    m('legislacoes', servico.legislacoes().map(item))
   ]));
 
   cdata(doc, 'servico > descricao');
