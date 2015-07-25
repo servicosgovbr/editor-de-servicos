@@ -37,15 +37,19 @@ var itemSimples = function (item) {
   return m('item', item);
 };
 
-var documentos = function (e) {
-  return m('documentos', [
-    m('default', e.casoPadrao().campos().map(itemSimples)),
+var casos = function (e, nome, itemRender) {
+  return m(nome, [
+    m('default', e.casoPadrao().campos().map(itemRender)),
     e.outrosCasos().map(function (caso) {
       return m('caso', {
         descricao: caso.descricao()
-      }, caso.campos().map(itemSimples));
+      }, caso.campos().map(itemRender));
     })
   ]);
+};
+
+var documentos = function (e) {
+  return casos(e, 'documentos', itemSimples);
 };
 
 var custo = function (e) {
@@ -57,14 +61,7 @@ var custo = function (e) {
 };
 
 var custos = function (e) {
-  return m('custos', [
-    m('default', e.casoPadrao().campos().map(custo)),
-    e.outrosCasos().map(function (caso) {
-      return m('caso', {
-        descricao: caso.descricao()
-      }, caso.campos().map(custo));
-    })
-  ]);
+  return casos(e, 'custos', custo);
 };
 
 var canalDePrestacao = function (e) {
@@ -75,14 +72,7 @@ var canalDePrestacao = function (e) {
 };
 
 var canaisDePrestacao = function (e) {
-  return m('canais-de-prestacao', [
-    m('default', e.casoPadrao().campos().map(canalDePrestacao)),
-    e.outrosCasos().map(function (caso) {
-      return m('caso', {
-        descricao: caso.descricao()
-      }, caso.campos().map(canalDePrestacao));
-    })
-  ]);
+  return casos(e, 'canais-de-prestacao', canalDePrestacao);
 };
 
 var etapa = function (e) {
