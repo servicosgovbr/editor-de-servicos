@@ -6,7 +6,9 @@
       "document",
       "_",
       "require",
-      "XMLSerializer"
+      "XMLSerializer",
+      "DOMParser",
+      "jQuery"
     ],
 
     "indent": 2,
