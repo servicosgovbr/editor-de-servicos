@@ -229,6 +229,10 @@ body#novo {
     width: 100%;
     bottom: 0px;
 
+    select {
+      margin-bottom: $base-spacing / 2;
+    }
+
     .editor-markdown {
       textarea {
         margin-bottom: 0;
