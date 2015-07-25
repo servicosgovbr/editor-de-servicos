@@ -5,7 +5,8 @@
       "exports",
       "document",
       "_",
-      "require"
+      "require",
+      "XMLSerializer"
     ],
 
     "indent": 2,
