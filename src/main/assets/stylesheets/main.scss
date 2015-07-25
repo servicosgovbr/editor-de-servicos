@@ -233,4 +233,12 @@ body#novo {
   .remover, .debug {
     background-color: #d00;
   }
+
+  .ferramentas {
+    float: left;
+  }
+
+  #nome {
+    margin-top: .75em;
+  }
 }

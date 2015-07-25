@@ -6,17 +6,14 @@ module.exports = {
 
   controller: function () {
     this.servico = new models.Servico();
-
-    this.debug = function () {
-      var xml = require('componentes/xml').converter(this);
-      console.log(this); // jshint ignore:line
-      console.log(xml); // jshint ignore:line
-      console.log(new XMLSerializer().serializeToString(xml)); // jshint ignore:line
-    };
   },
 
   view: function (ctrl) {
     return m('', [
+      m.component(require('componentes/cabecalho'), {
+        servico: ctrl.servico
+      }),
+
       m.component(require('componentes/menu-lateral'), {
         servico: ctrl.servico
       }),
@@ -39,13 +36,6 @@ module.exports = {
         m.component(require('componentes/dados-complementares'), {
           servico: ctrl.servico
         }),
-
-        m('button.debug', {
-          onclick: ctrl.debug.bind(ctrl.servico)
-        }, [
-          m('i.fa.fa-bug'),
-          ' Debug '
-        ])
       ])
     ]);
   }
