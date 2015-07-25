@@ -39,13 +39,13 @@ var item = function (i) {
   return m('item', i);
 };
 
-var casos = function (e, nome, itemRender) {
+var casos = function (e, nome, itemDoCaso) {
   return m(nome, [
-    m('default', e.casoPadrao().campos().map(itemRender)),
+    m('default', e.casoPadrao().campos().map(itemDoCaso)),
     e.outrosCasos().map(function (caso) {
       return m('caso', {
         descricao: caso.descricao()
-      }, caso.campos().map(itemRender));
+      }, caso.campos().map(itemDoCaso));
     })
   ]);
 };
