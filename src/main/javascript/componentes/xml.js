@@ -37,6 +37,17 @@ var itemSimples = function (item) {
   return m('item', item);
 };
 
+var documentos = function (e) {
+  return m('documentos', [
+    m('default', e.casoPadrao().campos().map(itemSimples)),
+    e.outrosCasos().map(function (caso) {
+      return m('caso', {
+        descricao: caso.descricao()
+      }, caso.campos().map(itemSimples));
+    })
+  ]);
+};
+
 var custo = function (e) {
   return m('custo', [
       m('descricao', e.descricao()),
@@ -45,26 +56,23 @@ var custo = function (e) {
     ]);
 };
 
+var custos = function (e) {
+  return m('custos', [
+    m('default', e.casoPadrao().campos().map(custo)),
+    e.outrosCasos().map(function (caso) {
+      return m('caso', {
+        descricao: caso.descricao()
+      }, caso.campos().map(custo));
+    })
+  ]);
+};
+
 var etapa = function (e) {
   return m('etapa', [
     m('titulo', e.titulo()),
     m('descricao', e.descricao()),
-    m('documentos', [
-      m('default', e.documentos().casoPadrao().campos().map(itemSimples)),
-      e.documentos().outrosCasos().map(function (caso) {
-        return m('caso', {
-          descricao: caso.descricao()
-        }, caso.campos().map(itemSimples));
-      })
-    ]),
-    m('custos', [
-      m('default', e.custos().casoPadrao().campos().map(custo)),
-          e.custos().outrosCasos().map(function (caso) {
-        return m('caso', {
-          descricao: caso.descricao()
-        }, caso.campos().map(custo));
-      })
-    ]),
+    documentos(e.documentos()),
+    custos(e.custos()),
     m('canais-de-prestacao', [])
   ]);
 };
