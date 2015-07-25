@@ -228,6 +228,33 @@ body#novo {
     top: 40px;
     width: 100%;
     bottom: 0px;
+
+    .editor-markdown {
+      textarea {
+        margin-bottom: 0;
+      }
+      footer {
+        color: $cinza-escuro;
+        font-size: em(12);
+        margin-bottom: 3.25em;
+        margin-top: 15;
+
+        .markdown-suportado {
+          float: left;
+        }
+        .counter {
+          float: right;
+
+          span {
+            font-weight: bold;
+          }
+
+          span.over {
+            color: $vermelho-escuro;
+          }
+        }
+      }
+    }
   }
 
   .remover, .debug {
@@ -248,6 +275,7 @@ body#novo {
       }
     }
   }
+
   #nome {
     margin-top: .75em;
   }

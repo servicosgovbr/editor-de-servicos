@@ -18,23 +18,16 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('', [
-      m('.editor-barra-ferramentas', [
-        m('a', {
-          alt: 'Adicionar link',
-          title: 'Adicionar link',
-          href: ''
-        }, [m('i.fa.fa-link')]),
-
-        m('a', {
-          alt: 'Adicionar item de lista',
-          title: 'Adicionar item de lista',
-          href: ''
-        }, [m('i.fa.fa-list')])
-      ]),
-
+    return m('.editor-markdown', [
       m('textarea', ctrl.config),
-      m('.counter', ['Caracteres restantes: ', m('span', ctrl.caracteres())])
+      m('footer', [
+        m('span.markdown-suportado', [
+          'Este campo suporta ',
+          m('a[href="http://daringfireball.net/projects/markdown/basics"][target=_blank]', ['Markdown'])
+        ]),
+
+        m('span.counter', ['Caracteres restantes: ', m('span', ctrl.caracteres())])
+      ])
     ]);
   }
 };

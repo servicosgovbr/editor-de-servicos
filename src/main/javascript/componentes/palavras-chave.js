@@ -16,8 +16,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#palavras-chave', [
+
       m('h3', 'Palavras-chave'),
-      m('.palavrasChave', ctrl.palavrasChave().map(function (legislacao, i) {
+
+      ctrl.palavrasChave().map(function (legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
             value: legislacao,
@@ -31,7 +33,8 @@ module.exports = {
             m('span.fa.fa-times')
           ])
         ];
-      })),
+      }),
+
       m('button.adicionar.adicionar-palavra-chave', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [

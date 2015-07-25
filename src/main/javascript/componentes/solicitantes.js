@@ -24,25 +24,26 @@ module.exports = {
         return m('fieldset#' + s.id, {
           key: s.id
         }, [
-          m('h3', 'Solicitante'),
-
-          m('input.inline.inline-xg[type="text"]', {
+          m('h3', 'Descrição'),
+          m.component(require('componentes/editor-markdown'), {
+            rows: 5,
             value: s.descricao(),
             onchange: m.withAttr('value', s.descricao)
           }),
-
-          m('button.inline.remove-peq', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-times')
-          ]),
 
           m('h3', 'Requisitos'),
           m.component(require('componentes/editor-markdown'), {
             rows: 5,
             value: s.requisitos(),
             onchange: m.withAttr('value', s.requisitos)
-          })
+          }),
+
+          m('button.inline.remover', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, [
+            m('span.fa.fa-times'), ' Remover solicitante'
+          ]),
+
         ]);
       }),
 

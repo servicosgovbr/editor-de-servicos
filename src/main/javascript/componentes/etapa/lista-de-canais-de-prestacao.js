@@ -36,15 +36,16 @@ module.exports = {
             }, tipoCanal);
           }))),
           ' ',
-          m('input.inline.inline-lg[type=text]', {
+          m.component(require('componentes/editor-markdown'), {
+            rows: 3,
             value: canalDePrestacao.descricao(),
             onchange: m.withAttr('value', canalDePrestacao.descricao)
           }),
           ' ',
-          m('button.inline.remove-peq', {
+          m('button.inline.remover', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
-            m('span.fa.fa-times')
+            m('span.fa.fa-times'), ' Remover canal '
           ])
         ]);
       }),
@@ -52,7 +53,7 @@ module.exports = {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),
-        ' Adicionar canal de prestação '
+        ' Adicionar canal '
       ])
     ]);
   }

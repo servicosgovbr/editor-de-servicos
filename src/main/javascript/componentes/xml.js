@@ -3,10 +3,9 @@
 function cdata(doc, selector) {
   _(doc.querySelectorAll(selector)).each(function (el) {
     var content = _(el.childNodes).map(function (cn) {
-      return cn.nodeValue;
+      return el.removeChild(cn).nodeValue;
     }).join('');
 
-    el.innerHTML = '';
     el.appendChild(doc.createCDATASection(content));
   });
 }
@@ -117,10 +116,8 @@ exports.converterParaXML = function (servico) {
     m('legislacoes', servico.legislacoes().map(item))
   ]));
 
-  cdata(doc, 'servico > descricao');
-  cdata(doc, 'servico > tempo-total-estimado > descricao');
-  cdata(doc, 'servico > solicitantes > solicitante > requisitos');
-  cdata(doc, 'servico > etapas > etapa > descricao');
+  cdata(doc, 'descricao');
+  cdata(doc, 'requisitos');
 
   return doc;
 };

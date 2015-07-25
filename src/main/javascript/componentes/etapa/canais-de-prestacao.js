@@ -18,6 +18,7 @@ module.exports = {
         padrao: true,
         caso: ctrl.canaisDePrestacao().casoPadrao
       }),
+
       m.component(new Casos(ListaDeCanaisDePrestacao), {
         casos: ctrl.canaisDePrestacao().outrosCasos
       })
