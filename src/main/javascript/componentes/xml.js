@@ -96,7 +96,7 @@ var solicitantes = function (sol) {
   }));
 };
 
-exports.converter = function (servico) {
+exports.converterParaXML = function (servico) {
 
   var doc = document.implementation.createDocument('http://servicos.gov.br/v3/schema', '');
   m.render(doc, m('servico', {

@@ -6,8 +6,9 @@ module.exports = {
     this.servico = args.servico;
 
     this.debug = function () {
-      var xml = require('componentes/xml').converter(this);
+      var xml = require('componentes/xml').converterParaXML(this);
       console.log(this); // jshint ignore:line
+      console.log(JSON.stringify(this)); // jshint ignore:line
       console.log(xml); // jshint ignore:line
       console.log(new XMLSerializer().serializeToString(xml)); // jshint ignore:line
     };
@@ -32,9 +33,11 @@ module.exports = {
           m('button.inline.debug', {
             onclick: ctrl.debug.bind(ctrl.servico)
           }, [
-            m('i.fa.fa-bug'), m.trust('&nbsp; Debug ')
+            m('i.fa.fa-bug')
           ]),
         ]),
+
+        m('.titulo', m('h1', 'Editor de Serviços')),
 
         m('#logout', [
           m('span', [' ', ctrl.login(), ' ']),

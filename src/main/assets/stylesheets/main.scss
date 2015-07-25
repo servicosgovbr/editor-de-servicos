@@ -234,10 +234,20 @@ body#novo {
     background-color: #d00;
   }
 
-  .ferramentas {
-    float: left;
-  }
+  header {
+    .ferramentas {
+      float: right;
+    }
+    .titulo {
+      float: left;
+      margin-top: .5em;
+      margin-left: 1em;
 
+      h1 {
+        font-size: 14pt;
+      }
+    }
+  }
   #nome {
     margin-top: .75em;
   }
