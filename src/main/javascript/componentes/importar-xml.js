@@ -115,6 +115,7 @@ var servico = function (x) {
     sigla: x.find('> sigla').text(),
     nomesPopulares: x.find('> nomes-populares > item').map(item).get(),
     descricao: x.find('> descricao').text(),
+    gratuidade: x.find('> gratuito').text() === 'true',
     tempoTotalEstimado: x.find('> tempo-total-estimado').map(tempoTotalEstimado).get(0),
     solicitantes: x.find('> solicitantes > solicitante').map(solicitantes).get(),
     etapas: x.find('etapas > etapa', x).map(etapas).get(),
