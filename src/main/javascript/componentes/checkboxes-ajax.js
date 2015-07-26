@@ -1,13 +1,14 @@
 'use strict';
 
+var capitalize = function (str) {
+  return str && str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 module.exports.create = function (config) {
-  var capitalize = function (str) {
-    return str && str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   return {
     controller: function (args) {
-      this[config.chave] = args[config.chave];
+      this[config.chave] = args.servico()[config.chave];
 
       this['todos' + capitalize(config.chave)] = m.request({
         method: 'GET',

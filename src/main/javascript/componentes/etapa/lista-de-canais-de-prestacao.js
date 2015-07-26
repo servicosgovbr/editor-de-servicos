@@ -29,11 +29,11 @@ module.exports = {
             onchange: m.withAttr('value', ctrl.canaisDePrestacao()[i].tipo)
           }, [m('option', {
             value: ''
-          }, 'Selecione...')].concat(ctrl.tiposDeCanalDePrestacao().map(function (tipoCanal) {
+          }, 'Selecione...')].concat(ctrl.tiposDeCanalDePrestacao().map(function (tipo) {
             return m('option', {
-              value: tipoCanal,
-              selected: ctrl.canaisDePrestacao()[i].tipo() === tipoCanal
-            }, tipoCanal);
+              value: tipo,
+              selected: ctrl.canaisDePrestacao()[i].tipo() === tipo
+            }, tipo);
           }))),
           ' ',
           m.component(require('componentes/editor-markdown'), {

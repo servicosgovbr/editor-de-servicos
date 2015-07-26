@@ -3,15 +3,15 @@
 module.exports = {
 
   controller: function (args) {
-    this.sigla = args.sigla;
+    this.servico = args.servico;
   },
 
   view: function (ctrl) {
     return m('fieldset#sigla', [
       m('h3', 'Sigla do serviço'),
       m('input[type=text]', {
-        onchange: m.withAttr('value', ctrl.sigla),
-        value: ctrl.sigla()
+        onchange: m.withAttr('value', ctrl.servico().sigla),
+        value: ctrl.servico().sigla()
       })
     ]);
   }

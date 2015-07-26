@@ -3,10 +3,10 @@
 module.exports = {
 
   controller: function (args) {
-    this.tempoTotalEstimado = args.tempoTotalEstimado;
+    this.servico = args.servico;
 
     this.modificarTipo = function (e) {
-      this.tempoTotalEstimado.tipo(e.target.value);
+      this.servico().tempoTotalEstimado().tipo(e.target.value);
     };
   },
 
@@ -35,43 +35,45 @@ module.exports = {
 
       m('span.tipo-ate', {
         style: {
-          display: ctrl.tempoTotalEstimado.tipo() === 'até' ? 'inline' : 'none'
+          display: ctrl.servico().tempoTotalEstimado().tipo() === 'até' ? 'inline' : 'none'
         }
       }, [
         m('input.ate-maximo.inline[type="text"]', {
-          value: ctrl.tempoTotalEstimado.ateMaximo(),
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado.ateMaximo)
+          value: ctrl.servico().tempoTotalEstimado().ateMaximo(),
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateMaximo)
         }),
         ' ',
         m('select.inline', {
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado.ateTipoMaximo)
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateTipoMaximo)
         }, unidades),
       ]),
 
       m('span.tipo-entre', {
         style: {
-          display: ctrl.tempoTotalEstimado.tipo() === 'entre' ? 'inline' : 'none'
+          display: ctrl.servico().tempoTotalEstimado().tipo() === 'entre' ? 'inline' : 'none'
         }
       }, [
         m('input.entre-minimo.inline[type="text"]', {
-          value: ctrl.tempoTotalEstimado.entreMinimo(),
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMinimo)
+          value: ctrl.servico().tempoTotalEstimado().entreMinimo(),
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMinimo)
         }),
         ' e ',
         m('input.entre-minimo.inline[type="text"]', {
-          value: ctrl.tempoTotalEstimado.entreMaximo(),
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreMaximo)
+          value: ctrl.servico().tempoTotalEstimado().entreMaximo(),
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMaximo)
         }),
         ' ',
         m('select.inline', {
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado.entreTipoMaximo)
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreTipoMaximo)
         }, unidades)
       ]),
 
       m.component(require('componentes/editor-markdown'), {
         rows: 5,
-        oninput: m.withAttr('value', ctrl.tempoTotalEstimado.descricao),
-        value: ctrl.tempoTotalEstimado.descricao()
+        oninput: function (e) {
+          ctrl.servico().tempoTotalEstimado().descricao(e.target.value);
+        },
+        value: ctrl.servico().tempoTotalEstimado().descricao()
       })
     ]);
   }

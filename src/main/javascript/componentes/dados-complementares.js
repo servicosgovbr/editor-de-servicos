@@ -7,25 +7,17 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    var binding = {
+      servico: ctrl.servico
+    };
+
     return m('#dados-complementares', [
-      m.component(require('componentes/orgao-responsavel'), {
-        orgao: ctrl.servico.orgao
-      }),
-      m.component(require('componentes/segmentos-da-sociedade'), {
-        segmentosDaSociedade: ctrl.servico.segmentosDaSociedade
-      }),
-      m.component(require('componentes/eventos-da-linha-da-vida'), {
-        eventosDaLinhaDaVida: ctrl.servico.eventosDaLinhaDaVida
-      }),
-      m.component(require('componentes/areas-de-interesse'), {
-        areasDeInteresse: ctrl.servico.areasDeInteresse
-      }),
-      m.component(require('componentes/palavras-chave'), {
-        palavrasChave: ctrl.servico.palavrasChave
-      }),
-      m.component(require('componentes/legislacoes'), {
-        legislacoes: ctrl.servico.legislacoes
-      })
+      m.component(require('componentes/orgao-responsavel'), binding),
+      m.component(require('componentes/segmentos-da-sociedade'), binding),
+      m.component(require('componentes/eventos-da-linha-da-vida'), binding),
+      m.component(require('componentes/areas-de-interesse'), binding),
+      m.component(require('componentes/palavras-chave'), binding),
+      m.component(require('componentes/legislacoes'), binding)
     ]);
   }
 };

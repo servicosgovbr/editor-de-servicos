@@ -31,7 +31,7 @@ var CanalDePrestacao = function (config) {
   var data = (config || {});
   this.id = id('canal-de-prestacao');
   this.tipo = m.prop(data.tipo || '');
-  this.descricao = m.prop(data.tipo || '');
+  this.descricao = m.prop(data.descricao || '');
 };
 
 var Documentos = function (config) {

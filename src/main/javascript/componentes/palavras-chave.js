@@ -3,14 +3,14 @@
 module.exports = {
 
   controller: function (args) {
-    this.palavrasChave = args.palavrasChave;
+    this.servico = args.servico;
 
     this.adicionar = function () {
-      this.palavrasChave().push('');
+      this.servico().palavrasChave().push('');
     };
 
     this.remover = function (i) {
-      this.palavrasChave().splice(i, 1);
+      this.servico().palavrasChave().splice(i, 1);
     };
   },
 
@@ -19,12 +19,12 @@ module.exports = {
 
       m('h3', 'Palavras-chave'),
 
-      ctrl.palavrasChave().map(function (legislacao, i) {
+      ctrl.servico().palavrasChave().map(function (palavras, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
-            value: legislacao,
+            value: palavras,
             onchange: function (e) {
-              ctrl.palavrasChave()[i] = e.target.value;
+              ctrl.servico().palavrasChave()[i] = e.target.value;
             }
           }),
           m('button.inline.remove-peq', {

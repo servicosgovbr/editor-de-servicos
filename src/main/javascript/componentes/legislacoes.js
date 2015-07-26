@@ -3,26 +3,26 @@
 module.exports = {
 
   controller: function (args) {
-    this.legislacoes = args.legislacoes;
+    this.servico = args.servico;
 
     this.adicionar = function () {
-      this.legislacoes().push('');
+      this.servico().legislacoes().push('');
     };
 
     this.remover = function (i) {
-      this.legislacoes().splice(i, 1);
+      this.servico().legislacoes().splice(i, 1);
     };
   },
 
   view: function (ctrl) {
     return m('fieldset#legislacoes', [
       m('h3', 'Legislações relacionadas ao serviço'),
-      ctrl.legislacoes().map(function (legislacao, i) {
+      ctrl.servico().legislacoes().map(function (legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
             value: legislacao,
             onchange: function (e) {
-              ctrl.legislacoes()[i] = e.target.value;
+              ctrl.servico().legislacoes()[i] = e.target.value;
             }
           }),
           m('button.inline.remove-peq', {

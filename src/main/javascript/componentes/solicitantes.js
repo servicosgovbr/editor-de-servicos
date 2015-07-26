@@ -5,14 +5,14 @@ var modelos = require('modelos');
 module.exports = {
 
   controller: function (args) {
-    this.solicitantes = args.solicitantes;
+    this.servico = args.servico;
 
     this.adicionar = function () {
-      this.solicitantes.push(new modelos.Solicitante());
+      this.servico().solicitantes().push(new modelos.Solicitante());
     };
 
     this.remover = function (i) {
-      this.solicitantes.splice(i, 1);
+      this.servico().solicitantes().splice(i, 1);
     };
   },
 
@@ -20,7 +20,7 @@ module.exports = {
     return m('fieldset#solicitantes', [
       m('h3', 'Quem pode utilizar este serviço?'),
 
-      ctrl.solicitantes.map(function (s, i) {
+      ctrl.servico().solicitantes().map(function (s, i) {
         return m('fieldset#' + s.id, {
           key: s.id
         }, [

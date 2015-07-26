@@ -5,15 +5,14 @@ var modelos = require('modelos');
 module.exports = {
 
   controller: function (args) {
-    this.etapas = args.etapas;
-    this.gratuidade = args.gratuidade;
+    this.servico = args.servico;
 
     this.adicionar = function () {
-      this.etapas.push(new modelos.Etapa());
+      this.servico().etapas().push(new modelos.Etapa());
     };
 
     this.remover = function (i) {
-      this.etapas.splice(i, 1);
+      this.servico().etapas().splice(i, 1);
     };
   },
 
@@ -21,13 +20,13 @@ module.exports = {
     return m('fieldset#etapas', [
       m('h3', 'Etapas'),
 
-      ctrl.etapas.map(function (etapa, i) {
+      ctrl.servico().etapas().map(function (etapa, i) {
         return m('span', {
           key: etapa.id
         }, [
           m.component(require('componentes/etapa/etapa'), {
             etapa: etapa,
-            gratuidade: ctrl.gratuidade
+            gratuidade: ctrl.servico().gratuidade
           }),
 
           m('button.inline.remover', {

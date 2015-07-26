@@ -23,7 +23,7 @@ module.exports = {
         m('li', m('a[href="#solicitantes"]', 'Solicitantes')),
         m('li', [
           m('a[href="#etapas"]', 'Etapas'),
-          m('ul', ctrl.servico.etapas().map(function (etapa) {
+          m('ul', ctrl.servico().etapas().map(function (etapa) {
             return m('li', m('a', {
               href: '#' + etapa.id
             }, etapa.titulo() || m('em', '(sem título)')));

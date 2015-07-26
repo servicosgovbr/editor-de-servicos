@@ -7,25 +7,17 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    var binding = {
+      servico: ctrl.servico
+    };
+
     return m('#dados-basicos', [
-      m.component(require('componentes/nome'), {
-        nome: ctrl.servico.nome
-      }),
-      m.component(require('componentes/sigla'), {
-        sigla: ctrl.servico.sigla
-      }),
-      m.component(require('componentes/nomes-populares'), {
-        nomesPopulares: ctrl.servico.nomesPopulares
-      }),
-      m.component(require('componentes/descricao'), {
-        descricao: ctrl.servico.descricao
-      }),
-      m.component(require('componentes/tempo-total-estimado'), {
-        tempoTotalEstimado: ctrl.servico.tempoTotalEstimado()
-      }),
-      m.component(require('componentes/gratuidade'), {
-        gratuidade: ctrl.servico.gratuidade
-      }),
+      m.component(require('componentes/nome'), binding),
+      m.component(require('componentes/sigla'), binding),
+      m.component(require('componentes/nomes-populares'), binding),
+      m.component(require('componentes/descricao'), binding),
+      m.component(require('componentes/tempo-total-estimado'), binding),
+      m.component(require('componentes/gratuidade'), binding),
     ]);
   }
 };

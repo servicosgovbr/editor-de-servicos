@@ -1,42 +1,45 @@
 'use strict';
 
 var modelos = require('modelos');
+var importarXml = require('componentes/importar-xml');
+var exportarXml = require('componentes/exportar-xml');
+var salvarXml = require('componentes/salvar-xml');
 
 module.exports = {
 
   controller: function () {
-    this.servico = new modelos.Servico();
+    this.servico = m.prop(new modelos.Servico());
+
+    this.salvar = function () {
+      return salvarXml(exportarXml(this.servico()))
+        .then(importarXml)
+        .then(function (servico) {
+          console.log(JSON.stringify(this.servico)); //jshint ignore:line
+          this.servico(servico);
+
+        }.bind(this));
+    };
   },
 
   view: function (ctrl) {
+    var binding = {
+      servico: ctrl.servico
+    };
+
     return m('', [
       m.component(require('componentes/cabecalho'), {
-        servico: ctrl.servico
+        salvar: ctrl.salvar.bind(ctrl)
       }),
 
-      m.component(require('componentes/menu-lateral'), {
-        servico: ctrl.servico
-      }),
+      m.component(require('componentes/menu-lateral'), binding),
 
       m('#principal.auto-grid', [
-
-        m.component(require('componentes/dados-basicos'), {
-          servico: ctrl.servico
-        }),
-
-        m.component(require('componentes/solicitantes'), {
-          solicitantes: ctrl.servico.solicitantes()
-        }),
-
-        m.component(require('componentes/etapas'), {
-          etapas: ctrl.servico.etapas(),
-          gratuidade: ctrl.servico.gratuidade
-        }),
-
-        m.component(require('componentes/dados-complementares'), {
-          servico: ctrl.servico
-        }),
+        m.component(require('componentes/dados-basicos'), binding),
+        m.component(require('componentes/solicitantes'), binding),
+        m.component(require('componentes/etapas'), binding),
+        m.component(require('componentes/dados-complementares'), binding),
       ])
     ]);
   }
+
 };

@@ -3,7 +3,7 @@
 module.exports = {
 
   controller: function (args) {
-    this.gratuidade = args.gratuidade;
+    this.servico = args.servico;
   },
 
   view: function (ctrl) {
@@ -12,8 +12,8 @@ module.exports = {
 
       m('label',
         m('input[type=checkbox]', {
-          onchange: m.withAttr('checked', ctrl.gratuidade),
-          checked: ctrl.gratuidade()
+          onchange: m.withAttr('checked', ctrl.servico().gratuidade),
+          checked: ctrl.servico().gratuidade()
         }),
         'Este serviço é gratuito para o solicitante'
       )

@@ -3,14 +3,14 @@
 module.exports = {
 
   controller: function (args) {
-    this.nomesPopulares = args.nomesPopulares;
+    this.servico = args.servico;
 
     this.adicionar = function () {
-      this.nomesPopulares().push('');
+      this.servico().nomesPopulares().push('');
     };
 
     this.remover = function (i) {
-      this.nomesPopulares().splice(i, 1);
+      this.servico().nomesPopulares().splice(i, 1);
     };
   },
 
@@ -18,12 +18,12 @@ module.exports = {
     return m('fieldset#nomes-populares', [
       m('h3', 'Nomes populares'),
 
-      ctrl.nomesPopulares().map(function (legislacao, i) {
+      ctrl.servico().nomesPopulares().map(function (nomesPopulares, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
-            value: legislacao,
+            value: nomesPopulares,
             onchange: function (e) {
-              ctrl.nomesPopulares()[i] = e.target.value;
+              ctrl.servico().nomesPopulares()[i] = e.target.value;
             }
           }),
           m('button.inline.remove-peq', {

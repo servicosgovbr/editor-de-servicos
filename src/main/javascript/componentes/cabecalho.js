@@ -1,17 +1,9 @@
 'use strict';
 
-var importarXml = require('componentes/importar-xml');
-var exportarXml = require('componentes/exportar-xml');
-var salvarXml = require('componentes/salvar-xml');
-
 module.exports = {
 
   controller: function (args) {
-    this.servico = args.servico;
-
-    this.salvar = function () {
-      return salvarXml(exportarXml(this.servico)).then(importarXml);
-    };
+    this.salvar = args.salvar;
 
     this.login = m.request({
       method: 'GET',
