@@ -1,31 +1,16 @@
 'use strict';
 
+var importarXml = require('componentes/importar-xml');
+var exportarXml = require('componentes/exportar-xml');
+var salvarXml = require('componentes/salvar-xml');
+
 module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
 
     this.salvar = function () {
-      var xml = require('componentes/xml').converterParaXML(this.servico);
-
-      m.request({
-          method: 'POST',
-          url: '/editar/v3/servico',
-          data: xml,
-          config: function (xhr) {
-            xhr.setRequestHeader('Accepts', 'application/xml');
-            xhr.setRequestHeader('Content-Type', 'application/xml');
-          },
-          serialize: function (svc) {
-            return new XMLSerializer().serializeToString(svc);
-          },
-          deserialize: function (data) {
-            return data;
-          }
-        })
-        .then(function (resultado) {
-          console.log(resultado); // jshint ignore:line
-        });
+      return salvarXml(exportarXml(this.servico)).then(importarXml);
     };
 
     this.login = m.request({

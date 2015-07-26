@@ -1,6 +1,6 @@
 'use strict';
 
-var models = require('modelos');
+var modelos = require('modelos');
 
 module.exports = {
 
@@ -13,7 +13,7 @@ module.exports = {
     });
 
     this.adicionar = function () {
-      this.canaisDePrestacao().push(new models.CanalDePrestacao());
+      this.canaisDePrestacao().push(new modelos.CanalDePrestacao());
     };
 
     this.remover = function (i) {

@@ -1,6 +1,6 @@
 'use strict';
 
-var models = require('modelos');
+var modelos = require('modelos');
 var Caso = require('componentes/etapa/caso');
 
 module.exports = function (componente) {
@@ -11,7 +11,7 @@ module.exports = function (componente) {
       this.casos = args.casos;
 
       this.adicionar = function () {
-        this.casos().push(new models.Caso());
+        this.casos().push(new modelos.Caso());
       };
 
       this.remover = function (i) {

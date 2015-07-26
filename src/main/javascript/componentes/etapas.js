@@ -1,6 +1,6 @@
 'use strict';
 
-var models = require('modelos');
+var modelos = require('modelos');
 
 module.exports = {
 
@@ -9,7 +9,7 @@ module.exports = {
     this.gratuidade = args.gratuidade;
 
     this.adicionar = function () {
-      this.etapas.push(new models.Etapa());
+      this.etapas.push(new modelos.Etapa());
     };
 
     this.remover = function (i) {

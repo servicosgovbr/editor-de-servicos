@@ -1,11 +1,11 @@
 'use strict';
 
-var models = require('modelos');
+var modelos = require('modelos');
 
 module.exports = {
 
   controller: function () {
-    this.servico = new models.Servico();
+    this.servico = new modelos.Servico();
   },
 
   view: function (ctrl) {

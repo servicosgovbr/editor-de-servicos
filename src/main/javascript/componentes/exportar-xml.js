@@ -1,6 +1,6 @@
 'use strict';
 
-function cdata(doc, selector) {
+var cdata = function (doc, selector) {
   _(doc.querySelectorAll(selector)).each(function (el) {
     var content = _(el.childNodes).map(function (cn) {
       return el.removeChild(cn).nodeValue;
@@ -8,7 +8,7 @@ function cdata(doc, selector) {
 
     el.appendChild(doc.createCDATASection(content));
   });
-}
+};
 
 var tempoTotalEstimado = function (tempoEstimado) {
   var limite;
@@ -93,7 +93,7 @@ var solicitantes = function (sol) {
   }));
 };
 
-exports.converterParaXML = function (servico) {
+module.exports = function (servico) {
 
   var doc = document.implementation.createDocument('http://servicos.gov.br/v3/schema', '');
   m.render(doc, m('servico', {
