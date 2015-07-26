@@ -13,11 +13,7 @@ module.exports = {
     this.salvar = function () {
       return salvarXml(exportarXml(this.servico()))
         .then(importarXml)
-        .then(function (servico) {
-          console.log(JSON.stringify(this.servico)); //jshint ignore:line
-          this.servico(servico);
-
-        }.bind(this));
+        .then(this.servico);
     };
   },
 

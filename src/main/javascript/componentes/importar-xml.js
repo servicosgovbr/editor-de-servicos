@@ -129,8 +129,5 @@ var servico = function (x) {
 };
 
 module.exports = function (dom) {
-  var x = jQuery('servico', dom);
-  var svc = servico(x);
-  console.log(JSON.parse(JSON.stringify(svc))); // jshint ignore:line
-  return svc;
+  return servico(jQuery('servico', dom));
 };
