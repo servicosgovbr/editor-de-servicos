@@ -64,8 +64,9 @@ var custos = function (e) {
 };
 
 var canalDePrestacao = function (e) {
-  return m('canal-de-prestacao', [
-   m('tipo', e.tipo()),
+  return m('canal-de-prestacao', {
+    tipo: e.tipo()
+  }, [
    m('descricao', e.descricao())
  ]);
 };

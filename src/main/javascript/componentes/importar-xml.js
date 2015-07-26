@@ -83,7 +83,7 @@ var custos = function (i, c) {
 var canalDePrestacao = function (i, c) {
   var t = jQuery(c);
   return new modelos.CanalDePrestacao({
-    tipo: t.find('tipo').text(),
+    tipo: t.attr('tipo'),
     descricao: t.find('descricao').text()
   });
 };
