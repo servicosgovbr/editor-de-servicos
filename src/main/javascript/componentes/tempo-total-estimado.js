@@ -15,8 +15,8 @@ module.exports = {
       m('option[value=""]', 'Selecione…'),
       m('option[value="minutos"]', 'minutos'),
       m('option[value="horas"]', 'horas'),
-      m('option[value="dias corridos"]', 'dias corridos'),
-      m('option[value="dias úteis"]', 'dias úteis'),
+      m('option[value="dias-corridos"]', 'dias corridos'),
+      m('option[value="dias-uteis"]', 'dias úteis'),
       m('option[value="meses"]', 'meses')
     ];
 
@@ -24,18 +24,19 @@ module.exports = {
       m('h3', 'Tempo total estimado'),
 
       m('select.inline', {
-        onchange: ctrl.modificarTipo.bind(ctrl)
+        onchange: ctrl.modificarTipo.bind(ctrl),
+        value: ctrl.servico().tempoTotalEstimado().tipo()
       }, [
         m('option[value=""]', 'Selecione…'),
         m('option[value="entre"]', 'Entre'),
-        m('option[value="até"]', 'Até')
+        m('option[value="ate"]', 'Até')
       ]),
 
       ' ',
 
       m('span.tipo-ate', {
         style: {
-          display: ctrl.servico().tempoTotalEstimado().tipo() === 'até' ? 'inline' : 'none'
+          display: ctrl.servico().tempoTotalEstimado().tipo() === 'ate' ? 'inline' : 'none'
         }
       }, [
         m('input.ate-maximo.inline[type="text"]', {
@@ -44,7 +45,8 @@ module.exports = {
         }),
         ' ',
         m('select.inline', {
-          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateTipoMaximo)
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateTipoMaximo),
+          value: ctrl.servico().tempoTotalEstimado().ateTipoMaximo()
         }, unidades),
       ]),
 
@@ -64,7 +66,8 @@ module.exports = {
         }),
         ' ',
         m('select.inline', {
-          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreTipoMaximo)
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreTipoMaximo),
+          value: ctrl.servico().tempoTotalEstimado().entreTipoMaximo()
         }, unidades)
       ]),
 

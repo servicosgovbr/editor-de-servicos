@@ -1,15 +1,18 @@
 'use strict';
 
-var modelos = require('modelos');
 var importarXml = require('componentes/importar-xml');
 var exportarXml = require('componentes/exportar-xml');
 var salvarXml = require('componentes/salvar-xml');
 var slugify = require('slugify');
+var carregarServico = require('carregar-servico');
 
 module.exports = {
 
   controller: function () {
-    this.servico = m.prop(new modelos.Servico());
+    this.servico = carregarServico(
+      m.route.param('versao'),
+      m.route.param('id')
+    );
 
     this.salvar = function () {
       return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()))

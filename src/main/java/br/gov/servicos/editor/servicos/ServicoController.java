@@ -27,8 +27,11 @@ class ServicoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/servico/{id}", method = GET, produces = "application/xml")
-    String editar(@PathVariable("id") String id) throws IOException {
+    @RequestMapping(value = "/editar/api/servico/{versao}/{id}", method = GET, produces = "application/xml")
+    String editar(
+            @PathVariable("versao") String versao,
+            @PathVariable("id") String id
+    ) throws IOException {
         return cartas.conteudoServicoV2(slugify.slugify(id))
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Não foi possível encontrar o serviço referente ao arquivo '" + id + "'"

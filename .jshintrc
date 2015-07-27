@@ -12,7 +12,8 @@
       "describe",
       "it",
       "expect",
-      "window"
+      "window",
+      "beforeEach"
     ],
 
     "indent": 2,
