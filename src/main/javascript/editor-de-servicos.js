@@ -4,6 +4,7 @@ var modelos = require('modelos');
 var importarXml = require('componentes/importar-xml');
 var exportarXml = require('componentes/exportar-xml');
 var salvarXml = require('componentes/salvar-xml');
+var slugify = require('slugify');
 
 module.exports = {
 
@@ -11,7 +12,7 @@ module.exports = {
     this.servico = m.prop(new modelos.Servico());
 
     this.salvar = function () {
-      return salvarXml(this.servico().nome(), exportarXml(this.servico()))
+      return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()))
         .then(importarXml)
         .then(this.servico);
     };

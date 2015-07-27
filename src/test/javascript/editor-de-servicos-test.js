@@ -16,9 +16,10 @@ describe('editor', function () {
   });
 
   it('deve salvar um servico', function () {
-    var response = xhr('post', '/editar/v3/servico').respondWith('<servico/>');
+    var response = xhr('post', '/editar/v3/servico/ola-mundo').respondWith('<servico/>');
 
     var ctrl = new editor.controller();
+    ctrl.servico().nome('olá, mundo!');
     expect(ctrl.salvar).toBeDefined();
 
     ctrl.salvar();
