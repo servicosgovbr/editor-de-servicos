@@ -31,7 +31,7 @@ module.exports = {
 
         m('.titulo', m('h1', 'Editor de Serviços')),
 
-        m('#logout', [
+        m('form#logout[action=/editar/logout][method=POST]', [
           m('span', [' ', ctrl.login(), ' ']),
           m('button', [
             m('i.fa.fa-sign-out'), m.trust('&nbsp; Sair'),
