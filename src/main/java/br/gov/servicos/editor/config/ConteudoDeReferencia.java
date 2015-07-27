@@ -78,7 +78,7 @@ public class ConteudoDeReferencia {
         return asList(
                 "Cidadãos",
                 "Empresas",
-                "Governos",
+                "Órgãos e entidades públicas",
                 "Demais segmentos (ONGs, organizações sociais, etc)"
         );
     }
