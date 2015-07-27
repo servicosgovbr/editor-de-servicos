@@ -16,10 +16,19 @@
     "brunch": "^1.8.3",
     "clean-css-brunch": "^1.7.2",
     "css-brunch": "^1.7.0",
+    "jasmine-core": "^2.3.4",
     "javascript-brunch": "^1.7.1",
     "js-beautify": "^1.5.10",
     "jshint-brunch": "^1.8.0",
+    "karma": "^0.13.3",
+    "karma-cli": "^0.1.0",
+    "karma-jasmine": "^0.3.6",
+    "karma-junit-reporter": "^0.3.3",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "phantomjs": "^1.9.17",
     "sass-brunch": "^1.8.10",
-    "uglify-js-brunch": "^1.7.8"
+    "uglify-js-brunch": "^1.7.8",
+    "karma-requirejs": "^0.2.2",
+    "requirejs": "^2.1.19"
   }
 }
