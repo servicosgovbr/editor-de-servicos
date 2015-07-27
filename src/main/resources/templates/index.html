@@ -1,45 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
       layout:decorator="layout">
-
 <head>
     <title>Principal</title>
 </head>
-
-<body>
-<section id="principal" class="auto-grid" role="main" layout:fragment="corpo">
-    <form th:action="@{/editar/servico}"
-          th:object="${servico}" method="post">
-
-        <div th:replace="form/introducao :: #introducao"></div>
-        <div th:replace="form/dados-principais :: #passo-1"></div>
-        <div th:replace="form/situacao-servico :: #passo-2"></div>
-        <div th:replace="form/etapas :: #passo-3"></div>
-        <div th:replace="form/dados-complementares :: #passo-4"></div>
-
-        <p th:if="*{metadados?.revisao}"
-           th:with="data = ${#dates.format(servico?.metadados?.horario, 'dd/MMM/yyyy HH:mm')}"
-           th:text="|Última edição por ${servico?.metadados?.autor}, em ${data}|">
-        </p>
-
-        <button id="salvar">
-            <i class="fa fa-hdd-o"></i>&nbsp;
-            Salvar
-        </button>
-
-        <button id="publicar" disabled="disabled">
-            <i class="fa fa-paper-plane"></i>&nbsp;
-            Salvar e Enviar para publicação
-        </button>
-
-        <button class="cancel" disabled="disabled" style="float: right; margin-right: 0">
-            <i class="fa fa-trash-o"></i>&nbsp;
-            Descartar alterações
-        </button>
-    </form>
-</section>
-<div class="modal">&nbsp;</div>
+<body id="novo" layout:fragment="corpo">
+<script src="/editar/assets/vendor.js"></script>
+<script src="/editar/assets/app.js"></script>
+<script>require('modulos');</script>
 </body>
 </html>

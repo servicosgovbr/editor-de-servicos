@@ -1,36 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Editor de Serviços</title>
-    <link rel="stylesheet" type="text/css" href="/editar/assets/font-awesome.min.css" media="screen"/>
-    <link rel="stylesheet" type="text/css" href="/editar/assets/main.css" media="screen"/>
-    <link rel="shortcut icon" href="/editar/assets/favicon.ico" type="image/x-icon"/>
+    <link href="/editar/assets/novo.css" media="screen" rel="stylesheet" type="text/css"/>
+    <link href="/editar/assets/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
 </head>
 
-<body>
-<div th:replace="fragments/cabecalho"></div>
-<div layout:fragment="corpo"></div>
-
-<script type="text/javascript" src="/editar/assets/jquery.min.js"></script>
-<script type="text/javascript" src="/editar/assets/jquery.simplyCountable.js"></script>
-<script type="text/javascript" src="/editar/assets/rangyinputs-jquery.js"></script>
-<script type="text/javascript" src="/editar/assets/underscore-min.js"></script>
-<script type="text/javascript" src="/editar/assets/marked.min.js"></script>
-<script type="text/javascript" src="/editar/assets/contadores-de-caracteres.js"></script>
-<script type="text/javascript" src="/editar/assets/custo-estimado-toggle.js"></script>
-<script type="text/javascript" src="/editar/assets/toggle-de-etapas.js"></script>
-<script type="text/javascript" src="/editar/assets/titulos-de-etapas.js"></script>
-<script type="text/javascript" src="/editar/assets/editor-de-texto-rico.js"></script>
-<script type="text/javascript" src="/editar/assets/desabilita-componentes.js"></script>
-<script type="text/javascript" src="/editar/assets/tempo-estimado.js"></script>
-<script type="text/javascript" src="/editar/assets/canais-de-prestacao.js"></script>
-<script type="text/javascript" src="/editar/assets/impede-submit-com-enter.js"></script>
-
+<body id="novo" layout:fragment="corpo">
 </body>
+
 </html>
 

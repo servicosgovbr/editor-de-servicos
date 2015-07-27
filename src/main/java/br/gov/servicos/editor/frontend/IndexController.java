@@ -1,7 +1,5 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.servicos.Metadados;
-import br.gov.servicos.editor.servicos.Servico;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +17,8 @@ class IndexController {
         return new RedirectView("/editar/");
     }
 
-    @RequestMapping("/editar")
+    @RequestMapping({"/editar", "/editar/servico/**"})
     ModelAndView index() {
-        return new ModelAndView("index", "servico", new Servico()
-                .withMetadados(new Metadados()));
+        return new ModelAndView("index");
     }
 }

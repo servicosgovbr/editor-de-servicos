@@ -1,8 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.servicos.Cartas;
-import br.gov.servicos.editor.servicos.Metadados;
-import br.gov.servicos.editor.servicos.Servico;
 import lombok.experimental.FieldDefaults;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +17,6 @@ import static org.junit.Assert.assertThat;
 public class IndexControllerTest {
 
     @Autowired
-    ExportadorServicoV2 v2;
-
-    @Autowired
     Cartas cartas;
 
     IndexController controller;
@@ -34,12 +29,6 @@ public class IndexControllerTest {
     @Test
     public void retornaIndex() throws Exception {
         assertThat(controller.index().getViewName(), is("index"));
-    }
-
-    @Test
-    public void adicionaServicoVazioAoModel() throws Exception {
-        assertThat(controller.index().getModelMap().get("servico"), is(
-                new Servico().withMetadados(new Metadados())));
     }
 
 }

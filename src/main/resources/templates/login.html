@@ -5,43 +5,41 @@
       layout:decorator="layout">
 
 <head>
-    <title>Acessar o editor de serviços</title>
+    <title>Acessar o Editor de Serviços</title>
 </head>
 
-<body>
-<div layout:fragment="corpo">
-    <div id="login-form">
-        <form th:action="@{/editar/login}" method="post"
-              th:with="csrf = ${#httpServletRequest.getAttribute('CsrfToken')}">
+<body layout:fragment="corpo">
 
-            <h1>Login</h1>
+<div id="login-form">
+    <form th:action="@{/editar/login}" method="post">
 
-            <p th:if="${param.error}" class="alert alert-error">
-                <i class="fa fa-bug"></i>&nbsp;
-                Nome ou senha incorretos.
-            </p>
+        <h1>Login</h1>
 
-            <p th:if="${param.logout}" class="alert alert-info">
-                <i class="fa fa-info"></i>&nbsp;
-                Você saiu do sistema.
-            </p>
+        <p th:if="${param.error}" class="alert alert-error">
+            <i class="fa fa-bug"></i>&nbsp;
+            Nome ou senha incorretos.
+        </p>
 
-            <p>Informe seu usuário e senha para acessar o editor de serviços.</p>
+        <p th:if="${param.logout}" class="alert alert-info">
+            <i class="fa fa-info"></i>&nbsp;
+            Você saiu do sistema.
+        </p>
 
-            <label for="usuario">Usuário</label>
-            <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required" autofocus="true"/>
+        <p>Informe seu usuário e senha para acessar o editor de serviços.</p>
 
-            <label for="senha">Senha</label>
-            <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
+        <label for="usuario">Usuário</label>
+        <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
+               autofocus="true"/>
 
-            <input type="hidden" name="${csrfToken.parameterName}" value="${csrfToken.token}"/>
+        <label for="senha">Senha</label>
+        <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
 
-            <button type="submit">
-                <i class="fa fa-sign-in"></i>&nbsp;
-                Entrar
-            </button>
-        </form>
-    </div>
+        <button type="submit">
+            <i class="fa fa-sign-in"></i>&nbsp;
+            Entrar
+        </button>
+    </form>
 </div>
+
 </body>
 </html>
