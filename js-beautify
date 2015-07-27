@@ -1,2 +1,4 @@
 #!/bin/sh
 git ls-files 'src/main/javascript' | xargs ./node_modules/.bin/js-beautify -n -s 2 -j --good-stuff -r -f
+git ls-files 'src/test/javascript' | xargs ./node_modules/.bin/js-beautify -n -s 2 -j --good-stuff -r -f
+echo 'test-main.js' 'karma.conf.js' 'karma.snap.conf.js' | xargs ./node_modules/.bin/js-beautify -n -s 2 -j --good-stuff -r -f

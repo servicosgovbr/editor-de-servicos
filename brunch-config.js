@@ -4,7 +4,8 @@ module.exports.config = {
     watched: [
       'src/main/javascript/',
       'src/main/resources/vendor',
-      'src/main/assets/stylesheets'
+      'src/main/assets/stylesheets',
+      'src/test/javascript/',
     ],
     public: 'src/main/resources/static/editar/assets/'
   },
@@ -13,7 +14,8 @@ module.exports.config = {
     javascripts: {
       joinTo: {
         'app.js': new RegExp('^src/main/javascript/'),
-        'vendor.js': new RegExp('^(?!src/main/javascript/)'),
+        'tests.js': new RegExp('src/test/javascript/'),
+        'vendor.js': new RegExp('^(?!src/(main|test)/javascript/)'),
       }
     },
     stylesheets: {
@@ -28,11 +30,13 @@ module.exports.config = {
   },
 
   conventions: {
-    assets: function() { return false; }
+    assets: function () {
+      return false;
+    }
   },
 
   modules: {
-    nameCleaner: function(path) {
+    nameCleaner: function (path) {
       return path.replace(new RegExp('^src/main/javascript/'), '');
     }
   },
