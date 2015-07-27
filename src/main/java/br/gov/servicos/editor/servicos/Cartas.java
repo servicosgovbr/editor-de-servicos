@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,9 +29,7 @@ import java.util.function.Supplier;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
+import static java.util.Optional.*;
 import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
@@ -125,6 +128,37 @@ public class Cartas {
                     String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
 
                     escreve(doc, caminho);
+                    add(git, caminho);
+                    commit(git, mensagem, usuario);
+
+                    return null;
+                });
+
+            } finally {
+                push(git, id);
+            }
+        });
+    }
+
+    public void salvarServicoV3(String id, DOMSource doc, User usuario) {
+        comRepositorioAberto(git -> {
+
+            pull(git);
+
+            try {
+                return executaNoBranchDoServico(id, () -> {
+                    Path caminho = caminhoParaServicoV3(id);
+                    Path dir = caminho.getParent();
+
+                    if (dir.toFile().mkdirs()) {
+                        log.debug("Diretório {} não existia e foi criado", dir);
+                    } else {
+                        log.debug("Diretório {} já existia e não precisou ser criado", dir);
+                    }
+
+                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
+
+                    escreveV3(doc, caminho);
                     add(git, caminho);
                     commit(git, mensagem, usuario);
 
@@ -247,10 +281,29 @@ public class Cartas {
         return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v2", "servicos", id + ".xml");
     }
 
+    private Path caminhoParaServicoV3(String id) {
+        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
+    }
+
     @SneakyThrows
     private void escreve(Document document, Path arquivo) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
             writer.write(document.toString().replace("xsi:schemalocation", "xsi:schemaLocation")); // TODO: Jsoup faz lowercase de atributos :(
+        }
+        log.debug("Arquivo '{}' modificado", arquivo.getFileName());
+    }
+
+    @SneakyThrows
+    private void escreveV3(DOMSource document, Path arquivo) {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            StreamResult result = new StreamResult(writer);
+            transformer.transform(document, result);
         }
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }

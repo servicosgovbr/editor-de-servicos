@@ -1,11 +1,11 @@
 'use strict';
 
-module.exports = function (xml) {
+module.exports = function (nome, xml) {
 
   return m.request({
 
     method: 'POST',
-    url: '/editar/v3/servico',
+    url: '/editar/v3/servico/' + nome,
     data: xml,
 
     config: function (xhr) {

@@ -11,7 +11,7 @@ module.exports = {
     this.servico = m.prop(new modelos.Servico());
 
     this.salvar = function () {
-      return salvarXml(exportarXml(this.servico()))
+      return salvarXml(this.servico().nome(), exportarXml(this.servico()))
         .then(importarXml)
         .then(this.servico);
     };
