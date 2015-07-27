@@ -14,7 +14,7 @@ module.exports.config = {
     javascripts: {
       joinTo: {
         'app.js': new RegExp('^src/main/javascript/'),
-        'tests.js': new RegExp('src/test/javascript/'),
+        'tests.js': new RegExp('^src/test/javascript/'),
         'vendor.js': new RegExp('^(?!src/(main|test)/javascript/)'),
       }
     },
@@ -37,13 +37,13 @@ module.exports.config = {
 
   modules: {
     nameCleaner: function (path) {
-      return path.replace(new RegExp('^src/main/javascript/'), '');
+      return path.replace(new RegExp('^src/(main|test)/javascript/'), '');
     }
   },
 
   plugins: {
     jshint: {
-      pattern: new RegExp('^src/main/javascript/.*\\.js$'),
+      pattern: new RegExp('^src/(main|test)/javascript/.*\\.js$'),
     },
     sass: {
       debug: 'comments'

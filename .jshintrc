@@ -8,7 +8,11 @@
       "require",
       "XMLSerializer",
       "DOMParser",
-      "jQuery"
+      "jQuery",
+      "describe",
+      "it",
+      "expect",
+      "window"
     ],
 
     "indent": 2,
