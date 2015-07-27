@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -34,12 +39,30 @@ public class SalvarV3Controller {
 
     @ResponseBody
     @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
-    void salvar(@PathVariable("id") String unsafeId,
+    String salvar(@PathVariable("id") String unsafeId,
                   @RequestBody DOMSource servico,
                   @AuthenticationPrincipal User usuario) throws IOException, TransformerException {
 
         String id = slugify.slugify(unsafeId);
-        cartas.salvarServicoV3(id, servico, usuario);
+        String doc = formata(servico);
+
+        cartas.salvarServicoV3(id, doc, usuario);
+
+        return doc;
+    }
+
+    private String formata(@RequestBody DOMSource servico) throws TransformerException {
+        StringWriter writer = new StringWriter();
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+        StreamResult result = new StreamResult(writer);
+        transformer.transform(servico, result);
+
+        return writer.toString();
     }
 
 }

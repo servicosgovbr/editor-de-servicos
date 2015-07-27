@@ -14,11 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -140,7 +135,7 @@ public class Cartas {
         });
     }
 
-    public void salvarServicoV3(String id, DOMSource doc, User usuario) {
+    public void salvarServicoV3(String id, String doc, User usuario) {
         comRepositorioAberto(git -> {
 
             pull(git);
@@ -294,16 +289,9 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void escreveV3(DOMSource document, Path arquivo) {
+    private void escreveV3(String document, Path arquivo) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
-            StreamResult result = new StreamResult(writer);
-            transformer.transform(document, result);
+            writer.write(document);
         }
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }
