@@ -1,1 +1,3 @@
-m.module(document.body, require('editor-de-servicos'));
+m.route(document.body, '/', {
+  '/': require('editor-de-servicos')
+});
