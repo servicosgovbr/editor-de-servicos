@@ -23,13 +23,21 @@ module.exports = {
       servico: ctrl.servico
     };
 
+    var salvarAutomaticamente = _.debounce(ctrl.salvar.bind(ctrl), 300);
+
     return m('', [
       m.component(require('componentes/cabecalho')),
 
       m.component(require('componentes/menu-lateral'), binding),
 
-      m('form#principal.auto-grid', {
-        onchange: _.debounce(ctrl.salvar.bind(ctrl), 300)
+      m('#principal.auto-grid', {
+        onchange: salvarAutomaticamente,
+        onclick: _.wrap(salvarAutomaticamente, function(fn, e) {
+          var target = jQuery(e.target);
+          if(target.is('button') || target.parents('button').size() > 0) {
+            return salvarAutomaticamente(e);
+          }
+        })
       }, [
         m.component(require('componentes/dados-basicos'), binding),
         m.component(require('componentes/solicitantes'), binding),
