@@ -24,7 +24,9 @@ module.exports = {
   view: function (ctrl) {
     return m('.canais-de-prestacao', [
       ctrl.canaisDePrestacao().map(function (canalDePrestacao, i) {
-        return m('.canal-de-prestacao', [
+        return m('.canal-de-prestacao', {
+          key: canalDePrestacao.id
+        }, [
           m('select', {
             onchange: m.withAttr('value', ctrl.canaisDePrestacao()[i].tipo)
           }, [m('option', {
