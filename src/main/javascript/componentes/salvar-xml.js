@@ -19,9 +19,9 @@ module.exports = function (nome, xml, metadados) {
 
     extract: function (xhr) {
       metadados({
-        autor: xhr.getResponseHeader('X-Git-Author'),
-        revisao: xhr.getResponseHeader('X-Git-Revision'),
-        horario: new Date(xhr.getResponseHeader('Last-Modified'))
+        autor: xhr.getResponseHeader && xhr.getResponseHeader('X-Git-Author'),
+        revisao: xhr.getResponseHeader && xhr.getResponseHeader('X-Git-Revision'),
+        horario: xhr.getResponseHeader && new Date(xhr.getResponseHeader('Last-Modified'))
       });
 
       return xhr.responseText;
