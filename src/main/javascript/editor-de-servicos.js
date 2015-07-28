@@ -9,10 +9,7 @@ var carregarServico = require('carregar-servico');
 module.exports = {
 
   controller: function () {
-    this.servico = carregarServico(
-      m.route.param('versao'),
-      m.route.param('id')
-    );
+    this.servico = carregarServico(m.route.param('id'));
 
     this.salvar = function () {
       return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()))

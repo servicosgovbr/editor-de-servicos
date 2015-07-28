@@ -49,9 +49,27 @@ public class Cartas {
         return executaNoBranchDoServico(id, leitorDeConteudoV2(id));
     }
 
+    @SneakyThrows
+    public Optional<String> conteudoServicoV3(String id) {
+        return executaNoBranchDoServico(id, leitorDeConteudoV3(id));
+    }
+
     private Supplier<Optional<String>> leitorDeConteudoV2(String id) {
         return () -> {
             File arquivo = caminhoParaServicoV2(id).toFile();
+            if (arquivo.exists()) {
+                log.info("Arquivo {} encontrado", arquivo);
+                return ler(arquivo);
+            }
+
+            log.info("Arquivo {} não encontrado", arquivo);
+            return empty();
+        };
+    }
+
+    private Supplier<Optional<String>> leitorDeConteudoV3(String id) {
+        return () -> {
+            File arquivo = caminhoParaServicoV3(id).toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
