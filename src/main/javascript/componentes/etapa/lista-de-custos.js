@@ -19,7 +19,9 @@ module.exports = {
   view: function (ctrl) {
     return m('.custos', [
       ctrl.custos().map(function (custo, i) {
-        return m('.custo', [
+        return m('.custo', {
+          key: custo.id
+        }, [
           m('input.inline.inline-lg[type=text]', {
             value: custo.descricao(),
             onchange: m.withAttr('value', custo.descricao)

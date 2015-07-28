@@ -17,7 +17,9 @@ module.exports = {
   view: function (ctrl) {
     return m('.documentos', [
       ctrl.documentos().map(function (documento, i) {
-        return [
+        return m('.documento', {
+          key: documento.id
+        }, [
           m('input.inline.inline-xg[type=text]', {
             value: documento,
             onchange: function (e) {
@@ -29,7 +31,7 @@ module.exports = {
           }, [
             m('span.fa.fa-times')
           ])
-        ];
+        ]);
       }),
       m('button.adicionar.adicionar-documento', {
         onclick: ctrl.adicionar.bind(ctrl)
