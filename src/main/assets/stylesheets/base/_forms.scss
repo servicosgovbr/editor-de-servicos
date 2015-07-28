@@ -1,20 +1,8 @@
-fieldset, .sub-secao {
+fieldset {
   background-color: lighten($base-border-color, 10%);
   border: $base-border;
   margin: 0 0 $small-spacing;
   padding: $base-spacing;
-}
-
-#solicitantes > fieldset, #etapas > span > fieldset {
-  background-color: lighten($base-border-color, 12%);
-}
-
-.sub-secao {
-  cursor: pointer;
-
-  .fa-chevron-up, .fa-chevron-down {
-    color: $azul-regular;
-  }
 }
 
 input,
