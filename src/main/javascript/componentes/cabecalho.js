@@ -3,6 +3,7 @@
 module.exports = {
 
   controller: function (args) {
+    this.metadados = args.metadados;
 
     this.login = m.request({
       method: 'GET',
@@ -21,6 +22,10 @@ module.exports = {
     }, [
       m('', [
         m('.titulo', m('h1', 'Editor de Serviços')),
+
+        m.component(require('componentes/metadados'), {
+          metadados: ctrl.metadados
+        }),
 
         m('form#logout[action=/editar/logout][method=POST]', [
           m('span', [' ', ctrl.login(), ' ']),

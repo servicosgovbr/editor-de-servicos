@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (nome, xml) {
+module.exports = function (nome, xml, metadados) {
 
   return m.request({
 
@@ -15,6 +15,16 @@ module.exports = function (nome, xml) {
 
     serialize: function (svc) {
       return new XMLSerializer().serializeToString(svc);
+    },
+
+    extract: function (xhr) {
+      metadados({
+        autor: xhr.getResponseHeader('X-Git-Author'),
+        revisao: xhr.getResponseHeader('X-Git-Revision'),
+        horario: new Date(xhr.getResponseHeader('Last-Modified'))
+      });
+
+      return xhr.responseText;
     },
 
     deserialize: function (str) {

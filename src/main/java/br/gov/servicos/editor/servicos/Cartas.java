@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -46,17 +46,21 @@ public class Cartas {
 
     @SneakyThrows
     public Optional<String> conteudoServicoV2(String id) {
-        return executaNoBranchDoServico(id, leitorDeConteudoV2(id));
+        return conteudoServico(id, leitorDeConteudo(id, "v2"));
     }
 
     @SneakyThrows
     public Optional<String> conteudoServicoV3(String id) {
-        return executaNoBranchDoServico(id, leitorDeConteudoV3(id));
+        return conteudoServico(id, leitorDeConteudo(id, "v3"));
     }
 
-    private Supplier<Optional<String>> leitorDeConteudoV2(String id) {
+    public Optional<String> conteudoServico(String id, Supplier<Optional<String>> leitor) {
+        return executaNoBranchDoServico(id, leitor);
+    }
+
+    public Supplier<Optional<String>> leitorDeConteudo(String id, String versao) {
         return () -> {
-            File arquivo = caminhoParaServicoV2(id).toFile();
+            File arquivo = caminhoRelativo(id, versao).toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -67,49 +71,41 @@ public class Cartas {
         };
     }
 
-    private Supplier<Optional<String>> leitorDeConteudoV3(String id) {
-        return () -> {
-            File arquivo = caminhoParaServicoV3(id).toFile();
-            if (arquivo.exists()) {
-                log.info("Arquivo {} encontrado", arquivo);
-                return ler(arquivo);
-            }
-
-            log.info("Arquivo {} não encontrado", arquivo);
-            return empty();
-        };
+    public Optional<Metadados> ultimaRevisaoV2(String id) {
+        return ultimaRevisao(id, "v2");
     }
 
-    /**
-     * Equivalente a <code>git rev-parse ${id} | xargs git log -n 1</code>
-     */
-    public Metadados ultimaRevisao(String id) {
-        return comRepositorioAberto(new Function<Git, Metadados>() {
+    public Optional<Metadados> ultimaRevisaoV3(String id) {
+        return ultimaRevisao(id, "v3");
+    }
+
+    private Optional<Metadados> ultimaRevisao(final String id, final String versao) {
+        return comRepositorioAberto(new Function<Git, Optional<Metadados>>() {
 
             @Override
             @SneakyThrows
-            public Metadados apply(Git git) {
+            public Optional<Metadados> apply(Git git) {
+                LogCommand revs;
+                Ref branchRef = git.getRepository().getRef(R_HEADS + id);
 
-                return ofNullable(git.getRepository().getRef(R_HEADS + id).getObjectId())
-                        .flatMap(new Function<ObjectId, Optional<Metadados>>() {
+                if (branchRef != null) {
+                    // temos uma branch para o servico
+                    revs = git.log().add(branchRef.getObjectId());
 
-                            @Override
-                            @SneakyThrows
-                            public Optional<Metadados> apply(ObjectId branchRef) {
-                                Iterator<RevCommit> iterator = git.log().setMaxCount(1).add(branchRef).call().iterator();
+                } else {
+                    // pegamos o ultimo commit no master
+                    revs = git.log().addPath(caminhoRelativo(caminhoRelativo(id, versao)));
+                }
 
-                                if (iterator.hasNext()) {
-                                    RevCommit commit = iterator.next();
-                                    return of(new Metadados()
-                                            .withVersao("2")
-                                            .withRevisao(commit.getId().getName())
-                                            .withAutor(commit.getAuthorIdent().getName())
-                                            .withHorario(commit.getAuthorIdent().getWhen()));
-                                }
-                                return empty();
-                            }
-                        }).orElse(new Metadados()
-                                .withVersao("2"));
+                for (RevCommit commit : revs.setMaxCount(1).call()) {
+
+                    return of(new Metadados()
+                                    .withRevisao(commit.getId().getName())
+                                    .withAutor(commit.getAuthorIdent().getName())
+                                    .withHorario(commit.getAuthorIdent().getWhen())
+                    );
+                }
+                return empty();
             }
         });
     }
@@ -129,7 +125,7 @@ public class Cartas {
 
             try {
                 return executaNoBranchDoServico(id, () -> {
-                    Path caminho = caminhoParaServicoV2(id);
+                    Path caminho = caminhoRelativo(id, "v2");
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {
@@ -153,6 +149,7 @@ public class Cartas {
         });
     }
 
+    @SneakyThrows
     public void salvarServicoV3(String id, String doc, User usuario) {
         comRepositorioAberto(git -> {
 
@@ -160,7 +157,7 @@ public class Cartas {
 
             try {
                 return executaNoBranchDoServico(id, () -> {
-                    Path caminho = caminhoParaServicoV3(id);
+                    Path caminho = caminhoRelativo(id, "v3");
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {
@@ -290,12 +287,8 @@ public class Cartas {
         return resultado;
     }
 
-    private Path caminhoParaServicoV2(String id) {
-        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v2", "servicos", id + ".xml");
-    }
-
-    private Path caminhoParaServicoV3(String id) {
-        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
+    private Path caminhoRelativo(String id, String versao) {
+        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml");
     }
 
     @SneakyThrows
@@ -326,4 +319,5 @@ public class Cartas {
                     }
                 });
     }
+
 }

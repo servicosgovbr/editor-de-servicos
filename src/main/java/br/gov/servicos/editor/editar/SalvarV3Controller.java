@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -37,9 +37,8 @@ public class SalvarV3Controller {
         this.slugify = slugify;
     }
 
-    @ResponseBody
     @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
-    String salvar(@PathVariable("id") String unsafeId,
+    RedirectView salvar(@PathVariable("id") String unsafeId,
                   @RequestBody DOMSource servico,
                   @AuthenticationPrincipal User usuario) throws IOException, TransformerException {
 
@@ -48,7 +47,7 @@ public class SalvarV3Controller {
 
         cartas.salvarServicoV3(id, doc, usuario);
 
-        return doc;
+        return new RedirectView("/editar/api/servico/v3/" + id);
     }
 
     private String formata(@RequestBody DOMSource servico) throws TransformerException {

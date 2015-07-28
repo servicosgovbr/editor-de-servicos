@@ -9,10 +9,11 @@ var carregarServico = require('carregar-servico');
 module.exports = {
 
   controller: function () {
-    this.servico = carregarServico(m.route.param('id'));
+    this.metadados = m.prop({});
+    this.servico = carregarServico(m.route.param('id'), this.metadados);
 
     this.salvar = function () {
-      return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()))
+      return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()), this.metadados)
         .then(importarXml)
         .then(this.servico);
     };
@@ -26,15 +27,17 @@ module.exports = {
     var salvarAutomaticamente = _.debounce(ctrl.salvar.bind(ctrl), 300);
 
     return m('', [
-      m.component(require('componentes/cabecalho')),
+      m.component(require('componentes/cabecalho'), {
+        metadados: ctrl.metadados
+      }),
 
       m.component(require('componentes/menu-lateral'), binding),
 
       m('#principal.auto-grid', {
         onchange: salvarAutomaticamente,
-        onclick: _.wrap(salvarAutomaticamente, function(fn, e) {
+        onclick: _.wrap(salvarAutomaticamente, function (fn, e) {
           var target = jQuery(e.target);
-          if(target.is('button') || target.parents('button').size() > 0) {
+          if (target.is('button') || target.parents('button').size() > 0) {
             return salvarAutomaticamente(e);
           }
         })

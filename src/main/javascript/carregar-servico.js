@@ -5,7 +5,7 @@ var modelos = require('modelos');
 var importarV2 = require('componentes/importar-xml-v2');
 var importarV3 = require('componentes/importar-xml-v3');
 
-var config = function (versao, id) {
+var config = function (versao, id, metadados) {
   return {
     method: 'GET',
 
@@ -15,16 +15,26 @@ var config = function (versao, id) {
       xhr.setRequestHeader('Accept', 'application/xml');
     },
 
+    extract: function (xhr) {
+      metadados({
+        autor: xhr.getResponseHeader('X-Git-Author'),
+        revisao: xhr.getResponseHeader('X-Git-Revision'),
+        horario: new Date(xhr.getResponseHeader('Last-Modified'))
+      });
+
+      return xhr.responseText;
+    },
+
     deserialize: function (str) {
       return new DOMParser().parseFromString(str, 'application/xml');
     },
   };
 };
 
-module.exports = function (id) {
+module.exports = function (id, metadados) {
   if (id) {
-    return m.request(config('v3', id)).then(importarV3, function () {
-      return m.request(config('v2', id)).then(importarV2);
+    return m.request(config('v3', id, metadados)).then(importarV3, function () {
+      return m.request(config('v2', id, metadados)).then(importarV2);
     });
   }
 
