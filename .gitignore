@@ -11,8 +11,4 @@ _book
 .jruby-container
 .sass-cache
 node_modules
-src/main/resources/static/editar/assets/app.js
-novo.css
-vendor.js
-*.map
-src/main/resources/static/editar/assets/tests.js
+src/main/resources/static/editar/assets

@@ -21,7 +21,7 @@ module.exports.config = {
     stylesheets: {
       defaultExtension: 'scss',
       joinTo: {
-        'novo.css': [
+        'main.css': [
           new RegExp('^src/main/assets/stylesheets/.*\\.scss'),
           new RegExp('^src/main/resources/vendor/.*\\.scss')
         ]
