@@ -1,6 +1,6 @@
 'use strict';
 
-var importarXml = require('componentes/importar-xml');
+var importarXml = require('componentes/importar-xml-v3');
 var exportarXml = require('componentes/exportar-xml');
 var salvarXml = require('componentes/salvar-xml');
 var slugify = require('slugify');
