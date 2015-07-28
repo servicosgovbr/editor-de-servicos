@@ -104,22 +104,6 @@ header {
     }
   }
 
-  button.remove-peq {
-    background-color: lighten(red, 20%);
-    text-align: center;
-    color: white;
-    width: 1.5em;
-    padding: 0.25em 0;
-    margin-top: 5px;
-    border-radius: $base-border-radius;
-    margin-left: em(10);
-    display: inline-block;
-
-    &:hover {
-      background-color: lighten(red, 10%);
-    }
-  }
-
   input,
   label {
     &.inline {
@@ -261,8 +245,11 @@ body {
     }
   }
 
-  .remover, .debug {
+  .debug {
     background-color: #d00;
+  }
+  .remover {
+    color: #d00;
   }
 
   header {
@@ -280,4 +267,5 @@ body {
   #nome {
     margin-top: .75em;
   }
+
 }

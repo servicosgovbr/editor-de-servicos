@@ -24,14 +24,14 @@ module.exports = {
         return m('fieldset#' + s.id, {
           key: s.id
         }, [
-          m('h3', 'Descrição'),
+          m('h3', 'Tipo de solicitante'),
           m.component(require('componentes/editor-markdown'), {
             rows: 5,
-            value: s.descricao(),
-            onchange: m.withAttr('value', s.descricao)
+            value: s.tipo(),
+            onchange: m.withAttr('value', s.tipo)
           }),
 
-          m('h3', 'Requisitos'),
+          m('h3', 'Requisitos que tornam o solicitante elegível'),
           m.component(require('componentes/editor-markdown'), {
             rows: 5,
             value: s.requisitos(),
@@ -40,9 +40,7 @@ module.exports = {
 
           m('button.inline.remover', {
             onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-times'), ' Remover solicitante'
-          ]),
+          }, [m('span.fa.fa-trash')]),
 
         ]);
       }),

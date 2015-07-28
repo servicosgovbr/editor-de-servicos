@@ -88,7 +88,7 @@ var etapa = function (e) {
 var solicitantes = function (sol) {
   return m('solicitantes', sol.map(function (s) {
     return m('solicitante', [
-        m('descricao', s.descricao()),
+        m('tipo', s.tipo()),
         m('requisitos', s.requisitos())
       ]);
   }));

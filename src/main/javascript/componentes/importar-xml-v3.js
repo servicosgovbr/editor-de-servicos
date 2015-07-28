@@ -9,7 +9,7 @@ var item = function (i, n) {
 var solicitantes = function (i, n) {
   var t = jQuery(n);
   return new modelos.Solicitante({
-    descricao: t.find('descricao').text(),
+    tipo: t.find('tipo').text(),
     requisitos: t.find('requisitos').text(),
   });
 };

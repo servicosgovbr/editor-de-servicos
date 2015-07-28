@@ -20,7 +20,7 @@ module.exports = {
             m('li', m('a[href="#gratuidade"]', 'Gratuidade')),
           ])
         ]),
-        m('li', m('a[href="#solicitantes"]', 'Solicitantes')),
+        m('li', m('a[href="#solicitantes"]', 'Solicitantes e requisitos')),
         m('li', [
           m('a[href="#etapas"]', 'Etapas'),
           m('ul', ctrl.servico().etapas().map(function (etapa) {

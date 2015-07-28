@@ -74,7 +74,7 @@ var nomesPopulares = function (x) {
 var solicitantes = function (x) {
   return x.find('> solicitantes > solicitante').get().map(function (s) {
     return new modelos.Solicitante({
-      descricao: string(s)
+      tipo: string(s)
     });
   });
 };

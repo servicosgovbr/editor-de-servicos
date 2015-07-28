@@ -2,10 +2,10 @@
 button {
   @include appearance(none);
   -webkit-font-smoothing: antialiased;
-  background-color: $azul-regular;
+  background-color: transparent;
   border-radius: $base-border-radius;
   border: none;
-  color: #fff;
+  color: $azul-regular;
   cursor: pointer;
   display: inline-block;
   font-family: $heading-font-family;
@@ -22,8 +22,8 @@ button {
 
   &:hover,
   &:focus {
-    background-color: $azul-escuro;
-    color: #fff;
+    background-color: $cinza-claro;
+    color: $azul-escuro;
   }
 
   &:disabled {

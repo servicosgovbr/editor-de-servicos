@@ -75,7 +75,7 @@ var Etapa = function (config) {
 var Solicitante = function (config) {
   var data = (config || {});
   this.id = id('solicitante');
-  this.descricao = m.prop(data.descricao || '');
+  this.tipo = m.prop(data.tipo || '');
   this.requisitos = m.prop(data.requisitos || '');
 };
 
