@@ -24,13 +24,13 @@ module.exports = {
     };
 
     return m('', [
-      m.component(require('componentes/cabecalho'), {
-        salvar: ctrl.salvar.bind(ctrl)
-      }),
+      m.component(require('componentes/cabecalho')),
 
       m.component(require('componentes/menu-lateral'), binding),
 
-      m('#principal.auto-grid', [
+      m('form#principal.auto-grid', {
+        onchange: _.debounce(ctrl.salvar.bind(ctrl), 300)
+      }, [
         m.component(require('componentes/dados-basicos'), binding),
         m.component(require('componentes/solicitantes'), binding),
         m.component(require('componentes/etapas'), binding),

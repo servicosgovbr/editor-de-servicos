@@ -3,7 +3,6 @@
 module.exports = {
 
   controller: function (args) {
-    this.salvar = args.salvar;
 
     this.login = m.request({
       method: 'GET',
@@ -21,14 +20,6 @@ module.exports = {
       }
     }, [
       m('', [
-        m('.ferramentas', [
-          m('button.inline.debug', {
-            onclick: ctrl.salvar.bind(ctrl)
-          }, [
-            m('i.fa.fa-save')
-          ]),
-        ]),
-
         m('.titulo', m('h1', 'Editor de Serviços')),
 
         m('form#logout[action=/editar/logout][method=POST]', [
