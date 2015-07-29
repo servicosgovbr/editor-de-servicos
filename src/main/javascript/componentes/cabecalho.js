@@ -3,7 +3,7 @@
 module.exports = {
 
   controller: function (args) {
-    this.cabecalho = (args || {}).cabecalho;
+    this.cabecalho = (args || {}).cabecalho || {};
 
     this.login = m.request({
       method: 'GET',
@@ -16,7 +16,7 @@ module.exports = {
 
   view: function (ctrl) {
     var header = 'header';
-    if (ctrl.cabecalho.erro()) {
+    if (ctrl.cabecalho.erro && ctrl.cabecalho.erro()) {
       header += '.erro-conexao';
     }
 

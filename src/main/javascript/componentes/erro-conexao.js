@@ -2,7 +2,7 @@
 
 module.exports = {
   controller: function (args) {
-    this.erro = args.erro;
+    this.erro = args.erro || _.noop;
   },
 
   view: function (ctrl) {
