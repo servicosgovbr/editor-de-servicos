@@ -22,11 +22,13 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.*;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.lib.Constants.*;
@@ -99,7 +101,7 @@ public class Cartas {
                 }
 
                 Iterator<RevCommit> commits = revs.setMaxCount(1).call().iterator();
-                if(commits.hasNext()) {
+                if (commits.hasNext()) {
                     RevCommit commit = commits.next();
                     return of(new Metadados()
                                     .withRevisao(commit.getId().getName())
@@ -322,4 +324,10 @@ public class Cartas {
                 });
     }
 
+    public Iterable<String> listar() {
+        FilenameFilter filter = (x, name) -> name.endsWith(".xml");
+        File v2 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v2", "servicos").toFile();
+
+        return Stream.of(v2.list(filter)).collect(toList());
+    }
 }

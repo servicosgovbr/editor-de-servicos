@@ -30,6 +30,12 @@ class ServicoController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/editar/api/servicos", method = GET)
+    Iterable<String> listar() throws IOException {
+        return cartas.listar();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/editar/api/servico/v2/{id}", method = GET, produces = "application/xml")
     String editarV2(
             @PathVariable("id") String unsafeId,
@@ -67,10 +73,6 @@ class ServicoController {
                 .orElseThrow(() -> new FileNotFoundException(
                         "Não foi possível encontrar o serviço referente ao arquivo '" + unsafeId + "'"
                 ));
-    }
-
-    private void headers(Metadados metadados) {
-
     }
 
     @ResponseBody

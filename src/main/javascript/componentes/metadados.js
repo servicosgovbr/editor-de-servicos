@@ -3,7 +3,7 @@
 module.exports = {
 
   controller: function (args) {
-    this.metadados = args.metadados;
+    this.metadados = (args || {}).metadados;
   },
 
   view: function (ctrl) {
