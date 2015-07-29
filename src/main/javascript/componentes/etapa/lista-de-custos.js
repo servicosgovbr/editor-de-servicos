@@ -27,7 +27,7 @@ module.exports = {
             onchange: m.withAttr('value', custo.descricao)
           }),
           ' ',
-          m('input.inline[type=text]', {
+          m('input.inline[type=text][value="R$"]', {
             value: custo.moeda(),
             onchange: m.withAttr('value', custo.moeda)
           }),
