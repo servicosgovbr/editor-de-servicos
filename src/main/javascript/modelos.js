@@ -2,12 +2,18 @@
 
 var id = (function () {
   var counters = {};
-  return function (base) {
+  var gerador = function (base) {
     if (!counters[base]) {
       counters[base] = 0;
     }
     return base + '-' + counters[base]++;
   };
+
+  gerador.reset = function() {
+    counters = {};
+  };
+
+  return gerador;
 })();
 
 var Cabecalho = function () {
@@ -125,6 +131,7 @@ var Servico = function (config) {
 };
 
 module.exports = {
+  id: id,
   Cabecalho: Cabecalho,
   Caso: Caso,
   CanaisDePrestacao: CanaisDePrestacao,
