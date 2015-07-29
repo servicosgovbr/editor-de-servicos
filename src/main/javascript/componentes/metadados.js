@@ -10,7 +10,7 @@ module.exports = {
     moment.locale('pt-br');
 
     if (!ctrl.metadados || !ctrl.metadados() || !ctrl.metadados().horario) {
-      return;
+      return m('');
     }
 
     return m('.metadados', {
