@@ -50,6 +50,12 @@ header {
 
     button {
       @include clear-margins;
+      color: $branco;
+      background-color: transparent;
+
+      &:hover {
+      background-color: $azul-escuro;
+      }
     }
   }
 }
@@ -221,6 +227,7 @@ body {
       textarea {
         margin-bottom: 0;
       }
+
       footer {
         color: $cinza-escuro;
         font-size: em(12);
@@ -245,9 +252,6 @@ body {
     }
   }
 
-  .debug {
-    background-color: #d00;
-  }
   .remover {
     color: #d00;
   }
