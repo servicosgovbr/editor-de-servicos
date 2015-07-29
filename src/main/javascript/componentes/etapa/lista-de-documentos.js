@@ -20,7 +20,8 @@ module.exports = {
         return m('.documento', {
           key: documento.id
         }, [
-          m('input.inline.inline-xg[type=text]', {
+          m.component(require('componentes/editor-markdown'), {
+            rows: 3,
             value: documento,
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;
