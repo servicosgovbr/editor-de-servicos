@@ -13,7 +13,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('#' + ctrl.custos().id, [
-      m('h3', 'Custos da etapa ' + (ctrl.indice + 1)),
+      m('h3', [
+        'Custos da etapa ' + (ctrl.indice + 1),
+        m.component(require('tooltips').custos)
+      ]),
 
       m.component(new Caso(ListaDeCustos), {
         padrao: true,

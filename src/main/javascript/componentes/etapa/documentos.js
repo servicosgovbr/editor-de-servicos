@@ -13,7 +13,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('#' + ctrl.documentos().id, [
-      m('h3', 'Documentação necessária para a etapa ' + (ctrl.indice + 1)),
+      m('h3', [
+        'Documentação necessária para a etapa ' + (ctrl.indice + 1),
+        m.component(require('tooltips').documentacao)
+      ]),
 
       m.component(new Caso(ListaDeDocumentos), {
         padrao: true,

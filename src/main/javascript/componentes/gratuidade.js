@@ -8,7 +8,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#gratuidade', [
-      m('h3', 'Gratuidade deste serviço'),
+      m('h3', [
+        'Gratuidade deste serviço',
+        m.component(require('tooltips').gratuidade)
+      ]),
 
       m('label',
         m('input[type=checkbox]', {

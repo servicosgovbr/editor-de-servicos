@@ -8,7 +8,11 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#descricao', [
-      m('h3', 'Descrição do serviço'),
+      m('h3', [
+        'Descrição do serviço',
+        m.component(require('tooltips').descricao)
+      ]),
+
       m.component(require('componentes/editor-markdown'), {
         rows: 10,
 

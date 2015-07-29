@@ -13,7 +13,11 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#orgao-responsavel', [
-      m('h3', 'Órgão responsável'),
+      m('h3', [
+        'Órgão responsável',
+        m.component(require('tooltips').orgaoResponsavel)
+      ]),
+
       m('select', {
         onchange: m.withAttr('value', ctrl.servico().orgao)
       }, [m('option', {

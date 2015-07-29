@@ -30,7 +30,11 @@ module.exports.create = function (config) {
 
     view: function (ctrl) {
       return m('fieldset#' + config.id, [
-        m('h3', config.titulo),
+        m('h3', [
+          config.titulo,
+          m.component(require('tooltips')[config.chave])
+        ]),
+
         m('', ctrl['todos' + capitalize(config.chave)]().map(function (obj) {
           return m('label', [
             m('input[type=checkbox]', {

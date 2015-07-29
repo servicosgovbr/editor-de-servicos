@@ -9,7 +9,11 @@ module.exports = {
 
   view: function (ctrl) {
     return m('.titulo', [
-      m('h3', 'Título da etapa ' + (ctrl.indice + 1)),
+      m('h3', [
+        'Título da etapa ' + (ctrl.indice + 1),
+        m.component(require('tooltips').tituloDaEtapa)
+      ]),
+
       m('input[type=text]', {
         onchange: m.withAttr('value', ctrl.titulo),
         value: ctrl.titulo()

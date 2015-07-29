@@ -16,7 +16,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#nomes-populares', [
-      m('h3', 'Nomes populares'),
+      m('h3', [
+        'Nomes populares',
+        m.component(require('tooltips').nomesPopulares)
+      ]),
 
       ctrl.servico().nomesPopulares().map(function (nomesPopulares, i) {
         return [

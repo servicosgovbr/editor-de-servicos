@@ -17,7 +17,10 @@ module.exports = {
   view: function (ctrl) {
     return m('fieldset#palavras-chave', [
 
-      m('h3', 'Palavras-chave'),
+      m('h3', [
+        'Palavras-chave',
+        m.component(require('tooltips').palavrasChave)
+      ]),
 
       ctrl.servico().palavrasChave().map(function (palavras, i) {
         return [

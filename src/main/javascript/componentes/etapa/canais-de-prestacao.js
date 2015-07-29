@@ -13,7 +13,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('#' + ctrl.canaisDePrestacao().id, [
-      m('h3', 'Canais de prestacao da etapa ' + (ctrl.indice + 1)),
+      m('h3', [
+        'Canais de prestacao da etapa ' + (ctrl.indice + 1),
+        m.component(require('tooltips').canaisDePrestacao)
+      ]),
 
       m.component(new Caso(ListaDeCanaisDePrestacao), {
         padrao: true,

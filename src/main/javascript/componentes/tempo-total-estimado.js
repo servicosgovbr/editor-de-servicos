@@ -21,7 +21,10 @@ module.exports = {
     ];
 
     return m('fieldset#tempo-total-estimado', [
-      m('h3', 'Tempo total estimado'),
+      m('h3', [
+        'Tempo total estimado',
+        m.component(require('tooltips').tempoTotalEstimado)
+      ]),
 
       m('select.inline', {
         onchange: ctrl.modificarTipo.bind(ctrl),

@@ -18,7 +18,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#solicitantes', [
-      m('h3', 'Quem pode utilizar este serviço?'),
+      m('h3', [
+        'Quem pode utilizar este serviço?',
+        m.component(require('tooltips').solicitantes)
+      ]),
 
       ctrl.servico().solicitantes().map(function (s, i) {
         return m('fieldset#' + s.id, {

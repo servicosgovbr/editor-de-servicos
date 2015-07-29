@@ -16,7 +16,11 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#legislacoes', [
-      m('h3', 'Legislações relacionadas ao serviço'),
+      m('h3', [
+        'Legislações relacionadas ao serviço',
+        m.component(require('tooltips').legislacoes)
+      ]),
+
       ctrl.servico().legislacoes().map(function (legislacao, i) {
         return [
           m('input.inline.inline-xg[type=text]', {
