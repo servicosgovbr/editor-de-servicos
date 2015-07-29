@@ -9,7 +9,7 @@ module.exports = {
   view: function (ctrl) {
     moment.locale('pt-br');
 
-    if (!ctrl.metadados && !ctrl.metadados()) {
+    if (!ctrl.metadados || !ctrl.metadados() || !ctrl.metadados().horario) {
       return;
     }
 
