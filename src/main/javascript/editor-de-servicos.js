@@ -16,9 +16,9 @@ module.exports = {
       return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()), this.cabecalho.metadados)
         .then(importarXml)
         .then(this.servico)
-        .then(this.cabecalho.limparErro.bind(this.cabecalho), function () {
-          this.cabecalho.tentarNovamente(this.salvar.bind(this));
-        }.bind(this));
+        .then(_.bind(this.cabecalho.limparErro, this.cabecalho), _.bind(function () {
+          this.cabecalho.tentarNovamente(_.bind(this.salvar, this));
+        }, this));
     };
   },
 
