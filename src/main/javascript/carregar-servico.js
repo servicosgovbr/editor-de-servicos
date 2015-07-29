@@ -31,11 +31,23 @@ var config = function (versao, id, metadados) {
   };
 };
 
-module.exports = function (id, metadados) {
+module.exports = function (id, cabecalho) {
   if (id) {
-    return m.request(config('v3', id, metadados)).then(importarV3, function () {
-      return m.request(config('v2', id, metadados)).then(importarV2);
-    });
+    var carregar = function() {
+      return m.request(config('v3', id, cabecalho.metadados)).then(function(xml) {
+        cabecalho.limparErro();
+        return importarV3(xml);
+      }, function () {
+        return m.request(config('v2', id, cabecalho.metadados)).then(function(xml) {
+          cabecalho.limparErro();
+          return importarV2(xml);
+        }, function() {
+          cabecalho.tentarNovamente(carregar);
+          return new modelos.Servico();
+        });
+      });
+    };
+    return carregar();
   }
 
   return m.prop(new modelos.Servico());

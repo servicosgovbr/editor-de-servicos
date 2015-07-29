@@ -10,6 +10,20 @@ var id = (function () {
   };
 })();
 
+var Cabecalho = function () {
+  this.metadados = m.prop({});
+  this.erro = m.prop(null);
+
+  this.limparErro = function () {
+    this.erro(null);
+  };
+  this.tentarNovamente = function (fn) {
+    this.erro({
+      tentarNovamente: fn
+    });
+  };
+};
+
 var Caso = function (parentId, config) {
   var data = (config || {});
   this.id = id((parentId ? parentId + '-' : '') + 'caso');
@@ -111,6 +125,7 @@ var Servico = function (config) {
 };
 
 module.exports = {
+  Cabecalho: Cabecalho,
   Caso: Caso,
   CanaisDePrestacao: CanaisDePrestacao,
   CanalDePrestacao: CanalDePrestacao,

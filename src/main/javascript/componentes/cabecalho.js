@@ -3,7 +3,7 @@
 module.exports = {
 
   controller: function (args) {
-    this.metadados = (args || {}).metadados;
+    this.cabecalho = (args || {}).cabecalho;
 
     this.login = m.request({
       method: 'GET',
@@ -15,7 +15,12 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('header', {
+    var header = 'header';
+    if (ctrl.cabecalho.erro()) {
+      header += '.erro-conexao';
+    }
+
+    return m(header, {
       style: {
         height: '0px'
       }
@@ -24,7 +29,7 @@ module.exports = {
         m('.titulo', m('a[href=/editar]', m('h1', 'Editor de Serviços'))),
 
         m.component(require('componentes/metadados'), {
-          metadados: ctrl.metadados
+          metadados: ctrl.cabecalho.metadados
         }),
 
         m('form#logout[action=/editar/logout][method=POST]', [
@@ -32,7 +37,12 @@ module.exports = {
           m('button', [
             m('i.fa.fa-sign-out'), m.trust('&nbsp; Sair'),
           ])
-        ])
+        ]),
+
+        m.component(require('componentes/erro-conexao'), {
+          erro: ctrl.cabecalho.erro
+        })
+
       ]),
     ]);
   }

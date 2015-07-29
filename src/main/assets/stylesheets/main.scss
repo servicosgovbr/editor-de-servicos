@@ -39,34 +39,6 @@ span.ticket-erro {
   font-family: Courier, monospaced;
 }
 
-header {
-  @include fill-parent;
-  background-color: $azul-regular;
-  min-height: em(40px);
-  color: $branco;
-  a {
-    color: $branco;
-
-    &:hover {
-      color: $branco;
-      text-decoration: underline;
-    }
-  }
-
-  #logout {
-    float: right;
-
-    button {
-      @include clear-margins;
-      color: $branco;
-      background-color: transparent;
-
-      &:hover {
-      background-color: $azul-escuro;
-      }
-    }
-  }
-}
 
 #login-form {
   @include outer-container;
@@ -265,6 +237,20 @@ body {
   }
 
   header {
+    @include fill-parent;
+    background-color: $azul-regular;
+    min-height: em(40px);
+    color: $branco;
+
+    a {
+      color: $branco;
+
+      &:hover {
+        color: $branco;
+        text-decoration: underline;
+      }
+    }
+
     .titulo {
       float: left;
       margin-top: .5em;
@@ -274,10 +260,43 @@ body {
         font-size: 14pt;
       }
     }
+
+    .erro {
+      float:right;
+      span {
+        margin-right: 5px;
+        color: orange;
+      }
+    }
   }
+
+  #logout {
+    float: right;
+    button {
+      @include clear-margins;
+      color: $branco;
+      background-color: transparent;
+
+      &:hover {
+      background-color: $azul-escuro;
+      }
+    }
+  }
+
+  header.erro-conexao {
+    background-color: $cinza-escuro;
+    button {
+      color: #fff;
+    }
+    a {
+      color: $azul-claro;
+      font-weight: bold;
+    }
+   }
 
   #nome {
     margin-top: .75em;
   }
 
 }
+
