@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -97,8 +98,9 @@ public class Cartas {
                     revs = git.log().addPath(caminhoRelativo(caminhoRelativo(id, versao)));
                 }
 
-                for (RevCommit commit : revs.setMaxCount(1).call()) {
-
+                Iterator<RevCommit> commits = revs.setMaxCount(1).call().iterator();
+                if(commits.hasNext()) {
+                    RevCommit commit = commits.next();
                     return of(new Metadados()
                                     .withRevisao(commit.getId().getName())
                                     .withAutor(commit.getAuthorIdent().getName())
