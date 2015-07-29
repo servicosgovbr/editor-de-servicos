@@ -43,7 +43,15 @@ header {
   @include fill-parent;
   background-color: $azul-regular;
   min-height: em(40px);
-  color: white;
+  color: $branco;
+  a {
+    color: $branco;
+
+    &:hover {
+      color: $branco;
+      text-decoration: underline;
+    }
+  }
 
   #logout {
     float: right;

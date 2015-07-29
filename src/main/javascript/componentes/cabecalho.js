@@ -21,7 +21,7 @@ module.exports = {
       }
     }, [
       m('', [
-        m('.titulo', m('h1', 'Editor de Serviços')),
+        m('.titulo', m('a[href=/editar]', m('h1', 'Editor de Serviços'))),
 
         m.component(require('componentes/metadados'), {
           metadados: ctrl.metadados
