@@ -21,7 +21,7 @@ module.exports = {
         marginLeft: '165px'
       }
     }, [
-      'Última revisão por ',
+      'Salvo por ',
       ctrl.metadados().autor,
       ', ',
       moment(ctrl.metadados().horario).fromNow()
