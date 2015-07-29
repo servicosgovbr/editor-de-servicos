@@ -22,6 +22,7 @@ module.exports = {
         padrao: true,
         caso: ctrl.documentos().casoPadrao
       }),
+
       m.component(new Casos(ListaDeDocumentos), {
         casos: ctrl.documentos().outrosCasos
       })

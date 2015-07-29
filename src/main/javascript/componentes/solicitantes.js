@@ -28,20 +28,24 @@ module.exports = {
           key: s.id
         }, [
           m('h3', 'Tipo de solicitante'),
+
           m.component(require('componentes/editor-markdown'), {
             rows: 2,
             value: s.tipo(),
             onchange: m.withAttr('value', s.tipo)
           }),
+
           m('h3', 'Requisitos que tornam o solicitante elegível'),
+
           m.component(require('componentes/editor-markdown'), {
             rows: 2,
             value: s.requisitos(),
             onchange: m.withAttr('value', s.requisitos)
           }),
+
           m('button.inline.remover', {
             onclick: ctrl.remover.bind(ctrl, i)
-          }, [m('span.fa.fa-trash')])
+          }, m('span.fa.fa-trash-o'))
         ]);
       }),
 

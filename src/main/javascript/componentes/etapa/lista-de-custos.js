@@ -39,9 +39,7 @@ module.exports = {
           ' ',
           m('button.inline.remove-peq', {
             onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-times')
-          ])
+          }, m('span.fa.fa-trash-o'))
         ]);
       }),
       m('button.adicionar.adicionar-custo', {

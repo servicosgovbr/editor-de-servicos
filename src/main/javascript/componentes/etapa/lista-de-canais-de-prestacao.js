@@ -28,7 +28,10 @@ module.exports = {
           key: canalDePrestacao.id
         }, [
           m('select', {
-            onchange: m.withAttr('value', ctrl.canaisDePrestacao()[i].tipo)
+            onchange: m.withAttr('value', ctrl.canaisDePrestacao()[i].tipo),
+            style: {
+              float: 'left'
+            }
           }, [m('option', {
             value: ''
           }, 'Selecione...')].concat(ctrl.tiposDeCanalDePrestacao().map(function (tipo) {
@@ -37,18 +40,19 @@ module.exports = {
               selected: ctrl.canaisDePrestacao()[i].tipo() === tipo
             }, tipo);
           }))),
-          ' ',
+
+          m('button.inline.remove-peq', {
+            onclick: ctrl.remover.bind(ctrl, i),
+            style: {
+              float: 'right'
+            }
+          }, m('span.fa.fa-trash-o')),
+
           m.component(require('componentes/editor-markdown'), {
             rows: 3,
             value: canalDePrestacao.descricao(),
             onchange: m.withAttr('value', canalDePrestacao.descricao)
           }),
-          ' ',
-          m('button.inline.remover', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-times'), ' Remover canal '
-          ])
         ]);
       }),
       m('button.adicionar.adicionar-canal-de-prestacao', {
