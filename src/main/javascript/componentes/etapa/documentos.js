@@ -8,11 +8,12 @@ module.exports = {
 
   controller: function (args) {
     this.documentos = args.documentos;
+    this.indice = args.indice;
   },
 
   view: function (ctrl) {
     return m('#' + ctrl.documentos().id, [
-      m('h3', 'Documentação necessária'),
+      m('h3', 'Documentação necessária para a etapa ' + (ctrl.indice + 1)),
 
       m.component(new Caso(ListaDeDocumentos), {
         padrao: true,

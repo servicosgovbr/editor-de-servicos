@@ -26,7 +26,8 @@ module.exports = {
         }, [
           m.component(require('componentes/etapa/etapa'), {
             etapa: etapa,
-            gratuidade: ctrl.servico().gratuidade
+            gratuidade: ctrl.servico().gratuidade,
+            indice: i
           }),
 
           m('button.inline.remover', {

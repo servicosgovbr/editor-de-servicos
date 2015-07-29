@@ -8,11 +8,12 @@ module.exports = {
 
   controller: function (args) {
     this.canaisDePrestacao = args.canaisDePrestacao;
+    this.indice = args.indice;
   },
 
   view: function (ctrl) {
     return m('#' + ctrl.canaisDePrestacao().id, [
-      m('h3', 'Canais de prestacao desta etapa'),
+      m('h3', 'Canais de prestacao da etapa ' + (ctrl.indice + 1)),
 
       m.component(new Caso(ListaDeCanaisDePrestacao), {
         padrao: true,

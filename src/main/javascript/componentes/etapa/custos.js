@@ -8,11 +8,12 @@ module.exports = {
 
   controller: function (args) {
     this.custos = args.custos;
+    this.indice = args.indice;
   },
 
   view: function (ctrl) {
     return m('#' + ctrl.custos().id, [
-      m('h3', 'Custos desta etapa'),
+      m('h3', 'Custos da etapa ' + (ctrl.indice + 1)),
 
       m.component(new Caso(ListaDeCustos), {
         padrao: true,
