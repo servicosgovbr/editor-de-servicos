@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LogCommand;
+import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -142,7 +144,7 @@ public class Cartas {
 
                     escreve(doc, caminho);
                     add(git, caminho);
-                    commit(git, mensagem, usuario);
+                    commit(git, mensagem, usuario, caminho);
 
                     return null;
                 });
@@ -174,7 +176,7 @@ public class Cartas {
 
                     escreveV3(doc, caminho);
                     add(git, caminho);
-                    commit(git, mensagem, usuario);
+                    commit(git, mensagem, usuario, caminho);
 
                     return null;
                 });
@@ -210,20 +212,30 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void commit(Git git, String mensagem, User usuario) {
+    private void commit(Git git, String mensagem, User usuario, Path caminho) {
         PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
-        log.debug("git commit: {} ({}): '{}', {}",
+        log.debug("git commit: {} ({}): '{}', {}, {}",
                 git.getRepository().getBranch(),
                 git.getRepository().getRepositoryState(),
                 mensagem,
-                ident
+                ident,
+                caminho
         );
 
-        git.commit()
-                .setMessage(mensagem)
-                .setCommitter(ident)
-                .setAuthor(ident)
-                .call();
+        try {
+            git.commit()
+                    .setMessage(mensagem)
+                    .setCommitter(ident)
+                    .setAuthor(ident)
+                    .setOnly(caminhoRelativo(caminho))
+                    .call();
+        } catch(JGitInternalException e) {
+            if(e.getMessage().equals(JGitText.get().emptyCommit)) {
+                log.info("{} não sofreu alterações", caminho);
+            } else {
+                throw e;
+            };
+        }
     }
 
     @SneakyThrows
@@ -298,7 +310,7 @@ public class Cartas {
     @SneakyThrows
     private void escreve(Document document, Path arquivo) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
-            writer.write(document.toString().replace("xsi:schemalocation", "xsi:schemaLocation")); // TODO: Jsoup faz lowercase de atributos :(
+            writer.write(document.toString());
         }
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }
