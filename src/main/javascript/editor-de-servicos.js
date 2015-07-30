@@ -30,7 +30,9 @@ module.exports = {
       servico: ctrl.servico
     };
 
-    var salvarAutomaticamente = _.debounce(ctrl.salvar.bind(ctrl), 300);
+    var salvarAutomaticamente = _.debounce(_.bind(ctrl.salvar, ctrl), 2000, {
+      leading: false
+    });
 
     return m('', [
       m.component(require('componentes/cabecalho'), {
