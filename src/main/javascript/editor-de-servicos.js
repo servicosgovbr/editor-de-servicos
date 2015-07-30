@@ -18,7 +18,7 @@ module.exports = {
           modelos.id.reset();
           return importarXml(xml);
         })
-        .then(this.servico)
+//        .then(this.servico)
         .then(_.bind(this.cabecalho.limparErro, this.cabecalho), _.bind(function () {
           this.cabecalho.tentarNovamente(_.bind(this.salvar, this));
         }, this));
