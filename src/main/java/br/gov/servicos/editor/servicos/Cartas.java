@@ -234,7 +234,7 @@ public class Cartas {
                 log.info("{} não sofreu alterações", caminho);
             } else {
                 throw e;
-            };
+            }
         }
     }
 
