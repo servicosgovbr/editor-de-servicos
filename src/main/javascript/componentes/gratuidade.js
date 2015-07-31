@@ -14,12 +14,26 @@ module.exports = {
       ]),
 
       m('label',
-        m('input[type=checkbox]', {
-          onchange: m.withAttr('checked', ctrl.servico().gratuidade),
-          checked: ctrl.servico().gratuidade()
+        m('input[type=radio][name=gratuidade]', {
+          onchange: function() {
+            ctrl.servico().gratuidade(true);
+          },
+          checked: ctrl.servico().gratuidade() !== undefined && ctrl.servico().gratuidade()
         }),
         'Este serviço é gratuito para o solicitante'
+      ),
+
+      m('label',
+        m('input[type=radio][name=gratuidade]', {
+          onchange: function () {
+            ctrl.servico().gratuidade(false);
+          },
+          checked: ctrl.servico().gratuidade() !== undefined && !ctrl.servico().gratuidade()
+        }),
+        'Este serviço não é gratuito para o solicitante'
       )
+
+
     ]);
   }
 
