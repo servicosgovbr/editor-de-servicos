@@ -20,10 +20,14 @@ body {
     height: em(48);
     background-color: $azul-escuro;
     color: $branco;
+    margin-bottom: 1em;
+    position: fixed;
+    width: 100%;
 
     div {
-      @include span-columns(4 of 12);
+      @include span-columns(3 of 12);
       margin-top: em(4);
+      line-height: 2.5em;
 
       h1 {
         display: inline-block;
@@ -38,21 +42,24 @@ body {
     }
 
     .metadados {
-      @include span-columns(4 of 12);
+      @include span-columns(5 of 12);
       margin-top: em(4);
+      line-height: 2.5em;
+      text-align: center;
     }
 
     form {
       margin-top: em(4);
       @include span-columns(4 of 12);
-      line-height: 2.5em;
 
       span {
-        @include span-columns(1 of 2);
+        @include span-columns(3 of 5, block-collapse);
+        line-height: 2.5em;
+        text-align: right;
       }
 
       button {
-        @include span-columns(1 of 2);
+        @include span-columns(2 of 5);
         line-height: 2.5em;
         padding: 0;
         margin: 0;
@@ -61,14 +68,33 @@ body {
     }
   }
 
-  > nav {
-    background-color: #efe;
-    @include span-columns(3);
+  #bem-vindo {
+    @include shift(2 of 12);
+    @include span-columns(8 of 12);
+    margin-top: em(48) + 2em;
   }
 
-  #bem-vindo {
-    @include shift(2);
-    @include span-columns(8);
-    margin-top: 2em;
+  > nav {
+    @include span-columns(3 of 12);
+    padding: 1em;
+    margin-top: em(48);
+    position: fixed;
+
+    ul li {
+      margin-left: 1em;
+    }
+  }
+
+  #principal {
+    @include span-columns(9 of 12, block-collapse);
+    @include shift(3);
+    margin-top: em(48) + 1em;
+
+    #dados-basicos {
+      > fieldset {
+        @include span-columns(11 of 12, block-collapse);
+        @include row;
+      }
+    }
   }
 }

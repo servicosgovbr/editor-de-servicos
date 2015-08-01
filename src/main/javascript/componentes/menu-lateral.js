@@ -7,7 +7,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('#menu-lateral', [
+    return m('nav', [
       m('ul', [
         m('li', [
           m('a[href="#dados-basicos"]', 'Dados básicos'),

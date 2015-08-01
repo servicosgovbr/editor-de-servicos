@@ -34,14 +34,14 @@ module.exports = {
       leading: false
     });
 
-    return m('', [
+    return m('#wrapper', [
       m.component(require('componentes/cabecalho'), {
         cabecalho: ctrl.cabecalho
       }),
 
       m.component(require('componentes/menu-lateral'), binding),
 
-      m('#principal.auto-grid', {
+      m('#principal', {
         onchange: salvarAutomaticamente,
         onclick: _.wrap(salvarAutomaticamente, function (fn, e) {
           var target = jQuery(e.target);
