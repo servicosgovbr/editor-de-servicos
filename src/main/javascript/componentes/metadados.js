@@ -10,17 +10,10 @@ module.exports = {
     moment.locale('pt-br');
 
     if (!ctrl.metadados || !ctrl.metadados() || !ctrl.metadados().horario) {
-      return m('');
+      return m('.metadados', m.trust('&nbsp;'));
     }
 
-    return m('.metadados', {
-      style: {
-        fontSize: '12px',
-        display: 'inline-block',
-        marginTop: '10px',
-        marginLeft: '165px'
-      }
-    }, [
+    return m('.metadados', [
       'Salvo por ',
       ctrl.metadados().autor,
       ', ',

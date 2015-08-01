@@ -7,7 +7,7 @@ module.exports = {
 
   view: function (ctrl) {
     if (!ctrl.erro()) {
-      return m('');
+      return m('span');
     }
 
     return m('span.erro', [

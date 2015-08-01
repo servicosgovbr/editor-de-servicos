@@ -29,10 +29,11 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('', [
+    return m('#wrapper', [
       m.component(require('componentes/cabecalho')),
-      m('#principal.auto-grid', [
-        m('h1', 'Bem-vindo!'),
+
+      m('#bem-vindo', [
+        m('h2', 'Bem-vindo!'),
 
         m('input[type=search][placeholder="Buscar"].inline-lg', {
           oninput: m.withAttr('value', ctrl.filtro)

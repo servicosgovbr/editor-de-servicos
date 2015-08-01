@@ -1,314 +1,74 @@
+$max-width: 100%;
+
 @import 'bourbon/bourbon';
 @import 'base/base';
 @import 'neat/neat';
 @import 'neat/settings/grid';
 
-@mixin clear-margins {
+body {
+  padding: 0;
   margin: 0;
 }
 
-@mixin clear-paddings {
-  padding: 0;
-}
-
-@mixin clear-all {
-  @include clear-margins;
-  @include clear-paddings;
-}
-
-body {
-  @include clear-all;
-}
-
-.auto-grid {
+#wrapper {
   @include outer-container;
-}
 
-.alert {
-  &.alert-info {
-    color: $azul-regular;
-  }
-
-  &.alert-error {
-    color: $vermelho-regular;
-  }
-}
-
-span.ticket-erro {
-  font-weight: bold;
-  font-family: Courier, monospaced;
-}
-
-
-#login-form {
-  @include outer-container;
-  margin-top: em(50px);
-
-  form {
-    @include span-columns(6);
-    @include shift(3);
-
-    button {
-      float: right;
-    }
-  }
-}
-
-#principal {
-
-  ul {
-    @extend %default-ul;
-  }
-
-  h1,
-  h2 {
-    padding-top: 25px;
-  }
-
-  h1 {
-    font-size: em(22);
-  }
-
-  h2 {
-    font-size: em(18);
-    color: $azul-regular;
-  }
-
-  .aviso-dados-descartados {
-    &:hover {
-      &:after {
-        content: "Os dados serão descartados";
-        padding: 4px 8px;
-        height: 100%;
-        left: 10px;
-        color: #333;
-        background-color: $cinza-claro;
-        border-radius: $base-border-radius;
-        border-width: 0px;
-        margin: 0px;
-      }
-    }
-  }
-
-  input,
-  label {
-    &.inline {
-      display: inline;
-      width: 10%;
-    }
-
-    &.inline-lg {
-      width: 60%;
-    }
-
-    &.inline-xg {
-      width: 90%;
-    }
-  }
-
-  select.inline {
-    display: inline;
-  }
-
-  fieldset.required > h3 {
-    &::after {
-      content: ' * ';
-    }
-  }
-
-  div.counter {
-    float: right;
-    color: $cinza-escuro;
-    font-size: em(12);
-    margin-bottom: $base-spacing;
-    margin-top: em(-15);
-
-    span {
-      font-weight: bold;
-    }
-
-    span.over {
-      color: $vermelho-escuro;
-    }
-  }
-
-  div.editor-preview {
-    background-color: $cinza-claro;
-    border: $base-border;
-    border-radius: $base-border-radius;
-    box-shadow: $form-box-shadow;
-    box-sizing: border-box;
-    padding: $base-spacing / 3;
-    overflow: auto;
-    float: right;
-    max-width: 49%;
-    width: 49%;
-  }
-
-  div.editor-barra-ferramentas a {
-    margin-right: em(10);
-    color: $cinza-escuro;
-
-    &:hover {
-      color: $azul-escuro;
-    }
-  }
-
-  .aviso-salvo-em {
-    font-size: em(13);
-    margin-left: .5em;
-  }
-
-  .etapa {
-    margin-bottom: $base-spacing;
-    padding: 20px;
-    border: $base-border;
-
-    .sub-secao > button.remove-peq {
-        float: right;
-    }
-  }
-}
-
-body {
-  #menu-lateral {
-    padding: 10px;
-    position: absolute;
-    left: 0px;
-    top: 40px;
-    bottom: 0px;
-    width: 320px;
-
-    a {
-      color: black;
-      width: 100%;
-      display: block;
-      line-height: 2.25em;
-    }
-
-    ul li {
-      margin-left: 10px;
-    }
-  }
-
-  #principal {
-    position: absolute;
-    overflow-y: auto;
-    left: 320px;
-    top: 40px;
-    width: 100%;
-    bottom: 0px;
-
-    select {
-      margin-bottom: $base-spacing / 2;
-    }
-    
-    .tooltip {    
-      margin-left: 1em;
-      border: 1px solid #ddd;
-      background-color: #eee;
-      border-radius: 30em;
-      height: 20pt;
-      width: 20pt;
-      display: inline-block;
-      text-align: center;
-      padding-top: 3px
-    }
-
-    .editor-markdown {
-      textarea {
-        margin-bottom: 0;
-      }
-
-      footer {
-        color: $cinza-escuro;
-        font-size: em(12);
-        margin-bottom: 3.25em;
-        margin-top: 15;
-
-        .markdown-suportado {
-          float: left;
-        }
-        .counter {
-          float: right;
-
-          span {
-            font-weight: bold;
-          }
-
-          span.over {
-            color: $vermelho-escuro;
-          }
-        }
-      }
-    }
-  }
-
-  .remover {
-    color: #d00;
-  }
-
-  header {
-    @include fill-parent;
-    background-color: $azul-regular;
-    min-height: em(40px);
+  > header {
+    @include row;
+    min-height: em(48);
+    max-height: em(48);
+    height: em(48);
+    background-color: $azul-escuro;
     color: $branco;
 
-    a {
-      color: $branco;
-
-      &:hover {
-        color: $branco;
-        text-decoration: underline;
-      }
-    }
-
-    .titulo {
-      float: left;
-      margin-top: .5em;
-      margin-left: 1em;
+    div {
+      @include span-columns(4 of 12);
+      margin-top: em(4);
 
       h1 {
+        display: inline-block;
+        font-family: $openSansExtraBold;
+        letter-spacing: -0.5pt;
         font-size: 14pt;
+        margin-left: 1em;
+        margin-bottom: 0;
+        line-height: 2em;
+        color: $branco;
       }
     }
 
-    .erro {
-      float:right;
+    .metadados {
+      @include span-columns(4 of 12);
+      margin-top: em(4);
+    }
+
+    form {
+      margin-top: em(4);
+      @include span-columns(4 of 12);
+      line-height: 2.5em;
+
       span {
-        margin-right: 5px;
-        color: orange;
+        @include span-columns(1 of 2);
+      }
+
+      button {
+        @include span-columns(1 of 2);
+        line-height: 2.5em;
+        padding: 0;
+        margin: 0;
+        color: $branco;
       }
     }
   }
 
-  #logout {
-    float: right;
-    button {
-      @include clear-margins;
-      color: $branco;
-      background-color: transparent;
-
-      &:hover {
-      background-color: $azul-escuro;
-      }
-    }
+  > nav {
+    background-color: #efe;
+    @include span-columns(3);
   }
 
-  header.erro-conexao {
-    background-color: $cinza-escuro;
-    button {
-      color: #fff;
-    }
-    a {
-      color: $azul-claro;
-      font-weight: bold;
-    }
-   }
-
-  #nome {
-    margin-top: .75em;
+  #bem-vindo {
+    @include shift(2);
+    @include span-columns(8);
+    margin-top: 2em;
   }
-
 }
-
