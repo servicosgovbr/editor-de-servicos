@@ -72,7 +72,7 @@ mkdir -p %{buildroot}/var/lib/%{name}
 mkdir -p %{buildroot}/%{prefix}/bin
 cat <<-EOF > %{buildroot}/%{prefix}/bin/%{name}
 #!/bin/bash
-java ${JAVA_OPTS} -jar %{prefix}/lib/%{name}.jar
+java \${JAVA_OPTS} -jar %{prefix}/lib/%{name}.jar
 EOF
 
 %files
