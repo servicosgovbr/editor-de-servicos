@@ -243,5 +243,16 @@ $erro: #fa2;
       }
     }
 
+    #eventos-da-linha-da-vida, #segmentos-da-sociedade, #areas-de-interesse {
+      div {
+        @include row;
+
+        label {
+          @include span-columns(5.75 of 12, block-collapse);
+          display: inline-block;
+        }
+      }
+    }
+
   }
 }
