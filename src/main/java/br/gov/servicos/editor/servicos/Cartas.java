@@ -50,6 +50,11 @@ public class Cartas {
     }
 
     @SneakyThrows
+    public Optional<String> conteudoServicoV1(String id) {
+        return conteudoServico(id, leitorDeConteudo(id, "v1"));
+    }
+
+    @SneakyThrows
     public Optional<String> conteudoServicoV2(String id) {
         return conteudoServico(id, leitorDeConteudo(id, "v2"));
     }
@@ -74,6 +79,10 @@ public class Cartas {
             log.info("Arquivo {} não encontrado", arquivo);
             return empty();
         };
+    }
+
+    public Optional<Metadados> ultimaRevisaoV1(String id) {
+        return ultimaRevisao(id, "v1");
     }
 
     public Optional<Metadados> ultimaRevisaoV2(String id) {
@@ -121,38 +130,6 @@ public class Cartas {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), defaultCharset()))) {
             return of(reader.lines().collect(joining("\n")));
         }
-    }
-
-    @SneakyThrows
-    public void salvarServicoV2(String id, Document doc, User usuario) {
-        comRepositorioAberto(git -> {
-
-            pull(git);
-
-            try {
-                return executaNoBranchDoServico(id, () -> {
-                    Path caminho = caminhoRelativo(id, "v2");
-                    Path dir = caminho.getParent();
-
-                    if (dir.toFile().mkdirs()) {
-                        log.debug("Diretório {} não existia e foi criado", dir);
-                    } else {
-                        log.debug("Diretório {} já existia e não precisou ser criado", dir);
-                    }
-
-                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
-
-                    escreve(doc, caminho);
-                    add(git, caminho);
-                    commit(git, mensagem, usuario, caminho);
-
-                    return null;
-                });
-
-            } finally {
-                push(git, id);
-            }
-        });
     }
 
     @SneakyThrows
