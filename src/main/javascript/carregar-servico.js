@@ -2,7 +2,7 @@
 
 var slugify = require('slugify');
 var modelos = require('modelos');
-var importarV2 = require('componentes/importar-xml-v2');
+var importarV1 = require('componentes/importar-xml-v1');
 var importarV3 = require('componentes/importar-xml-v3');
 
 var config = function (versao, id, metadados) {
@@ -38,9 +38,9 @@ module.exports = function (id, cabecalho) {
         cabecalho.limparErro();
         return importarV3(xml);
       }, function () {
-        return m.request(config('v2', id, cabecalho.metadados)).then(function (xml) {
+        return m.request(config('v1', id, cabecalho.metadados)).then(function (xml) {
           cabecalho.limparErro();
-          return importarV2(xml);
+          return importarV1(xml);
         }, function () {
           cabecalho.tentarNovamente(carregar);
           return new modelos.Servico();

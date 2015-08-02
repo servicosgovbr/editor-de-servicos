@@ -7,17 +7,7 @@ module.exports = {
   controller: function (args) {
     this.canaisDePrestacao = args.campos;
 
-    this.tiposDeCanalDePrestacao = m.prop([
-      'Web',
-      'Agendamento',
-      'Presencial',
-      'Telefone',
-      'E-mail',
-      'Postal',
-      'Aplicativo móvel',
-      'SMS',
-      'Fax'
-    ]);
+    this.tiposDeCanalDePrestacao = m.prop(require('referencia').tiposDeCanalDePrestacao);
 
     this.adicionar = function () {
       this.canaisDePrestacao().push(new modelos.CanalDePrestacao());
