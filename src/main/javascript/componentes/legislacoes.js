@@ -23,16 +23,16 @@ module.exports = {
 
       ctrl.servico().legislacoes().map(function (legislacao, i) {
         return [
-          m('input.inline.inline-xg[type=text]', {
+          m('input.inline[type=text]', {
             value: legislacao,
             onchange: function (e) {
               ctrl.servico().legislacoes()[i] = e.target.value;
             }
           }),
-          m('button.inline.remove-peq', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
-            m('span.fa.fa-times')
+            m('span.fa.fa-trash-o')
           ])
         ];
       }),

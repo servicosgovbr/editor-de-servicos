@@ -26,10 +26,10 @@ module.exports = function (componente) {
             m.component(new Caso(componente), {
               caso: m.prop(caso)
             }),
-            m('button.inline.remover', {
+            m('button.remove', {
               onclick: ctrl.remover.bind(ctrl, i)
             }, [
-              m('span.fa.fa-times'),
+              m('span.fa.fa-trash-o'),
               ' Remover caso '
             ])
           ];

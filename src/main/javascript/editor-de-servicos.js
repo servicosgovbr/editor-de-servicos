@@ -49,12 +49,12 @@ module.exports = {
             return salvarAutomaticamente(e);
           }
         })
-      }, [
+      }, m('.scroll', [
         m.component(require('componentes/dados-basicos'), binding),
         m.component(require('componentes/solicitantes'), binding),
         m.component(require('componentes/etapas'), binding),
         m.component(require('componentes/dados-complementares'), binding),
-      ])
+      ]))
     ]);
   }
 

@@ -23,16 +23,16 @@ module.exports = {
 
       ctrl.servico().nomesPopulares().map(function (nomesPopulares, i) {
         return [
-          m('input.inline.inline-xg[type=text]', {
+          m('input.inline[type=text]', {
             value: nomesPopulares,
             onchange: function (e) {
               ctrl.servico().nomesPopulares()[i] = e.target.value;
             }
           }),
-          m('button.inline.remove-peq', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
-            m('span.fa.fa-times')
+            m('span.fa.fa-trash-o')
           ])
         ];
       }),

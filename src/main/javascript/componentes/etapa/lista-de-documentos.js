@@ -27,7 +27,7 @@ module.exports = {
               ctrl.documentos()[i] = e.target.value;
             }
           }),
-          m('button.inline.remove-peq', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, m('span.fa.fa-trash-o'))
         ]);

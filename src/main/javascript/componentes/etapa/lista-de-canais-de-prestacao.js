@@ -41,7 +41,7 @@ module.exports = {
             }, tipo);
           }))),
 
-          m('button.inline.remove-peq', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i),
             style: {
               float: 'right'

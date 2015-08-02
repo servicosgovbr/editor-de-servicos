@@ -22,22 +22,22 @@ module.exports = {
         return m('.custo', {
           key: custo.id
         }, [
-          m('input.inline.inline-lg[type=text]', {
+          m('input.descricao[type=text]', {
             value: custo.descricao(),
             onchange: m.withAttr('value', custo.descricao)
           }),
           ' ',
-          m('input.inline[type=text][value="R$"]', {
+          m('input.moeda[type=text][value="R$"]', {
             value: custo.moeda(),
             onchange: m.withAttr('value', custo.moeda)
           }),
           ' ',
-          m('input.inline[type=text]', {
+          m('input.valor[type=text]', {
             value: custo.valor(),
             onchange: m.withAttr('value', custo.valor)
           }),
           ' ',
-          m('button.inline.remove-peq', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, m('span.fa.fa-trash-o'))
         ]);

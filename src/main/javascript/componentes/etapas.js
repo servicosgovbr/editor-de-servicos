@@ -30,10 +30,10 @@ module.exports = {
             indice: i
           }),
 
-          m('button.inline.remover', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
-            m('span.fa.fa-times'),
+            m('span.fa.fa-trash-o'),
             ' Remover etapa '
           ])
         ]);

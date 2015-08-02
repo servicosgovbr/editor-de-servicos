@@ -24,16 +24,16 @@ module.exports = {
 
       ctrl.servico().palavrasChave().map(function (palavras, i) {
         return [
-          m('input.inline.inline-xg[type=text]', {
+          m('input.inline[type=text]', {
             value: palavras,
             onchange: function (e) {
               ctrl.servico().palavrasChave()[i] = e.target.value;
             }
           }),
-          m('button.inline.remove-peq', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
-            m('span.fa.fa-times')
+            m('span.fa.fa-trash-o')
           ])
         ];
       }),

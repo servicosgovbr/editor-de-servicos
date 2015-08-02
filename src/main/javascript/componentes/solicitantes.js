@@ -43,7 +43,7 @@ module.exports = {
             onchange: m.withAttr('value', s.requisitos)
           }),
 
-          m('button.inline.remover', {
+          m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, m('span.fa.fa-trash-o'))
         ]);
