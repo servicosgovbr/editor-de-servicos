@@ -181,6 +181,29 @@ $erro: #fa2;
       }
     }
 
+    #tempo-total-estimado {
+      .entre-minimo, .entre-maximo, .ate-maximo {
+        @include span-columns(2 of 12);
+        display: inline-block;
+      }
+
+      .tipo-entre span {
+        float: left;
+        display: block;
+        width: 1.5em;
+        margin-left: -1em;
+        height: 40px;
+        margin-top: 0.5em;
+      }
+
+      select {
+        @include span-columns(2 of 12);
+        display: inline-block;
+        height: 40px;
+        margin-top: 0.5em;
+      }
+    }
+
     .custos .custo {
       input.descricao {
         @include span-columns(8 of 12, block-collapse);

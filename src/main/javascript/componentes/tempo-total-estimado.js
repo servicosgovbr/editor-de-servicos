@@ -26,7 +26,7 @@ module.exports = {
         m.component(require('tooltips').tempoTotalEstimado)
       ]),
 
-      m('select.inline', {
+      m('select', {
         onchange: ctrl.modificarTipo.bind(ctrl),
         value: ctrl.servico().tempoTotalEstimado().tipo()
       }, [
@@ -42,12 +42,12 @@ module.exports = {
           display: ctrl.servico().tempoTotalEstimado().tipo() === 'ate' ? 'inline' : 'none'
         }
       }, [
-        m('input.ate-maximo.inline[type="text"]', {
+        m('input.ate-maximo[type="text"]', {
           value: ctrl.servico().tempoTotalEstimado().ateMaximo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateMaximo)
         }),
         ' ',
-        m('select.inline', {
+        m('select', {
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateTipoMaximo),
           value: ctrl.servico().tempoTotalEstimado().ateTipoMaximo()
         }, unidades),
@@ -58,17 +58,17 @@ module.exports = {
           display: ctrl.servico().tempoTotalEstimado().tipo() === 'entre' ? 'inline' : 'none'
         }
       }, [
-        m('input.entre-minimo.inline[type="text"]', {
+        m('input.entre-minimo[type="text"]', {
           value: ctrl.servico().tempoTotalEstimado().entreMinimo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMinimo)
         }),
-        ' e ',
-        m('input.entre-minimo.inline[type="text"]', {
+        m('span', ' e '),
+        m('input.entre-maximo[type="text"]', {
           value: ctrl.servico().tempoTotalEstimado().entreMaximo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMaximo)
         }),
         ' ',
-        m('select.inline', {
+        m('select', {
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreTipoMaximo),
           value: ctrl.servico().tempoTotalEstimado().entreTipoMaximo()
         }, unidades)
