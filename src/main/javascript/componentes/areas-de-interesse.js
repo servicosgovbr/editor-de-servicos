@@ -1,6 +1,30 @@
 module.exports = require('componentes/checkboxes-ajax').create({
   chave: 'areasDeInteresse',
-  url: '/editar/api/areas-de-interesse',
   id: 'areas-de-interesse',
-  titulo: 'Áreas de interesse'
+  titulo: 'Áreas de interesse',
+  itens: [
+    'Administração',
+    'Agropecuária',
+    'Comércio e Serviços',
+    'Comunicações',
+    'Cultura',
+    'Defesa Nacional',
+    'Economia e Finanças',
+    'Educação',
+    'Energia',
+    'Esporte e Lazer',
+    'Habitação',
+    'Indústria',
+    'Meio-ambiente',
+    'Pesquisa e Desenvolvimento',
+    'Previdência Social',
+    'Proteção Social',
+    'Relações Internacionais',
+    'Saneamento',
+    'Saúde',
+    'Segurança e Ordem Pública',
+    'Trabalho',
+    'Transportes',
+    'Urbanismo'
+  ]
 });

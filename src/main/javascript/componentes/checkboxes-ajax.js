@@ -10,10 +10,7 @@ module.exports.create = function (config) {
     controller: function (args) {
       this[config.chave] = args.servico()[config.chave];
 
-      this['todos' + capitalize(config.chave)] = m.request({
-        method: 'GET',
-        url: config.url
-      });
+      this['todos' + capitalize(config.chave)] = m.prop(config.itens);
 
       this.adicionar = function (e) {
         var obj = e.target.value;
