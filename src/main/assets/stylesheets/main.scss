@@ -12,6 +12,8 @@ body {
 
 $tamanho-do-cabecalho: em(48);
 
+$erro: #fa2;
+
 #wrapper {
   @include outer-container;
 
@@ -22,6 +24,14 @@ $tamanho-do-cabecalho: em(48);
     color: $branco;
     margin-bottom: 1em;
     position: fixed;
+
+    &.erro-conexao {
+      background-color: darken($erro, 20%);
+
+      .metadados {
+        display: none;
+      }
+    }
 
     div {
       @include span-columns(3 of 12);
@@ -40,10 +50,23 @@ $tamanho-do-cabecalho: em(48);
       }
     }
 
-    .metadados {
+    .metadados, span.erro {
       @include span-columns(5 of 12);
       margin-top: em(4);
       line-height: 2.5em;
+
+      .fa-exclamation-triangle {
+        color: $erro;
+      }
+
+      a {
+        color: $branco;
+        cursor: pointer;
+        text-decoration: underline;
+
+        &:hover {
+        }
+      }
     }
 
     form {
@@ -135,14 +158,17 @@ $tamanho-do-cabecalho: em(48);
       textarea {
         margin-bottom: 0;
       }
+
       footer {
         color: $cinza-escuro;
         font-size: em(12);
         margin-bottom: 3.25em;
         margin-top: 15;
+
         .markdown-suportado {
           float: left;
         }
+
         .counter {
           float: right;
           span {

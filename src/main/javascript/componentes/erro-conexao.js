@@ -11,10 +11,14 @@ module.exports = {
     }
 
     return m('span.erro', [
-      m('span.fa.fa-exclamation-triangle', 'Erro de conexão'),
-      m('button', {
+      m('span.fa.fa-exclamation-triangle'),
+
+      m.trust('&nbsp; Erro de comunicação com o servidor. '),
+
+      m('a', {
         onclick: ctrl.erro().tentarNovamente
       }, 'Tentar novamente')
+
     ]);
   }
 };
