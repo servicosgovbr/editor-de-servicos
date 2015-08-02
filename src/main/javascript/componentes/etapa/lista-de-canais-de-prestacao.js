@@ -7,10 +7,17 @@ module.exports = {
   controller: function (args) {
     this.canaisDePrestacao = args.campos;
 
-    this.tiposDeCanalDePrestacao = m.request({
-      method: 'GET',
-      url: '/editar/api/tipos-de-canal-de-prestacao'
-    });
+    this.tiposDeCanalDePrestacao = m.prop([
+      'Web',
+      'Agendamento',
+      'Presencial',
+      'Telefone',
+      'E-mail',
+      'Postal',
+      'Aplicativo móvel',
+      'SMS',
+      'Fax'
+    ]);
 
     this.adicionar = function () {
       this.canaisDePrestacao().push(new modelos.CanalDePrestacao());

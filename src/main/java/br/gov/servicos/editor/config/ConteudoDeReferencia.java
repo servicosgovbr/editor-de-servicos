@@ -12,20 +12,6 @@ import static java.util.Arrays.asList;
 public class ConteudoDeReferencia {
 
     @Bean
-    public Collection<String> tiposDeCanalDePrestacao() {
-        return asList(
-                "Web",
-                "Presencial",
-                "Telefone",
-                "E-mail",
-                "Postal",
-                "Aplicativo móvel",
-                "SMS",
-                "Fax"
-        );
-    }
-
-    @Bean
     public Collection<Orgao> orgaos() {
         return asList(
                 new Orgao("arquivo-nacional-an", "Arquivo Nacional (AN)"),
