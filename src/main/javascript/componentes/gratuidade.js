@@ -15,7 +15,7 @@ module.exports = {
 
       m('label',
         m('input[type=radio][name=gratuidade]', {
-          onchange: function() {
+          onchange: function () {
             ctrl.servico().gratuidade(true);
           },
           checked: ctrl.servico().gratuidade() !== undefined && ctrl.servico().gratuidade()

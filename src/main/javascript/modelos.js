@@ -9,7 +9,7 @@ var id = (function () {
     return base + '-' + counters[base]++;
   };
 
-  gerador.reset = function() {
+  gerador.reset = function () {
     counters = {};
   };
 

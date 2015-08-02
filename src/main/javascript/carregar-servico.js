@@ -33,15 +33,15 @@ var config = function (versao, id, metadados) {
 
 module.exports = function (id, cabecalho) {
   if (id) {
-    var carregar = function() {
-      return m.request(config('v3', id, cabecalho.metadados)).then(function(xml) {
+    var carregar = function () {
+      return m.request(config('v3', id, cabecalho.metadados)).then(function (xml) {
         cabecalho.limparErro();
         return importarV3(xml);
       }, function () {
-        return m.request(config('v2', id, cabecalho.metadados)).then(function(xml) {
+        return m.request(config('v2', id, cabecalho.metadados)).then(function (xml) {
           cabecalho.limparErro();
           return importarV2(xml);
-        }, function() {
+        }, function () {
           cabecalho.tentarNovamente(carregar);
           return new modelos.Servico();
         });
