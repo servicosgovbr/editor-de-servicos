@@ -10,22 +10,30 @@
 
 <body layout:fragment="corpo">
 
-<div id="login-form">
-    <form th:action="@{/editar/login}" method="post">
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+    </header>
+
+    <form id="login" th:action="@{/editar/login}" method="post">
 
         <h1>Login</h1>
 
-        <p th:if="${param.error}" class="alert alert-error">
-            <i class="fa fa-bug"></i>&nbsp;
+        <p th:if="${param.error}" class="erro">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;
             Nome ou senha incorretos.
         </p>
 
-        <p th:if="${param.logout}" class="alert alert-info">
+        <p th:if="${param.logout}" class="info">
             <i class="fa fa-info"></i>&nbsp;
             Você saiu do sistema.
         </p>
-
-        <p>Informe seu usuário e senha para acessar o editor de serviços.</p>
 
         <label for="usuario">Usuário</label>
         <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
