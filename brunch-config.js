@@ -23,7 +23,7 @@ module.exports.config = {
       joinTo: {
         'main.css': [
           new RegExp('^src/main/assets/stylesheets/.*\\.scss'),
-          new RegExp('^src/main/resources/vendor/.*\\.scss')
+          new RegExp('^src/main/resources/vendor/.*\\.s?css')
         ]
       }
     }
