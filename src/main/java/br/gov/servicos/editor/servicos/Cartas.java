@@ -7,7 +7,9 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
-import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
@@ -28,9 +30,11 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Optional.*;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.lib.Constants.*;
@@ -52,11 +56,6 @@ public class Cartas {
     @SneakyThrows
     public Optional<String> conteudoServicoV1(String id) {
         return conteudoServico(id, leitorDeConteudo(id, "v1"));
-    }
-
-    @SneakyThrows
-    public Optional<String> conteudoServicoV2(String id) {
-        return conteudoServico(id, leitorDeConteudo(id, "v2"));
     }
 
     @SneakyThrows
@@ -83,10 +82,6 @@ public class Cartas {
 
     public Optional<Metadados> ultimaRevisaoV1(String id) {
         return ultimaRevisao(id, "v1");
-    }
-
-    public Optional<Metadados> ultimaRevisaoV2(String id) {
-        return ultimaRevisao(id, "v2");
     }
 
     public Optional<Metadados> ultimaRevisaoV3(String id) {
@@ -300,23 +295,16 @@ public class Cartas {
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }
 
-    @SneakyThrows
-    private Optional<ReflogEntry> reflogMaisRecente(Git git, String id) {
-        return ofNullable(git.getRepository()
-                .getReflogReader(id))
-                .map(new Function<ReflogReader, ReflogEntry>() {
-                    @Override
-                    @SneakyThrows
-                    public ReflogEntry apply(ReflogReader reflogReader) {
-                        return reflogReader.getLastEntry();
-                    }
-                });
-    }
-
     public Iterable<String> listar() {
         FilenameFilter filter = (x, name) -> name.endsWith(".xml");
-        File v2 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v2", "servicos").toFile();
+        String raiz = repositorioCartasLocal.getAbsolutePath();
 
-        return Stream.of(v2.list(filter)).collect(toList());
+        File v1 = Paths.get(raiz, "cartas-servico", "v1", "servicos").toFile();
+        File v3 = Paths.get(raiz, "cartas-servico", "v3", "servicos").toFile();
+
+        return Stream.concat(
+                Stream.of(ofNullable(v1.list(filter)).orElse(new String[0])),
+                Stream.of(ofNullable(v3.list(filter)).orElse(new String[0])))
+                .collect(toSet());
     }
 }

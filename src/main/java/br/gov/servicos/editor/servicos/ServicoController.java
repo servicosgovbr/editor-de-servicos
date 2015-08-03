@@ -45,15 +45,6 @@ class ServicoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/servico/v2/{id}", method = GET, produces = "application/xml")
-    String editarV2(
-            @PathVariable("id") String unsafeId,
-            HttpServletResponse response
-    ) throws IOException {
-        return carregarServico(unsafeId, response, cartas::ultimaRevisaoV2, cartas::conteudoServicoV2);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/editar/api/servico/v3/{id}", method = GET, produces = "application/xml")
     String editarV3(
             @PathVariable("id") String id,
