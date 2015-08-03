@@ -35,9 +35,22 @@ var canalDePrestacao = function (c) {
     });
   }
 
+  var tipos = {
+    'Aplicativo móvel': 'Aplicativo móvel',
+    'E-mail': 'E-mail',
+    'Fax': 'Fax',
+    'Mobile': 'Aplicativo móvel',
+    'Outros': 'Postal',
+    'Postal': 'Postal',
+    'Presencial': 'Presencial',
+    'SMS': 'SMS',
+    'Telefone': 'Telefone',
+    'Web': 'Web',
+  };
+
   return new modelos.CanalDePrestacao({
-    tipo: x.attr('tipo'),
-    descricao: string(x.find('> descricao'))
+    tipo: tipos[x.attr('tipo').trim()],
+    descricao: string(x.find('> descricao')).replace(/\s+/g, ' ').replace('\n', '')
   });
 };
 
