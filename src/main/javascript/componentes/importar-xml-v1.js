@@ -67,10 +67,6 @@ var canaisDePrestacao = function (c) {
   });
 };
 
-var tempoTotalEstimado = function (x) {
-  return new modelos.TempoTotalEstimado({});
-};
-
 var segmentosDaSociedade = function (x) {
   var ref = {
     'Serviços aos Cidadãos': 'Cidadãos',
@@ -119,7 +115,7 @@ var servico = function (x) {
     nomesPopulares: [],
     descricao: descricao(x),
     solicitantes: [],
-    tempoTotalEstimado: tempoTotalEstimado(x),
+    tempoTotalEstimado: new modelos.TempoTotalEstimado({}),
     etapas: [
       new modelos.Etapa({
         custos: custos(x.find('> custoTotalEstimado').first()),
