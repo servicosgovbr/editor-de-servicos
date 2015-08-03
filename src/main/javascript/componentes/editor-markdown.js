@@ -22,11 +22,11 @@ module.exports = {
       m('textarea', ctrl.config),
       m('footer', [
         m('span.markdown-suportado', [
-          'Este campo suporta ',
+          'Este campo pode ser editado com ',
           m('a[href="/editar/ajuda-markdown"][target=_blank]', ['Markdown'])
         ]),
 
-        m('span.counter', ['Caracteres restantes: ', m('span', ctrl.caracteres())])
+        m('span.counter', ['caracteres restantes: ', m('strong.contador', ctrl.caracteres())])
       ])
     ]);
   }

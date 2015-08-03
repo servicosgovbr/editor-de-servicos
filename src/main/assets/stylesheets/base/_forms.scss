@@ -1,6 +1,6 @@
 fieldset {
-  background-color: lighten($base-border-color, 10%);
-  border: $base-border;
+  background-color: $cinza-fundo;
+  border: none;
   margin: 0 0 $small-spacing;
   padding: $base-spacing;
 }
@@ -71,4 +71,8 @@ select {
   margin-bottom: $base-spacing;
   max-width: 100%;
   width: auto;
+}
+
+.contador {
+  color: $verde;
 }

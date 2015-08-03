@@ -22,7 +22,7 @@ module.exports = {
 
     return m('fieldset#tempo-total-estimado', [
       m('h3', [
-        'Tempo total estimado',
+        'Tempo estimado para realizar esse serviço',
         m.component(require('tooltips').tempoTotalEstimado)
       ]),
 
