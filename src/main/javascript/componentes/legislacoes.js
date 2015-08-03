@@ -40,7 +40,7 @@ module.exports = {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),
-        ' Adicionar legislação '
+        ' Adicionar lei, decreto ou portaria '
       ])
     ]);
   }
