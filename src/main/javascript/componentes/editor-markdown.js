@@ -26,7 +26,7 @@ module.exports = {
           m('a[href="/editar/ajuda-markdown"][target=_blank]', ['Markdown'])
         ]),
 
-        m('span.counter', ['caracteres restantes: ', m('strong.contador', ctrl.caracteres())])
+        m('span.counter', ['caracteres restantes: ', m('span', ctrl.caracteres())])
       ])
     ]);
   }

@@ -73,6 +73,9 @@ select {
   width: auto;
 }
 
-.contador {
-  color: $verde;
+label.titulo {
+  clear: both;
+  font-size: 0.8em;
+  color: $cinza-escuro;
+  display: block;
 }

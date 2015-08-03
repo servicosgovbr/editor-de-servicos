@@ -6,7 +6,7 @@ var t = function (txt) {
       return m('span.tooltip', {
         title: txt,
       }, [
-        m('i.fa.fa-info')
+        m('i.fa.fa-question')
       ]);
     }
   };
