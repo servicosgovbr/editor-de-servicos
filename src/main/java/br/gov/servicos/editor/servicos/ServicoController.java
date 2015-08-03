@@ -31,7 +31,7 @@ class ServicoController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
-    Iterable<String> listar() throws IOException {
+    Iterable<Metadados> listar() throws IOException {
         return cartas.listar();
     }
 

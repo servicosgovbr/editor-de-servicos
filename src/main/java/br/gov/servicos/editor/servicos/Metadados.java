@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Metadados {
+    String id;
     String revisao;
     String autor;
     Date horario;

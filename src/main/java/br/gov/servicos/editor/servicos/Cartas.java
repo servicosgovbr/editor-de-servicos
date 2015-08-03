@@ -3,12 +3,11 @@ package br.gov.servicos.editor.servicos;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -22,19 +21,15 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.lib.Constants.*;
@@ -44,13 +39,28 @@ import static org.eclipse.jgit.lib.Constants.*;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class Cartas {
 
+
     File repositorioCartasLocal;
+    File v1;
+    File v3;
     boolean fazerPush;
 
     @Autowired
     public Cartas(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
         this.repositorioCartasLocal = repositorioCartasLocal;
         this.fazerPush = fazerPush;
+        this.v1 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v1", "servicos").toFile();
+        this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos").toFile();
+        criaDiretorios(v1);
+        criaDiretorios(v3);
+    }
+
+    private void criaDiretorios(File d) {
+        if (d.mkdirs()) {
+          log.info("Criado diretório de cartas: %s", d.getAbsolutePath());
+        } else {
+          log.info("Diretório de cartas já existente: %s", d.getAbsolutePath());
+        }
     }
 
     @SneakyThrows
@@ -81,43 +91,57 @@ public class Cartas {
     }
 
     public Optional<Metadados> ultimaRevisaoV1(String id) {
-        return ultimaRevisao(id, "v1");
+        return comRepositorioAberto(git ->
+                metadados(git, id, xmlServico(id, "v1")));
     }
 
     public Optional<Metadados> ultimaRevisaoV3(String id) {
-        return ultimaRevisao(id, "v3");
+        return comRepositorioAberto(git ->
+                metadados(git, id, xmlServico(id, "v3")));
     }
 
-    private Optional<Metadados> ultimaRevisao(final String id, final String versao) {
-        return comRepositorioAberto(new Function<Git, Optional<Metadados>>() {
+    public Iterable<Metadados> listar() {
+        return comRepositorioAberto(git -> todosServicos().stream()
+                .map(p -> metadados(git, p.getLeft(), p.getRight()))
+                .map(Optional::get)
+                .filter(Objects::nonNull)
+                .collect(toList()));
+    }
 
-            @Override
-            @SneakyThrows
-            public Optional<Metadados> apply(Git git) {
-                LogCommand revs;
-                Ref branchRef = git.getRepository().getRef(R_HEADS + id);
+    private List<Pair<String, File>> todosServicos() {
+        FilenameFilter filter = (x, name) -> name.endsWith(".xml");
+        Function<File, String> getId = f -> f.getName().replaceAll(".xml$", "");
+        Function<File, Map<String, File>> indexaServicos = f -> Arrays.asList(f.listFiles(filter))
+                .stream()
+                .collect(toMap(getId, x -> x));
 
-                if (branchRef != null) {
-                    // temos uma branch para o servico
-                    revs = git.log().add(branchRef.getObjectId());
+        Map<String, File> mapaServicos = indexaServicos.apply(v1);
+        mapaServicos.putAll(indexaServicos.apply(v3));
 
-                } else {
-                    // pegamos o ultimo commit no master
-                    revs = git.log().addPath(caminhoRelativo(caminhoRelativo(id, versao)));
-                }
+        List<Pair<String, File>> listServicos = new ArrayList<>();
+        mapaServicos.forEach((id, f) -> listServicos.add(Pair.of(id, f)));
 
-                Iterator<RevCommit> commits = revs.setMaxCount(1).call().iterator();
-                if (commits.hasNext()) {
-                    RevCommit commit = commits.next();
-                    return of(new Metadados()
-                                    .withRevisao(commit.getId().getName())
-                                    .withAutor(commit.getAuthorIdent().getName())
-                                    .withHorario(commit.getAuthorIdent().getWhen())
-                    );
-                }
-                return empty();
-            }
-        });
+        return listServicos;
+    }
+
+    @SneakyThrows
+    private Optional<Metadados> metadados(Git git, String id, File f) {
+        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(R_HEADS + id))
+                .map(o -> {
+                    try {
+                        return git.log().add(o.getObjectId()).setMaxCount(1).call().iterator().next();
+                    } catch (Throwable t) {
+                        throw new RuntimeException(t);
+                    }
+                })
+                .orElse(git.log().addPath(caminhoRelativo(f.toPath())).setMaxCount(1).call().iterator().next());
+
+        return Optional.ofNullable(rev)
+                .map(c -> new Metadados()
+                        .withId(id)
+                        .withRevisao(c.getId().getName())
+                        .withAutor(c.getAuthorIdent().getName())
+                        .withHorario(c.getAuthorIdent().getWhen()));
     }
 
     @SneakyThrows
@@ -201,8 +225,8 @@ public class Cartas {
                     .setAuthor(ident)
                     .setOnly(caminhoRelativo(caminho))
                     .call();
-        } catch(JGitInternalException e) {
-            if(e.getMessage().equals(JGitText.get().emptyCommit)) {
+        } catch (JGitInternalException e) {
+            if (e.getMessage().equals(JGitText.get().emptyCommit)) {
                 log.info("{} não sofreu alterações", caminho);
             } else {
                 throw e;
@@ -275,6 +299,11 @@ public class Cartas {
         return resultado;
     }
 
+
+    private File xmlServico(String id, String versao) {
+        return caminhoRelativo(id, versao).toFile();
+    }
+
     private Path caminhoRelativo(String id, String versao) {
         return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml");
     }
@@ -295,16 +324,4 @@ public class Cartas {
         log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }
 
-    public Iterable<String> listar() {
-        FilenameFilter filter = (x, name) -> name.endsWith(".xml");
-        String raiz = repositorioCartasLocal.getAbsolutePath();
-
-        File v1 = Paths.get(raiz, "cartas-servico", "v1", "servicos").toFile();
-        File v3 = Paths.get(raiz, "cartas-servico", "v3", "servicos").toFile();
-
-        return Stream.concat(
-                Stream.of(ofNullable(v1.list(filter)).orElse(new String[0])),
-                Stream.of(ofNullable(v3.list(filter)).orElse(new String[0])))
-                .collect(toSet());
-    }
 }
