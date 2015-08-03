@@ -196,6 +196,10 @@ $erro: #fa2;
       margin-top: 1em;
     }
 
+    #legislacoes {
+      margin-bottom: 5em;
+    }
+
     #nomes-populares, #palavras-chave, #legislacoes {
       input {
         @include span-columns(11 of 12, block-collapse);
