@@ -54,7 +54,7 @@ var canaisDePrestacao = function (c) {
 
   if (x.find('urlAgendamento').length > 0) {
     canais.push(new modelos.CanalDePrestacao({
-      tipo: 'Web: Agendamento',
+      tipo: 'Web: Agendar',
       descricao: string(x.find('urlAgendamento'))
     }));
   }

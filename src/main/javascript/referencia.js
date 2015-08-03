@@ -73,7 +73,7 @@ module.exports = {
 
   tiposDeCanalDePrestacao: [
     'Web',
-    'Web: Agendamento',
+    'Web: Agendar',
     'Presencial',
     'Telefone',
     'E-mail',
