@@ -23,7 +23,7 @@ module.exports = {
       m('footer', [
         m('span.markdown-suportado', [
           'Este campo suporta ',
-          m('a[href="http://daringfireball.net/projects/markdown/basics"][target=_blank]', ['Markdown'])
+          m('a[href="/editar/ajuda-markdown"][target=_blank]', ['Markdown'])
         ]),
 
         m('span.counter', ['Caracteres restantes: ', m('span', ctrl.caracteres())])

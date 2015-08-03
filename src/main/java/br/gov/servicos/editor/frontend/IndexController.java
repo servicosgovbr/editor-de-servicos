@@ -21,4 +21,9 @@ class IndexController {
     ModelAndView index() {
         return new ModelAndView("index");
     }
+
+    @RequestMapping("/editar/ajuda-markdown")
+    ModelAndView ajudaComMarkdown() {
+        return new ModelAndView("ajuda-markdown");
+    }
 }
