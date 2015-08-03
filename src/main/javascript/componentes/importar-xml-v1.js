@@ -121,6 +121,10 @@ var descricao = function (x) {
   return string(x.find('> descricao')) + '\n' + informacoesUteis;
 };
 
+var orgao = function (x) {
+  return string(x.find('orgaoResponsavel id'));
+};
+
 var servico = function (x) {
   return new modelos.Servico({
     nome: string(x.find('> nome')),
@@ -135,7 +139,7 @@ var servico = function (x) {
         canaisDePrestacao: canaisDePrestacao(x),
       })
     ],
-    orgao: string(x.find('orgaoResponsavel id')),
+    orgao: orgao(x),
     segmentosDaSociedade: segmentosDaSociedade(x),
     eventosDaLinhaDaVida: eventosDaLinhaDaVida(x),
     areasDeInteresse: areasDeInteresse(x),

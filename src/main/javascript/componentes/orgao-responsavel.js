@@ -4,11 +4,7 @@ module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
-
-    this.todosOrgaos = m.request({
-      method: 'GET',
-      url: '/editar/api/orgaos'
-    });
+    this.todosOrgaos = require('referencia').orgaos;
   },
 
   view: function (ctrl) {
