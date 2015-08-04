@@ -329,5 +329,28 @@ $erro: #fa2;
       }
     }
 
+    #legislacoes {
+      .numero {
+        @include span-columns(1.5 of 12);
+        margin-left: 1em;
+      }
+
+      .row > span {
+        float: left;
+      }
+
+      .ano {
+        @include span-columns(1.5 of 12);
+      }
+
+      .complemento {
+        @include span-columns(4 of 12, block-collapse);
+      }
+
+      .remove {
+        @include span-columns(1 of 12, block-collapse);
+      }
+
+    }
   }
 }

@@ -30,6 +30,14 @@ var Cabecalho = function () {
   };
 };
 
+var Legislacao = function (config) {
+  var data = (config || {});
+  this.tipo = m.prop(data.tipo || '');
+  this.numero = m.prop(data.numero || '');
+  this.ano = m.prop(data.ano || '');
+  this.complemento = m.prop(data.complemento || '');
+};
+
 var Caso = function (parentId, config) {
   var data = (config || {});
   this.id = id((parentId ? parentId + '-' : '') + 'caso');
@@ -142,5 +150,6 @@ module.exports = {
   Etapa: Etapa,
   Solicitante: Solicitante,
   Servico: Servico,
-  TempoTotalEstimado: TempoTotalEstimado
+  TempoTotalEstimado: TempoTotalEstimado,
+  Legislacao: Legislacao
 };

@@ -1,12 +1,14 @@
 'use strict';
 
+var modelos = require('modelos');
+
 module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
 
     this.adicionar = function () {
-      this.servico().legislacoes().push('');
+      this.servico().legislacoes().push(new modelos.Legislacao({}));
     };
 
     this.remover = function (i) {
@@ -22,26 +24,44 @@ module.exports = {
       ]),
 
       ctrl.servico().legislacoes().map(function (legislacao, i) {
-        return [
-          m('input.inline[type=text]', {
-            value: legislacao,
-            onchange: function (e) {
-              ctrl.servico().legislacoes()[i] = e.target.value;
-            }
+        return m('.row', [
+          m.component(require('componentes/select2'), {
+            data: require('referencia').tiposDeLegislacao,
+            prop: legislacao.tipo,
+            minimumResultsForSearch: 1
           }),
+
+          m('input.numero[type=text]', {
+            value: legislacao.numero(),
+            onchange: m.withAttr('value', legislacao.numero)
+          }),
+
+          m('span', ' de '),
+
+          m('input.ano[type=text]', {
+            value: legislacao.ano(),
+            onchange: m.withAttr('value', legislacao.ano)
+          }),
+
+          m('input.complemento[type=text]', {
+            value: legislacao.complemento(),
+            onchange: m.withAttr('value', legislacao.complemento)
+          }),
+
           m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
             m('span.fa.fa-trash-o')
           ])
-        ];
+        ]);
       }),
+
       m('button.adicionar.adicionar-legislacao', {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),
-        ' Adicionar lei, decreto ou portaria '
+        ' Adicionar legislação '
       ])
-    ]);
+      ]);
   }
 };

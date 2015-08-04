@@ -2,6 +2,13 @@
 
 var slugify = require('slugify');
 
+var toSelect2Object = function (c) {
+  return {
+    id: slugify(c),
+    text: c
+  };
+};
+
 module.exports = {
   areasDeInteresse: [
     'Abastecimento',
@@ -91,12 +98,43 @@ module.exports = {
     'Aplicativo móvel',
     'SMS',
     'Fax'
-  ].map(function (c) {
-    return {
-      id: slugify(c),
-      text: c
-    };
-  }),
+  ].map(toSelect2Object),
+
+  tiposDeLegislacao: [
+    'Acórdão de Relação',
+    'Acórdão',
+    'Ato Declaratório Interpretativo',
+    'Ato Regimental',
+    'Constituição',
+    'Decisão',
+    'Decreto Legislativo',
+    'Decreto',
+    'Decreto-Lei',
+    'Emenda Constitucional',
+    'Enunciado',
+    'Instrução Normativa Conjunta',
+    'Instrução Normativa',
+    'Lei Complementar',
+    'Lei Delegada',
+    'Lei',
+    'Medida Provisória',
+    'Ordem de Serviço',
+    'Orientação Jurisprudencial',
+    'Orientação Normativa',
+    'Portaria Conjunta',
+    'Portaria Interministerial',
+    'Portaria Normativa',
+    'Portaria',
+    'Provimento',
+    'Recomendação',
+    'Regimento Interno',
+    'Resolucão Conjunta',
+    'Resolução Autorizativa',
+    'Resolução Homologatória',
+    'Resolução Normativa',
+    'Resolução',
+    'Súmula',
+  ].map(toSelect2Object),
 
   orgaos: _.once(m.request({
     method: 'GET',
