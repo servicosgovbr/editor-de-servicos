@@ -1,8 +1,8 @@
 'use strict';
 
-var Caso = require('componentes/etapa/caso');
-var Casos = require('componentes/etapa/casos');
-var ListaDeDocumentos = require('componentes/etapa/lista-de-documentos');
+var Caso = require('etapas/caso');
+var Casos = require('etapas/casos');
+var ListaDeDocumentos = require('etapas/lista-de-documentos');
 
 module.exports = {
 

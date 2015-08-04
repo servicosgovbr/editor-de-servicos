@@ -1,9 +1,9 @@
 'use strict';
 
 var modelos = require('modelos');
-var importarXml = require('componentes/importar-xml-v3');
-var exportarXml = require('componentes/exportar-xml');
-var salvarXml = require('componentes/salvar-xml');
+var importarXml = require('xml/importar-v3');
+var exportarXml = require('xml/exportar');
+var salvarXml = require('xml/salvar');
 var slugify = require('slugify');
 var carregarServico = require('carregar-servico');
 

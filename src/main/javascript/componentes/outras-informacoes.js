@@ -12,12 +12,12 @@ module.exports = {
     };
 
     return m('#outras-informacoes', [
-      m.component(require('componentes/orgao-responsavel'), binding),
-      m.component(require('componentes/segmentos-da-sociedade'), binding),
-      m.component(require('componentes/eventos-da-linha-da-vida'), binding),
-      m.component(require('componentes/areas-de-interesse'), binding),
-      m.component(require('componentes/palavras-chave'), binding),
-      m.component(require('componentes/legislacoes'), binding)
+      m.component(require('outras-informacoes/orgao-responsavel'), binding),
+      m.component(require('outras-informacoes/segmentos-da-sociedade'), binding),
+      m.component(require('outras-informacoes/eventos-da-linha-da-vida'), binding),
+      m.component(require('outras-informacoes/areas-de-interesse'), binding),
+      m.component(require('outras-informacoes/palavras-chave'), binding),
+      m.component(require('outras-informacoes/legislacoes'), binding)
     ]);
   }
 };

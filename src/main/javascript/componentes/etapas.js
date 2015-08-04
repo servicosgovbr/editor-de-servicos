@@ -24,7 +24,7 @@ module.exports = {
         return m('span', {
           key: etapa.id
         }, [
-          m.component(require('componentes/etapa/etapa'), {
+          m.component(require('etapas/etapa'), {
             etapa: etapa,
             gratuidade: ctrl.servico().gratuidade,
             indice: i

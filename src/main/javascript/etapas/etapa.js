@@ -10,26 +10,26 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#' + ctrl.etapa.id, [
-      m.component(require('componentes/etapa/titulo'), {
+      m.component(require('etapas/titulo'), {
         titulo: ctrl.etapa.titulo,
         indice: ctrl.indice
       }),
-      m.component(require('componentes/etapa/descricao'), {
+      m.component(require('etapas/descricao'), {
         descricao: ctrl.etapa.descricao,
         indice: ctrl.indice
 
       }),
-      m.component(require('componentes/etapa/documentos'), {
+      m.component(require('etapas/documentos'), {
         documentos: ctrl.etapa.documentos,
         indice: ctrl.indice
 
       }),
-      ctrl.gratuidade() ? null : m.component(require('componentes/etapa/custos'), {
+      ctrl.gratuidade() ? null : m.component(require('etapas/custos'), {
         custos: ctrl.etapa.custos,
         indice: ctrl.indice
 
       }),
-      m.component(require('componentes/etapa/canais-de-prestacao'), {
+      m.component(require('etapas/canais-de-prestacao'), {
         canaisDePrestacao: ctrl.etapa.canaisDePrestacao,
         indice: ctrl.indice
       }),

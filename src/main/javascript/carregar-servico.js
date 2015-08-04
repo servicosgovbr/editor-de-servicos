@@ -2,8 +2,8 @@
 
 var slugify = require('slugify');
 var modelos = require('modelos');
-var importarV1 = require('componentes/importar-xml-v1');
-var importarV3 = require('componentes/importar-xml-v3');
+var importarV1 = require('xml/importar-v1');
+var importarV3 = require('xml/importar-v3');
 
 var config = function (versao, id, metadados) {
   return {

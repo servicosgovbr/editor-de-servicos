@@ -12,12 +12,12 @@ module.exports = {
     };
 
     return m('#dados-basicos', [
-      m.component(require('componentes/nome'), binding),
-      m.component(require('componentes/sigla'), binding),
-      m.component(require('componentes/nomes-populares'), binding),
-      m.component(require('componentes/descricao'), binding),
-      m.component(require('componentes/tempo-total-estimado'), binding),
-      m.component(require('componentes/gratuidade'), binding),
+      m.component(require('dados-basicos/nome'), binding),
+      m.component(require('dados-basicos/sigla'), binding),
+      m.component(require('dados-basicos/nomes-populares'), binding),
+      m.component(require('dados-basicos/descricao'), binding),
+      m.component(require('dados-basicos/tempo-total-estimado'), binding),
+      m.component(require('dados-basicos/gratuidade'), binding),
     ]);
   }
 };
