@@ -5,9 +5,7 @@ var t = function (txt) {
     view: function () {
       return m('span.tooltip', {
         title: txt,
-      }, [
-        m('i.fa.fa-question')
-      ]);
+      });
     }
   };
 };

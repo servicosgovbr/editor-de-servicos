@@ -30,8 +30,9 @@ span.check-ok {
     ul li {
       line-height: 1.6em;
 
-      a {
+      &:hover {
         color: black;
+        text-shadow: 0px 0px 2px $branco;
       }
     }
   }
@@ -46,6 +47,14 @@ header {
   margin-bottom: 1em;
   position: fixed;
   z-index: 99;
+
+  a, button {
+    &:hover {
+      color: $branco;
+      text-shadow: 0px 0px 2px $branco;
+      background-color: initial;
+    }
+  }
 
   &.erro-conexao {
     .metadados {
@@ -92,22 +101,18 @@ header {
     margin-top: em(4);
     @include span-columns(4 of 12);
 
-    span {
+    > span {
       @include span-columns(3 of 5, block-collapse);
       line-height: 2.5em;
       text-align: right;
     }
 
-    button {
+    > button {
       @include span-columns(2 of 5);
       line-height: 2.5em;
       padding: 0;
       margin: 0;
       color: $branco;
-
-      &:hover {
-        background-color: $azul-escuro;
-      }
     }
   }
 }
@@ -131,14 +136,24 @@ header {
 
   .tooltip {
     margin-left: 1em;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     background-color: #eee;
-    border-radius: 30em;
+    border-radius: 999em;
     height: 20pt;
     width: 20pt;
     display: inline-block;
     text-align: center;
-    padding-top: 3px
+    padding-top: .2em;
+
+    @extend .fa;
+    @extend .fa-question;
+
+    &:hover {
+      box-shadow: 0px 0px 2px $azul-regular;
+      text-shadow: 0px 0px 2px $branco;
+      background-color: $azul-regular;
+      color: $branco;
+    }
   }
 
   .remove {
@@ -315,7 +330,6 @@ header {
 
 }
 
-
 #ajuda {
   @include shift(3 of 12);
   @include span-columns(6 of 12);
@@ -344,7 +358,6 @@ header {
   }
 }
 
-
 #login {
   @include shift(4 of 12);
   @include span-columns(4 of 12);
@@ -362,6 +375,12 @@ header {
     float: right;
     background-color: $azul-regular;
     color: $branco;
+
+    &:hover {
+      color: $branco;
+      text-shadow: 0px 0px 2px $branco;
+      background-color: $azul-regular;
+    }
   }
 }
 
