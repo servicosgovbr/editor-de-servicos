@@ -11,7 +11,7 @@ module.exports = {
       servico: ctrl.servico
     };
 
-    return m('#dados-complementares', [
+    return m('#outras-informacoes', [
       m.component(require('componentes/orgao-responsavel'), binding),
       m.component(require('componentes/segmentos-da-sociedade'), binding),
       m.component(require('componentes/eventos-da-linha-da-vida'), binding),
