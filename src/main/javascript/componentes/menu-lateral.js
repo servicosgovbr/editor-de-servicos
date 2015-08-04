@@ -13,7 +13,7 @@ var item = function (texto, extra) {
       lineHeight: '4em'
     }
   }, [
-    m('span.fa.fa-check', {
+    m('span.check-ok', {
       style: {
         color: '#33ba7c',
         marginRight: '1em'

@@ -2,6 +2,7 @@
 @import 'base/base';
 @import 'neat/neat';
 @import 'neat/settings/grid';
+@import 'font-awesome/font-awesome';
 
 body {
   padding: 0;
@@ -11,6 +12,11 @@ body {
 $erro: #fa2;
 $tamanho-do-cabecalho: em(48);
 $tamanho-fonte-dropdown: 85%;
+
+span.check-ok {
+  @extend .fa;
+  @extend .fa-check;
+}
 
 #wrapper {
   @include outer-container;
