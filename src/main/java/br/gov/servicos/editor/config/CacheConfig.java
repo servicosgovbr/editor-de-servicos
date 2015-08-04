@@ -16,7 +16,10 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager manager = new SimpleCacheManager();
-        manager.setCaches(asList(new ConcurrentMapCache("orgaos")));
+        manager.setCaches(asList(
+                new ConcurrentMapCache("orgaos"),
+                new ConcurrentMapCache("lista-servicos")
+        ));
         return manager;
     }
 
