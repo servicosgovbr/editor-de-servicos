@@ -42,8 +42,6 @@ header {
   z-index: 99;
 
   &.erro-conexao {
-    background-color: darken($erro, 20%);
-
     .metadados {
       display: none;
     }
