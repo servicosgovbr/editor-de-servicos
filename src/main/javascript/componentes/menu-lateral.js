@@ -1,24 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
-
-var scrollTo = function (seletor) {
-  return function (element, isInitialized) {
-    if (isInitialized) {
-      return;
-    }
-
-    jQuery(element).click(function (e) {
-      console.log(seletor); //jshint ignore:line
-      jQuery(window).scrollTo(seletor, 250, {
-        offset: -60
-      });
-      e.stopPropagation();
-      return false;
-    });
-  };
-
-};
+var scrollTo = require('utils/scroll-to');
 
 var item = function (texto, extra) {
   return m('li', {
