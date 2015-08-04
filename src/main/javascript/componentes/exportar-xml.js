@@ -115,7 +115,7 @@ module.exports = function (servico) {
     m('eventos-da-linha-da-vida', servico.eventosDaLinhaDaVida().map(item)),
     m('areas-de-interesse', servico.areasDeInteresse().map(item)),
     m('palavras-chave', servico.palavrasChave().map(item)),
-//    m('legislacoes', servico.legislacoes().map(item))
+    m('legislacoes', servico.legislacoes().map(item))
   ]));
 
   cdata(doc, 'descricao');
