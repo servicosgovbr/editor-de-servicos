@@ -50,8 +50,7 @@ module.exports = {
               href: '/editar/servico/' + slugify(s.id)
             }, 'editar'))
           ]);
-        }))
-        )
+        })))
       ])
     ]);
   }
