@@ -44,9 +44,17 @@ module.exports = {
           ])
         ].concat(ctrl.servicosFiltrados().map(function (s) {
           return m('tr', [
-            m('td', s.id.replace(/\.xml$/, '').replace(/-/g, ' ')),
+
+            m('td', m('a', {
+              href: '/editar/servico/' + slugify(s.id)
+            }, [
+              s.id.replace(/\.xml$/, '').replace(/-/g, ' ')
+            ])),
+
             m('td.center', s.autor),
+
             m('td.center', moment(s.horario).fromNow()),
+
             m('td.right', m('a', {
               href: '/editar/servico/' + slugify(s.id)
             }, [
