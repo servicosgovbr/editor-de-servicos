@@ -49,7 +49,7 @@ var canalDePrestacao = function (c) {
   };
 
   return new modelos.CanalDePrestacao({
-    tipo: tipos[x.attr('tipo').trim()],
+    tipo: slugify(tipos[x.attr('tipo').trim()]),
     descricao: string(x.find('> descricao')).replace(/\s+/g, ' ').replace('\n', '')
   });
 };
@@ -60,14 +60,14 @@ var canaisDePrestacao = function (c) {
 
   if (x.find('url').length > 0) {
     canais.push(new modelos.CanalDePrestacao({
-      tipo: 'Web',
+      tipo: 'web',
       descricao: string(x.find('url'))
     }));
   }
 
   if (x.find('urlAgendamento').length > 0) {
     canais.push(new modelos.CanalDePrestacao({
-      tipo: 'Web: Agendar',
+      tipo: 'web-agendar',
       descricao: string(x.find('urlAgendamento'))
     }));
   }
