@@ -60,7 +60,6 @@ header {
       font-family: $openSansExtraBold;
       letter-spacing: -0.5pt;
       font-size: 14pt;
-      margin-left: 1em;
       margin-bottom: 0;
       line-height: 2em;
       color: $branco;
@@ -280,8 +279,7 @@ header {
 }
 
 #bem-vindo {
-  @include shift(2 of 12);
-  @include span-columns(8 of 12);
+  @include span-columns(12);
   margin-top: $tamanho-do-cabecalho + 2em;
 
   table {
@@ -357,4 +355,12 @@ header {
     background-color: $azul-regular;
     color: $branco;
   }
+}
+
+.cabecalho-cor {
+  height: $tamanho-do-cabecalho;
+  background-color: $azul-regular;  
+  position: fixed;
+  display: block;
+  width: 100%;
 }

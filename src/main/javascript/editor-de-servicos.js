@@ -35,7 +35,7 @@ module.exports = {
     });
 
     return m('#conteudo', [
-      
+      m('span.cabecalho-cor'),
       m('#wrapper', [
         m.component(require('componentes/cabecalho'), {
           cabecalho: ctrl.cabecalho
