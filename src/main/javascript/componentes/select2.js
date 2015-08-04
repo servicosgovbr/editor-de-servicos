@@ -63,13 +63,13 @@ module.exports = {
           }, ctrl.options));
 
           select2.on('change', function (e) {
-            if (!el.select2('val') || ctrl.prop() === el.select2('val')) {
+            if (!el.val() || ctrl.prop() === el.val()) {
               e.stopPropagation();
               return false;
             }
 
             m.startComputation();
-            ctrl.prop(el.select2('val'));
+            ctrl.prop(el.val());
             m.endComputation();
           });
         }
