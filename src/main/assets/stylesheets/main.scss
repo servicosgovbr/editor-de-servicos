@@ -10,9 +10,9 @@ body {
   margin: 0;
 }
 
-$tamanho-do-cabecalho: em(48);
-
 $erro: #fa2;
+$tamanho-do-cabecalho: em(48);
+$tamanho-fonte-dropdown: 85%;
 
 #wrapper {
   @include outer-container;
@@ -257,6 +257,7 @@ $erro: #fa2;
         border: $base-border;
         border-radius: $base-border-radius;
         box-shadow: $form-box-shadow;
+        font-size: $tamanho-fonte-dropdown;
 
         &:hover {
           border-color: darken($base-border-color, 10%);
@@ -269,7 +270,7 @@ $erro: #fa2;
         }
 
         .select2-selection__rendered, .select2-selection__arrow {
-          margin-top: 0.25em;
+          margin-top: 0.5em;
         }
       }
     }
@@ -330,4 +331,8 @@ $erro: #fa2;
     }
 
   }
+}
+
+.select2-dropdown {
+  font-size: $tamanho-fonte-dropdown;
 }
