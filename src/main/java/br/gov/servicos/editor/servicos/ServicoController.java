@@ -30,7 +30,6 @@ class ServicoController {
         this.slugify = slugify;
     }
 
-    @Cacheable("lista-servicos")
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
     Iterable<Metadados> listar() throws IOException {

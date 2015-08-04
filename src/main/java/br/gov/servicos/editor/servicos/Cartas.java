@@ -11,7 +11,6 @@ import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -40,16 +39,16 @@ public class Cartas {
 
 
     File repositorioCartasLocal;
-    File v1;
-    File v3;
+    Path v1;
+    Path v3;
     boolean fazerPush;
 
     @Autowired
     public Cartas(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
         this.repositorioCartasLocal = repositorioCartasLocal;
         this.fazerPush = fazerPush;
-        this.v1 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v1", "servicos").toFile();
-        this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos").toFile();
+        this.v1 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v1", "servicos");
+        this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos");
     }
 
     @SneakyThrows
@@ -68,7 +67,7 @@ public class Cartas {
 
     public Supplier<Optional<String>> leitorDeConteudo(String id, String versao) {
         return () -> {
-            File arquivo = caminhoRelativo(id, versao).toFile();
+            File arquivo = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml").toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -97,21 +96,22 @@ public class Cartas {
                 .collect(toList()));
     }
 
-    private Set<Map.Entry<String, File>> todosServicos() {
+    private Set<Map.Entry<String, Path>> todosServicos() {
         FilenameFilter filter = (x, name) -> name.endsWith(".xml");
-        Function<File, String> getId = f -> f.getName().replaceAll(".xml$", "");
-        Function<File, Map<String, File>> indexaServicos = f -> Arrays.asList(f.listFiles(filter))
+        Function<Path, String> getId = f -> f.toFile().getName().replaceAll(".xml$", "");
+        Function<Path, Map<String, Path>> indexaServicos = f -> Arrays.asList(f.toFile().listFiles(filter))
                 .stream()
+                .map(File::toPath)
                 .collect(toMap(getId, x -> x));
 
-        Map<String, File> mapaServicos = indexaServicos.apply(v1);
+        Map<String, Path> mapaServicos = indexaServicos.apply(v1);
         mapaServicos.putAll(indexaServicos.apply(v3));
 
         return mapaServicos.entrySet();
     }
 
     @SneakyThrows
-    private Optional<Metadados> metadados(Git git, String id, File f) {
+    private Optional<Metadados> metadados(Git git, String id, Path f) {
         RevCommit rev = Optional.ofNullable(git.getRepository().getRef(R_HEADS + id))
                 .map(o -> {
                     try {
@@ -120,7 +120,7 @@ public class Cartas {
                         throw new RuntimeException(t);
                     }
                 })
-                .orElse(git.log().addPath(caminhoRelativo(f.toPath())).setMaxCount(1).call().iterator().next());
+                .orElse(git.log().addPath(caminhoRelativo(f)).setMaxCount(1).call().iterator().next());
 
         return Optional.ofNullable(rev)
                 .map(c -> new Metadados()
@@ -145,7 +145,7 @@ public class Cartas {
 
             try {
                 return executaNoBranchDoServico(id, () -> {
-                    Path caminho = caminhoRelativo(id, "v3");
+                    Path caminho = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {
@@ -286,20 +286,8 @@ public class Cartas {
     }
 
 
-    private File xmlServico(String id, String versao) {
-        return caminhoRelativo(id, versao).toFile();
-    }
-
-    private Path caminhoRelativo(String id, String versao) {
+    private Path xmlServico(String id, String versao) {
         return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml");
-    }
-
-    @SneakyThrows
-    private void escreve(Document document, Path arquivo) {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
-            writer.write(document.toString());
-        }
-        log.debug("Arquivo '{}' modificado", arquivo.getFileName());
     }
 
     @SneakyThrows
