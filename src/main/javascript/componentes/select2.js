@@ -1,5 +1,49 @@
 'use strict';
 
+var language = {
+  errorLoading: function () {
+    return 'Erro ao carregar os resultados. Por favor, tente novamente';
+  },
+  inputTooLong: function (args) {
+    var overChars = args.input.length - args.maximum;
+
+    var message = 'Apague ' + overChars + ' caracter';
+
+    if (overChars !== 1) {
+      message += 'es';
+    }
+
+    return message;
+  },
+  inputTooShort: function (args) {
+    var remainingChars = args.minimum - args.input.length;
+
+    var message = 'Digite ' + remainingChars + ' ou mais caracteres.';
+
+    return message;
+  },
+  loadingMore: function () {
+    return 'Carregando mais resultados…';
+  },
+  maximumSelected: function (args) {
+    var message = 'Você só pode selecionar ' + args.maximum + ' ite';
+
+    if (args.maximum === 1) {
+      message += 'm';
+    } else {
+      message += 'ns';
+    }
+
+    return message;
+  },
+  noResults: function () {
+    return 'Nenhum resultado encontrado.';
+  },
+  searching: function () {
+    return 'Buscando…';
+  }
+};
+
 module.exports = {
   controller: function (args) {
     this.prop = args.prop;
@@ -12,7 +56,9 @@ module.exports = {
         var el = jQuery(element);
 
         if (!isInitialized) {
-          var select2 = el.select2(ctrl.options);
+          var select2 = el.select2(_.merge({
+            language: language
+          }, ctrl.options));
 
           select2.on('change', function (e) {
             if (ctrl.prop() === el.select2('val')) {

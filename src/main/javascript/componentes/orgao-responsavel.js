@@ -16,7 +16,8 @@ module.exports = {
 
       m.component(require('componentes/select2'), {
         prop: ctrl.servico().orgao,
-        data: ctrl.todosOrgaos()
+        data: ctrl.todosOrgaos(),
+        width: '100%'
       })
     ]);
   }
