@@ -24,19 +24,11 @@ module.exports = {
         return m('.canal-de-prestacao', {
           key: canalDePrestacao.id
         }, [
-          m('select', {
-            onchange: m.withAttr('value', ctrl.canaisDePrestacao()[i].tipo),
-            style: {
-              float: 'left'
-            }
-          }, [m('option', {
-            value: ''
-          }, 'Selecione...')].concat(ctrl.tiposDeCanalDePrestacao().map(function (tipo) {
-            return m('option', {
-              value: tipo,
-              selected: ctrl.canaisDePrestacao()[i].tipo() === tipo
-            }, tipo);
-          }))),
+
+          m.component(require('componentes/select2'), {
+            data: ctrl.tiposDeCanalDePrestacao(),
+            prop: ctrl.canaisDePrestacao()[i].tipo
+          }),
 
           m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i),

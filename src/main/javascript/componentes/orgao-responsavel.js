@@ -14,16 +14,10 @@ module.exports = {
         m.component(require('tooltips').orgaoResponsavel)
       ]),
 
-      m('select', {
-        onchange: m.withAttr('value', ctrl.servico().orgao)
-      }, [m('option', {
-        value: ''
-      }, 'Selecione...')].concat(ctrl.todosOrgaos().map(function (orgao) {
-        return m('option', {
-          value: orgao.id,
-          selected: ctrl.servico().orgao() === orgao.id
-        }, orgao.nome);
-      })))
+      m.component(require('componentes/select2'), {
+        prop: ctrl.servico().orgao,
+        data: ctrl.todosOrgaos()
+      })
     ]);
   }
 };

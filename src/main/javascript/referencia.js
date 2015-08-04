@@ -91,7 +91,12 @@ module.exports = {
     'Aplicativo móvel',
     'SMS',
     'Fax'
-  ],
+  ].map(function (c) {
+    return {
+      id: slugify(c),
+      text: c
+    };
+  }),
 
   orgaos: _.once(m.request({
     method: 'GET',
@@ -101,10 +106,10 @@ module.exports = {
       var nome = o.nome + ' (' + o.sigla + ')';
       return {
         id: slugify(nome),
-        nome: nome
+        text: nome
       };
     }), function (o) {
-      return o.nome;
+      return o.text;
     });
   }))
 
