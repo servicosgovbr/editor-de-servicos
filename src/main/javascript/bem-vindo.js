@@ -42,7 +42,7 @@ module.exports = {
               m('th[width="40%"]', 'Nome'),
               m('th.center', 'Autor'),
               m('th.center', 'Última atualização'),
-              m('th.right', 'Ações')
+              m('th.right', '')
             ])
           ].concat(ctrl.servicosFiltrados().map(function (s) {
             return m('tr', [
