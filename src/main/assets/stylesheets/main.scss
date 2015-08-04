@@ -98,13 +98,30 @@ $tamanho-fonte-dropdown: 85%;
     @include span-columns(8 of 12);
     margin-top: $tamanho-do-cabecalho + 2em;
 
-    .center {
-      text-align: center;
+    table {
+      margin-top: 50px;
+
+      th {
+        color: #2d66ce;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 13px;
+        background-color: #d5d5d5;
+        padding-left: 20px;
+      }
+
+      td {
+        color: #606060;
+        padding-left: 20px;
+        font-size: 14px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f0f2f1;
+      }
+
     }
 
-    .right {
-      text-align: right;
-    }
   }
 
   #ajuda {
