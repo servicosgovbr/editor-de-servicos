@@ -3,6 +3,7 @@ package br.gov.servicos.editor.servicos;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ class ServicoController {
         this.slugify = slugify;
     }
 
+    @Cacheable("lista-servicos")
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
     Iterable<Metadados> listar() throws IOException {
