@@ -3,7 +3,6 @@ package br.gov.servicos.editor.servicos;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
@@ -51,16 +50,6 @@ public class Cartas {
         this.fazerPush = fazerPush;
         this.v1 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v1", "servicos").toFile();
         this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos").toFile();
-        criaDiretorios(v1);
-        criaDiretorios(v3);
-    }
-
-    private void criaDiretorios(File d) {
-        if (d.mkdirs()) {
-          log.info("Criado diretório de cartas: %s", d.getAbsolutePath());
-        } else {
-          log.info("Diretório de cartas já existente: %s", d.getAbsolutePath());
-        }
     }
 
     @SneakyThrows
@@ -102,13 +91,13 @@ public class Cartas {
 
     public Iterable<Metadados> listar() {
         return comRepositorioAberto(git -> todosServicos().stream()
-                .map(p -> metadados(git, p.getLeft(), p.getRight()))
+                .map(p -> metadados(git, p.getKey(), p.getValue()))
                 .map(Optional::get)
                 .filter(Objects::nonNull)
                 .collect(toList()));
     }
 
-    private List<Pair<String, File>> todosServicos() {
+    private Set<Map.Entry<String, File>> todosServicos() {
         FilenameFilter filter = (x, name) -> name.endsWith(".xml");
         Function<File, String> getId = f -> f.getName().replaceAll(".xml$", "");
         Function<File, Map<String, File>> indexaServicos = f -> Arrays.asList(f.listFiles(filter))
@@ -118,10 +107,7 @@ public class Cartas {
         Map<String, File> mapaServicos = indexaServicos.apply(v1);
         mapaServicos.putAll(indexaServicos.apply(v3));
 
-        List<Pair<String, File>> listServicos = new ArrayList<>();
-        mapaServicos.forEach((id, f) -> listServicos.add(Pair.of(id, f)));
-
-        return listServicos;
+        return mapaServicos.entrySet();
     }
 
     @SneakyThrows
