@@ -37,12 +37,11 @@ $tamanho-fonte-dropdown: 85%;
 }
 
 header {
-  @include fill-parent;
+  @include span-columns(12);
   height: $tamanho-do-cabecalho;
   background-color: $azul-regular;
   color: $branco;
   margin-bottom: 1em;
-  position: fixed;
 
   &.erro-conexao {
     background-color: darken($erro, 20%);

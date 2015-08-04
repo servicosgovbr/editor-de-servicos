@@ -34,28 +34,29 @@ module.exports = {
       leading: false
     });
 
-    return m('#wrapper', [
-      m.component(require('componentes/cabecalho'), {
-        cabecalho: ctrl.cabecalho
-      }),
+    return m('#conteudo', [
+      
+      m('#wrapper', [
+        m.component(require('componentes/cabecalho'), {
+          cabecalho: ctrl.cabecalho
+        }),
+        m.component(require('componentes/menu-lateral'), binding),
 
-      m.component(require('componentes/menu-lateral'), binding),
-
-      m('#principal', {
-        onchange: salvarAutomaticamente,
-        onclick: _.wrap(salvarAutomaticamente, function (fn, e) {
-          var target = jQuery(e.target);
-          if (target.is('button') || target.parents('button').size() > 0) {
-            return salvarAutomaticamente(e);
-          }
-        })
-      }, m('.scroll', [
-        m.component(require('componentes/dados-basicos'), binding),
-        m.component(require('componentes/solicitantes'), binding),
-        m.component(require('componentes/etapas'), binding),
-        m.component(require('componentes/dados-complementares'), binding),
-      ]))
+        m('#principal', {
+          onchange: salvarAutomaticamente,
+          onclick: _.wrap(salvarAutomaticamente, function (fn, e) {
+            var target = jQuery(e.target);
+            if (target.is('button') || target.parents('button').size() > 0) {
+              return salvarAutomaticamente(e);
+            }
+          })
+        }, m('.scroll', [
+          m.component(require('componentes/dados-basicos'), binding),
+          m.component(require('componentes/solicitantes'), binding),
+          m.component(require('componentes/etapas'), binding),
+          m.component(require('componentes/dados-complementares'), binding),
+        ]))
+      ])
     ]);
   }
-
 };
