@@ -51,17 +51,19 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('select', {
+    return m('', m('select', {
       config: function (element, isInitialized) {
         var el = jQuery(element);
 
         if (!isInitialized) {
           var select2 = el.select2(_.merge({
-            language: language
+            language: language,
+            placeholder: 'Selecione...',
+            minimumResultsForSearch: Infinity
           }, ctrl.options));
 
           select2.on('change', function (e) {
-            if (ctrl.prop() === el.select2('val')) {
+            if (!el.select2('val') || ctrl.prop() === el.select2('val')) {
               e.stopPropagation();
               return false;
             }
@@ -74,6 +76,6 @@ module.exports = {
 
         el.select2('val', ctrl.prop());
       }
-    });
+    }));
   }
 };

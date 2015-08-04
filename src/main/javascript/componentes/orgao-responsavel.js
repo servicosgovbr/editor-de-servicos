@@ -17,7 +17,8 @@ module.exports = {
       m.component(require('componentes/select2'), {
         prop: ctrl.servico().orgao,
         data: ctrl.todosOrgaos(),
-        width: '100%'
+        width: '100%',
+        minimumResultsForSearch: 1
       })
     ]);
   }

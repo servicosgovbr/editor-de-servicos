@@ -1,41 +1,53 @@
 'use strict';
 
+var slugify = require('slugify');
+
+var selectTipo = function (prop) {
+  var unidades = [
+    'minutos',
+    'horas',
+    'dias corridos',
+    'dias úteis',
+    'meses'
+  ].map(function (t) {
+    return {
+      id: slugify(t),
+      text: t
+    };
+  });
+
+  return m.component(require('componentes/select2'), {
+    prop: prop,
+    data: unidades
+  });
+};
+
 module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
-
-    this.modificarTipo = function (e) {
-      this.servico().tempoTotalEstimado().tipo(e.target.value);
-    };
   },
 
   view: function (ctrl) {
-    var unidades = [
-      m('option[value=""]', 'Selecione…'),
-      m('option[value="minutos"]', 'minutos'),
-      m('option[value="horas"]', 'horas'),
-      m('option[value="dias-corridos"]', 'dias corridos'),
-      m('option[value="dias-uteis"]', 'dias úteis'),
-      m('option[value="meses"]', 'meses')
-    ];
-
     return m('fieldset#tempo-total-estimado', [
       m('h3', [
         'Tempo estimado para realizar esse serviço',
         m.component(require('tooltips').tempoTotalEstimado)
       ]),
 
-      m('select', {
-        onchange: ctrl.modificarTipo.bind(ctrl),
-        value: ctrl.servico().tempoTotalEstimado().tipo()
-      }, [
-        m('option[value=""]', 'Selecione…'),
-        m('option[value="entre"]', 'Entre'),
-        m('option[value="ate"]', 'Até')
-      ]),
-
-      ' ',
+      m.component(require('componentes/select2'), {
+        prop: ctrl.servico().tempoTotalEstimado().tipo,
+        data: [
+          {
+            id: 'ate',
+            text: 'Até'
+          },
+          {
+            id: 'entre',
+            text: 'Entre'
+          }
+        ]
+      }),
 
       m('span.tipo-ate', {
         style: {
@@ -46,11 +58,8 @@ module.exports = {
           value: ctrl.servico().tempoTotalEstimado().ateMaximo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateMaximo)
         }),
-        ' ',
-        m('select', {
-          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateTipoMaximo),
-          value: ctrl.servico().tempoTotalEstimado().ateTipoMaximo()
-        }, unidades),
+
+        selectTipo(ctrl.servico().tempoTotalEstimado().ateTipoMaximo),
       ]),
 
       m('span.tipo-entre', {
@@ -62,19 +71,19 @@ module.exports = {
           value: ctrl.servico().tempoTotalEstimado().entreMinimo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMinimo)
         }),
+
         m('span', ' e '),
+
         m('input.entre-maximo[type="text"]', {
           value: ctrl.servico().tempoTotalEstimado().entreMaximo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMaximo)
         }),
-        ' ',
-        m('select', {
-          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreTipoMaximo),
-          value: ctrl.servico().tempoTotalEstimado().entreTipoMaximo()
-        }, unidades)
+
+        selectTipo(ctrl.servico().tempoTotalEstimado().entreTipoMaximo)
       ]),
 
       m('label.titulo', ['COMENTÁRIOS SOBRE EXCEÇÕES OU INFORMAÇÕES ADICIONAIS AO TEMPO ESTIMADO']),
+
       m.component(require('componentes/editor-markdown'), {
         rows: 5,
         oninput: function (e) {

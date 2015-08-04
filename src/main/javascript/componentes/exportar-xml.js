@@ -19,7 +19,7 @@ var tempoTotalEstimado = function (tempoEstimado) {
       unidade: tempoEstimado.entreTipoMaximo()
     });
 
-  } else if (tempoEstimado.tipo() === 'até') {
+  } else if (tempoEstimado.tipo() === 'ate') {
     limite = m('ate', {
       max: tempoEstimado.ateMaximo(),
       unidade: tempoEstimado.ateTipoMaximo()

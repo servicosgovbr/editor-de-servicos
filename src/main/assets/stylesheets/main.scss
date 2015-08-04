@@ -238,26 +238,56 @@ $erro: #fa2;
       }
     }
 
+    .select2-container {
+      @include span-columns(2 of 12);
+      display: inline-block;
+      min-width: 7em;
+
+      .select2-selection {
+        height: 40px;
+        background-color: $base-background-color;
+        border: $base-border;
+        border-radius: $base-border-radius;
+        box-shadow: $form-box-shadow;
+
+        &:hover {
+          border-color: darken($base-border-color, 10%);
+        }
+
+        &:focus {
+          border-color: $action-color;
+          box-shadow: $form-box-shadow-focus;
+          outline: none;
+        }
+
+        .select2-selection__rendered, .select2-selection__arrow {
+          margin-top: 0.25em;
+        }
+      }
+    }
+
     #tempo-total-estimado {
       .entre-minimo, .entre-maximo, .ate-maximo {
         @include span-columns(2 of 12);
         display: inline-block;
+        float: left;
       }
 
-      .tipo-entre span {
+      .entre-minimo, .ate-maximo {
+        margin-left: 1em;
+      }
+
+      .entre-maximo, .ate-maximo {
+        margin-right: 1em;
+      }
+
+      .tipo-entre > span {
         float: left;
-        display: block;
+        display: inline-block;
         width: 1.5em;
         margin-left: -1em;
-        height: 40px;
         margin-top: 0.5em;
-      }
-
-      select {
-        @include span-columns(2 of 12);
-        display: inline-block;
         height: 40px;
-        margin-top: 0.5em;
       }
     }
 
