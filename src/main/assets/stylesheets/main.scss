@@ -97,6 +97,14 @@ $erro: #fa2;
     @include shift(2 of 12);
     @include span-columns(8 of 12);
     margin-top: $tamanho-do-cabecalho + 2em;
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
   }
 
   #ajuda {
