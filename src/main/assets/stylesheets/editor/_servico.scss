@@ -1,0 +1,113 @@
+@charset 'UTF-8';
+
+#servico {
+
+  @include span-columns(9);
+  @include shift(3);
+
+  .scroll {
+    @include span-columns(9 of 9);
+    margin-top: 3em;
+    top: $tamanho-do-cabecalho;
+    overflow-y: auto;
+    height: 100%;
+    @include row;
+  }
+
+  .remove {
+    color: #d00;
+  }
+
+  #dados-basicos {
+    margin-top: 1em;
+  }
+
+  #legislacoes {
+    margin-bottom: 5em;
+  }
+
+  #nomes-populares, #palavras-chave, #legislacoes {
+    input {
+      @include span-columns(11 of 12, block-collapse);
+    }
+  }
+
+  .editor-markdown {
+    textarea {
+      margin-bottom: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    footer {
+      color: $cinza-escuro;
+      font-size: em(12);
+      margin-bottom: 3.25em;
+      margin-top: 15;
+
+      .markdown-suportado {
+        float: left;
+      }
+
+      .counter {
+        float: right;
+      }
+    }
+  }
+
+  #tempo-total-estimado {
+    .entre-minimo, .entre-maximo, .ate-maximo {
+      @include span-columns(2 of 12);
+      display: inline-block;
+      float: left;
+    }
+
+    .entre-minimo, .ate-maximo {
+      margin-left: 1em;
+    }
+
+    .entre-maximo, .ate-maximo {
+      margin-right: 1em;
+    }
+
+    .tipo-entre > span {
+      float: left;
+      display: inline-block;
+      width: 1.5em;
+      margin-left: -1em;
+      margin-top: 0.5em;
+      height: 40px;
+    }
+  }
+
+  .custos .custo {
+    input.descricao {
+      @include span-columns(8 of 12, block-collapse);
+    }
+
+    input.moeda {
+      @include span-columns(1 of 12, block-collapse);
+    }
+
+    input.valor {
+      @include span-columns(2 of 12, block-collapse);
+      text-align: right;
+    }
+
+    button {
+      @include span-columns(1 of 12, block-collapse);
+    }
+  }
+
+  #eventos-da-linha-da-vida, #segmentos-da-sociedade, #areas-de-interesse {
+    div {
+      @include row;
+
+      label {
+        @include span-columns(5.75 of 12, block-collapse);
+        display: inline-block;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,14 @@
+@chaset 'UTF-8';
+
+.check {
+  @extend .fa;
+  @extend .fa-check;
+}
+
+.ok {
+  color: #33ba7c;
+}
+
+.nok {
+  color: #ff0000;
+}

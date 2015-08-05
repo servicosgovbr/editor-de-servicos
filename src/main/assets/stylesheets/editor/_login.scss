@@ -1,0 +1,27 @@
+@charset 'UTF-8';
+
+#login {
+  @include shift(4 of 12);
+  @include span-columns(4 of 12);
+  margin-top: $tamanho-do-cabecalho + 2em;
+
+  .erro {
+    color: #d00;
+  }
+
+  .info {
+    color: $azul-regular;
+  }
+
+  button {
+    float: right;
+    background-color: $azul-regular;
+    color: $branco;
+
+    &:hover {
+      color: $branco;
+      text-shadow: 0px 0px 2px $branco;
+      background-color: $azul-regular;
+    }
+  }
+}

@@ -1,0 +1,88 @@
+@charset 'UTF-8';
+
+.cabecalho-cor {
+  height: $tamanho-do-cabecalho;
+  background-color: $azul-regular;
+  position: fixed;
+  display: block;
+  width: 100%;
+}
+
+header {
+  @include span-columns(12);
+  max-width: 1020px;
+  height: $tamanho-do-cabecalho;
+  background-color: $azul-regular;
+  color: $branco;
+  margin-bottom: 1em;
+  position: fixed;
+  z-index: 99;
+
+  a, button {
+    &:hover {
+      color: $branco;
+      text-shadow: 0px 0px 2px $branco;
+      background-color: initial;
+    }
+  }
+
+  &.erro-conexao {
+    .metadados {
+      display: none;
+    }
+  }
+
+  div {
+    @include span-columns(3 of 12);
+    margin-top: em(4);
+    line-height: 2.5em;
+
+    h1 {
+      display: inline-block;
+      font-family: $openSansExtraBold;
+      letter-spacing: -0.5pt;
+      font-size: 14pt;
+      margin-bottom: 0;
+      line-height: 2em;
+      color: $branco;
+    }
+  }
+
+  .metadados, span.erro {
+    @include span-columns(5 of 12);
+    margin-top: em(4);
+    line-height: 2.5em;
+
+    .fa-exclamation-triangle {
+      color: $erro;
+    }
+
+    a {
+      color: $branco;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+      }
+    }
+  }
+
+  form {
+    margin-top: em(4);
+    @include span-columns(4 of 12);
+
+    > span {
+      @include span-columns(3 of 5, block-collapse);
+      line-height: 2.5em;
+      text-align: right;
+    }
+
+    > button {
+      @include span-columns(2 of 5);
+      line-height: 2.5em;
+      padding: 0;
+      margin: 0;
+      color: $branco;
+    }
+  }
+}

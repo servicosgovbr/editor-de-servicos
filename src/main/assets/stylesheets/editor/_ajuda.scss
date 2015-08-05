@@ -1,0 +1,29 @@
+@charset 'UTF-8';
+
+#ajuda {
+  @include shift(3 of 12);
+  @include span-columns(6 of 12);
+  margin-top: $tamanho-do-cabecalho + 2em;
+
+  text-align: justify;
+
+  h2 {
+    font-size: 140%;
+    margin-bottom: 1.5em;
+  }
+
+  h3 {
+    font-size: 120%;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  p, blockquote {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  ul {
+    @extend %default-ul;
+  }
+}

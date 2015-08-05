@@ -42,7 +42,7 @@ module.exports = {
         }),
         m.component(require('componentes/menu-lateral'), binding),
 
-        m('#principal', {
+        m('#servico', {
           onchange: salvarAutomaticamente,
           onclick: _.wrap(salvarAutomaticamente, function (fn, e) {
             var target = jQuery(e.target);

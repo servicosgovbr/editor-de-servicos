@@ -22,8 +22,8 @@ module.exports.config = {
       defaultExtension: 'scss',
       joinTo: {
         'main.css': [
-          new RegExp('^src/main/assets/stylesheets/.*\\.scss'),
-          new RegExp('^src/main/resources/vendor/.*\\.s?css')
+          new RegExp('^src/main/resources/vendor/.*\\.s?css'),
+          new RegExp('^src/main/assets/stylesheets/.*\\.scss')
         ]
       }
     }

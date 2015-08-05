@@ -3,12 +3,7 @@
 module.exports = {
 
   controller: function (args) {
-    this.config = _.extend((args || {}), {
-      style: {
-        maxWidth: '100%',
-        width: '100%'
-      },
-
+    this.config = _.extend(args || {}, {
       onkeyup: m.withAttr('value', function (txt) {
         this.caracteres(500 - txt.length);
       }.bind(this))
@@ -26,7 +21,12 @@ module.exports = {
           m('a[href="/editar/ajuda-markdown"][target=_blank]', ['Markdown'])
         ]),
 
-        m('span.counter', ['caracteres restantes: ', m('span', ctrl.caracteres())])
+        m('span.counter', [
+          'caracteres restantes: ',
+          m('span', {
+            class: ctrl.caracteres() > 0 ? 'ok' : 'nok'
+          }, ctrl.caracteres())
+        ])
       ])
     ]);
   }
