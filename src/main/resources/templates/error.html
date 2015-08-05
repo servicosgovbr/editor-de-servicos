@@ -9,19 +9,37 @@
 </head>
 
 <body layout:fragment="corpo">
-<section id="principal" class="auto-grid" role="main">
 
-    <h1><i class="fa fa-bomb"></i> Ocorreu um erro</h1>
+<span class="cabecalho-cor"></span>
 
-    <p>
-        A aplicação detectou uma falha inesperada. Por favor, tente a operação novamente.
-    </p>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+    </header>
 
-    <p>
-        Caso a falha persista, entre em contato com o suporte utilizando o identificador
-        <span class="ticket-erro" th:text="${#httpServletRequest.getAttribute('req.ticket').substring(24)}"></span>.
-    </p>
+    <div id="erro">
 
-</section>
+        <h2>Ocorreu um erro <i class="fa fa-bomb fa-lg"></i> </h2>
+
+        <p>
+            A aplicação detectou uma falha inesperada. Por favor, tente a operação novamente.
+        </p>
+
+        <p>
+            Caso a falha persista, entre em contato com o suporte utilizando o seguinte identificador:
+        </p>
+
+        <div class="ticket-erro" th:text="${#httpServletRequest.getAttribute('req.ticket').substring(28)}">
+            xxxxxx
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

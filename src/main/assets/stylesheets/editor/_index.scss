@@ -9,6 +9,7 @@
 @import 'editor/bem-vindo';
 @import 'editor/servico';
 @import 'editor/ajuda';
+@import 'editor/erro';
 
 #wrapper {
   @include outer-container;
