@@ -1,8 +1,8 @@
 @charset 'UTF-8';
 
 #ajuda {
-  @include shift(3 of 12);
-  @include span-columns(6 of 12);
+  @include shift(2 of 12);
+  @include span-columns(8 of 12);
   margin-top: $tamanho-do-cabecalho + 2em;
 
   text-align: justify;
