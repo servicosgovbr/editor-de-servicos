@@ -15,16 +15,17 @@
   @include outer-container;
 
   nav {
-    @include span-columns(3);
+    @include span-columns(2);
     position: fixed;
     padding: 1em 1em 1em 0;
     margin-top: $tamanho-do-cabecalho;
 
     ul li {
       line-height: 1.6em;
+      font-size: 14px;
 
       &:hover {
-        color: black;
+        color: $preto;
         text-shadow: 0px 0px 2px $branco;
       }
     }

@@ -15,8 +15,16 @@
   }
 
   .remove {
-    color: #d00;
+    color: #ff5151;
   }
+
+
+  #etapas-do-servico, #solicitantes {
+    fieldset {
+      padding:0;
+    }
+  }
+
 
   #dados-basicos {
     margin-top: 1em;
@@ -79,6 +87,7 @@
       height: 40px;
     }
   }
+
 
   .custos .custo {
     input.descricao {

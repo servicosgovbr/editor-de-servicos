@@ -21,7 +21,7 @@ module.exports = {
           key: documento.id
         }, [
           m.component(require('componentes/editor-markdown'), {
-            rows: 3,
+            rows: 1,
             value: documento,
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;

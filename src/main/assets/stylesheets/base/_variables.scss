@@ -19,7 +19,6 @@ $base-z-index: 0;
 $preto: #333333;
 
 $cinza-escuro: #606060;
-$cinza-medio-escuro: #999999;
 $cinza-medio: #dcdcdc;
 $cinza-claro: #eef0f1;
 $cinza-fundo: #f0f2f1;
@@ -29,12 +28,10 @@ $verde: #09B077;
 $branco: #ffffff;
 
 $azul-regular: #2c66ce;
-$azul-claro: lighten($azul-regular, 10%);
-$azul-escuro: darken($azul-regular, 10%);
+$azul-escuro: #1f4da3;
 
-$vermelho-regular: red;
-$vermelho-escuro: darken(red, 10%);
-$vermelho-claro: lighten(red, 10%);
+$vermelho-regular: #ff5151;
+$vermelho-escuro: #eb3c3c;
 
 // Font Colors
 $base-background-color: $branco;

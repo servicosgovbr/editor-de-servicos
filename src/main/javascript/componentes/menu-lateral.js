@@ -10,7 +10,7 @@ var item = function (texto, extra) {
       cursor: 'pointer',
       textTransform: 'uppercase',
       fontFamily: '"open_sansextrabold"',
-      lineHeight: '4em'
+      lineHeight: '3em'
     }
   }, [
     m('span.check.ok', {
