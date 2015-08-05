@@ -235,6 +235,15 @@ header {
 
       .select2-selection__arrow {
         line-height: 40px;
+        margin-right: 4px;
+        color: #888;
+
+        @extend .fa;
+        @extend .fa-chevron-down;
+
+        b {
+          visibility: hidden;
+        }
       }
     }
   }
@@ -261,6 +270,10 @@ header {
       margin-left: -1em;
       margin-top: 0.5em;
       height: 40px;
+    }
+
+    .tipo-entre .select2-selection__rendered, .tipo-ate .select2-selection__rendered {
+      margin-right: 1em;
     }
   }
 
