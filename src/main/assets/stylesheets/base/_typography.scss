@@ -44,17 +44,10 @@ a {
 }
 
 hr {
-  border-bottom: $base-border;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
   margin: $base-spacing 0;
-}
-
-img,
-picture {
-  margin: 0;
-  max-width: 100%;
 }
 
 .danger {

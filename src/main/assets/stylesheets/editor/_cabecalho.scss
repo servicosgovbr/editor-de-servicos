@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 .cabecalho-cor {
   height: $tamanho-do-cabecalho;
@@ -21,7 +21,7 @@ header {
   a, button {
     &:hover {
       color: $branco;
-      text-shadow: 0px 0px 2px $branco;
+      text-shadow: 0 0 2px $branco;
       background-color: initial;
     }
   }
@@ -52,6 +52,7 @@ header {
     @include span-columns(5 of 12);
     margin-top: em(4);
     line-height: 2.5em;
+    font-size: 14px;
 
     .fa-exclamation-triangle {
       color: $erro;
@@ -75,11 +76,13 @@ header {
       @include span-columns(3 of 5, block-collapse);
       line-height: 2.5em;
       text-align: right;
+      font-size: 14px;
     }
 
     > button {
       @include span-columns(2 of 5);
       line-height: 2.5em;
+      font-size: 14px;
       padding: 0;
       margin: 0;
       color: $branco;
