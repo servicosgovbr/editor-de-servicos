@@ -1,5 +1,9 @@
 @charset 'UTF-8';
 
-$erro: #fa2;
+$vermelho: #fa2;
+$verde: #33ba7c;
+
+$erro: $vermelho;
+
 $tamanho-do-cabecalho: em(48);
 $tamanho-fonte-dropdown: 85%;
