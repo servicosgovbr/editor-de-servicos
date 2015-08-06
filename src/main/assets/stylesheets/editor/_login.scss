@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 #login {
   @include shift(4 of 12);
@@ -20,7 +20,7 @@
 
     &:hover {
       color: $branco;
-      text-shadow: 0px 0px 2px $branco;
+      text-shadow: 0 0 2px $branco;
       background-color: $azul-regular;
     }
   }

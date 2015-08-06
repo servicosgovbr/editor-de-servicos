@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 #servico {
 
@@ -18,13 +18,11 @@
     color: #ff5151;
   }
 
-
   #etapas-do-servico, #solicitantes {
     fieldset {
-      padding:0;
+      padding: 0;
     }
   }
-
 
   #dados-basicos {
     margin-top: 1em;
@@ -51,7 +49,7 @@
       color: $cinza-escuro;
       font-size: em(12);
       margin-bottom: 3.25em;
-      margin-top: 15;
+      margin-top: 15px;
 
       .markdown-suportado {
         float: left;
@@ -87,7 +85,6 @@
       height: 40px;
     }
   }
-
 
   .custos .custo {
     input.descricao {
