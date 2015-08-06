@@ -16,20 +16,23 @@ module.exports = {
 
   view: function (ctrl) {
     return m('.documentos', [
+
       ctrl.documentos().map(function (documento, i) {
-        return m('.documento', {
+        return m('.documento.relative', {
           key: documento.id
         }, [
+
+          m('button.remove.absolute', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, m('span.fa.fa-trash')),
+
           m.component(require('componentes/editor-markdown'), {
             rows: 1,
             value: documento,
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;
             }
-          }),
-          m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, m('span.fa.fa-trash-o'))
+          })
         ]);
       }),
       m('button.adicionar.adicionar-documento', {

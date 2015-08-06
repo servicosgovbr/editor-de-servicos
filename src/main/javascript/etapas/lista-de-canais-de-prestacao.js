@@ -31,11 +31,8 @@ module.exports = {
           }),
 
           m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i),
-            style: {
-              float: 'right'
-            }
-          }, m('span.fa.fa-trash-o')),
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, m('span.fa.fa-trash')),
 
           m.component(require('componentes/editor-markdown'), {
             rows: 3,

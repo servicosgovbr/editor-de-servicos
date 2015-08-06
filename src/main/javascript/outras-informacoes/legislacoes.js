@@ -32,7 +32,7 @@ module.exports = {
           m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [
-            m('span.fa.fa-trash-o')
+            m('span.fa.fa-trash')
           ])
         ];
       }),

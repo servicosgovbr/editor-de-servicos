@@ -15,7 +15,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('fieldset#nomes-populares', [
+    return m('fieldset#nomes-populares.relative', [
       m('h3', [
         'Nomes populares',
         m.component(require('tooltips').nomesPopulares)
@@ -23,17 +23,19 @@ module.exports = {
 
       ctrl.servico().nomesPopulares().map(function (nomesPopulares, i) {
         return [
+
+          m('button.remove.absolute', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, [
+            m('span.fa.fa-trash')
+          ]),
+
           m('input.inline[type=text]', {
             value: nomesPopulares,
             onchange: function (e) {
               ctrl.servico().nomesPopulares()[i] = e.target.value;
             }
-          }),
-          m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-trash-o')
-          ])
+          })
         ];
       }),
 

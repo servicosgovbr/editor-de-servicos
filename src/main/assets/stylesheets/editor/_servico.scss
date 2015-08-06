@@ -32,17 +32,18 @@
     margin-bottom: 5em;
   }
 
-  #nomes-populares, #palavras-chave, #legislacoes {
+  #nome, #sigla, #nomes-populares, #descricao, #tempo-total-estimado, #editor-markdown, #solicitantes, #palavras-chave, #legislacoes, .titulo, .caso {
     input {
-      @include span-columns(11 of 12, block-collapse);
+      max-width: 93%;
+      width: 93%;
     }
   }
 
   .editor-markdown {
     textarea {
       margin-bottom: 0;
-      max-width: 100%;
-      width: 100%;
+      max-width: 93%;
+      width: 93%;
     }
 
     footer {
@@ -57,6 +58,7 @@
 
       .counter {
         float: right;
+        margin-right: 7%;
       }
     }
   }
@@ -88,16 +90,19 @@
 
   .custos .custo {
     input.descricao {
-      @include span-columns(8 of 12, block-collapse);
+      @include span-columns(7.63 of 12, block-collapse);
+      margin-right: 5px;
     }
 
     input.moeda {
       @include span-columns(1 of 12, block-collapse);
+      margin-right: 5px;
     }
 
     input.valor {
       @include span-columns(2 of 12, block-collapse);
       text-align: right;
+      margin-right: 5px;
     }
 
     button {

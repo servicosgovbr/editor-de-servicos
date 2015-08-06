@@ -20,9 +20,10 @@ module.exports = function (componente) {
         });
       }
 
-      return m('#' + ctrl.caso().id, {
+      return m('#' + ctrl.caso().id + '.caso', {
         key: ctrl.caso().id
       }, [
+
         titulo,
         m.component(componente, {
           id: ctrl.caso().id,

@@ -18,6 +18,8 @@ module.exports = {
         m.component(require('tooltips').documentacao)
       ]),
 
+           m('label.titulo', ['DOCUMENTAÇÃO NECESSÁRIA PARA TODOS OS CASOS']),
+
       m.component(new Caso(ListaDeDocumentos), {
         padrao: true,
         caso: ctrl.documentos().casoPadrao

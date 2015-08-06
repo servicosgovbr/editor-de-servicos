@@ -15,9 +15,8 @@
   @extend .fa-question;
 
   &:hover {
-    box-shadow: 0 0 2px $azul-regular;
     text-shadow: 0 0 2px $branco;
-    background-color: $azul-regular;
-    color: $branco;
+    background-color: $cinza-medio;
+    color: $azul-regular;
   }
 }

@@ -24,13 +24,17 @@ module.exports = {
       ]),
 
       ctrl.servico().solicitantes().map(function (s, i) {
-        return m('fieldset#' + s.id, {
+        return m('fieldset#' + s.id + '.relative', {
           key: s.id
         }, [
           m('h3', 'Tipo de solicitante'),
 
+           m('button.remove.absolute', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, m('span.fa.fa-trash')),
+
           m.component(require('componentes/editor-markdown'), {
-            rows: 2,
+            rows: 1,
             value: s.tipo(),
             onchange: m.withAttr('value', s.tipo)
           }),
@@ -41,11 +45,7 @@ module.exports = {
             rows: 2,
             value: s.requisitos(),
             onchange: m.withAttr('value', s.requisitos)
-          }),
-
-          m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, m('span.fa.fa-trash-o'))
+          })
         ]);
       }),
 
