@@ -22,7 +22,7 @@ var item = function (texto, extra) {
 };
 
 var etapas = function (lista) {
-  return lista.map(function (e) {
+  return lista.map(function (e, i) {
     return m('li', {
         style: {
           fontFamily: '"open_sansregular"',
@@ -38,7 +38,7 @@ var etapas = function (lista) {
             marginRight: '1em'
           }
         }),
-        e.titulo() ? e.titulo() : m('i', '(sem título)')
+        e.titulo() ? i + 1 + '. ' + e.titulo() : m('i', i + 1 + '. ' + '(sem título)')
       ])
     );
   });
