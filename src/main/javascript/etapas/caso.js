@@ -12,7 +12,7 @@ module.exports = function (componente) {
     view: function (ctrl) {
       var titulo;
       if (ctrl.padrao) {
-        titulo = m('h4', ctrl.caso().descricao());
+        titulo = m('label.titulo', 'Documentação necessária para todos os casos');
       } else {
         titulo = m('input[type=text]', {
           value: ctrl.caso().descricao(),

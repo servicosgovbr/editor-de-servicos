@@ -82,7 +82,7 @@ module.exports = {
         selectTipo(ctrl.servico().tempoTotalEstimado().entreTipoMaximo)
       ]),
 
-      m('label.titulo', ['COMENTÁRIOS SOBRE EXCEÇÕES OU INFORMAÇÕES ADICIONAIS AO TEMPO ESTIMADO']),
+      m('label.titulo', 'Comentários sobre exceções ou informações adicionais ao tempo estimado'),
 
       m.component(require('componentes/editor-markdown'), {
         rows: 5,
