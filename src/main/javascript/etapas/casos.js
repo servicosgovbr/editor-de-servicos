@@ -20,18 +20,17 @@ module.exports = function (componente) {
     },
 
     view: function (ctrl) {
-      return m('', [
+      return m('.relative', [
         ctrl.casos().map(function (caso, i) {
           return [
-            m.component(new Caso(componente), {
-              caso: m.prop(caso)
-            }),
-            m('button.remove', {
+            m('label.titulo', ['CASO ' + (i + 1) + ': NOME DO CASO' ]),
+            m('button.remove.absolute', {
               onclick: ctrl.remover.bind(ctrl, i)
             }, [
-              m('span.fa.fa-trash'),
-              ' Remover caso '
-            ])
+              m('span.fa.fa-trash')]),
+            m.component(new Caso(componente), {
+              caso: m.prop(caso)
+            })
           ];
         }),
         m('button.adicionar.adicionar-caso', {

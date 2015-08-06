@@ -20,6 +20,10 @@ button {
   margin-bottom: 10px;
   text-transform: uppercase;
 
+  &.adicionar {
+    font-size: 13px;
+  }
+
   &:hover,
   &:focus {
     background-color: $cinza-claro;
