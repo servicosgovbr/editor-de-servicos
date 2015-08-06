@@ -23,11 +23,14 @@ module.exports = function (componente) {
       return m('.relative', [
         ctrl.casos().map(function (caso, i) {
           return [
-            m('label.titulo', ['CASO ' + (i + 1) + ': NOME DO CASO' ]),
+            m('label.titulo', ['Caso ' + (i + 1) + ': nome do caso']),
+
             m('button.remove.absolute', {
               onclick: ctrl.remover.bind(ctrl, i)
             }, [
-              m('span.fa.fa-trash')]),
+              m('span.fa.fa-trash')
+            ]),
+
             m.component(new Caso(componente), {
               caso: m.prop(caso)
             })
