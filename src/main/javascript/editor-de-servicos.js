@@ -14,10 +14,8 @@ module.exports = {
 
     this.salvar = function () {
       return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()), this.cabecalho.metadados)
-        .then(function (xml) {
-          modelos.id.reset();
-          return importarXml(xml);
-        })
+        .then(importarXml)
+        .then(this.servico)
         .then(_.bind(this.cabecalho.limparErro, this.cabecalho), _.bind(function () {
           this.cabecalho.tentarNovamente(_.bind(this.salvar, this));
         }, this));
@@ -29,7 +27,7 @@ module.exports = {
       servico: ctrl.servico
     };
 
-    var salvarAutomaticamente = _.debounce(_.bind(ctrl.salvar, ctrl), 2000, {
+    var salvarAutomaticamente = _.debounce(_.bind(ctrl.salvar, ctrl), 500, {
       leading: false
     });
 
