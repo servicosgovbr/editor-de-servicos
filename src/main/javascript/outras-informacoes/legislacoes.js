@@ -15,7 +15,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('fieldset#legislacoes', [
+    return m('fieldset#legislacoes.relative', [
       m('h3', [
         'Legislações relacionadas ao serviço',
         m.component(require('tooltips').legislacoes)
@@ -23,17 +23,18 @@ module.exports = {
 
       ctrl.servico().legislacoes().map(function (legislacao, i) {
         return [
+          m('button.remove.absolute', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, [
+            m('span.fa.fa-trash')
+          ]),
+
           m('input.inline[type=text]', {
             value: legislacao,
             onchange: function (e) {
               ctrl.servico().legislacoes()[i] = e.target.value;
             }
-          }),
-          m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-trash')
-          ])
+          })
         ];
       }),
       m('button.adicionar.adicionar-legislacao', {

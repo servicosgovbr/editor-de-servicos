@@ -15,7 +15,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('fieldset#palavras-chave', [
+    return m('fieldset#palavras-chave.relative', [
 
       m('h3', [
         'Palavras-chave',
@@ -24,17 +24,18 @@ module.exports = {
 
       ctrl.servico().palavrasChave().map(function (palavras, i) {
         return [
+          m('button.remove.absolute', {
+            onclick: ctrl.remover.bind(ctrl, i)
+          }, [
+            m('span.fa.fa-trash')
+          ]),
+
           m('input.inline[type=text]', {
             value: palavras,
             onchange: function (e) {
               ctrl.servico().palavrasChave()[i] = e.target.value;
             }
-          }),
-          m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-trash')
-          ])
+          })
         ];
       }),
 
