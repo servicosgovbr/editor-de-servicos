@@ -6,13 +6,13 @@ module.exports = function (componente) {
 
     controller: function (args) {
       this.caso = args.caso;
-      this.padrao = args.padrao || false;
+      this.padrao = !!args.padrao;
     },
 
     view: function (ctrl) {
       var titulo;
       if (ctrl.padrao) {
-        titulo = m('label.titulo', 'Documentação necessária para todos os casos');
+        titulo = m('label.titulo', 'Para todos os casos');
       } else {
         titulo = m('input[type=text]', {
           value: ctrl.caso().descricao(),

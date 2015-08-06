@@ -41,7 +41,7 @@ var CanaisDePrestacao = function (config) {
   var data = (config || {});
   this.id = id('canais-de-prestacao');
   this.casoPadrao = m.prop(data.casoPadrao || new Caso(this.id, {
-    descricao: 'Para todos os casos',
+    padrao: true,
     campos: []
   }));
   this.outrosCasos = m.prop(data.outrosCasos || []);
@@ -58,7 +58,7 @@ var Documentos = function (config) {
   var data = (config || {});
   this.id = id('documentos');
   this.casoPadrao = m.prop(data.casoPadrao || new Caso(this.id, {
-    descricao: 'Para todos os casos',
+    padrao: true,
     campos: []
   }));
   this.outrosCasos = m.prop(data.outrosCasos || []);
@@ -76,7 +76,7 @@ var Custos = function (config) {
   var data = (config || {});
   this.id = id('custos');
   this.casoPadrao = m.prop(data.casoPadrao || new Caso(this.id, {
-    descricao: 'Para todos os casos',
+    padrao: true,
     campos: []
   }));
   this.outrosCasos = m.prop(data.outrosCasos || []);

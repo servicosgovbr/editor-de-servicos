@@ -34,7 +34,7 @@ module.exports = {
           }, m('span.fa.fa-trash')),
 
           m.component(require('componentes/editor-markdown'), {
-            rows: 1,
+            rows: 3,
             value: s.tipo(),
             onchange: m.withAttr('value', s.tipo)
           }),
@@ -42,7 +42,7 @@ module.exports = {
           m('h3', 'Requisitos que tornam o solicitante elegível'),
 
           m.component(require('componentes/editor-markdown'), {
-            rows: 2,
+            rows: 5,
             value: s.requisitos(),
             onchange: m.withAttr('value', s.requisitos)
           })

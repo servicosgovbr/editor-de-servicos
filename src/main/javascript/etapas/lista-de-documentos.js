@@ -27,7 +27,7 @@ module.exports = {
           }, m('span.fa.fa-trash')),
 
           m.component(require('componentes/editor-markdown'), {
-            rows: 1,
+            rows: 3,
             value: documento,
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;
