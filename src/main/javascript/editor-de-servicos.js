@@ -12,14 +12,26 @@ module.exports = {
     this.cabecalho = new modelos.Cabecalho();
     this.servico = carregarServico(m.route.param('id'), this.cabecalho);
 
+    this.deveSalvar = m.prop(false);
+
     this.salvar = function () {
+      if(!this.deveSalvar()) {
+        console.log('Não modificado'); // jshint ignore:line
+        return;
+      }
+
       return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()), this.cabecalho.metadados)
         .then(importarXml)
         .then(this.servico)
         .then(_.bind(this.cabecalho.limparErro, this.cabecalho), _.bind(function () {
           this.cabecalho.tentarNovamente(_.bind(this.salvar, this));
+        }, this))
+        .then(_.bind(function() {
+          this.deveSalvar(false);
         }, this));
     };
+
+    window.setInterval(_.bind(this.salvar, this), 10000);
   },
 
   view: function (ctrl) {
@@ -27,9 +39,9 @@ module.exports = {
       servico: ctrl.servico
     };
 
-    var salvarAutomaticamente = _.debounce(_.bind(ctrl.salvar, ctrl), 500, {
-      leading: false
-    });
+    var deveSalvarAutomaticamente = _.bind(function() {
+      this.deveSalvar(true);
+    }, ctrl);
 
     return m('#conteudo', [
       m('span.cabecalho-cor'),
@@ -40,11 +52,12 @@ module.exports = {
         m.component(require('componentes/menu-lateral'), binding),
 
         m('#servico', {
-          onchange: salvarAutomaticamente,
-          onclick: _.wrap(salvarAutomaticamente, function (fn, e) {
+          onchange: deveSalvarAutomaticamente,
+          onclick: _.wrap(deveSalvarAutomaticamente, function (fn, e) {
             var target = jQuery(e.target);
+
             if (target.is('button') || target.parents('button').size() > 0) {
-              return salvarAutomaticamente(e);
+              return fn(e);
             }
           })
         }, m('.scroll', [
