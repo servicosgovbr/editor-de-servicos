@@ -15,18 +15,20 @@ module.exports = {
     this.deveSalvar = m.prop(false);
 
     this.salvar = function () {
-      if(!this.deveSalvar()) {
+      if (!this.deveSalvar()) {
         console.log('Não modificado'); // jshint ignore:line
         return;
       }
 
+      var erro = _.bind(function () {
+        this.cabecalho.tentarNovamente(_.bind(this.salvar, this));
+      }, this);
+
       return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()), this.cabecalho.metadados)
-        .then(importarXml)
-        .then(this.servico)
-        .then(_.bind(this.cabecalho.limparErro, this.cabecalho), _.bind(function () {
-          this.cabecalho.tentarNovamente(_.bind(this.salvar, this));
-        }, this))
-        .then(_.bind(function() {
+        .then(importarXml, erro)
+        .then(this.servico, erro)
+        .then(_.bind(this.cabecalho.limparErro, this.cabecalho), erro)
+        .then(_.bind(function () {
           this.deveSalvar(false);
         }, this));
     };
@@ -39,7 +41,7 @@ module.exports = {
       servico: ctrl.servico
     };
 
-    var deveSalvarAutomaticamente = _.bind(function() {
+    var deveSalvarAutomaticamente = _.bind(function () {
       this.deveSalvar(true);
     }, ctrl);
 
