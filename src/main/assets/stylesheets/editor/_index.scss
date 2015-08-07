@@ -10,25 +10,8 @@
 @import 'editor/servico';
 @import 'editor/ajuda';
 @import 'editor/erro';
+@import 'editor/menu-lateral';
 
 #wrapper {
   @include outer-container;
-
-  nav {
-    @include span-columns(3);
-    position: fixed;
-    padding: 1em 1em 1em 0;
-    margin-top: $tamanho-do-cabecalho;
-    max-width: 230px;
-
-    ul li {
-      line-height: 1.6em;
-      font-size: 14px;
-
-      &:hover {
-        color: $preto;
-        text-shadow: 0 0 2px $branco;
-      }
-    }
-  }
 }

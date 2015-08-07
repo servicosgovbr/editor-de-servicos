@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+#menu-lateral {
+    @include span-columns(3);
+    position: fixed;
+    padding: 1em 1em 1em 0;
+    margin-top: $tamanho-do-cabecalho;
+    max-width: 230px;
+
+  > ul li {
+    line-height: 3em;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: open_sansextrabold;
+
+    &:hover {
+      color: $preto;
+      text-shadow: 0 0 2px $branco;
+    }
+
+    span.check.ok {
+      margin-right: 1em;
+    }
+
+    ul li {
+      font-family: open_sansregular;
+      text-transform: initial;
+      margin-left: 2em;
+    }
+  }
+}

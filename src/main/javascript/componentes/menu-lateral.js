@@ -5,19 +5,11 @@ var scrollTo = require('utils/scroll-to');
 
 var item = function (texto, extra) {
   return m('li', {
-    config: scrollTo('#' + slugify(texto)),
-    style: {
-      cursor: 'pointer',
-      textTransform: 'uppercase',
-      fontFamily: '"open_sansextrabold"',
-      lineHeight: '3em'
-    }
+    config: scrollTo('#' + slugify(texto))
   }, [
-    m('span.check.ok', {
-      style: {
-        marginRight: '1em'
-      }
-    }), texto, extra
+    m('span.check.ok'),
+    texto,
+    extra
   ]);
 };
 
@@ -53,7 +45,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('nav', [
+    return m('nav#menu-lateral', [
       m('ul', [
         item('Dados básicos'),
         item('Solicitantes'),
