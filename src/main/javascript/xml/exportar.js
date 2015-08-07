@@ -98,7 +98,9 @@ module.exports = function (servico) {
 
   var doc = document.implementation.createDocument('http://servicos.gov.br/v3/schema', '');
   m.render(doc, m('servico', {
-    xmlns: 'http://servicos.gov.br/v3/schema'
+    'xmlns': 'http://servicos.gov.br/v3/schema',
+    'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    'xsi:schemaLocation': 'http://servicos.gov.br/v3/schema ../servico.xsd'
   }, [
     m('nome', servico.nome()),
     m('sigla', servico.sigla()),
