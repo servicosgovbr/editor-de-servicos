@@ -16,7 +16,6 @@ module.exports = {
 
   view: function (ctrl) {
     return m('.documentos', [
-
       ctrl.documentos().map(function (documento, i) {
         return m('.documento.relative', {
           key: documento.id
@@ -26,8 +25,8 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m.component(require('componentes/editor-markdown'), {
-            rows: 3,
+          m('input[type=text]', {
+            rows: 1,
             value: documento,
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;
