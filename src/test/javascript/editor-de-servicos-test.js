@@ -26,6 +26,7 @@ describe('editor', function () {
     ctrl.servico().nome('olá, mundo!');
     expect(ctrl.salvar).toBeDefined();
 
+    ctrl.deveSalvar(true);
     ctrl.salvar();
 
     expect(xhr.unexpectedRequests).toBe(0);
