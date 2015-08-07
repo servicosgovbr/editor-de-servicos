@@ -8,7 +8,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#sigla', [
-      m('h3', [
+      m('h3.opcional', [
         'Sigla do serviço',
         m.component(require('tooltips').sigla)
       ]),

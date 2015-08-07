@@ -39,3 +39,10 @@
 fieldset > .absolute {
   right: 25px;
 }
+
+.opcional::after {
+  content: "(opcional)";
+  float:right;
+  margin-right: 7%;
+  font-size: .75em;
+}
