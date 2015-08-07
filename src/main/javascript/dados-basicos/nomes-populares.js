@@ -16,7 +16,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#nomes-populares.relative', [
-      m('h3', [
+      m('h3.opcional', [
         'Nomes populares',
         m.component(require('tooltips').nomesPopulares)
       ]),

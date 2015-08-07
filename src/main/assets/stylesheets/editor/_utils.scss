@@ -44,5 +44,9 @@ fieldset > .absolute {
   content: "(opcional)";
   float:right;
   margin-right: 7%;
-  font-size: .75em;
+  margin-top: 2%;
+  font-size: 13px;
+  font-family: $openSansRegular;
+  font-weight: normal;
+  text-transform: initial;
 }

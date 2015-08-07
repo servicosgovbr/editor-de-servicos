@@ -9,7 +9,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('.descricao', [
-      m('h3', [
+      m('h3.opcional', [
         'Descrição da etapa ' + (ctrl.indice + 1),
         m.component(require('tooltips').descricaoDaEtapa)
       ]),
