@@ -5,6 +5,20 @@
   @extend .fa-check;
 }
 
+.remove {
+  color: $vermelho;
+
+  &.absolute {
+    @extend .fa;
+    @extend .fa-trash-o;
+  }
+
+  > span {
+    @extend .fa;
+    @extend .fa-trash-o;
+  }
+}
+
 .ok {
   color: $verde;
 }
@@ -14,14 +28,14 @@
 }
 
 .relative {
-	position: relative;
+  position: relative;
 }
 
 .absolute {
-	position: absolute;
-	right: 0;
+  position: absolute;
+  right: 0;
 }
 
 fieldset > .absolute {
-	right: 25px;
+  right: 25px;
 }

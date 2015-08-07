@@ -31,7 +31,7 @@ module.exports = {
 
            m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
-          }, m('span.fa.fa-trash')),
+          }),
 
           m.component(require('componentes/editor-markdown'), {
             rows: 3,

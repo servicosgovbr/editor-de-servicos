@@ -27,9 +27,7 @@ module.exports = function (componente) {
 
             m('button.remove.absolute', {
               onclick: ctrl.remover.bind(ctrl, i)
-            }, [
-              m('span.fa.fa-trash')
-            ]),
+            }),
 
             m.component(new Caso(componente), {
               caso: m.prop(caso)

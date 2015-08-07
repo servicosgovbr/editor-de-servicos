@@ -25,9 +25,7 @@ module.exports = {
         return [
           m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span.fa.fa-trash')
-          ]),
+          }),
 
           m('input.inline[type=text]', {
             value: legislacao,
