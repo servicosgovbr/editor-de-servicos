@@ -13,7 +13,7 @@
   "homepage": "https://github.com/servicosgovbr/editor-de-servicos#readme",
   "dependencies": {
     "auto-reload-brunch": "^1.8.0",
-    "brunch": "^1.8.3",
+    "brunch": "^1.8.5",
     "clean-css-brunch": "^1.7.2",
     "css-brunch": "^1.7.0",
     "jasmine-core": "^2.3.4",
