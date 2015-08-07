@@ -19,6 +19,14 @@
       text-shadow: 0 0 2px $branco;
     }
 
+    a {
+      width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
     span.check.ok {
       margin-right: 1em;
     }
