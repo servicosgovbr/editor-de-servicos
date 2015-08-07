@@ -24,6 +24,8 @@ var item = function (texto, extra) {
 var etapas = function (lista) {
   return lista.map(function (e, i) {
     return m('li', {
+        key: e.id
+      }, {
         style: {
           fontFamily: '"open_sansregular"',
           textTransform: 'none',
