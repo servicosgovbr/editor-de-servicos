@@ -20,10 +20,12 @@ module.exports = {
 
       m.component(new Caso(ListaDeDocumentos), {
         padrao: true,
+        titulo: 'Documentação em comum para todos os casos',
         caso: ctrl.documentos().casoPadrao
       }),
 
       m.component(new Casos(ListaDeDocumentos), {
+        titulo: 'Documentação para este caso',
         casos: ctrl.documentos().outrosCasos
       })
     ]);

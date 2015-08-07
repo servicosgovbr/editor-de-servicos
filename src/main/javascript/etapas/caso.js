@@ -7,14 +7,15 @@ module.exports = function (componente) {
     controller: function (args) {
       this.caso = args.caso;
       this.padrao = !!args.padrao;
+      this.titulo = args.titulo;
     },
 
     view: function (ctrl) {
-      var titulo;
+      var inputNome;
       if (ctrl.padrao) {
-        titulo = m('label.titulo', 'Para todos os casos');
+        inputNome = '';
       } else {
-        titulo = m('input[type=text]', {
+        inputNome = m('input[type=text]', {
           value: ctrl.caso().descricao(),
           onchange: m.withAttr('value', ctrl.caso().descricao)
         });
@@ -24,7 +25,8 @@ module.exports = function (componente) {
         key: ctrl.caso().id
       }, [
 
-        titulo,
+        inputNome,
+        m('label.titulo', ctrl.titulo),
         m.component(componente, {
           id: ctrl.caso().id,
           campos: ctrl.caso().campos

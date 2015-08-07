@@ -8,6 +8,7 @@ module.exports = function (componente) {
   return {
 
     controller: function (args) {
+      this.tituloCaso = args.titulo;
       this.casos = args.casos;
 
       this.adicionar = function () {
@@ -30,6 +31,7 @@ module.exports = function (componente) {
             }),
 
             m.component(new Caso(componente), {
+              titulo: ctrl.tituloCaso,
               caso: m.prop(caso)
             })
           ];
