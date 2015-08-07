@@ -115,7 +115,11 @@ var eventosDaLinhaDaVida = function (x) {
 
 var descricao = function (x) {
   var informacoesUteis = x.find('> informacoesUteis informacaoUtil').map(function (i, n) {
-    return '\n* [' + jQuery(n).attr('tipo') + '](' + jQuery(n).find('link').attr('href') + '): ' + string(jQuery(n).find('descricao'));
+    if (string(jQuery(n).find('descricao')).length > 0) {
+      return '\n* [' + jQuery(n).attr('tipo') + '](' + jQuery(n).find('link').attr('href') + '): ' + string(jQuery(n).find('descricao'));
+    } else {
+      return '\n* [' + jQuery(n).attr('tipo') + '](' + jQuery(n).find('link').attr('href') + ')';
+    }
   }).get().join('\n');
 
   return string(x.find('> descricao')) + '\n' + informacoesUteis;
