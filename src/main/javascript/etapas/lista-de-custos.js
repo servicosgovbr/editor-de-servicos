@@ -39,7 +39,7 @@ module.exports = {
           ' ',
           m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
-          })
+          }, [m('span')])
         ]);
       }),
       m('button.adicionar.adicionar-custo', {

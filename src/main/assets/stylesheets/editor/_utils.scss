@@ -6,16 +6,30 @@
 }
 
 .remove {
+  font-size: 18px;
   color: $vermelho;
 
   &.absolute {
+    font-size: 18px;
     @extend .fa;
     @extend .fa-trash-o;
+    color: $vermelho;
+
+    &:hover {
+      @extend .fa-trash;
+     color: $vermelho;
+    }
   }
 
   > span {
+    color: $vermelho;
     @extend .fa;
     @extend .fa-trash-o;
+
+    &:hover {
+      @extend .fa-trash;
+      color: $vermelho;
+    }
   }
 }
 
@@ -33,7 +47,7 @@
 
 .absolute {
   position: absolute;
-  right: 0;
+  right: -10px;
 }
 
 fieldset > .absolute {
