@@ -39,7 +39,7 @@ module.exports = {
             onchange: m.withAttr('value', s.tipo)
           }),
 
-          m('h3.opcional', 'Requisitos que tornam o solicitante elegível'),
+          m('h3.opcional', 'Requisitos necessários para o solicitante'),
 
           m.component(require('componentes/editor-markdown'), {
             rows: 5,
