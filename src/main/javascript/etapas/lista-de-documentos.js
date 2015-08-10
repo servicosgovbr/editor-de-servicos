@@ -26,7 +26,6 @@ module.exports = {
           }),
 
           m('input[type=text]', {
-            rows: 1,
             value: documento,
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;
