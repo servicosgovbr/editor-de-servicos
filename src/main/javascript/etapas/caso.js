@@ -8,6 +8,7 @@ module.exports = function (componente) {
       this.caso = args.caso;
       this.padrao = !!args.padrao;
       this.titulo = args.titulo;
+      this.tituloPequeno = args.tituloPequeno || '';
     },
 
     view: function (ctrl) {
@@ -26,7 +27,7 @@ module.exports = function (componente) {
       }, [
 
         inputNome,
-        m('label.titulo', ctrl.titulo),
+        m('label.titulo' + ctrl.tituloPequeno, ctrl.titulo),
         m.component(componente, {
           id: ctrl.caso().id,
           campos: ctrl.caso().campos

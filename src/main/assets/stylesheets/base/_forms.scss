@@ -82,4 +82,8 @@ label.titulo {
   display: block;
   margin-top: 35px;
   text-transform: uppercase;
+
+  &.pequeno {
+    margin-top: 25px;
+  }
 }

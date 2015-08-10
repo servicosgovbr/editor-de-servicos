@@ -32,7 +32,8 @@ module.exports = function (componente) {
 
             m.component(new Caso(componente), {
               titulo: ctrl.tituloCaso,
-              caso: m.prop(caso)
+              caso: m.prop(caso),
+              tituloPequeno: '.pequeno'
             })
           ];
         }),
