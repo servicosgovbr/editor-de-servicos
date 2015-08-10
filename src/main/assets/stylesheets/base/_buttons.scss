@@ -24,11 +24,16 @@ button {
     font-size: 13px;
   }
 
+  &.adicionar-documento, &.adicionar-custo, &.adicionar-canal-de-prestacao {
+    padding-left: 0;
+  }
+
   &.adicionar-caso {
     background-color: $cinza-medio;
     border-bottom: 2px solid #cccccc;
     border-right: 2px solid #cccccc;
     border-top: 3px solid $cinza-medio; 
+    margin-top: 20px;
 
     &:hover {
       background-color: #cccccc;

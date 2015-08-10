@@ -20,12 +20,12 @@ module.exports = {
 
       m.component(new Caso(ListaDeCanaisDePrestacao), {
         padrao: true,
-        titulo: 'canais de prestação para todos os casos',
+        titulo: '',
         caso: ctrl.canaisDePrestacao().casoPadrao
       }),
 
       m.component(new Casos(ListaDeCanaisDePrestacao), {
-        titulo: 'canais de prestação para este caso',
+        titulo: '',
         casos: ctrl.canaisDePrestacao().outrosCasos
       })
     ]);

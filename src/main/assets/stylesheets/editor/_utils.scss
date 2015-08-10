@@ -8,6 +8,7 @@
 .remove {
   font-size: 18px;
   color: $vermelho;
+  margin-bottom: 0;
 
   &.absolute {
     font-size: 18px;
@@ -31,6 +32,11 @@
       color: $vermelho;
     }
   }
+}
+
+
+.margin-left {
+  margin-left: 40px;
 }
 
 .ok {

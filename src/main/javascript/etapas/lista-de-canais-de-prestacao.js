@@ -34,6 +34,7 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [ m('span') ]),
 
+          m('label.titulo', ['descreva como usar este canal']),
           m.component(require('componentes/editor-markdown'), {
             rows: 3,
             value: canalDePrestacao.descricao(),

@@ -18,10 +18,20 @@ h6 {
   margin: 0 0 $small-spacing;
 }
 
+strong {
+  font-family: $openSansBold;
+}
 
 h3 {
-    font-size: 17px;
+    font-size: 19px;
+}
 
+fieldset fieldset h3 {
+  margin-top: 20px;
+}
+
+fieldset fieldset {
+  padding-top: 0;
 }
 
 p {

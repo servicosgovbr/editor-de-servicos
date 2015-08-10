@@ -80,10 +80,6 @@ label.titulo {
   font-size: 0.8em;
   color: $cinza-escuro;
   display: block;
-  margin-top: 35px;
+  margin-top: 20px;
   text-transform: uppercase;
-
-  &.pequeno {
-    margin-top: 25px;
-  }
 }
