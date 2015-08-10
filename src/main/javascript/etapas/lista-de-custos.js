@@ -28,12 +28,14 @@ module.exports = {
           }),
           ' ',
           m('input.moeda[type=text][value="R$"]', {
-            value: custo.moeda(),
+            value: custo.moeda() || 'R$',
+            placeholder: 'Unidade',
             onchange: m.withAttr('value', custo.moeda)
           }),
           ' ',
           m('input.valor[type=text]', {
             value: custo.valor(),
+            placeholder: '0,00',
             onchange: m.withAttr('value', custo.valor)
           }),
           ' ',

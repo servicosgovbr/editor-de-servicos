@@ -20,7 +20,7 @@ module.exports = {
 
       m.component(new Caso(ListaDeCustos), {
         padrao: true,
-        titulo: 'custos em comum para todos os casos',
+        titulo: 'nome do custo',
         caso: ctrl.custos().casoPadrao
       }),
       m.component(new Casos(ListaDeCustos), {

@@ -87,12 +87,12 @@
 
   .custos .custo {
     input.descricao {
-      @include span-columns(7.63 of 12, block-collapse);
+      @include span-columns(7.23 of 12, block-collapse);
       margin-right: 5px;
     }
 
     input.moeda {
-      @include span-columns(1 of 12, block-collapse);
+      @include span-columns(1.4 of 12, block-collapse);
       margin-right: 5px;
     }
 
