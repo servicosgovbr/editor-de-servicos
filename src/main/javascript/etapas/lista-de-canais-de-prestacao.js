@@ -32,7 +32,7 @@ module.exports = {
 
           m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
-          }, [ m('span') ]),
+          }, [m('span')]),
 
           m('label.titulo', ['descreva como usar este canal']),
           m.component(require('componentes/editor-markdown'), {

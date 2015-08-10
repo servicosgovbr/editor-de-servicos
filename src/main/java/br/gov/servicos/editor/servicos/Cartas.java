@@ -3,6 +3,7 @@ package br.gov.servicos.editor.servicos;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
@@ -96,6 +97,47 @@ public class Cartas {
                 .collect(toList()));
     }
 
+    @SneakyThrows
+    public void excluir(String id, User usuario) {
+        comRepositorioAberto(git -> {
+            excluirBranch(git, id);
+
+            commit(git,
+                    "Serviço deletado",
+                    usuario,
+                    excluirCarta(git, "v3", id),
+                    excluirCarta(git, "v2", id),
+                    excluirCarta(git, "v1", id));
+
+            push(git, id);
+            return null;
+        });
+    }
+
+
+    @SneakyThrows
+    private Path excluirCarta(Git git, String versao, String id) {
+        Path caminho = caminhoAbsoluto(versao, id);
+        if (!caminho.toFile().exists())
+            return null;
+
+        git.rm().addFilepattern(caminhoRelativo(caminho)).call();
+        log.debug("git rm {}", caminho);
+
+        return caminho;
+    }
+
+    @SneakyThrows
+    private void excluirBranch(Git git, String id) {
+        if (branchExiste(git, id)) {
+            List<String> resultado = git.branchDelete()
+                    .setBranchNames(id)
+                    .setForce(true)
+                    .call();
+            log.debug("git branch excluido: {}", resultado);
+        }
+    }
+
     private Set<Map.Entry<String, Path>> todosServicos() {
         FilenameFilter filter = (x, name) -> name.endsWith(".xml");
         Function<Path, String> getId = f -> f.toFile().getName().replaceAll(".xml$", "");
@@ -145,7 +187,7 @@ public class Cartas {
 
             try {
                 return executaNoBranchDoServico(id, () -> {
-                    Path caminho = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
+                    Path caminho = caminhoAbsoluto("v3", id);
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {
@@ -167,6 +209,10 @@ public class Cartas {
                 push(git, id);
             }
         });
+    }
+
+    private Path caminhoAbsoluto(String versao, String id) {
+        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml");
     }
 
     @SneakyThrows
@@ -194,26 +240,31 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void commit(Git git, String mensagem, User usuario, Path caminho) {
+    private void commit(Git git, String mensagem, User usuario, Path... caminhos) {
         PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
         log.debug("git commit: {} ({}): '{}', {}, {}",
                 git.getRepository().getBranch(),
                 git.getRepository().getRepositoryState(),
                 mensagem,
                 ident,
-                caminho
+                caminhos
         );
 
         try {
-            git.commit()
+            CommitCommand cmd = git.commit()
                     .setMessage(mensagem)
                     .setCommitter(ident)
-                    .setAuthor(ident)
-                    .setOnly(caminhoRelativo(caminho))
-                    .call();
+                    .setAuthor(ident);
+
+            Arrays.asList(caminhos)
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .forEach(p -> cmd.setOnly(caminhoRelativo(p)));
+
+            cmd.call();
         } catch (JGitInternalException e) {
             if (e.getMessage().equals(JGitText.get().emptyCommit)) {
-                log.info("{} não sofreu alterações", caminho);
+                log.info("{} não sofreu alterações", caminhos);
             } else {
                 throw e;
             }

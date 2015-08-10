@@ -5,11 +5,7 @@ var slugify = require('slugify');
 module.exports = {
   controller: function (args) {
     this.filtro = m.prop('');
-
-    this.servicos = m.request({
-      method: 'GET',
-      url: '/editar/api/servicos'
-    });
+    this.servicos = m.prop([]);
 
     this.servicosFiltrados = function () {
       if (this.filtro() === '') {
@@ -17,11 +13,30 @@ module.exports = {
       }
 
       var f = new RegExp(this.filtro());
-
       return this.servicos().filter(function (i) {
         return f.test(i.id);
       });
     };
+
+    this.carregarServicos = _.debounce(function () {
+      m.request({
+          method: 'GET',
+          url: '/editar/api/servicos',
+          background: true
+        })
+        .then(this.servicos)
+        .then(m.redraw);
+    }.bind(this), 500);
+
+    this.excluirServico = function (id) {
+      m.request({
+        method: 'DELETE',
+        url: '/excluir/api/servico/' + slugify(id),
+        background: true
+      }).then(this.carregarServicos);
+    };
+
+    this.carregarServicos();
   },
 
   view: function (ctrl) {
@@ -44,7 +59,7 @@ module.exports = {
               m('th.center', 'Última atualização'),
               m('th.right', '')
             ])
-          ].concat(ctrl.servicosFiltrados().map(function (s) {
+              ].concat(ctrl.servicosFiltrados().map(function (s) {
             return m('tr', [
 
               m('td', m('a', {
@@ -57,12 +72,24 @@ module.exports = {
 
               m('td.center', moment(s.horario).fromNow()),
 
-              m('td.right', m('a', {
-                href: '/editar/servico/' + slugify(s.id)
-              }, [
-                m('span.fa.fa-pencil'),
-                m.trust('&nbsp; Editar')
-              ]))
+              m('td.right', [
+                m('a', {
+                  href: '/editar/servico/' + slugify(s.id)
+                }, m('button', [
+                  m('span.fa.fa-pencil')
+                ])),
+                  m('button', {
+                  onclick: function () {
+                    if (s.deleting) {
+                      return;
+                    }
+                    ctrl.excluirServico(s.id);
+                    s.deleting = true;
+                  }
+                }, [
+                  (s.deleting ? m('span.fa.fa-spinner.fa-pulse') : m('span.fa.fa-trash'))
+                ])
+              ])
             ]);
           })))
         ])
