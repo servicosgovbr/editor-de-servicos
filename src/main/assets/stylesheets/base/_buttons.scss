@@ -24,6 +24,18 @@ button {
     font-size: 13px;
   }
 
+  &.adicionar-caso {
+    background-color: $cinza-medio;
+    border-bottom: 2px solid #cccccc;
+    border-right: 2px solid #cccccc;
+    border-top: 3px solid $cinza-medio; 
+
+    &:hover {
+      background-color: #cccccc;
+      border-top-color: #cccccc;
+    }
+  }
+
   &:hover,
   &:focus {
     background-color: $cinza-claro;
