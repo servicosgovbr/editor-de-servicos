@@ -1,5 +1,5 @@
-# Laboratório
-Para avaliarmos o Editor de Serviços e suas funções, realizaremos um laboratório de edição de serviços. Será um dia para conhecer o Portal de Serviços e descrever serviços públicos importantes para os cidadãos utilizando o Editor de Serviços, uma ferramenta criada sob-medida para o servidor público federal.
+# Oficina
+Para apresentar o Editor de Serviços e suas funções, realizaremos uma oficina de edição de serviços. Será um dia para conhecer o Portal de Serviços e descrever serviços públicos importantes para os cidadãos utilizando o Editor de Serviços, uma ferramenta criada sob-medida para o servidor público federal.
 
 ###Objetivos
 + Mostrar, na prática, o funcionamento do Portal e do Editor. Vamos produzir no próprio encontro descrições aprimoradas de serviços selecionados. 
