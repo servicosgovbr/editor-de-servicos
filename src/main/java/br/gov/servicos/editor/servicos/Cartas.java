@@ -100,17 +100,22 @@ public class Cartas {
     @SneakyThrows
     public void excluir(String id, User usuario) {
         comRepositorioAberto(git -> {
-            excluirBranch(git, id);
+            pull(git);
+            try {
+                executaNoBranchDoServico(id, () -> {
+                    commit(git,
+                            "Serviço deletado",
+                            usuario,
+                            excluirCarta(git, "v3", id),
+                            excluirCarta(git, "v2", id),
+                            excluirCarta(git, "v1", id));
 
-            commit(git,
-                    "Serviço deletado",
-                    usuario,
-                    excluirCarta(git, "v3", id),
-                    excluirCarta(git, "v2", id),
-                    excluirCarta(git, "v1", id));
-
-            push(git, id);
-            return null;
+                    return null;
+                });
+                return null;
+            } finally {
+                push(git, id);
+            }
         });
     }
 
@@ -125,17 +130,6 @@ public class Cartas {
         log.debug("git rm {}", caminho);
 
         return caminho;
-    }
-
-    @SneakyThrows
-    private void excluirBranch(Git git, String id) {
-        if (branchExiste(git, id)) {
-            List<String> resultado = git.branchDelete()
-                    .setBranchNames(id)
-                    .setForce(true)
-                    .call();
-            log.debug("git branch excluido: {}", resultado);
-        }
     }
 
     private Set<Map.Entry<String, Path>> todosServicos() {
