@@ -14,7 +14,7 @@ module.exports = {
       ]),
 
       m.component(require('componentes/editor-markdown'), {
-        rows: 10,
+        rows: 6,
 
         oninput: function (e) {
           ctrl.servico().descricao(e.target.value);
