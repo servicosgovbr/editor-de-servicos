@@ -5,7 +5,7 @@ var importarXml = require('xml/importar-v3');
 var exportarXml = require('xml/exportar');
 var salvarXml = require('xml/salvar');
 var slugify = require('slugify');
-var carregarServico = require('carregar-servico');
+var carregarServico = require('xml/carregar-servico');
 
 module.exports = {
   controller: function () {
