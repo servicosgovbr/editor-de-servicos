@@ -1,4 +1,4 @@
-- [Laboratório](/oficina/index.md)
+- [Oficina](/oficina/index.md)
   - [Programação](/oficina/programacao.md)
   - [Atividade A](/oficina/atividade-a.md)
   - [Atividade B](/oficina/atividade-b.md)
