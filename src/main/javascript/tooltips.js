@@ -3,9 +3,9 @@
 var t = function (txt) {
   return {
     view: function () {
-      return m('span.tooltip', {
-        title: txt,
-      });
+      return m('span.tooltip.dica-campo', [
+        m('span', [txt])
+      ]);
     }
   };
 };
