@@ -29,7 +29,6 @@ module.exports = {
     'Pecuária',
     'Pessoa',
     'Previdência Social',
-    'Previdência social',
     'Profissionais da educação',
     'Proteção social',
     'Qualidade ambiental',
