@@ -1,9 +1,9 @@
 'use strict';
 
 var slugify = require('slugify');
-var modelos = require('modelos');
 var importarV1 = require('xml/importar-v1');
 var importarV3 = require('xml/importar-v3');
+var erro = require('utils/erro-ajax');
 
 var config = function (versao, id, metadados) {
   return {
@@ -31,24 +31,23 @@ var config = function (versao, id, metadados) {
   };
 };
 
-module.exports = function (id, cabecalho) {
-  if (id) {
-    var carregar = function () {
-      return m.request(config('v3', id, cabecalho.metadados)).then(function (xml) {
-        cabecalho.limparErro();
-        return importarV3(xml);
-      }, function () {
-        return m.request(config('v1', id, cabecalho.metadados)).then(function (xml) {
-          cabecalho.limparErro();
-          return importarV1(xml);
-        }, function () {
-          cabecalho.tentarNovamente(carregar);
-          return new modelos.Servico();
-        });
-      });
-    };
-    return carregar();
-  }
-
-  return m.prop(new modelos.Servico());
+var carregarV3 = function (cabecalho, xml) {
+  cabecalho.limparErro();
+  return importarV3(xml);
 };
+
+var carregarV1 = function (cabecalho, xml) {
+  cabecalho.limparErro();
+  return importarV1(xml);
+};
+
+var carregar = function (id, cabecalho) {
+  var v3 = _.bind(carregarV3, this, cabecalho);
+  var v1 = _.bind(carregarV1, this, cabecalho);
+
+  return m.request(config('v3', id, cabecalho.metadados)).then(v3, function () {
+    return m.request(config('v1', id, cabecalho.metadados)).then(v1, erro);
+  });
+};
+
+module.exports = carregar;

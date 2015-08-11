@@ -1,6 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
+var erro = require('utils/erro-ajax');
 
 module.exports = {
   controller: function (args) {
@@ -24,7 +25,7 @@ module.exports = {
           url: '/editar/api/servicos',
           background: true
         })
-        .then(this.servicos)
+        .then(this.servicos, erro)
         .then(m.redraw);
     }.bind(this), 500);
 
@@ -33,7 +34,7 @@ module.exports = {
         method: 'DELETE',
         url: '/excluir/api/servico/' + slugify(id),
         background: true
-      }).then(this.carregarServicos);
+      }).then(this.carregarServicos, erro);
     };
 
     this.carregarServicos();

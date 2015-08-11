@@ -23,6 +23,7 @@ var Cabecalho = function () {
   this.limparErro = function () {
     this.erro(null);
   };
+
   this.tentarNovamente = function (fn) {
     this.erro({
       tentarNovamente: fn

@@ -1,6 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
+var erro = require('utils/erro-ajax');
 
 module.exports = {
   areasDeInteresse: [
@@ -110,6 +111,6 @@ module.exports = {
     }), function (o) {
       return o.text;
     });
-  }))
+  }, erro))
 
 };
