@@ -30,7 +30,7 @@ module.exports = {
           },
           checked: ctrl.servico().gratuidade() !== undefined && !ctrl.servico().gratuidade()
         }),
-        'Este serviço não é gratuito para o solicitante'
+        'Este serviço tem custos para o solicitante'
       )
 
 

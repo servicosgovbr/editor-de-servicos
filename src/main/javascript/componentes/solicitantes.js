@@ -33,8 +33,7 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m.component(require('componentes/editor-markdown'), {
-            rows: 3,
+            m('input[type=text]', {
             value: s.tipo(),
             onchange: m.withAttr('value', s.tipo)
           }),
