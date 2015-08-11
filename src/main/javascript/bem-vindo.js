@@ -31,7 +31,6 @@ module.exports = {
       m.request({
         method: 'DELETE',
         url: '/excluir/api/servico/' + slugify(id),
-        background: true
       }).then(this.listarServicos, erro);
     };
 
@@ -78,15 +77,9 @@ module.exports = {
                   m('span.fa.fa-pencil')
                 ])),
                   m('button', {
-                  onclick: function () {
-                    if (s.deleting) {
-                      return;
-                    }
-                    ctrl.excluirServico(s.id);
-                    s.deleting = true;
-                  }
+                  onclick: _.bind(ctrl.excluirServico, ctrl, s.id)
                 }, [
-                  (s.deleting ? m('span.fa.fa-spinner.fa-pulse') : m('span.fa.fa-trash'))
+                  m('span.fa.fa-trash-o')
                 ])
               ])
             ]);
