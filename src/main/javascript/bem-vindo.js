@@ -19,14 +19,12 @@ module.exports = {
       });
     };
 
-    this.carregarServicos = _.debounce(function () {
+    this.listarServicos = _.debounce(function () {
       m.request({
           method: 'GET',
-          url: '/editar/api/servicos',
-          background: true
+          url: '/editar/api/servicos'
         })
-        .then(this.servicos, erro)
-        .then(m.redraw);
+        .then(this.servicos, erro);
     }.bind(this), 500);
 
     this.excluirServico = function (id) {
@@ -34,10 +32,10 @@ module.exports = {
         method: 'DELETE',
         url: '/excluir/api/servico/' + slugify(id),
         background: true
-      }).then(this.carregarServicos, erro);
+      }).then(this.listarServicos, erro);
     };
 
-    this.carregarServicos();
+    this.listarServicos();
   },
 
   view: function (ctrl) {
