@@ -8,7 +8,7 @@
     max-width: 230px;
 
   > ul li {
-    line-height: 3em;
+    line-height: 2.5em;
     font-size: 14px;
     cursor: pointer;
     text-transform: uppercase;
@@ -20,11 +20,27 @@
     }
 
     a {
-      width: 150px;
+      width: 135px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      display: block;
+      display: inline-block;
+      max-width: 135px;
+      color: #606060;
+
+      &:hover {
+        color: #333333;
+      }
+    }
+
+    .remove {
+      vertical-align: top;
+      padding: 5px 0px 0px 15px;
+
+      &:hover {
+        background: none;
+      }
+
     }
 
     span.check.ok {
@@ -35,6 +51,11 @@
       font-family: open_sansregular;
       text-transform: initial;
       margin-left: 2em;
+      line-height: 2em;
+
+      &:first-child {
+        margin-top: 10px;
+      }
     }
   }
 }

@@ -10,10 +10,6 @@ module.exports = {
     this.adicionar = function () {
       this.servico().etapas().push(new modelos.Etapa());
     };
-
-    this.remover = function (i) {
-      this.servico().etapas().splice(i, 1);
-    };
   },
 
   view: function (ctrl) {
@@ -28,14 +24,7 @@ module.exports = {
             etapa: etapa,
             gratuidade: ctrl.servico().gratuidade,
             indice: i
-          }),
-
-          m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }, [
-            m('span'),
-            ' Remover etapa ' + (i + 1)
-          ])
+          })
         ]);
       }),
 

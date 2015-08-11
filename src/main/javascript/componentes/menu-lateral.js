@@ -13,7 +13,7 @@ var item = function (texto, extra) {
   ]);
 };
 
-var etapas = function (lista) {
+var etapas = function (lista, ctrl) {
   return lista.map(function (e, i) {
     return m('li', {
         key: e.id
@@ -33,7 +33,10 @@ var etapas = function (lista) {
           }
         }),
         e.titulo() ? i + 1 + '. ' + e.titulo() : m('i', i + 1 + '. ' + '(sem título)')
-      ])
+      ]),
+      m('button.remove', {
+        onclick: ctrl.remover.bind(ctrl, i)
+      }, [m('span')])
     );
   });
 };
@@ -42,6 +45,10 @@ module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
+
+    this.remover = function (i) {
+      this.servico().etapas().splice(i, 1);
+    };
   },
 
   view: function (ctrl) {
@@ -49,7 +56,7 @@ module.exports = {
       m('ul', [
         item('Dados básicos'),
         item('Solicitantes'),
-        item('Etapas do Serviço', m('ul', etapas(ctrl.servico().etapas()))),
+        item('Etapas do Serviço', m('ul', etapas(ctrl.servico().etapas(), ctrl))),
         item('Outras Informações'),
       ]),
     ]);
