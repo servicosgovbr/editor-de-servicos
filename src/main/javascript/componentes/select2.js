@@ -51,7 +51,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('', m('select', {
+    return m('.clear', m('select', {
       config: function (element, isInitialized) {
         var el = jQuery(element);
 

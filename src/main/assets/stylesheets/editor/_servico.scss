@@ -64,7 +64,7 @@
     .entre-minimo, .entre-maximo, .ate-maximo {
       @include span-columns(2 of 12);
       display: inline-block;
-      float: left;
+      float: none;
     }
 
     .entre-minimo, .ate-maximo {
@@ -76,7 +76,6 @@
     }
 
     .tipo-entre > span {
-      float: left;
       display: inline-block;
       width: 1.5em;
       margin-left: -0.5em;
