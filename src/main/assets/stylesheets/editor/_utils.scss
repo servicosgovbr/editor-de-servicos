@@ -74,3 +74,7 @@ fieldset > .absolute {
   font-weight: normal;
   text-transform: initial;
 }
+
+.titulo.opcional:after {
+  margin-top: 0;
+}
