@@ -3,7 +3,6 @@ package br.gov.servicos.editor.servicos;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -40,15 +39,6 @@ class ServicoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/servico/v1/{id}", method = GET, produces = "application/xml")
-    String editarV1(
-            @PathVariable("id") String unsafeId,
-            HttpServletResponse response
-    ) throws IOException {
-        return carregarServico(unsafeId, response, cartas::ultimaRevisaoV1, cartas::conteudoServicoV1);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/editar/api/servico/v3/{id}", method = GET, produces = "application/xml")
     String editarV3(
             @PathVariable("id") String id,
@@ -66,8 +56,6 @@ class ServicoController {
         cartas.excluir(id, usuario);
 
     }
-
-
 
     private String carregarServico(
             @PathVariable("id") String unsafeId,

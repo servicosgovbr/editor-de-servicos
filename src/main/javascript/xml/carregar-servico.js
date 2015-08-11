@@ -1,8 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
-var importarV1 = require('xml/importar-v1');
-var importarV3 = require('xml/importar-v3');
+var importar = require('xml/importar-v3');
 var erro = require('utils/erro-ajax');
 
 var config = function (versao, id, metadados) {
@@ -33,21 +32,12 @@ var config = function (versao, id, metadados) {
 
 var carregarV3 = function (cabecalho, xml) {
   cabecalho.limparErro();
-  return importarV3(xml);
-};
-
-var carregarV1 = function (cabecalho, xml) {
-  cabecalho.limparErro();
-  return importarV1(xml);
+  return importar(xml);
 };
 
 var carregar = function (id, cabecalho) {
-  var v3 = _.bind(carregarV3, this, cabecalho);
-  var v1 = _.bind(carregarV1, this, cabecalho);
-
-  return m.request(config('v3', id, cabecalho.metadados)).then(v3, function () {
-    return m.request(config('v1', id, cabecalho.metadados)).then(v1, erro);
-  });
+  return m.request(config('v3', id, cabecalho.metadados))
+    .then(_.bind(carregarV3, this, cabecalho), erro);
 };
 
 module.exports = carregar;

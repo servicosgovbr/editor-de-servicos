@@ -51,17 +51,8 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public Optional<String> conteudoServicoV1(String id) {
-        return conteudoServico(id, leitorDeConteudo(id, "v1"));
-    }
-
-    @SneakyThrows
     public Optional<String> conteudoServicoV3(String id) {
-        return conteudoServico(id, leitorDeConteudo(id, "v3"));
-    }
-
-    public Optional<String> conteudoServico(String id, Supplier<Optional<String>> leitor) {
-        return executaNoBranchDoServico(id, leitor);
+        return executaNoBranchDoServico(id, leitorDeConteudo(id, "v3"));
     }
 
     public Supplier<Optional<String>> leitorDeConteudo(String id, String versao) {
@@ -75,11 +66,6 @@ public class Cartas {
             log.info("Arquivo {} não encontrado", arquivo);
             return empty();
         };
-    }
-
-    public Optional<Metadados> ultimaRevisaoV1(String id) {
-        return comRepositorioAberto(git ->
-                metadados(git, id, xmlServico(id, "v1")));
     }
 
     public Optional<Metadados> ultimaRevisaoV3(String id) {
@@ -105,8 +91,7 @@ public class Cartas {
                             "Serviço deletado",
                             usuario,
                             excluirCarta(git, "v3", id),
-                            excluirCarta(git, "v2", id),
-                            excluirCarta(git, "v1", id));
+                            excluirCarta(git, "v2", id));
 
                     return null;
                 });
