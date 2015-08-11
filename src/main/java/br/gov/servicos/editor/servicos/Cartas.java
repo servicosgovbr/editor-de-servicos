@@ -40,7 +40,6 @@ public class Cartas {
 
 
     File repositorioCartasLocal;
-    Path v1;
     Path v3;
     boolean fazerPush;
 
@@ -48,7 +47,6 @@ public class Cartas {
     public Cartas(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
         this.repositorioCartasLocal = repositorioCartasLocal;
         this.fazerPush = fazerPush;
-        this.v1 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v1", "servicos");
         this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos");
     }
 
@@ -140,8 +138,7 @@ public class Cartas {
                 .map(File::toPath)
                 .collect(toMap(getId, x -> x));
 
-        Map<String, Path> mapaServicos = indexaServicos.apply(v1);
-        mapaServicos.putAll(indexaServicos.apply(v3));
+        Map<String, Path> mapaServicos = indexaServicos.apply(v3);
 
         return mapaServicos.entrySet();
     }
