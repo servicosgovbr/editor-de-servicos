@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
+import br.gov.servicos.editor.cartas.Cartas;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package br.gov.servicos.editor.servicos;
+package br.gov.servicos.editor.cartas;
 
-import br.gov.servicos.editor.cartas.Carta;
+import br.gov.servicos.editor.servicos.Metadados;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;

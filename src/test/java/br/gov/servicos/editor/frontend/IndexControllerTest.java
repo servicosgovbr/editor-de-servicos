@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.servicos.Cartas;
+import br.gov.servicos.editor.cartas.Cartas;
 import lombok.experimental.FieldDefaults;
 import org.junit.Before;
 import org.junit.Test;
