@@ -38,7 +38,6 @@ import static org.eclipse.jgit.lib.Constants.*;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class Cartas {
 
-
     File repositorioCartasLocal;
     Path v3;
     boolean fazerPush;
@@ -51,7 +50,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public Optional<String> conteudoServicoV3(String id) {
+    public Optional<String> conteudoServico(String id) {
         return executaNoBranchDoServico(id, leitorDeConteudo(id, "v3"));
     }
 
@@ -68,9 +67,8 @@ public class Cartas {
         };
     }
 
-    public Optional<Metadados> ultimaRevisaoV3(String id) {
-        return comRepositorioAberto(git ->
-                metadados(git, id, xmlServico(id, "v3")));
+    public Optional<Metadados> ultimaRevisao(String id) {
+        return comRepositorioAberto(git -> metadados(git, id, xmlServico(id, "v3")));
     }
 
     public Iterable<Metadados> listar() {
@@ -156,7 +154,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public void salvarServicoV3(String id, String doc, User usuario) {
+    public void salvarServico(String id, String doc, User usuario) {
         comRepositorioAberto(git -> {
 
             pull(git);
@@ -174,7 +172,7 @@ public class Cartas {
 
                     String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
 
-                    escreveV3(doc, caminho);
+                    escrever(doc, caminho);
                     add(git, caminho);
                     commit(git, mensagem, usuario, caminho);
 
@@ -318,7 +316,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void escreveV3(String document, Path arquivo) {
+    private void escrever(String document, Path arquivo) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
             writer.write(document);
         }

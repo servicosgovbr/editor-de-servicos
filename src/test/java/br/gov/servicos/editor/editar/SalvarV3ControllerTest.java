@@ -30,6 +30,6 @@ public class SalvarV3ControllerTest {
         User user = new User("jean", "blah", emptyList());
 
         controller.salvar(nome, source, user);
-        verify(cartas).salvarServicoV3("servico-teste", "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n\n", user);
+        verify(cartas).salvarServico("servico-teste", "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n\n", user);
     }
 }

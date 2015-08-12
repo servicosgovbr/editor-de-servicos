@@ -44,7 +44,7 @@ class ServicoController {
             @PathVariable("id") String id,
             HttpServletResponse response
     ) throws IOException {
-        return carregarServico(id, response, cartas::ultimaRevisaoV3, cartas::conteudoServicoV3);
+        return carregarServico(id, response, cartas::ultimaRevisao, cartas::conteudoServico);
     }
 
     @ResponseStatus(value = HttpStatus.OK)

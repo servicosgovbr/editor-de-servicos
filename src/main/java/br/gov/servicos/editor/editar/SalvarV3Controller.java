@@ -45,7 +45,7 @@ public class SalvarV3Controller {
         String id = slugify.slugify(unsafeId);
         String doc = formata(servico);
 
-        cartas.salvarServicoV3(id, doc, usuario);
+        cartas.salvarServico(id, doc, usuario);
 
         return new RedirectView("/editar/api/servico/v3/" + id);
     }
