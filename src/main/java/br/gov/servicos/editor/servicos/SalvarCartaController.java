@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.cartas.Carta;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,7 @@ public class SalvarCartaController {
                   @RequestBody DOMSource servico,
                   @AuthenticationPrincipal User usuario) throws IOException, TransformerException {
 
-        String id = slugify.slugify(unsafeId);
+        Carta id = Carta.id(unsafeId);
         String doc = formata(servico);
 
         cartas.comRepositorioAberto(git -> {
@@ -81,7 +82,7 @@ public class SalvarCartaController {
             }
         });
 
-        return new RedirectView("/editar/api/servico/v3/" + id);
+        return new RedirectView("/editar/api/servico/v3/" + id.getId());
     }
 
     private String formata(@RequestBody DOMSource servico) throws TransformerException {

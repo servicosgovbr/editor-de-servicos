@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.cartas.Carta;
 import com.github.slugify.Slugify;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -40,9 +40,11 @@ class ExcluirCartaController {
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/excluir/api/servico/{id}", method = DELETE)
     void excluirServico(
-            @PathVariable("id") String id,
+            @PathVariable("id") String unsafeId,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
+        Carta id = Carta.id(unsafeId);
+
         cartas.comRepositorioAberto(git -> {
             cartas.pull(git);
             try {
@@ -63,10 +65,12 @@ class ExcluirCartaController {
     }
 
     @SneakyThrows
-    public Path excluirCarta(Git git, String id) {
-        Path caminho = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
-        if (!caminho.toFile().exists())
+    public Path excluirCarta(Git git, Carta id) {
+        Path caminho = id.caminhoAbsoluto(repositorioCartasLocal);
+
+        if (!caminho.toFile().exists()) {
             return null;
+        }
 
         git.rm().addFilepattern(repositorioCartasLocal.toPath().relativize(caminho).toString()).call();
         log.debug("git rm {}", caminho);

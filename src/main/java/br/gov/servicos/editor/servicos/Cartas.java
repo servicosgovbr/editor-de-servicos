@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.cartas.Carta;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,6 @@ import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.transport.RefSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,19 +39,17 @@ import static org.eclipse.jgit.lib.Constants.*;
 public class Cartas {
 
     File repositorioCartasLocal;
-    Path v3;
     boolean fazerPush;
 
     @Autowired
     public Cartas(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
         this.repositorioCartasLocal = repositorioCartasLocal;
         this.fazerPush = fazerPush;
-        this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos");
     }
 
-    public Supplier<Optional<String>> leitor(String id) {
+    public Supplier<Optional<String>> leitor(Carta id) {
         return () -> {
-            File arquivo = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml").toFile();
+            File arquivo = id.caminhoAbsoluto(repositorioCartasLocal).toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -63,10 +60,14 @@ public class Cartas {
         };
     }
 
+    @SneakyThrows
+    public Optional<Metadados> metadados(Git git, Carta id) {
+        return metadados(git, id, id.caminhoAbsoluto(repositorioCartasLocal));
+    }
 
     @SneakyThrows
-    public Optional<Metadados> metadados(Git git, String id, Path f) {
-        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(R_HEADS + id))
+    public Optional<Metadados> metadados(Git git, Carta id, Path f) {
+        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(id.getRef()))
                 .map(o -> {
                     try {
                         return git.log().add(o.getObjectId()).setMaxCount(1).call().iterator().next();
@@ -78,7 +79,7 @@ public class Cartas {
 
         return Optional.ofNullable(rev)
                 .map(c -> new Metadados()
-                        .withId(id)
+                        .withId(id.getId())
                         .withRevisao(c.getId().getName())
                         .withAutor(c.getAuthorIdent().getName())
                         .withHorario(c.getAuthorIdent().getWhen()));
@@ -92,12 +93,12 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public void push(Git git, String id) {
+    public void push(Git git, Carta id) {
         log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-        if (fazerPush && !id.equals("novo")) {
+        if (fazerPush) {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(new RefSpec(id + ":" + id))
+                    .setRefSpecs(id.getRefSpec())
                     .setProgressMonitor(new TextProgressMonitor())
                     .call();
         } else {
@@ -167,7 +168,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public <T> T executaNoBranchDoServico(String id, Supplier<T> supplier) {
+    public <T> T executaNoBranchDoServico(Carta id, Supplier<T> supplier) {
         return comRepositorioAberto(git -> {
             checkout(git, id);
             try {
@@ -185,11 +186,11 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void checkout(Git git, String id) {
+    private void checkout(Git git, Carta id) {
         log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), id);
 
         git.checkout()
-                .setName(id)
+                .setName(id.getId())
                 .setStartPoint(R_HEADS + MASTER)
                 .setUpstreamMode(NOTRACK)
                 .setCreateBranch(!branchExiste(git, id))
@@ -197,12 +198,12 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private boolean branchExiste(Git git, String id) {
+    private boolean branchExiste(Git git, Carta id) {
         boolean resultado = git
                 .branchList()
                 .call()
                 .stream()
-                .anyMatch(b -> b.getName().equals(R_HEADS + id));
+                .anyMatch(b -> b.getName().equals(id.getRef()));
 
         log.debug("git branch {} já existe? {}", id, resultado);
         return resultado;

@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.cartas.Carta;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -21,15 +21,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class EditarCartaController {
 
-    private File repositorioCartasLocal;
+    File repositorioCartasLocal;
     Cartas cartas;
-    Slugify slugify;
 
     @Autowired
     EditarCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
         this.repositorioCartasLocal = repositorioCartasLocal;
         this.cartas = cartas;
-        this.slugify = slugify;
     }
 
     @ResponseBody
@@ -38,11 +36,9 @@ class EditarCartaController {
             @PathVariable("id") String unsafeId,
             HttpServletResponse response
     ) throws IOException {
-        String id = this.slugify.slugify(unsafeId);
+        Carta id = Carta.id(unsafeId);
 
-        Optional<Metadados> m = cartas.comRepositorioAberto(git ->
-                cartas.metadados(git, id,
-                        Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml")));
+        Optional<Metadados> m = cartas.comRepositorioAberto(git -> cartas.metadados(git, id));
 
         m.ifPresent(metadados -> {
             response.setHeader("X-Git-Revision", metadados.getRevisao());

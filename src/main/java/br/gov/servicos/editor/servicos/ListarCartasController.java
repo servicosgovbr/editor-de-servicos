@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.cartas.Carta;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,13 @@ class ListarCartasController {
     Iterable<Metadados> listar() throws IOException {
         return cartas.comRepositorioAberto(git -> {
             FilenameFilter filter = (x, name) -> name.endsWith(".xml");
-            Function<Path, String> getId = f -> f.toFile().getName().replaceAll(".xml$", "");
-            Function<Path, Map<String, Path>> indexaServicos = f -> Arrays.asList(f.toFile().listFiles(filter))
+            Function<Path, Carta> getId = f -> Carta.id(f.toFile().getName().replaceAll(".xml$", ""));
+            Function<Path, Map<Carta, Path>> indexaServicos = f -> Arrays.asList(f.toFile().listFiles(filter))
                     .stream()
                     .map(File::toPath)
                     .collect(toMap(getId, x -> x));
 
-            Map<String, Path> mapaServicos = indexaServicos.apply(v3);
+            Map<Carta, Path> mapaServicos = indexaServicos.apply(v3);
 
             return mapaServicos.entrySet().stream()
                     .map(p -> cartas.metadados(git, p.getKey(), p.getValue()))
