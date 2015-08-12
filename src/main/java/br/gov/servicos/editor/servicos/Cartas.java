@@ -51,12 +51,8 @@ public class Cartas {
 
     @SneakyThrows
     public Optional<String> conteudoServico(String id) {
-        return executaNoBranchDoServico(id, leitorDeConteudo(id, "v3"));
-    }
-
-    public Supplier<Optional<String>> leitorDeConteudo(String id, String versao) {
-        return () -> {
-            File arquivo = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml").toFile();
+        return executaNoBranchDoServico(id, () -> {
+            File arquivo = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml").toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -64,11 +60,11 @@ public class Cartas {
 
             log.info("Arquivo {} não encontrado", arquivo);
             return empty();
-        };
+        });
     }
 
     public Optional<Metadados> ultimaRevisao(String id) {
-        return comRepositorioAberto(git -> metadados(git, id, xmlServico(id, "v3")));
+        return comRepositorioAberto(git -> metadados(git, id, Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml")));
     }
 
     public Iterable<Metadados> listar() {
@@ -238,7 +234,7 @@ public class Cartas {
             cmd.call();
         } catch (JGitInternalException e) {
             if (e.getMessage().equals(JGitText.get().emptyCommit)) {
-                log.info("{} não sofreu alterações", caminhos);
+                log.info("Commit não possui alterações");
             } else {
                 throw e;
             }
@@ -310,10 +306,6 @@ public class Cartas {
         return resultado;
     }
 
-
-    private Path xmlServico(String id, String versao) {
-        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml");
-    }
 
     @SneakyThrows
     private void escrever(String document, Path arquivo) {
