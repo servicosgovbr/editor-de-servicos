@@ -21,23 +21,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class EditarCartaController {
 
-    File repositorioCartasLocal;
     Cartas cartas;
 
     @Autowired
     EditarCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
-        this.repositorioCartasLocal = repositorioCartasLocal;
         this.cartas = cartas;
     }
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/servico/v3/{id}", method = GET, produces = "application/xml")
     String editarV3(
-            @PathVariable("id") String unsafeId,
+            @PathVariable("id") Carta carta,
             HttpServletResponse response
     ) throws IOException {
-        Carta carta = Carta.id(unsafeId);
-
         Optional<Metadados> m = cartas.comRepositorioAberto(git -> cartas.metadados(git, carta));
 
         m.ifPresent(metadados -> {
@@ -48,7 +44,7 @@ class EditarCartaController {
 
         return cartas.executaNoBranchDoServico(carta, cartas.leitor(carta))
                 .orElseThrow(() -> new FileNotFoundException(
-                        "Não foi possível encontrar o serviço referente ao arquivo '" + unsafeId + "'"
+                        "Não foi possível encontrar o serviço referente ao arquivo '" + carta.getId() + "'"
                 ));
     }
 

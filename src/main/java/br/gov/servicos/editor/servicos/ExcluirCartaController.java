@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,13 +25,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ExcluirCartaController {
 
-    File repositorioCartasLocal;
     Cartas cartas;
     Slugify slugify;
 
     @Autowired
-    ExcluirCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
-        this.repositorioCartasLocal = repositorioCartasLocal;
+    ExcluirCartaController(Cartas cartas, Slugify slugify) {
         this.cartas = cartas;
         this.slugify = slugify;
     }
@@ -40,11 +37,9 @@ class ExcluirCartaController {
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/excluir/api/servico/{id}", method = DELETE)
     void excluirServico(
-            @PathVariable("id") String unsafeId,
+            @PathVariable("id") Carta carta,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
-        Carta carta = Carta.id(unsafeId);
-
         cartas.comRepositorioAberto(git -> {
             cartas.pull(git);
             try {
@@ -66,13 +61,13 @@ class ExcluirCartaController {
 
     @SneakyThrows
     public Path excluirCarta(Git git, Carta carta) {
-        Path caminho = carta.caminhoAbsoluto(repositorioCartasLocal);
+        Path caminho = carta.caminhoAbsoluto();
 
         if (!caminho.toFile().exists()) {
             return null;
         }
 
-        git.rm().addFilepattern(carta.caminhoRelativo(repositorioCartasLocal)).call();
+        git.rm().addFilepattern(carta.caminhoRelativo()).call();
         log.debug("git rm {}", caminho);
 
         return caminho;

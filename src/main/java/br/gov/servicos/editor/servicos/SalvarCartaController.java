@@ -33,23 +33,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class SalvarCartaController {
 
-    private File repositorioCartasLocal;
     Cartas cartas;
     Slugify slugify;
 
     @Autowired
     public SalvarCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
-        this.repositorioCartasLocal = repositorioCartasLocal;
         this.cartas = cartas;
         this.slugify = slugify;
     }
 
     @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
-    RedirectView salvar(@PathVariable("id") String unsafeId,
+    RedirectView salvar(@PathVariable("id") Carta carta,
                   @RequestBody DOMSource servico,
                   @AuthenticationPrincipal User usuario) throws IOException, TransformerException {
 
-        Carta carta = Carta.id(unsafeId);
         String doc = formata(servico);
 
         cartas.comRepositorioAberto(git -> {
@@ -58,7 +55,7 @@ public class SalvarCartaController {
 
             try {
                 return cartas.executaNoBranchDoServico(carta, () -> {
-                    Path caminho = carta.caminhoAbsoluto(repositorioCartasLocal);
+                    Path caminho = carta.caminhoAbsoluto();
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {

@@ -49,7 +49,7 @@ public class Cartas {
 
     public Supplier<Optional<String>> leitor(Carta carta) {
         return () -> {
-            File arquivo = carta.caminhoAbsoluto(repositorioCartasLocal).toFile();
+            File arquivo = carta.caminhoAbsoluto().toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -62,12 +62,12 @@ public class Cartas {
 
     @SneakyThrows
     public Optional<Metadados> metadados(Git git, Carta carta) {
-        return metadados(git, carta, carta.caminhoAbsoluto(repositorioCartasLocal));
+        return metadados(git, carta, carta.caminhoAbsoluto());
     }
 
     @SneakyThrows
     public Optional<Metadados> metadados(Git git, Carta carta, Path f) {
-        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(carta.getRef()))
+        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(carta.getBranchRef()))
                 .map(o -> {
                     try {
                         return git.log().add(o.getObjectId()).setMaxCount(1).call().iterator().next();
@@ -75,12 +75,7 @@ public class Cartas {
                         throw new RuntimeException(t);
                     }
                 })
-                .orElseGet(() -> git.log()
-                        .addPath(carta.caminhoRelativo(repositorioCartasLocal))
-                        .setMaxCount(1)
-                        .call()
-                        .iterator()
-                        .next());
+                .orElseGet(getRevCommitSupplier(git, carta));
 
         return Optional.ofNullable(rev)
                 .map(c -> new Metadados()
@@ -88,6 +83,21 @@ public class Cartas {
                         .withRevisao(c.getId().getName())
                         .withAutor(c.getAuthorIdent().getName())
                         .withHorario(c.getAuthorIdent().getWhen()));
+    }
+
+    @SneakyThrows
+    private Supplier<RevCommit> getRevCommitSupplier(Git git, Carta carta) {
+        return () -> getNextLog(git, carta);
+    }
+
+    @SneakyThrows
+    private RevCommit getNextLog(Git git, Carta carta) {
+        return git.log()
+                .addPath(carta.caminhoRelativo())
+                .setMaxCount(1)
+                .call()
+                .iterator()
+                .next();
     }
 
     @SneakyThrows
@@ -208,7 +218,7 @@ public class Cartas {
                 .branchList()
                 .call()
                 .stream()
-                .anyMatch(b -> b.getName().equals(carta.getRef()));
+                .anyMatch(b -> b.getName().equals(carta.getBranchRef()));
 
         log.debug("git branch {} já existe? {}", carta, resultado);
         return resultado;
