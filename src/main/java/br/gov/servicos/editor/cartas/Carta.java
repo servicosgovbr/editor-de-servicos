@@ -40,4 +40,8 @@ public class Carta {
     public String getRef() {
         return R_HEADS + id;
     }
+
+    public String caminhoRelativo(File raiz) {
+        return raiz.toPath().relativize(caminhoAbsoluto(raiz)).toString();
+    }
 }

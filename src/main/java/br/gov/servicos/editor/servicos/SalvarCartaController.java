@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
@@ -59,7 +58,7 @@ public class SalvarCartaController {
 
             try {
                 return cartas.executaNoBranchDoServico(id, () -> {
-                    Path caminho = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
+                    Path caminho = id.caminhoAbsoluto(repositorioCartasLocal);
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {

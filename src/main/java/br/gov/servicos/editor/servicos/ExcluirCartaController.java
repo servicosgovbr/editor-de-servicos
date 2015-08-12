@@ -72,7 +72,7 @@ class ExcluirCartaController {
             return null;
         }
 
-        git.rm().addFilepattern(repositorioCartasLocal.toPath().relativize(caminho).toString()).call();
+        git.rm().addFilepattern(id.caminhoRelativo(repositorioCartasLocal)).call();
         log.debug("git rm {}", caminho);
 
         return caminho;

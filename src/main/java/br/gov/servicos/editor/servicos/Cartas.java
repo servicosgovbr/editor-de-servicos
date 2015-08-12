@@ -75,7 +75,7 @@ public class Cartas {
                         throw new RuntimeException(t);
                     }
                 })
-                .orElse(git.log().addPath(repositorioCartasLocal.toPath().relativize(f).toString()).setMaxCount(1).call().iterator().next());
+                .orElse(git.log().addPath(id.caminhoRelativo(repositorioCartasLocal)).setMaxCount(1).call().iterator().next());
 
         return Optional.ofNullable(rev)
                 .map(c -> new Metadados()
