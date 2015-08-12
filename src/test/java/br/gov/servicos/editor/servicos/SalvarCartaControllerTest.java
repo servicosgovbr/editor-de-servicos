@@ -1,6 +1,5 @@
-package br.gov.servicos.editor.editar;
+package br.gov.servicos.editor.servicos;
 
-import br.gov.servicos.editor.servicos.Cartas;
 import com.github.slugify.Slugify;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,7 @@ import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SalvarV3ControllerTest {
+public class SalvarCartaControllerTest {
 
     @Mock
     Cartas cartas;
@@ -24,7 +23,7 @@ public class SalvarV3ControllerTest {
 
     @Test
     public void deveSalvarV3NasCartas() throws Exception {
-        SalvarV3Controller controller = new SalvarV3Controller(cartas, new Slugify());
+        SalvarCartaController controller = new SalvarCartaController(cartas, new Slugify());
 
         String nome = "Servico Teste";
         User user = new User("jean", "blah", emptyList());

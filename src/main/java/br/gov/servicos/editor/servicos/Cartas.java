@@ -51,7 +51,11 @@ public class Cartas {
 
     @SneakyThrows
     public Optional<String> conteudoServico(String id) {
-        return executaNoBranchDoServico(id, () -> {
+        return executaNoBranchDoServico(id, leitor(id));
+    }
+
+    private Supplier<Optional<String>> leitor(String id) {
+        return () -> {
             File arquivo = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml").toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
@@ -60,7 +64,7 @@ public class Cartas {
 
             log.info("Arquivo {} não encontrado", arquivo);
             return empty();
-        });
+        };
     }
 
     public Optional<Metadados> ultimaRevisao(String id) {

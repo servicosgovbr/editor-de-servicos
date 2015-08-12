@@ -1,6 +1,5 @@
-package br.gov.servicos.editor.editar;
+package br.gov.servicos.editor.servicos;
 
-import br.gov.servicos.editor.servicos.Cartas;
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class SalvarV3Controller {
+public class SalvarCartaController {
 
     Cartas cartas;
     Slugify slugify;
 
     @Autowired
-    public SalvarV3Controller(Cartas cartas, Slugify slugify) {
+    public SalvarCartaController(Cartas cartas, Slugify slugify) {
         this.cartas = cartas;
         this.slugify = slugify;
     }
