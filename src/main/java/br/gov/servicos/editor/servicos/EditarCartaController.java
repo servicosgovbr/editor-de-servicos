@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -19,11 +21,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class EditarCartaController {
 
+    private File repositorioCartasLocal;
     Cartas cartas;
     Slugify slugify;
 
     @Autowired
-    EditarCartaController(Cartas cartas, Slugify slugify) {
+    EditarCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
+        this.repositorioCartasLocal = repositorioCartasLocal;
         this.cartas = cartas;
         this.slugify = slugify;
     }
@@ -36,7 +40,9 @@ class EditarCartaController {
     ) throws IOException {
         String id = this.slugify.slugify(unsafeId);
 
-        Optional<Metadados> m = cartas.ultimaRevisao(id);
+        Optional<Metadados> m = cartas.comRepositorioAberto(git ->
+                cartas.metadados(git, id,
+                        Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml")));
 
         m.ifPresent(metadados -> {
             response.setHeader("X-Git-Revision", metadados.getRevisao());
@@ -44,7 +50,7 @@ class EditarCartaController {
             response.setDateHeader("Last-Modified", metadados.getHorario().getTime());
         });
 
-        return cartas.conteudoServico(id)
+        return cartas.executaNoBranchDoServico(id, cartas.leitor(id))
                 .orElseThrow(() -> new FileNotFoundException(
                         "Não foi possível encontrar o serviço referente ao arquivo '" + unsafeId + "'"
                 ));

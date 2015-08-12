@@ -20,15 +20,16 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static java.lang.String.format;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.lib.Constants.*;
@@ -49,12 +50,7 @@ public class Cartas {
         this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos");
     }
 
-    @SneakyThrows
-    public Optional<String> conteudoServico(String id) {
-        return executaNoBranchDoServico(id, leitor(id));
-    }
-
-    private Supplier<Optional<String>> leitor(String id) {
+    public Supplier<Optional<String>> leitor(String id) {
         return () -> {
             File arquivo = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml").toFile();
             if (arquivo.exists()) {
@@ -67,67 +63,9 @@ public class Cartas {
         };
     }
 
-    public Optional<Metadados> ultimaRevisao(String id) {
-        return comRepositorioAberto(git -> metadados(git, id, Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml")));
-    }
-
-    public Iterable<Metadados> listar() {
-        return comRepositorioAberto(git -> todosServicos().stream()
-                .map(p -> metadados(git, p.getKey(), p.getValue()))
-                .map(Optional::get)
-                .filter(Objects::nonNull)
-                .collect(toList()));
-    }
 
     @SneakyThrows
-    public void excluir(String id, User usuario) {
-        comRepositorioAberto(git -> {
-            pull(git);
-            try {
-                executaNoBranchDoServico(id, () -> {
-                    commit(git,
-                            "Serviço deletado",
-                            usuario,
-                            excluirCarta(git, "v3", id),
-                            excluirCarta(git, "v2", id));
-
-                    return null;
-                });
-                return null;
-            } finally {
-                push(git, id);
-            }
-        });
-    }
-
-
-    @SneakyThrows
-    private Path excluirCarta(Git git, String versao, String id) {
-        Path caminho = caminhoAbsoluto(versao, id);
-        if (!caminho.toFile().exists())
-            return null;
-
-        git.rm().addFilepattern(caminhoRelativo(caminho)).call();
-        log.debug("git rm {}", caminho);
-
-        return caminho;
-    }
-
-    private Set<Map.Entry<String, Path>> todosServicos() {
-        FilenameFilter filter = (x, name) -> name.endsWith(".xml");
-        Function<Path, String> getId = f -> f.toFile().getName().replaceAll(".xml$", "");
-        Function<Path, Map<String, Path>> indexaServicos = f -> Arrays.asList(f.toFile().listFiles(filter))
-                .stream()
-                .map(File::toPath)
-                .collect(toMap(getId, x -> x));
-
-        Map<String, Path> mapaServicos = indexaServicos.apply(v3);
-
-        return mapaServicos.entrySet();
-    }
-
-    @SneakyThrows
-    private Optional<Metadados> metadados(Git git, String id, Path f) {
+    public Optional<Metadados> metadados(Git git, String id, Path f) {
         RevCommit rev = Optional.ofNullable(git.getRepository().getRef(R_HEADS + id))
                 .map(o -> {
                     try {
@@ -136,7 +74,7 @@ public class Cartas {
                         throw new RuntimeException(t);
                     }
                 })
-                .orElse(git.log().addPath(caminhoRelativo(f)).setMaxCount(1).call().iterator().next());
+                .orElse(git.log().addPath(repositorioCartasLocal.toPath().relativize(f).toString()).setMaxCount(1).call().iterator().next());
 
         return Optional.ofNullable(rev)
                 .map(c -> new Metadados()
@@ -154,43 +92,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public void salvarServico(String id, String doc, User usuario) {
-        comRepositorioAberto(git -> {
-
-            pull(git);
-
-            try {
-                return executaNoBranchDoServico(id, () -> {
-                    Path caminho = caminhoAbsoluto("v3", id);
-                    Path dir = caminho.getParent();
-
-                    if (dir.toFile().mkdirs()) {
-                        log.debug("Diretório {} não existia e foi criado", dir);
-                    } else {
-                        log.debug("Diretório {} já existia e não precisou ser criado", dir);
-                    }
-
-                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
-
-                    escrever(doc, caminho);
-                    add(git, caminho);
-                    commit(git, mensagem, usuario, caminho);
-
-                    return null;
-                });
-
-            } finally {
-                push(git, id);
-            }
-        });
-    }
-
-    private Path caminhoAbsoluto(String versao, String id) {
-        return Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", versao, "servicos", id + ".xml");
-    }
-
-    @SneakyThrows
-    private void push(Git git, String id) {
+    public void push(Git git, String id) {
         log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
         if (fazerPush && !id.equals("novo")) {
             git.push()
@@ -204,7 +106,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void pull(Git git) {
+    public void pull(Git git) {
         log.info("git pull: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
         git.pull()
                 .setRebase(true)
@@ -214,7 +116,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void commit(Git git, String mensagem, User usuario, Path... caminhos) {
+    public void commit(Git git, String mensagem, User usuario, Path... caminhos) {
         PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
         log.debug("git commit: {} ({}): '{}', {}, {}",
                 git.getRepository().getBranch(),
@@ -233,7 +135,7 @@ public class Cartas {
             Arrays.asList(caminhos)
                     .stream()
                     .filter(Objects::nonNull)
-                    .forEach(p -> cmd.setOnly(caminhoRelativo(p)));
+                    .forEach(p -> cmd.setOnly(repositorioCartasLocal.toPath().relativize(p).toString()));
 
             cmd.call();
         } catch (JGitInternalException e) {
@@ -246,8 +148,8 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void add(Git git, Path path) {
-        String pattern = caminhoRelativo(path);
+    public void add(Git git, Path path) {
+        String pattern = repositorioCartasLocal.toPath().relativize(path).toString();
         log.debug("git add: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), pattern);
 
         git.add()
@@ -255,12 +157,8 @@ public class Cartas {
                 .call();
     }
 
-    private String caminhoRelativo(Path path) {
-        return repositorioCartasLocal.toPath().relativize(path).toString();
-    }
-
     @SneakyThrows
-    private <T> T comRepositorioAberto(Function<Git, T> fn) {
+    public <T> T comRepositorioAberto(Function<Git, T> fn) {
         try (Git git = Git.open(repositorioCartasLocal)) {
             synchronized (Cartas.class) {
                 return fn.apply(git);
@@ -269,7 +167,7 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private <T> T executaNoBranchDoServico(String id, Supplier<T> supplier) {
+    public <T> T executaNoBranchDoServico(String id, Supplier<T> supplier) {
         return comRepositorioAberto(git -> {
             checkout(git, id);
             try {
@@ -312,7 +210,7 @@ public class Cartas {
 
 
     @SneakyThrows
-    private void escrever(String document, Path arquivo) {
+    public void escrever(String document, Path arquivo) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
             writer.write(document);
         }

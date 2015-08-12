@@ -2,6 +2,7 @@ package br.gov.servicos.editor.servicos;
 
 import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -17,21 +18,28 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+@Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class SalvarCartaController {
 
+    private File repositorioCartasLocal;
     Cartas cartas;
     Slugify slugify;
 
     @Autowired
-    public SalvarCartaController(Cartas cartas, Slugify slugify) {
+    public SalvarCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
+        this.repositorioCartasLocal = repositorioCartasLocal;
         this.cartas = cartas;
         this.slugify = slugify;
     }
@@ -44,7 +52,34 @@ public class SalvarCartaController {
         String id = slugify.slugify(unsafeId);
         String doc = formata(servico);
 
-        cartas.salvarServico(id, doc, usuario);
+        cartas.comRepositorioAberto(git -> {
+
+            cartas.pull(git);
+
+            try {
+                return cartas.executaNoBranchDoServico(id, () -> {
+                    Path caminho = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos", id + ".xml");
+                    Path dir = caminho.getParent();
+
+                    if (dir.toFile().mkdirs()) {
+                        log.debug("Diretório {} não existia e foi criado", dir);
+                    } else {
+                        log.debug("Diretório {} já existia e não precisou ser criado", dir);
+                    }
+
+                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
+
+                    cartas.escrever(doc, caminho);
+                    cartas.add(git, caminho);
+                    cartas.commit(git, mensagem, usuario, caminho);
+
+                    return null;
+                });
+
+            } finally {
+                cartas.push(git, id);
+            }
+        });
 
         return new RedirectView("/editar/api/servico/v3/" + id);
     }
