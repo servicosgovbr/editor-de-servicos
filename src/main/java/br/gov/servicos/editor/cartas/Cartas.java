@@ -93,7 +93,7 @@ public class Cartas {
     @SneakyThrows
     private RevCommit getNextLog(Git git, Carta carta) {
         return git.log()
-                .addPath(carta.caminhoRelativo())
+                .addPath(carta.caminhoRelativo().toString())
                 .setMaxCount(1)
                 .call()
                 .iterator()

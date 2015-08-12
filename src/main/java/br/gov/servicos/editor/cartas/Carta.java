@@ -60,7 +60,7 @@ public class Carta {
         return R_HEADS + id;
     }
 
-    public String caminhoRelativo() {
-        return raiz.toPath().relativize(caminhoAbsoluto()).toString();
+    public Path caminhoRelativo() {
+        return raiz.toPath().relativize(caminhoAbsoluto());
     }
 }
