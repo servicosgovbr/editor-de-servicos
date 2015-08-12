@@ -47,9 +47,9 @@ public class Cartas {
         this.fazerPush = fazerPush;
     }
 
-    public Supplier<Optional<String>> leitor(Carta id) {
+    public Supplier<Optional<String>> leitor(Carta carta) {
         return () -> {
-            File arquivo = id.caminhoAbsoluto(repositorioCartasLocal).toFile();
+            File arquivo = carta.caminhoAbsoluto(repositorioCartasLocal).toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -61,13 +61,13 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public Optional<Metadados> metadados(Git git, Carta id) {
-        return metadados(git, id, id.caminhoAbsoluto(repositorioCartasLocal));
+    public Optional<Metadados> metadados(Git git, Carta carta) {
+        return metadados(git, carta, carta.caminhoAbsoluto(repositorioCartasLocal));
     }
 
     @SneakyThrows
-    public Optional<Metadados> metadados(Git git, Carta id, Path f) {
-        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(id.getRef()))
+    public Optional<Metadados> metadados(Git git, Carta carta, Path f) {
+        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(carta.getRef()))
                 .map(o -> {
                     try {
                         return git.log().add(o.getObjectId()).setMaxCount(1).call().iterator().next();
@@ -75,11 +75,16 @@ public class Cartas {
                         throw new RuntimeException(t);
                     }
                 })
-                .orElse(git.log().addPath(id.caminhoRelativo(repositorioCartasLocal)).setMaxCount(1).call().iterator().next());
+                .orElseGet(() -> git.log()
+                        .addPath(carta.caminhoRelativo(repositorioCartasLocal))
+                        .setMaxCount(1)
+                        .call()
+                        .iterator()
+                        .next());
 
         return Optional.ofNullable(rev)
                 .map(c -> new Metadados()
-                        .withId(id.getId())
+                        .withId(carta.getId())
                         .withRevisao(c.getId().getName())
                         .withAutor(c.getAuthorIdent().getName())
                         .withHorario(c.getAuthorIdent().getWhen()));
@@ -93,12 +98,12 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public void push(Git git, Carta id) {
+    public void push(Git git, Carta carta) {
         log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
         if (fazerPush) {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(id.getRefSpec())
+                    .setRefSpecs(carta.getRefSpec())
                     .setProgressMonitor(new TextProgressMonitor())
                     .call();
         } else {
@@ -168,9 +173,9 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public <T> T executaNoBranchDoServico(Carta id, Supplier<T> supplier) {
+    public <T> T executaNoBranchDoServico(Carta carta, Supplier<T> supplier) {
         return comRepositorioAberto(git -> {
-            checkout(git, id);
+            checkout(git, carta);
             try {
                 return supplier.get();
             } finally {
@@ -186,26 +191,26 @@ public class Cartas {
     }
 
     @SneakyThrows
-    private void checkout(Git git, Carta id) {
-        log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), id);
+    private void checkout(Git git, Carta carta) {
+        log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), carta);
 
         git.checkout()
-                .setName(id.getId())
+                .setName(carta.getId())
                 .setStartPoint(R_HEADS + MASTER)
                 .setUpstreamMode(NOTRACK)
-                .setCreateBranch(!branchExiste(git, id))
+                .setCreateBranch(!branchExiste(git, carta))
                 .call();
     }
 
     @SneakyThrows
-    private boolean branchExiste(Git git, Carta id) {
+    private boolean branchExiste(Git git, Carta carta) {
         boolean resultado = git
                 .branchList()
                 .call()
                 .stream()
-                .anyMatch(b -> b.getName().equals(id.getRef()));
+                .anyMatch(b -> b.getName().equals(carta.getRef()));
 
-        log.debug("git branch {} já existe? {}", id, resultado);
+        log.debug("git branch {} já existe? {}", carta, resultado);
         return resultado;
     }
 

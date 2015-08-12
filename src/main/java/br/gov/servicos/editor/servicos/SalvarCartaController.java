@@ -49,7 +49,7 @@ public class SalvarCartaController {
                   @RequestBody DOMSource servico,
                   @AuthenticationPrincipal User usuario) throws IOException, TransformerException {
 
-        Carta id = Carta.id(unsafeId);
+        Carta carta = Carta.id(unsafeId);
         String doc = formata(servico);
 
         cartas.comRepositorioAberto(git -> {
@@ -57,8 +57,8 @@ public class SalvarCartaController {
             cartas.pull(git);
 
             try {
-                return cartas.executaNoBranchDoServico(id, () -> {
-                    Path caminho = id.caminhoAbsoluto(repositorioCartasLocal);
+                return cartas.executaNoBranchDoServico(carta, () -> {
+                    Path caminho = carta.caminhoAbsoluto(repositorioCartasLocal);
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {
@@ -67,7 +67,7 @@ public class SalvarCartaController {
                         log.debug("Diretório {} já existia e não precisou ser criado", dir);
                     }
 
-                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", id);
+                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", carta);
 
                     cartas.escrever(doc, caminho);
                     cartas.add(git, caminho);
@@ -77,11 +77,11 @@ public class SalvarCartaController {
                 });
 
             } finally {
-                cartas.push(git, id);
+                cartas.push(git, carta);
             }
         });
 
-        return new RedirectView("/editar/api/servico/v3/" + id.getId());
+        return new RedirectView("/editar/api/servico/v3/" + carta.getId());
     }
 
     private String formata(@RequestBody DOMSource servico) throws TransformerException {

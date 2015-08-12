@@ -43,36 +43,36 @@ class ExcluirCartaController {
             @PathVariable("id") String unsafeId,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
-        Carta id = Carta.id(unsafeId);
+        Carta carta = Carta.id(unsafeId);
 
         cartas.comRepositorioAberto(git -> {
             cartas.pull(git);
             try {
-                cartas.executaNoBranchDoServico(id, () -> {
+                cartas.executaNoBranchDoServico(carta, () -> {
                     cartas.commit(git,
                             "Serviço deletado",
                             usuario,
-                            excluirCarta(git, id));
+                            excluirCarta(git, carta));
 
                     return null;
                 });
                 return null;
             } finally {
-                cartas.push(git, id);
+                cartas.push(git, carta);
             }
         });
 
     }
 
     @SneakyThrows
-    public Path excluirCarta(Git git, Carta id) {
-        Path caminho = id.caminhoAbsoluto(repositorioCartasLocal);
+    public Path excluirCarta(Git git, Carta carta) {
+        Path caminho = carta.caminhoAbsoluto(repositorioCartasLocal);
 
         if (!caminho.toFile().exists()) {
             return null;
         }
 
-        git.rm().addFilepattern(id.caminhoRelativo(repositorioCartasLocal)).call();
+        git.rm().addFilepattern(carta.caminhoRelativo(repositorioCartasLocal)).call();
         log.debug("git rm {}", caminho);
 
         return caminho;

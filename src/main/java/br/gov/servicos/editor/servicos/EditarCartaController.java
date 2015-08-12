@@ -36,9 +36,9 @@ class EditarCartaController {
             @PathVariable("id") String unsafeId,
             HttpServletResponse response
     ) throws IOException {
-        Carta id = Carta.id(unsafeId);
+        Carta carta = Carta.id(unsafeId);
 
-        Optional<Metadados> m = cartas.comRepositorioAberto(git -> cartas.metadados(git, id));
+        Optional<Metadados> m = cartas.comRepositorioAberto(git -> cartas.metadados(git, carta));
 
         m.ifPresent(metadados -> {
             response.setHeader("X-Git-Revision", metadados.getRevisao());
@@ -46,7 +46,7 @@ class EditarCartaController {
             response.setDateHeader("Last-Modified", metadados.getHorario().getTime());
         });
 
-        return cartas.executaNoBranchDoServico(id, cartas.leitor(id))
+        return cartas.executaNoBranchDoServico(carta, cartas.leitor(carta))
                 .orElseThrow(() -> new FileNotFoundException(
                         "Não foi possível encontrar o serviço referente ao arquivo '" + unsafeId + "'"
                 ));
