@@ -2,7 +2,6 @@ package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.Cartas;
-import com.github.slugify.Slugify;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static java.util.Locale.getDefault;
@@ -31,14 +32,12 @@ class ListarCartasController {
 
     Path v3;
     Cartas cartas;
-    Slugify slugify;
 
     Formatter<Carta> formatter;
 
     @Autowired
-    ListarCartasController(File repositorioCartasLocal, Cartas cartas, Slugify slugify, Formatter<Carta> formatter) {
+    ListarCartasController(File repositorioCartasLocal, Cartas cartas, Formatter<Carta> formatter) {
         this.cartas = cartas;
-        this.slugify = slugify;
         this.formatter = formatter;
         this.v3 = Paths.get(repositorioCartasLocal.getAbsolutePath(), "cartas-servico", "v3", "servicos");
     }
@@ -57,8 +56,7 @@ class ListarCartasController {
             Map<Carta, Path> mapaServicos = indexaServicos.apply(v3);
 
             return mapaServicos.entrySet().stream()
-                    .map(p -> cartas.metadados(git, p.getKey(), p.getValue()))
-                    .map(Optional::get)
+                    .map(p -> p.getKey().metadados(git))
                     .filter(Objects::nonNull)
                     .collect(toList());
         });

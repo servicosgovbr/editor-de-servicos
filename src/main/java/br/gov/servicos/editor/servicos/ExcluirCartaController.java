@@ -2,7 +2,6 @@ package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.Cartas;
-import com.github.slugify.Slugify;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +26,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 class ExcluirCartaController {
 
     Cartas cartas;
-    Slugify slugify;
 
     @Autowired
-    ExcluirCartaController(Cartas cartas, Slugify slugify) {
+    ExcluirCartaController(Cartas cartas) {
         this.cartas = cartas;
-        this.slugify = slugify;
     }
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -62,13 +59,13 @@ class ExcluirCartaController {
 
     @SneakyThrows
     public Path excluirCarta(Git git, Carta carta) {
-        Path caminho = carta.caminhoAbsoluto();
+        Path caminho = carta.getCaminhoAbsoluto();
 
         if (!caminho.toFile().exists()) {
             return null;
         }
 
-        git.rm().addFilepattern(carta.caminhoRelativo().toString()).call();
+        git.rm().addFilepattern(carta.getCaminhoRelativo().toString()).call();
         log.debug("git rm {}", caminho);
 
         return caminho;

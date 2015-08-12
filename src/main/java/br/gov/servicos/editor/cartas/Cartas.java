@@ -11,7 +11,6 @@ import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -49,7 +48,7 @@ public class Cartas {
 
     public Supplier<Optional<String>> leitor(Carta carta) {
         return () -> {
-            File arquivo = carta.caminhoAbsoluto().toFile();
+            File arquivo = carta.getCaminhoAbsoluto().toFile();
             if (arquivo.exists()) {
                 log.info("Arquivo {} encontrado", arquivo);
                 return ler(arquivo);
@@ -61,43 +60,8 @@ public class Cartas {
     }
 
     @SneakyThrows
-    public Optional<Metadados> metadados(Git git, Carta carta) {
-        return metadados(git, carta, carta.caminhoAbsoluto());
-    }
-
-    @SneakyThrows
-    public Optional<Metadados> metadados(Git git, Carta carta, Path f) {
-        RevCommit rev = Optional.ofNullable(git.getRepository().getRef(carta.getBranchRef()))
-                .map(o -> {
-                    try {
-                        return git.log().add(o.getObjectId()).setMaxCount(1).call().iterator().next();
-                    } catch (Throwable t) {
-                        throw new RuntimeException(t);
-                    }
-                })
-                .orElseGet(getRevCommitSupplier(git, carta));
-
-        return Optional.ofNullable(rev)
-                .map(c -> new Metadados()
-                        .withId(carta.getId())
-                        .withRevisao(c.getId().getName())
-                        .withAutor(c.getAuthorIdent().getName())
-                        .withHorario(c.getAuthorIdent().getWhen()));
-    }
-
-    @SneakyThrows
-    private Supplier<RevCommit> getRevCommitSupplier(Git git, Carta carta) {
-        return () -> getNextLog(git, carta);
-    }
-
-    @SneakyThrows
-    private RevCommit getNextLog(Git git, Carta carta) {
-        return git.log()
-                .addPath(carta.caminhoRelativo().toString())
-                .setMaxCount(1)
-                .call()
-                .iterator()
-                .next();
+    public Metadados metadados(Git git, Carta carta) {
+        return carta.metadados(git);
     }
 
     @SneakyThrows

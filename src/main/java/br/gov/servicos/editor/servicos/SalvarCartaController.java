@@ -2,7 +2,6 @@ package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.Cartas;
-import com.github.slugify.Slugify;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
 
@@ -35,18 +32,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SalvarCartaController {
 
     Cartas cartas;
-    Slugify slugify;
 
     @Autowired
-    public SalvarCartaController(File repositorioCartasLocal, Cartas cartas, Slugify slugify) {
+    public SalvarCartaController(Cartas cartas) {
         this.cartas = cartas;
-        this.slugify = slugify;
     }
 
     @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
     RedirectView salvar(@PathVariable("id") Carta carta,
-                  @RequestBody DOMSource servico,
-                  @AuthenticationPrincipal User usuario) throws IOException, TransformerException {
+                        @RequestBody DOMSource servico,
+                        @AuthenticationPrincipal User usuario) throws Exception {
 
         String doc = formata(servico);
 
@@ -56,7 +51,7 @@ public class SalvarCartaController {
 
             try {
                 return cartas.executaNoBranchDoServico(carta, () -> {
-                    Path caminho = carta.caminhoAbsoluto();
+                    Path caminho = carta.getCaminhoAbsoluto();
                     Path dir = caminho.getParent();
 
                     if (dir.toFile().mkdirs()) {
