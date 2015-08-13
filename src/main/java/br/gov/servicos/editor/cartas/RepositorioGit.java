@@ -15,11 +15,15 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static lombok.AccessLevel.PRIVATE;
+import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
+import static org.eclipse.jgit.lib.Constants.MASTER;
+import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @Service
@@ -90,4 +94,49 @@ public class RepositorioGit {
             }
         }
     }
+
+    @SneakyThrows
+    public <T> T executaNoBranchDoServico(Carta carta, Supplier<T> supplier) {
+        return comRepositorioAberto(git -> {
+            checkout(git, carta);
+            try {
+                return supplier.get();
+            } finally {
+                checkoutMaster(git);
+            }
+        });
+    }
+
+    @SneakyThrows
+    private void checkoutMaster(Git git) {
+        log.debug("git checkout master: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
+        git.checkout().setName(MASTER).call();
+    }
+
+    @SneakyThrows
+    private void checkout(Git git, Carta carta) {
+        log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), carta);
+
+        git.checkout()
+                .setName(carta.getId())
+                .setStartPoint(R_HEADS + MASTER)
+                .setUpstreamMode(NOTRACK)
+                .setCreateBranch(!branchExiste(git, carta))
+                .call();
+    }
+
+    @SneakyThrows
+    private boolean branchExiste(Git git, Carta carta) {
+        boolean resultado = git
+                .branchList()
+                .call()
+                .stream()
+                .anyMatch(b -> b.getName().equals(carta.getBranchRef()));
+
+        log.debug("git branch {} já existe? {}", carta, resultado);
+        return resultado;
+    }
+
+
+
 }

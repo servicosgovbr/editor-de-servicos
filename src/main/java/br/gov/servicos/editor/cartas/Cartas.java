@@ -15,18 +15,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.lib.Constants.*;
@@ -43,26 +41,6 @@ public class Cartas {
     public Cartas(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
         this.repositorioCartasLocal = repositorioCartasLocal;
         this.fazerPush = fazerPush;
-    }
-
-    public Supplier<Optional<String>> leitor(Carta carta) {
-        return () -> {
-            File arquivo = carta.getCaminhoAbsoluto().toFile();
-            if (arquivo.exists()) {
-                log.info("Arquivo {} encontrado", arquivo);
-                return ler(arquivo);
-            }
-
-            log.info("Arquivo {} não encontrado", arquivo);
-            return empty();
-        };
-    }
-
-    @SneakyThrows
-    private Optional<String> ler(File arquivo) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), defaultCharset()))) {
-            return of(reader.lines().collect(joining("\n")));
-        }
     }
 
     @SneakyThrows
