@@ -5,13 +5,7 @@ idea {
         testOutputDir = file("$buildDir/classes/test/")
         excludeDirs += files(
                 '.git-crypt',
-                '.vagrant',
-                '.sass-cache',
-                '.sass-work',
-                '.jruby-container',
-                'data',
                 'gradle',
-                'docs/_book',
                 'tmp'
         )
 

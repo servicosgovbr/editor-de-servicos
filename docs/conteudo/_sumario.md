@@ -1,5 +1,0 @@
-- [Conteúdo](/conteudo/index.md)
-  - [Lista de conteúdos](/conteudo/checklist.md)
-  - [Passos um bom conteúdo](/conteudo/dicas-bom-conteudo.md)
-  - [Conteúdo relevante](/conteudo/conteudo-relevante.md)
-  - [Conteúdo acessível](/conteudo/conteudo-acessivel.md)
