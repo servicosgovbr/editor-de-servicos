@@ -2,6 +2,7 @@ package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.Cartas;
+import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.Path;
 
 import static java.lang.String.format;
@@ -32,10 +33,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SalvarCartaController {
 
     Cartas cartas;
+    EscritorDeArquivos escritorDeArquivos;
 
     @Autowired
-    public SalvarCartaController(Cartas cartas) {
+    public SalvarCartaController(Cartas cartas, EscritorDeArquivos escritorDeArquivos) {
         this.cartas = cartas;
+        this.escritorDeArquivos = escritorDeArquivos;
     }
 
     @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
@@ -62,7 +65,7 @@ public class SalvarCartaController {
 
                     String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", carta);
 
-                    cartas.escrever(doc, caminho);
+                    escritorDeArquivos.escrever(caminho, doc);
                     cartas.add(git, caminho);
                     cartas.commit(git, mensagem, usuario, caminho);
 

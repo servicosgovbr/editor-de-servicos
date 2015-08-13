@@ -162,12 +162,4 @@ public class Cartas {
     }
 
 
-    @SneakyThrows
-    public void escrever(String document, Path arquivo) {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(arquivo.toFile()), "UTF-8")) {
-            writer.write(document);
-        }
-        log.debug("Arquivo '{}' modificado", arquivo.getFileName());
-    }
-
 }
