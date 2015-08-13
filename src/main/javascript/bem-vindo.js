@@ -30,7 +30,7 @@ module.exports = {
     this.excluirServico = function (id) {
       m.request({
         method: 'DELETE',
-        url: '/excluir/api/servico/' + slugify(id),
+        url: '/editar/api/servico/' + slugify(id),
       }).then(this.listarServicos, erro);
     };
 

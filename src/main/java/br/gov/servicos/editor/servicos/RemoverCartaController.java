@@ -20,18 +20,18 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 @Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class ExcluirCartaController {
+class RemoverCartaController {
 
     RepositorioGit repositorio;
 
     @Autowired
-    ExcluirCartaController(RepositorioGit repositorio) {
+    RemoverCartaController(RepositorioGit repositorio) {
         this.repositorio = repositorio;
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/excluir/api/servico/{id}", method = DELETE)
-    void excluirServico(
+    @RequestMapping(value = "/editar/api/servico/{id}", method = DELETE)
+    void remover(
             @PathVariable("id") Carta carta,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
@@ -40,7 +40,7 @@ class ExcluirCartaController {
 
             try {
                 repositorio.remove(carta.getCaminhoRelativo());
-                repositorio.commit("Serviço removido", usuario, carta.getCaminhoRelativo());
+                repositorio.commit("Remove '" + carta.getId() + "'", usuario, carta.getCaminhoRelativo());
             } finally {
                 repositorio.push(carta.getBranchRef());
             }
