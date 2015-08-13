@@ -6,12 +6,13 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.RefNotAdvertisedException;
 import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
-import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Optional;
@@ -32,6 +34,7 @@ import static java.util.Optional.of;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.lib.Constants.*;
+import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 
 @Slf4j
 @Service
@@ -41,8 +44,8 @@ public class RepositorioGit {
     File raiz;
     boolean fazerPush;
 
-    @NonFinal // disponível enquanto o repositório estiver aberto
-            Git git;
+    @NonFinal
+    Git git; // disponível enquanto o repositório estiver aberto
 
     @Autowired
     public RepositorioGit(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
@@ -157,14 +160,30 @@ public class RepositorioGit {
         return resultado;
     }
 
-    @SneakyThrows
     public void pull() {
-        log.info("git pull: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-        git.pull()
-                .setRebase(true)
-                .setStrategy(MergeStrategy.THEIRS)
-                .setProgressMonitor(new TextProgressMonitor())
-                .call();
+        try {
+            log.info("git pull: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
+
+            git.pull()
+                    .setRebase(true)
+                    .setStrategy(THEIRS)
+                    .setProgressMonitor(new TextProgressMonitor())
+                    .call();
+
+        } catch (RefNotAdvertisedException e) {
+            try {
+                git.pull()
+                        .setRebase(true)
+                        .setStrategy(THEIRS)
+                        .setProgressMonitor(new TextProgressMonitor())
+                        .setRemoteBranchName(MASTER)
+                        .call();
+            } catch (GitAPIException e1) {
+                throw new RuntimeException(e1);
+            }
+        } catch (IOException | GitAPIException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SneakyThrows
