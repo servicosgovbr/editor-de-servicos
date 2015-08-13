@@ -11,7 +11,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    if (m.route().startsWith('/editar/servico/')) {
+    if (m.route().indexOf('/editar/servico/') > 0) {
       return m('#metadados', [
 
       m('button#salvar', {
