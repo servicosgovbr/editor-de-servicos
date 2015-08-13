@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
 import static java.util.Locale.getDefault;
@@ -36,7 +38,10 @@ class ListarCartasController {
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
     Iterable<Metadados> listar() throws IOException {
-        return Arrays.asList(repositorioGit.getCaminhoAbsoluto().toFile().listFiles((x, name) -> name.endsWith(".xml")))
+        File dir = repositorioGit.getCaminhoAbsoluto().toFile();
+        File[] arquivos = Optional.ofNullable(dir.listFiles((x, name) -> name.endsWith(".xml"))).orElse(new File[0]);
+
+        return Arrays.asList(arquivos)
                 .parallelStream()
                 .map(f -> f.getName().replaceAll(".xml$", ""))
                 .map(unchecked(id -> formatter.parse(id, getDefault())))
