@@ -56,8 +56,8 @@ if [ ! -d "${SNAP_CACHE_DIR}/docker" ]; then
   git clone --depth 1 https://github.com/servicosgovbr/docker "${SNAP_CACHE_DIR}/docker"
 fi
 
+sudo sh -c 'mkdir -p ~/.docker && mv /var/go/docker-credentials.json ~/.docker/config.json'
 pushd "${SNAP_CACHE_DIR}/docker/editor-de-servicos"
-  docker login --username="${DOCKER_LOGIN}" --password="${DOCKER_PASSWORD}"
-  docker build -t='servicosgovbr/editor-de-servicos' .
-  docker push servicosgovbr/editor-de-servicos
+  sudo docker build -t='servicosgovbr/editor-de-servicos' .
+  sudo docker push servicosgovbr/editor-de-servicos
 popd
