@@ -49,15 +49,19 @@ PATH=/bin:/usr/bin ${SNAP_CACHE_DIR}/rpm-s3/bin/rpm-s3 \
     --keep 30 \
     $(find build/rpmbuild/RPMS/noarch/editor-de-servicos*.rpm -type f)
 
-curl -sSL https://get.docker.com/ | sudo sh
+if [ "${USE_DOCKER}" ]; then
 
-rm -rf "${SNAP_CACHE_DIR}/docker"
-if [ ! -d "${SNAP_CACHE_DIR}/docker" ]; then
-  git clone --depth 1 https://github.com/servicosgovbr/docker "${SNAP_CACHE_DIR}/docker"
+  curl -sSL https://get.docker.com/ | sudo sh
+
+  rm -rf "${SNAP_CACHE_DIR}/docker"
+  if [ ! -d "${SNAP_CACHE_DIR}/docker" ]; then
+    git clone --depth 1 https://github.com/servicosgovbr/docker "${SNAP_CACHE_DIR}/docker"
+  fi
+
+  sudo sh -c 'mkdir -p ~/.docker && mv /var/go/docker-credentials.json ~/.docker/config.json'
+  pushd "${SNAP_CACHE_DIR}/docker/editor-de-servicos"
+    sudo docker build -t='servicosgovbr/editor-de-servicos' .
+    sudo docker push servicosgovbr/editor-de-servicos
+  popd
+
 fi
-
-sudo sh -c 'mkdir -p ~/.docker && mv /var/go/docker-credentials.json ~/.docker/config.json'
-pushd "${SNAP_CACHE_DIR}/docker/editor-de-servicos"
-  sudo docker build -t='servicosgovbr/editor-de-servicos' .
-  sudo docker push servicosgovbr/editor-de-servicos
-popd
