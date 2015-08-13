@@ -3,11 +3,20 @@ package br.gov.servicos.editor.cartas;
 import br.gov.servicos.editor.servicos.Metadados;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.internal.JGitText;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.TextProgressMonitor;
+import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.transport.RefSpec;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -22,8 +31,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
-import static org.eclipse.jgit.lib.Constants.MASTER;
-import static org.eclipse.jgit.lib.Constants.R_HEADS;
+import static org.eclipse.jgit.lib.Constants.*;
 
 @Slf4j
 @Service
@@ -31,10 +39,15 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 public class RepositorioGit {
 
     File raiz;
+    boolean fazerPush;
+
+    @NonFinal // disponível enquanto o repositório estiver aberto
+            Git git;
 
     @Autowired
-    public RepositorioGit(File repositorioCartasLocal) {
-        raiz = repositorioCartasLocal;
+    public RepositorioGit(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
+        this.raiz = repositorioCartasLocal;
+        this.fazerPush = fazerPush;
     }
 
     public Path getCaminhoAbsoluto() {
@@ -90,7 +103,12 @@ public class RepositorioGit {
     private <T> T comRepositorioAberto(Function<Git, T> fn) {
         try (Git git = Git.open(raiz)) {
             synchronized (Git.class) {
-                return fn.apply(git);
+                try {
+                    this.git = git;
+                    return fn.apply(git);
+                } finally {
+                    this.git = null;
+                }
             }
         }
     }
@@ -139,6 +157,75 @@ public class RepositorioGit {
         return resultado;
     }
 
+    @SneakyThrows
+    public void pull() {
+        log.info("git pull: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
+        git.pull()
+                .setRebase(true)
+                .setStrategy(MergeStrategy.THEIRS)
+                .setProgressMonitor(new TextProgressMonitor())
+                .call();
+    }
 
+    @SneakyThrows
+    public void add(Path caminho) {
+        log.debug("git add: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), caminho);
 
+        git.add()
+                .addFilepattern(caminho.toString())
+                .call();
+    }
+
+    @SneakyThrows
+    public void commit(String mensagem, User usuario, Path caminho) {
+        PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
+        log.debug("git commit: {} ({}): '{}', {}, {}",
+                git.getRepository().getBranch(),
+                git.getRepository().getRepositoryState(),
+                mensagem,
+                ident,
+                caminho
+        );
+
+        try {
+            git.commit()
+                    .setMessage(mensagem)
+                    .setCommitter(ident)
+                    .setAuthor(ident)
+                    .setOnly(caminho.toString())
+                    .call();
+
+        } catch (JGitInternalException e) {
+            if (e.getMessage().equals(JGitText.get().emptyCommit)) {
+                log.info("Commit não possui alterações");
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    @SneakyThrows
+    public void push(String branch) {
+        log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
+        if (fazerPush) {
+            git.push()
+                    .setRemote(DEFAULT_REMOTE_NAME)
+                    .setRefSpecs(new RefSpec(branch + ":" + branch))
+                    .setProgressMonitor(new TextProgressMonitor())
+                    .call();
+        } else {
+            log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
+        }
+    }
+
+    @SneakyThrows
+    public void remove(Path caminho) {
+        if (!caminho.toFile().exists()) {
+            log.debug("Caminho {} não existe, e não pode ser removido", caminho);
+            return;
+        }
+
+        git.rm().addFilepattern(caminho.toString()).call();
+        log.debug("git rm {}", caminho);
+    }
 }

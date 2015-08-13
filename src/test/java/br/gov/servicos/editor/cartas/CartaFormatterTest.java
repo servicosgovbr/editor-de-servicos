@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.cartas;
 
+import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
 import org.junit.Before;
@@ -23,11 +24,14 @@ public class CartaFormatterTest {
     LeitorDeArquivos leitorDeArquivos;
 
     @Mock
+    EscritorDeArquivos escritorDeArquivos;
+
+    @Mock
     RepositorioGit repositorio;
 
     @Before
     public void setUp() throws Exception {
-        formatter = new Carta.Formatter(new Slugify(), repositorio, leitorDeArquivos);
+        formatter = new Carta.Formatter(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos);
     }
 
     @Test

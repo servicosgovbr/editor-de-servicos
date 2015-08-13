@@ -1,11 +1,9 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
-import br.gov.servicos.editor.cartas.Cartas;
-import lombok.SneakyThrows;
+import br.gov.servicos.editor.cartas.RepositorioGit;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jgit.api.Git;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -25,11 +22,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class ExcluirCartaController {
 
-    Cartas cartas;
+    RepositorioGit repositorio;
 
     @Autowired
-    ExcluirCartaController(Cartas cartas) {
-        this.cartas = cartas;
+    ExcluirCartaController(RepositorioGit repositorio) {
+        this.repositorio = repositorio;
     }
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -38,39 +35,19 @@ class ExcluirCartaController {
             @PathVariable("id") Carta carta,
             @AuthenticationPrincipal User usuario
     ) throws IOException {
-        cartas.comRepositorioAberto(git -> {
-            cartas.pull(git);
+        repositorio.comRepositorioAbertoNoBranch(carta.getBranchRef(), () -> {
+            repositorio.pull();
+
             try {
-                cartas.executaNoBranchDoServico(carta, () -> {
-                    cartas.commit(git,
-                            "Serviço deletado",
-                            usuario,
-                            excluirCarta(git, carta));
-
-                    return null;
-                });
-                return null;
+                repositorio.remove(carta.getCaminhoRelativo());
+                repositorio.commit("Serviço removido", usuario, carta.getCaminhoRelativo());
             } finally {
-                cartas.push(git, carta);
+                repositorio.push(carta.getBranchRef());
             }
-        });
 
-    }
-
-    @SneakyThrows
-    public Path excluirCarta(Git git, Carta carta) {
-        Path caminho = carta.getCaminhoAbsoluto();
-
-        if (!caminho.toFile().exists()) {
             return null;
-        }
-
-        git.rm().addFilepattern(carta.getCaminhoRelativo().toString()).call();
-        log.debug("git rm {}", caminho);
-
-        return caminho;
+        });
     }
-
 
     @ResponseBody
     @ExceptionHandler(FileNotFoundException.class)

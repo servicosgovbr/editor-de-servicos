@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
+import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -11,20 +12,24 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static java.util.Collections.emptyList;
 import static java.util.Locale.getDefault;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
@@ -45,12 +50,15 @@ public class CartaTest {
     @Mock
     LeitorDeArquivos leitorDeArquivos;
 
+    @Mock
+    EscritorDeArquivos escritorDeArquivos;
+
     @Captor
     ArgumentCaptor<Supplier<Optional<String>>> captor;
 
     @Before
     public void setUp() throws Exception {
-        carta = new Carta.Formatter(new Slugify(), repositorio, leitorDeArquivos)
+        carta = new Carta.Formatter(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos)
                 .parse("um-id-qualquer", getDefault());
     }
 
@@ -151,5 +159,28 @@ public class CartaTest {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), anyObject())).willReturn(Optional.empty());
 
         carta.getConteudo();
+    }
+
+    @Test
+    public void salvaConteudoNoBranch() throws Exception {
+        User usuario = new User("Fulano de Tal", "", emptyList());
+
+        given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
+                .willReturn(null);
+
+        carta.salvar(usuario, "<servico/>");
+
+        given(repositorio.getCaminhoAbsoluto())
+                .willReturn(Paths.get("/um/caminho/qualquer"));
+
+        captor.getValue().get();
+
+        verify(repositorio).pull();
+
+        Path caminho = Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml");
+
+        verify(repositorio).add(caminho);
+        verify(repositorio).commit("Cria 'um-id-qualquer'", usuario, caminho);
+        verify(repositorio).push("refs/heads/um-id-qualquer");
     }
 }

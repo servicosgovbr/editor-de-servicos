@@ -1,8 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
-import br.gov.servicos.editor.cartas.Cartas;
-import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
-import java.nio.file.Path;
 
-import static br.gov.servicos.editor.utils.Unchecked.Supplier.unchecked;
-import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -28,14 +23,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class SalvarCartaController {
 
-    Cartas cartas;
-    EscritorDeArquivos escritorDeArquivos;
     ReformatadorXml reformatadorXml;
 
     @Autowired
-    public SalvarCartaController(Cartas cartas, EscritorDeArquivos escritorDeArquivos, ReformatadorXml reformatadorXml) {
-        this.cartas = cartas;
-        this.escritorDeArquivos = escritorDeArquivos;
+    public SalvarCartaController(ReformatadorXml reformatadorXml) {
         this.reformatadorXml = reformatadorXml;
     }
 
@@ -44,28 +35,9 @@ public class SalvarCartaController {
                         @RequestBody DOMSource servico,
                         @AuthenticationPrincipal User usuario) throws Exception {
 
-        cartas.comRepositorioAberto(git -> {
+        String conteudo = reformatadorXml.formata(servico);
 
-            cartas.pull(git);
-
-            try {
-                return cartas.executaNoBranchDoServico(carta, unchecked(() -> {
-                    Path caminho = carta.getCaminhoAbsoluto();
-
-                    escritorDeArquivos.escrever(caminho, reformatadorXml.formata(servico));
-
-                    cartas.add(git, caminho);
-
-                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", carta);
-                    cartas.commit(git, mensagem, usuario, caminho);
-
-                    return null;
-                }));
-
-            } finally {
-                cartas.push(git, carta);
-            }
-        });
+        carta.salvar(usuario, conteudo);
 
         return new RedirectView("/editar/api/servico/v3/" + carta.getId());
     }
