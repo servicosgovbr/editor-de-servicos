@@ -2,6 +2,7 @@ package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.RepositorioGit;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
+@SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
 @RunWith(MockitoJUnitRunner.class)
 public class ListarCartasControllerTest {
 
