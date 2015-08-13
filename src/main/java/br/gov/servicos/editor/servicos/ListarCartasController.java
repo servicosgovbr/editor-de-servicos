@@ -2,7 +2,6 @@ package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.RepositorioGit;
-import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Optional;
 
 import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
@@ -41,7 +40,7 @@ class ListarCartasController {
         File dir = repositorioGit.getCaminhoAbsoluto().resolve("cartas-servico/v3/servicos").toFile();
 
         if(!dir.exists()) {
-            throw new IllegalStateException("Diretório " + dir + " não encontrado!");
+            throw new FileNotFoundException("Diretório " + dir + " não encontrado!");
         }
 
         File[] arquivos = Optional.ofNullable(dir.listFiles((x, name) -> name.endsWith(".xml"))).orElse(new File[0]);
@@ -52,11 +51,6 @@ class ListarCartasController {
                 .map(unchecked(id -> formatter.parse(id, getDefault())))
                 .map(Carta::getMetadados)
                 .collect(toList());
-    }
-
-    @SneakyThrows
-    private Carta carta(Formatter<Carta> factory, Path f) {
-        return factory.parse(f.toFile().getName().replaceAll(".xml$", ""), getDefault());
     }
 
 }

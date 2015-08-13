@@ -9,8 +9,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.format.Formatter;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static java.util.Locale.getDefault;
 import static org.hamcrest.core.Is.is;
@@ -58,5 +60,12 @@ public class ListarCartasControllerTest {
         Iterable<Metadados> metadados = controller.listar();
 
         assertThat(metadados.iterator().next(), is(m1));
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void jogaExcecaoCasoDiretorioDeCartasNaoExista() throws Exception {
+        given(repositorioGit.getCaminhoAbsoluto()).willReturn(Paths.get("/caminho/nao/existente"));
+
+        controller.listar();
     }
 }
