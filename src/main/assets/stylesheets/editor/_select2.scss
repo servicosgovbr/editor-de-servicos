@@ -57,5 +57,23 @@
   .canal-de-prestacao .select2 {
     float: left;
   }
+}
 
+//make scroll always visible on webkit / macos
+.select2-results__options::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.select2-results__options::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.select2-results__options::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.select2-results__options::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, .5);
 }
