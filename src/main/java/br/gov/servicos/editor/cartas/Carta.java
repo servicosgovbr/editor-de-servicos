@@ -96,14 +96,14 @@ public class Carta {
 
     @Component
     @FieldDefaults(level = PRIVATE, makeFinal = true)
-    public static class Formatter implements org.springframework.format.Formatter<Carta> {
+    public static class Factory implements org.springframework.format.Formatter<Carta> {
         Slugify slugify;
         RepositorioGit repositorio;
         LeitorDeArquivos leitorDeArquivos;
         EscritorDeArquivos escritorDeArquivos;
 
         @Autowired
-        public Formatter(Slugify slugify, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
+        public Factory(Slugify slugify, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
             this.slugify = slugify;
             this.repositorio = repositorio;
             this.leitorDeArquivos = leitorDeArquivos;

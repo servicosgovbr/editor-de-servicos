@@ -58,7 +58,7 @@ public class CartaTest {
 
     @Before
     public void setUp() throws Exception {
-        carta = new Carta.Formatter(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos)
+        carta = new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos)
                 .parse("um-id-qualquer", getDefault());
     }
 
