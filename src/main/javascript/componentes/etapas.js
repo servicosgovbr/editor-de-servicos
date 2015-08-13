@@ -14,7 +14,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#etapas-do-servico', [
-      m('h3', 'Etapas'),
+      m('h2', 'ETAPAS DO SERVIÇO'),
 
       ctrl.servico().etapas().map(function (etapa, i) {
         return m('span', {

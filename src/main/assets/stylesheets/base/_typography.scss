@@ -22,8 +22,14 @@ strong {
   font-family: $openSansBold;
 }
 
+h2 {
+  font-size: 19px;
+  font-family: $openSansExtraBold;
+  margin-bottom: 20px;
+}
+
 h3 {
-    font-size: 19px;
+    font-size: 18px;
 }
 
 fieldset fieldset h3 {
