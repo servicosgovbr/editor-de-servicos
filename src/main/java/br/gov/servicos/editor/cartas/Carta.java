@@ -1,26 +1,19 @@
 package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
+import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jgit.transport.RefSpec;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.format.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Supplier;
 
-import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
@@ -28,41 +21,20 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class Carta {
 
-    @Configuration
-    public static class Config {
-
-        @Bean
-        public Formatter<Carta> formatter(RepositorioGit repositorio) {
-            return new Formatter<Carta>() {
-                @Override
-                public Carta parse(String text, Locale locale) {
-                    return new Carta(text, repositorio);
-                }
-
-                @Override
-                public String print(Carta object, Locale locale) {
-                    return object.toString();
-                }
-            };
-        }
-    }
-
     @Getter
     String id;
 
     RepositorioGit repositorio;
+    private LeitorDeArquivos leitorDeArquivos;
 
-    private Carta(String id, RepositorioGit repositorio) {
+    private Carta(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos) {
         this.id = id;
         this.repositorio = repositorio;
+        this.leitorDeArquivos = leitorDeArquivos;
     }
 
     public Path getCaminhoAbsoluto() {
         return repositorio.getCaminhoAbsoluto().resolve(Paths.get("cartas-servico", "v3", "servicos", id + ".xml")).toAbsolutePath();
-    }
-
-    public RefSpec getRefSpec() {
-        return new RefSpec(id + ":" + id);
     }
 
     public String getBranchRef() {
@@ -89,32 +61,34 @@ public class Carta {
     }
 
     public String getConteudo() throws FileNotFoundException {
-        return repositorio.executaNoBranchDoServico(this, leitor())
-                .orElseThrow(() -> new FileNotFoundException(
-                        "Não foi possível encontrar o serviço referente ao arquivo '" + getId() + "'"
-                ));
+        return repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
+                () -> leitorDeArquivos.ler(getCaminhoAbsoluto().toFile())
+        ).orElseThrow(
+                () -> new FileNotFoundException("Não foi possível encontrar o serviço referente ao arquivo '" + getId() + "'")
+        );
     }
 
-    @SneakyThrows
-    private Supplier<Optional<String>> leitor() {
-        return () -> {
-            File arquivo = getCaminhoAbsoluto().toFile();
-            if (arquivo.exists()) {
-                log.info("Arquivo {} encontrado", arquivo);
-                return ler(arquivo);
-            }
+    @Component
+    @FieldDefaults(level = PRIVATE, makeFinal = true)
+    public static class Formatter implements org.springframework.format.Formatter<Carta> {
+        RepositorioGit repositorio;
+        LeitorDeArquivos leitorDeArquivos;
 
-            log.info("Arquivo {} não encontrado", arquivo);
-            return empty();
-        };
-    }
+        @Autowired
+        public Formatter(RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos) {
+            this.repositorio = repositorio;
+            this.leitorDeArquivos = leitorDeArquivos;
+        }
 
-    @SneakyThrows
-    private Optional<String> ler(File arquivo) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), defaultCharset()))) {
-            return of(reader.lines().collect(joining("\n")));
+        @Override
+        public Carta parse(String text, Locale locale) {
+            return new Carta(text, repositorio, leitorDeArquivos);
+        }
+
+        @Override
+        public String print(Carta object, Locale locale) {
+            return object.toString();
         }
     }
-
 
 }

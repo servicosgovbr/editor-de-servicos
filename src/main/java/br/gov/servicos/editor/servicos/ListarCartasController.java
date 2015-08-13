@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
+import static java.util.Arrays.asList;
 import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
@@ -31,17 +31,22 @@ class ListarCartasController {
 
     @Autowired
     ListarCartasController(RepositorioGit repositorioGit, Formatter<Carta> formatter) {
-        this.formatter = formatter;
         this.repositorioGit = repositorioGit;
+        this.formatter = formatter;
     }
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
     Iterable<Metadados> listar() throws IOException {
-        File dir = repositorioGit.getCaminhoAbsoluto().toFile();
+        File dir = repositorioGit.getCaminhoAbsoluto().resolve("cartas-servico/v3/servicos").toFile();
+
+        if(!dir.exists()) {
+            throw new IllegalStateException("Diretório " + dir + " não encontrado!");
+        }
+
         File[] arquivos = Optional.ofNullable(dir.listFiles((x, name) -> name.endsWith(".xml"))).orElse(new File[0]);
 
-        return Arrays.asList(arquivos)
+        return asList(arquivos)
                 .parallelStream()
                 .map(f -> f.getName().replaceAll(".xml$", ""))
                 .map(unchecked(id -> formatter.parse(id, getDefault())))

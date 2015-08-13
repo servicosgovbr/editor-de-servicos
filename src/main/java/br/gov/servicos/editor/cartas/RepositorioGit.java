@@ -96,9 +96,9 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
-    public <T> T executaNoBranchDoServico(Carta carta, Supplier<T> supplier) {
+    public <T> T comRepositorioAbertoNoBranch(String branch, Supplier<T> supplier) {
         return comRepositorioAberto(git -> {
-            checkout(git, carta);
+            checkout(git, branch);
             try {
                 return supplier.get();
             } finally {
@@ -110,30 +110,32 @@ public class RepositorioGit {
     @SneakyThrows
     private void checkoutMaster(Git git) {
         log.debug("git checkout master: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-        git.checkout().setName(MASTER).call();
-    }
-
-    @SneakyThrows
-    private void checkout(Git git, Carta carta) {
-        log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), carta);
-
         git.checkout()
-                .setName(carta.getId())
-                .setStartPoint(R_HEADS + MASTER)
-                .setUpstreamMode(NOTRACK)
-                .setCreateBranch(!branchExiste(git, carta))
+                .setName(MASTER)
                 .call();
     }
 
     @SneakyThrows
-    private boolean branchExiste(Git git, Carta carta) {
+    private void checkout(Git git, String branch) {
+        log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), branch);
+
+        git.checkout()
+                .setName(branch.replaceAll("^" + R_HEADS, ""))
+                .setStartPoint(R_HEADS + MASTER)
+                .setUpstreamMode(NOTRACK)
+                .setCreateBranch(!branchExiste(git, branch))
+                .call();
+    }
+
+    @SneakyThrows
+    private boolean branchExiste(Git git, String branch) {
         boolean resultado = git
                 .branchList()
                 .call()
                 .stream()
-                .anyMatch(b -> b.getName().equals(carta.getBranchRef()));
+                .anyMatch(b -> b.getName().equals(branch));
 
-        log.debug("git branch {} já existe? {}", carta, resultado);
+        log.debug("git branch {} já existe? {}", branch, resultado);
         return resultado;
     }
 

@@ -10,6 +10,7 @@ import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
+import org.eclipse.jgit.transport.RefSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -49,7 +50,7 @@ public class Cartas {
         if (fazerPush) {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(carta.getRefSpec())
+                    .setRefSpecs(new RefSpec(carta.getId() + ":" + carta.getId()))
                     .setProgressMonitor(new TextProgressMonitor())
                     .call();
         } else {
