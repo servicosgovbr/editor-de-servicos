@@ -2,6 +2,7 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import com.github.slugify.Slugify;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,8 @@ public class CartaTest {
 
     @Before
     public void setUp() throws Exception {
-        carta = new Carta.Formatter(repositorio, leitorDeArquivos).parse("um-id-qualquer", getDefault());
+        carta = new Carta.Formatter(new Slugify(), repositorio, leitorDeArquivos)
+                .parse("um-id-qualquer", getDefault());
     }
 
     @Test

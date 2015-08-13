@@ -2,6 +2,7 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import com.github.slugify.Slugify;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -71,23 +72,25 @@ public class Carta {
     @Component
     @FieldDefaults(level = PRIVATE, makeFinal = true)
     public static class Formatter implements org.springframework.format.Formatter<Carta> {
+        Slugify slugify;
         RepositorioGit repositorio;
         LeitorDeArquivos leitorDeArquivos;
 
         @Autowired
-        public Formatter(RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos) {
+        public Formatter(Slugify slugify, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos) {
+            this.slugify = slugify;
             this.repositorio = repositorio;
             this.leitorDeArquivos = leitorDeArquivos;
         }
 
         @Override
         public Carta parse(String text, Locale locale) {
-            return new Carta(text, repositorio, leitorDeArquivos);
+            return new Carta(slugify.slugify(text), repositorio, leitorDeArquivos);
         }
 
         @Override
         public String print(Carta object, Locale locale) {
-            return object.toString();
+            return object.getId();
         }
     }
 

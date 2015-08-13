@@ -52,11 +52,11 @@ public class SalvarCartaController {
                 return cartas.executaNoBranchDoServico(carta, unchecked(() -> {
                     Path caminho = carta.getCaminhoAbsoluto();
 
-                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", carta);
-
                     escritorDeArquivos.escrever(caminho, reformatadorXml.formata(servico));
 
                     cartas.add(git, caminho);
+
+                    String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", carta);
                     cartas.commit(git, mensagem, usuario, caminho);
 
                     return null;
