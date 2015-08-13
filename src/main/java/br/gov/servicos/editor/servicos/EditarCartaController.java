@@ -32,7 +32,7 @@ class EditarCartaController {
             @PathVariable("id") Carta carta,
             HttpServletResponse response
     ) throws IOException {
-        Metadados metadados = cartas.comRepositorioAberto(git -> cartas.metadados(git, carta));
+        Metadados metadados = carta.getMetadados();
 
         response.setHeader("X-Git-Revision", metadados.getRevisao());
         response.setHeader("X-Git-Author", metadados.getAutor());

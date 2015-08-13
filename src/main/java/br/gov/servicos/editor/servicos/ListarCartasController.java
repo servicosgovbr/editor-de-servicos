@@ -45,21 +45,19 @@ class ListarCartasController {
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
     Iterable<Metadados> listar() throws IOException {
-        return cartas.comRepositorioAberto(git -> {
-            FilenameFilter filter = (x, name) -> name.endsWith(".xml");
-            Function<Path, Carta> getId = f -> carta(formatter, f);
-            Function<Path, Map<Carta, Path>> indexaServicos = f -> Arrays.asList(f.toFile().listFiles(filter))
-                    .stream()
-                    .map(File::toPath)
-                    .collect(toMap(getId, x -> x));
+        FilenameFilter filter = (x, name) -> name.endsWith(".xml");
+        Function<Path, Carta> getId = f -> carta(formatter, f);
+        Function<Path, Map<Carta, Path>> indexaServicos = f -> Arrays.asList(f.toFile().listFiles(filter))
+                .stream()
+                .map(File::toPath)
+                .collect(toMap(getId, x -> x));
 
-            Map<Carta, Path> mapaServicos = indexaServicos.apply(v3);
+        Map<Carta, Path> mapaServicos = indexaServicos.apply(v3);
 
-            return mapaServicos.entrySet().stream()
-                    .map(p -> p.getKey().metadados(git))
-                    .filter(Objects::nonNull)
-                    .collect(toList());
-        });
+        return mapaServicos.entrySet().parallelStream()
+                .map(p -> p.getKey().getMetadados())
+                .filter(Objects::nonNull)
+                .collect(toList());
     }
 
     @SneakyThrows

@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.cartas;
 
-import br.gov.servicos.editor.servicos.Metadados;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -57,11 +56,6 @@ public class Cartas {
             log.info("Arquivo {} não encontrado", arquivo);
             return empty();
         };
-    }
-
-    @SneakyThrows
-    public Metadados metadados(Git git, Carta carta) {
-        return carta.metadados(git);
     }
 
     @SneakyThrows
@@ -140,7 +134,7 @@ public class Cartas {
     @SneakyThrows
     public <T> T comRepositorioAberto(Function<Git, T> fn) {
         try (Git git = Git.open(repositorioCartasLocal)) {
-            synchronized (Cartas.class) {
+            synchronized (Git.class) {
                 return fn.apply(git);
             }
         }
