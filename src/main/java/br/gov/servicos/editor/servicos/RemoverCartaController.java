@@ -9,10 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -34,7 +33,7 @@ class RemoverCartaController {
     void remover(
             @PathVariable("id") Carta carta,
             @AuthenticationPrincipal User usuario
-    ) throws IOException {
+    ) {
         repositorio.comRepositorioAbertoNoBranch(carta.getBranchRef(), () -> {
             repositorio.pull();
 
@@ -47,12 +46,6 @@ class RemoverCartaController {
 
             return null;
         });
-    }
-
-    @ResponseBody
-    @ExceptionHandler(FileNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void naoEncontrado() {
     }
 
 }
