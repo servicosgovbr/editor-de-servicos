@@ -3,20 +3,30 @@ package br.gov.servicos.editor.utils;
 import org.junit.Test;
 
 import java.util.function.Function;
-
-import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
+import java.util.function.Supplier;
 
 public class UncheckedTest {
 
     @Test(expected = Exception.class)
     public void retornaVersaoSemExcecoesDaFuncao() throws Exception {
-        x(unchecked(x -> {
+        function(Unchecked.Function.unchecked(x -> {
             throw new Exception("");
         }));
     }
 
-    private Integer x(Function<Integer, Integer> fn) {
+    @Test(expected = Exception.class)
+    public void retornaVersaoSemExcecoesDeSupplier() throws Exception {
+        supplier(Unchecked.Supplier.unchecked(() -> {
+            throw new Exception("");
+        }));
+    }
+
+    private Integer function(Function<Integer, Integer> fn) {
         return fn.apply(1);
+    }
+
+    private Integer supplier(Supplier<Integer> fn) {
+        return fn.get();
     }
 
 }

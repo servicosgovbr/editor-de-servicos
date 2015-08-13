@@ -21,4 +21,22 @@ public abstract class Unchecked {
 
         R apply(T t) throws Exception;
     }
+
+    /**
+     * Retorna uma versão @SneakyThrows do supplier passado
+     */
+    public interface Supplier<T> {
+        @SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef"})
+        static <T> java.util.function.Supplier<T> unchecked(Unchecked.Supplier<T> delegate) {
+            return new java.util.function.Supplier<T>() {
+                @Override
+                @SneakyThrows
+                public T get() {
+                    return delegate.get();
+                }
+            };
+        }
+
+        T get() throws Exception;
+    }
 }

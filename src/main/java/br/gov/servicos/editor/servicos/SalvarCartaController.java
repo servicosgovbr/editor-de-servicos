@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.xml.transform.dom.DOMSource;
 import java.nio.file.Path;
 
+import static br.gov.servicos.editor.utils.Unchecked.Supplier.unchecked;
 import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -43,31 +44,23 @@ public class SalvarCartaController {
                         @RequestBody DOMSource servico,
                         @AuthenticationPrincipal User usuario) throws Exception {
 
-        String doc = reformatadorXml.formata(servico);
-
         cartas.comRepositorioAberto(git -> {
 
             cartas.pull(git);
 
             try {
-                return cartas.executaNoBranchDoServico(carta, () -> {
+                return cartas.executaNoBranchDoServico(carta, unchecked(() -> {
                     Path caminho = carta.getCaminhoAbsoluto();
-                    Path dir = caminho.getParent();
-
-                    if (dir.toFile().mkdirs()) {
-                        log.debug("Diretório {} não existia e foi criado", dir);
-                    } else {
-                        log.debug("Diretório {} já existia e não precisou ser criado", dir);
-                    }
 
                     String mensagem = format("%s '%s'", caminho.toFile().exists() ? "Altera" : "Cria", carta);
 
-                    escritorDeArquivos.escrever(caminho, doc);
+                    escritorDeArquivos.escrever(caminho, reformatadorXml.formata(servico));
+
                     cartas.add(git, caminho);
                     cartas.commit(git, mensagem, usuario, caminho);
 
                     return null;
-                });
+                }));
 
             } finally {
                 cartas.push(git, carta);
