@@ -37,15 +37,6 @@ public class RepositorioGit {
         return raiz.getAbsoluteFile().toPath();
     }
 
-    @SneakyThrows
-    public <T> T comRepositorioAberto(Function<Git, T> fn) {
-        try (Git git = Git.open(raiz)) {
-            synchronized (Git.class) {
-                return fn.apply(git);
-            }
-        }
-    }
-
     public Optional<Metadados> getCommitMaisRecenteDoArquivo(Path caminhoRelativo) {
         return comRepositorioAberto(unchecked(git -> {
             log.debug("Branch não encontrado, pegando commit mais recente do arquivo {} no master", caminhoRelativo);
@@ -89,5 +80,14 @@ public class RepositorioGit {
                 .withRevisao(commit.getId().getName())
                 .withAutor(commit.getAuthorIdent().getName())
                 .withHorario(commit.getAuthorIdent().getWhen()));
+    }
+
+    @SneakyThrows
+    private <T> T comRepositorioAberto(Function<Git, T> fn) {
+        try (Git git = Git.open(raiz)) {
+            synchronized (Git.class) {
+                return fn.apply(git);
+            }
+        }
     }
 }
