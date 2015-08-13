@@ -3,9 +3,10 @@ package br.gov.servicos.editor.servicos;
 import br.gov.servicos.editor.cartas.Carta;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
@@ -31,12 +32,6 @@ class EditarCartaController {
         response.setDateHeader("Last-Modified", metadados.getHorario().getTime());
 
         return carta.getConteudo();
-    }
-
-    @ResponseBody
-    @ExceptionHandler(FileNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void naoEncontrado() {
     }
 
 }
