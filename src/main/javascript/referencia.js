@@ -74,23 +74,23 @@ module.exports = {
   ],
 
   tiposDeCanalDePrestacao: [
-    'Web',
-    'Web: Agendar',
-    'Web: Inscrever-se',
-    'Web: Simular',
-    'Web: Calcular taxas',
-    'Web: Acompanhar',
-    'Web: Consultar',
-    'Web: Emitir',
-    'Web: Preencher',
-    'Web: Declarar',
-    'Presencial',
-    'Telefone',
-    'E-mail',
-    'Postal',
     'Aplicativo móvel',
+    'E-mail',
+    'Fax',
+    'Postal',
+    'Presencial',
     'SMS',
-    'Fax'
+    'Telefone',
+    'Web',
+    'Web: Acompanhar',
+    'Web: Agendar',
+    'Web: Calcular taxas',
+    'Web: Consultar',
+    'Web: Declarar',
+    'Web: Emitir',
+    'Web: Inscrever-se',
+    'Web: Preencher',
+    'Web: Simular'
   ].map(function (c) {
     return {
       id: slugify(c),
