@@ -9,7 +9,7 @@ if [ ! -d "${SNAP_CACHE_DIR}" ]; then
 fi
 
 echo "Instalando dependências..."
-sudo yum install -y rpm-build python-boto deltarpm python-deltarpm docker
+sudo yum install -y rpm-build python-boto deltarpm python-deltarpm
 
 echo "Importando chave privada GPG..."
 rm -rf ~/.gnupg
@@ -48,6 +48,8 @@ PATH=/bin:/usr/bin ${SNAP_CACHE_DIR}/rpm-s3/bin/rpm-s3 \
     --sign \
     --keep 30 \
     $(find build/rpmbuild/RPMS/noarch/editor-de-servicos*.rpm -type f)
+
+curl -sSL https://get.docker.com/ | sudo sh
 
 rm -rf "${SNAP_CACHE_DIR}/docker"
 if [ ! -d "${SNAP_CACHE_DIR}/docker" ]; then
