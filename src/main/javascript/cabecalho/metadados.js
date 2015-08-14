@@ -12,7 +12,7 @@ var ping = function (element, isInitialized) {
       e.attr('class', 'fa fa-circle nok').attr('title', 'Conexão perdida');
     };
 
-    var atualizarStatus = function() {
+    var atualizarStatus = function () {
       e.attr('class', 'fa fa-spinner fa-spin').attr('title', 'Verificando conexão');
       m.request({
         url: '/editar/api/ping',
