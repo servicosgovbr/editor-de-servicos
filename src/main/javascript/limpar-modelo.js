@@ -29,10 +29,10 @@ var limparDocumentos = function (documentos) {
 
 var limparCusto = function (custo) {
   custo.descricao(_.trim(custo.descricao()));
-  custo.moeda(_.trim(custo.moeda()));
+  custo.moeda(_.trim(custo.moeda()).toUpperCase());
   custo.valor(_.trim(custo.valor()));
 
-  return (custo.descricao() || custo.moeda() || custo.valor()) ? custo : null;
+  return (custo.descricao() || (custo.moeda() && custo.moeda() !== 'R$') || custo.valor()) ? custo : null;
 };
 
 var limparCustos = function (custos) {

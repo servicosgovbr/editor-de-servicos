@@ -149,9 +149,11 @@ describe('deve limpar >', function () {
             new Etapa({
               custos: new Custos({
                 casoPadrao: new Caso('', {
-                  campos: [new Custo(), new Custo({
+                  campos: [new Custo({
+                    moeda: ' u$ '
+                  }), new Custo({
                     descricao: ' blah ',
-                    moeda: ' R$',
+                    moeda: ' r$',
                     valor: '   10   '
                   })]
                 }),
@@ -162,7 +164,9 @@ describe('deve limpar >', function () {
                     descricao: ' blah ',
                     moeda: ' R$',
                     valor: '   10   '
-                  }), new Custo()]
+                  }), new Custo({
+                    moeda: 'R$'
+                  })]
                 }), new Caso()]
               })
             })]
@@ -174,11 +178,15 @@ describe('deve limpar >', function () {
 
         expect(etapa.custos()).toBeDefined();
         expect(etapa.custos().casoPadrao()).toBeDefined();
-        expect(etapa.custos().casoPadrao().campos().length).toBe(1);
+        expect(etapa.custos().casoPadrao().campos().length).toBe(2);
 
-        expect(etapa.custos().casoPadrao().campos()[0].descricao()).toBe('blah');
-        expect(etapa.custos().casoPadrao().campos()[0].moeda()).toBe('R$');
-        expect(etapa.custos().casoPadrao().campos()[0].valor()).toBe('10');
+        var custo1 = etapa.custos().casoPadrao().campos()[0];
+        expect(custo1.moeda()).toBe('U$');
+
+        var custo2 = etapa.custos().casoPadrao().campos()[1];
+        expect(custo2.descricao()).toBe('blah');
+        expect(custo2.moeda()).toBe('R$');
+        expect(custo2.valor()).toBe('10');
       });
 
       it('outros casos', function () {
