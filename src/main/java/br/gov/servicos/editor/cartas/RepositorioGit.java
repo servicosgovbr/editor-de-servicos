@@ -75,7 +75,6 @@ public class RepositorioGit {
             Ref ref = git.getRepository().getRef(branch);
 
             if (ref == null) {
-                log.debug("Branch {} não encontrado", branch);
                 return empty();
             }
 
