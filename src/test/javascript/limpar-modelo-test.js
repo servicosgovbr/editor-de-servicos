@@ -60,7 +60,7 @@ describe('deve limpar >', function () {
     });
 
     it('filtrar vazios', function () {
-      expect(limparModelo(servico).solicitantes().length).toBe(1);
+      expect(limparModelo(servico).solicitantes().length).toBe(2);
     });
 
     it('campos tipo e requisios', function () {
