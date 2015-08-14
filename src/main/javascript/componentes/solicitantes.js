@@ -18,7 +18,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#solicitantes', [
-      m('h2', 'SOLICITANTES'),
+      m('h2', 'solicitantes'),
       m('h3', [
         'Quem pode utilizar este serviço?',
         m.component(require('tooltips').solicitantes)

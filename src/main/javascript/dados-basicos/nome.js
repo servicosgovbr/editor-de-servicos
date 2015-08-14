@@ -8,7 +8,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#nome', [
-      m('h2', 'DADOS BÁSICOS'),
+      m('h2', 'dados básicos'),
       m('h3', [
         'Nome do serviço',
         m.component(require('tooltips').nome)

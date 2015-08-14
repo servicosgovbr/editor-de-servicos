@@ -9,7 +9,7 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#orgao-responsavel', [
-      m('h2', 'OUTRAS INFORMAÇÕES'),
+      m('h2', 'outras informações'),
       m('h3', [
         'Órgão responsável',
         m.component(require('tooltips').orgaoResponsavel)
