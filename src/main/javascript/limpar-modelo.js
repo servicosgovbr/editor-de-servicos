@@ -67,6 +67,12 @@ module.exports = function (servico) {
   servico.solicitantes(_.compact(servico.solicitantes().map(limparSolicitante)));
   servico.etapas(_.compact(servico.etapas().map(limparEtapa)));
 
-  return servico;
 
+  var tte = servico.tempoTotalEstimado();
+  [tte.tipo, tte.entreMinimo, tte.entreMaximo, tte.entreTipoMaximo, tte.ateMaximo, tte.ateTipoMaximo].forEach(trimProp);
+
+  servico.palavrasChave(_.compact(servico.palavrasChave().map(_.trim)));
+  servico.legislacoes(_.compact(servico.legislacoes().map(_.trim)));
+
+  return servico;
 };

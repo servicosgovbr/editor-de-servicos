@@ -10,6 +10,7 @@ var Custo = modelos.Custo;
 var CanaisDePrestacao = modelos.CanaisDePrestacao;
 var CanalDePrestacao = modelos.CanalDePrestacao;
 var Caso = modelos.Caso;
+var TempoTotalEstimado = modelos.TempoTotalEstimado;
 
 describe('deve limpar >', function () {
 
@@ -267,5 +268,49 @@ describe('deve limpar >', function () {
         expect(caso2.campos()[0].descricao()).toBe('descricao canal outros casos');
       });
     });
+  });
+
+  describe('tempo total estimado >', function () {
+    beforeEach(function () {
+      servico = new modelos.Servico({
+        tempoTotalEstimado: new TempoTotalEstimado({
+          tipo: ' entre ',
+          entreMinimo: ' 1 ',
+          entreMaximo: ' 3 ',
+          entreTipoMaximo: ' dias ',
+          ateMaximo: ' 30 ',
+          ateTipoMaximo: ' meses '
+        })
+      });
+    });
+
+    it('limpar os campos', function () {
+      servico = limparModelo(servico);
+
+      expect(servico.tempoTotalEstimado().tipo()).toBe('entre');
+      expect(servico.tempoTotalEstimado().entreMinimo()).toBe('1');
+      expect(servico.tempoTotalEstimado().entreMaximo()).toBe('3');
+      expect(servico.tempoTotalEstimado().entreTipoMaximo()).toBe('dias');
+      expect(servico.tempoTotalEstimado().ateMaximo()).toBe('30');
+      expect(servico.tempoTotalEstimado().ateTipoMaximo()).toBe('meses');
+    });
+
+  });
+
+  it('palavras chave', function () {
+    servico = new modelos.Servico({
+      palavrasChave: ['', null, undefined, '  ch1', '', null, 'ch2  ']
+    });
+    servico = limparModelo(servico);
+
+    expect(servico.palavrasChave()).toEqual(['ch1', 'ch2']);
+  });
+
+  it('palavras chave', function () {
+    servico = new modelos.Servico({
+      legislacoes: ['', null, undefined, '  http://www.lexml.gov.br/1', '', null, '  http://www.lexml.gov.br/2']
+    });
+    servico = limparModelo(servico);
+    expect(servico.legislacoes()).toEqual(['http://www.lexml.gov.br/1', 'http://www.lexml.gov.br/2']);
   });
 });
