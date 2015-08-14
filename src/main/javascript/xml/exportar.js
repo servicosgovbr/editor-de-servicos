@@ -1,5 +1,7 @@
 'use strict';
 
+var limparModelo = require('limpar-modelo');
+
 var cdata = function (doc, selector) {
   _(doc.querySelectorAll(selector)).each(function (el) {
     var content = _(el.childNodes).map(function (cn) {
@@ -48,7 +50,7 @@ var casos = function (e, nome, itemDoCaso) {
 };
 
 var documentos = function (e) {
-  return casos(e, 'documentos', item);
+  return e ? casos(e, 'documentos', item) : '';
 };
 
 var custo = function (e) {
@@ -60,7 +62,7 @@ var custo = function (e) {
 };
 
 var custos = function (e) {
-  return casos(e, 'custos', custo);
+  return e ? casos(e, 'custos', custo) : '';
 };
 
 var canalDePrestacao = function (e) {
@@ -72,7 +74,7 @@ var canalDePrestacao = function (e) {
 };
 
 var canaisDePrestacao = function (e) {
-  return casos(e, 'canais-de-prestacao', canalDePrestacao);
+  return e ? casos(e, 'canais-de-prestacao', canalDePrestacao) : '';
 };
 
 var etapa = function (e) {
@@ -94,9 +96,15 @@ var solicitantes = function (sol) {
   }));
 };
 
-module.exports = function (servico) {
+var xmlDoc = function (ns) {
+  return document.implementation.createDocument(ns, '');
+};
 
-  var doc = document.implementation.createDocument('http://servicos.gov.br/v3/schema', '');
+module.exports = function (servico) {
+  servico = limparModelo(servico);
+
+  var doc = xmlDoc('http://servicos.gov.br/v3/schema');
+
   m.render(doc, m('servico', {
     'xmlns': 'http://servicos.gov.br/v3/schema',
     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',

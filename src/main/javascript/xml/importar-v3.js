@@ -2,11 +2,15 @@
 
 var modelos = require('modelos');
 
-var um = function (lista, ret) {
+var str = function () {
+  return '';
+};
+
+var um = function (lista, fn) {
   if (lista && lista.length > 0) {
     return lista;
   }
-  return [ret];
+  return [fn()];
 };
 
 var item = function (i, n) {
@@ -58,11 +62,11 @@ var caso = function (tipo) {
   };
 };
 
-var documentos = function (i, d) {
+var documentos = function (d) {
   var t = jQuery(d);
   return new modelos.Documentos({
     casoPadrao: new modelos.Caso(null, {
-      campos: um(t.find('> default item').map(item).get(), ''),
+      campos: um(t.find('> default item').map(item).get(), str),
     }),
     outrosCasos: t.find('caso').map(caso(item)).get()
   });
@@ -77,11 +81,11 @@ var custo = function (i, c) {
   });
 };
 
-var custos = function (i, c) {
+var custos = function (c) {
   var t = jQuery(c);
   return new modelos.Custos({
     casoPadrao: new modelos.Caso(null, {
-      campos: um(t.find('> default custo').map(custo).get(), custo()),
+      campos: um(t.find('> default custo').map(custo).get(), custo),
     }),
     outrosCasos: t.find('caso').map(caso(custo)).get()
   });
@@ -95,11 +99,11 @@ var canalDePrestacao = function (i, c) {
   });
 };
 
-var canaisDePrestacao = function (i, c) {
+var canaisDePrestacao = function (c) {
   var t = jQuery(c);
   return new modelos.CanaisDePrestacao({
     casoPadrao: new modelos.Caso(null, {
-      campos: um(t.find('> default canal-de-prestacao').map(canalDePrestacao).get(), canalDePrestacao()),
+      campos: um(t.find('> default canal-de-prestacao').map(canalDePrestacao).get(), canalDePrestacao),
     }),
     outrosCasos: t.find('caso').map(caso(canalDePrestacao)).get()
   });
@@ -110,9 +114,9 @@ var etapas = function (i, e) {
   return new modelos.Etapa({
     titulo: t.find('> titulo').text(),
     descricao: t.find('> descricao').text(),
-    documentos: t.find('> documentos').map(documentos).get(0),
-    custos: t.find('> custos').map(custos).get(0),
-    canaisDePrestacao: t.find('> canais-de-prestacao').map(canaisDePrestacao).get(0)
+    documentos: documentos(t.find('> documentos').get(0)),
+    custos: custos(t.find('> custos').get(0)),
+    canaisDePrestacao: canaisDePrestacao(t.find('> canais-de-prestacao').get(0))
   });
 };
 
@@ -120,18 +124,18 @@ var servico = function (x) {
   return new modelos.Servico({
     nome: x.find('> nome').text(),
     sigla: x.find('> sigla').text(),
-    nomesPopulares: um(x.find('> nomes-populares > item').map(item).get(), ''),
+    nomesPopulares: um(x.find('> nomes-populares > item').map(item).get(), str),
     descricao: x.find('> descricao').text(),
     gratuidade: (x.find('> gratuito').text() === 'true') ? true : (x.find('> gratuito').text() === 'false' ? false : undefined),
     tempoTotalEstimado: x.find('> tempo-total-estimado').map(tempoTotalEstimado).get(0),
-    solicitantes: um(x.find('> solicitantes > solicitante').map(solicitantes).get(), solicitantes()),
-    etapas: um(x.find('etapas > etapa', x).map(etapas).get(), etapas()),
+    solicitantes: um(x.find('> solicitantes > solicitante').map(solicitantes).get(), solicitantes),
+    etapas: um(x.find('etapas > etapa', x).map(etapas).get(), etapas),
     orgao: x.find('servico > orgao').attr('id'),
     segmentosDaSociedade: x.find('servico > segmentos-da-sociedade > item').map(item).get(),
     eventosDaLinhaDaVida: x.find('servico > eventos-da-linha-da-vida > item').map(item).get(),
     areasDeInteresse: x.find('servico > areas-de-interesse > item').map(item).get(),
-    palavrasChave: um(x.find('servico > palavras-chave > item').map(item).get(), ''),
-    legislacoes: um(x.find('servico > legislacoes > item').map(item).get(), ''),
+    palavrasChave: um(x.find('servico > palavras-chave > item').map(item).get(), str),
+    legislacoes: um(x.find('servico > legislacoes > item').map(item).get(), str),
   });
 };
 
