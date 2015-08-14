@@ -1,10 +1,5 @@
 'use strict';
 
-var l = function () {
-  window.console.log.apply(window.console, arguments);
-};
-l(null);
-
 var trimProp = function (prop) {
   prop(_.trim(prop()));
 };
