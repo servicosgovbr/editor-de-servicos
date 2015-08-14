@@ -21,6 +21,17 @@ tasks.withType(FindBugs) {
     }
 }
 
+task brunch(type:Exec) {
+    commandLine './brunch', 'build'
+}
+
+task karma(type:Exec) {
+    dependsOn brunch
+    commandLine './karma', 'start', '--single-run'
+}
+
+test.dependsOn karma
+
 jacocoTestReport {
     doFirst {
         classDirectories = fileTree(dir: "${buildDir}/classes/main/").exclude(ignoredSources)
