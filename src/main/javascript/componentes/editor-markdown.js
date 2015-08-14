@@ -9,7 +9,7 @@ module.exports = {
       }.bind(this))
     });
 
-    this.caracteres = m.prop(typeof this.config.value === 'string' ? 500 - this.config.value.length : 500);
+    this.caracteres = m.prop(_.isString(this.config.value) ? 500 - this.config.value.length : 500);
   },
 
   view: function (ctrl) {
