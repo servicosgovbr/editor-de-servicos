@@ -6,7 +6,9 @@ var editor = require('editor-de-servicos');
 describe('editor', function () {
 
   beforeEach(function () {
-    m.route.param = function () {};
+    m.route.param = function () {
+      return 'ola-mundo';
+    };
   });
 
   it('deve ser um modulo do mithril', function () {
@@ -15,8 +17,9 @@ describe('editor', function () {
   });
 
   it('deve inicializar um servico', function () {
+    xhr('GET', '/editar/api/servico/v3/ola-mundo').respondWith('<servico/>');
     var ctrl = new editor.controller();
-    expect(ctrl.servico).toBeDefined();
+    expect(ctrl.servico()).toBeDefined();
   });
 
   it('deve salvar um servico', function () {
@@ -26,7 +29,6 @@ describe('editor', function () {
     ctrl.servico().nome('olá, mundo!');
     expect(ctrl.salvar).toBeDefined();
 
-    ctrl.deveSalvar(true);
     ctrl.salvar();
 
     expect(xhr.unexpectedRequests).toBe(0);
