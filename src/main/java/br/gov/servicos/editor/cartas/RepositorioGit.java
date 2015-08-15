@@ -12,9 +12,15 @@ import org.eclipse.jgit.api.errors.RefNotAdvertisedException;
 import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevSort;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
+import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -32,7 +38,7 @@ import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static lombok.AccessLevel.PRIVATE;
-import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
+import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 
@@ -58,43 +64,46 @@ public class RepositorioGit {
     }
 
     public Optional<Metadados> getCommitMaisRecenteDoArquivo(Path caminhoRelativo) {
-        return comRepositorioAberto(unchecked(git -> {
+        RevCommit commit = comRepositorioAbertoParaLeitura(unchecked(git -> {
             log.debug("Branch não encontrado, pegando commit mais recente do arquivo {} no master", caminhoRelativo);
-            Iterator<RevCommit> commits = git.log()
-                    .addPath(caminhoRelativo.toString())
-                    .setMaxCount(1)
-                    .call()
-                    .iterator();
 
-            return metadadosDoCommitMaisRecente(commits);
+            Repository repo = git.getRepository();
+            RevWalk revWalk = new RevWalk(repo);
+
+            revWalk.setTreeFilter(AndTreeFilter.create(PathFilter.create(caminhoRelativo.toString()), TreeFilter.ANY_DIFF));
+            revWalk.markStart(revWalk.lookupCommit(repo.resolve(HEAD)));
+
+            Iterator<RevCommit> revs = revWalk.iterator();
+            if(revs.hasNext()) {
+                return revs.next();
+            }
+            return null;
         }));
+
+        return metadadosDoCommitMaisRecente(commit);
     }
 
     public Optional<Metadados> getCommitMaisRecenteDoBranch(String branch) {
-        return comRepositorioAberto(unchecked(git -> {
-            Ref ref = git.getRepository().getRef(branch);
+        RevCommit commit = comRepositorioAbertoParaLeitura(unchecked(git -> {
+            Repository repo = git.getRepository();
+            Ref ref = repo.getRef(branch);
 
             if (ref == null) {
-                return empty();
+                return null;
             }
 
             log.debug("Branch {} encontrado, pegando commit mais recente dele", ref);
-            Iterator<RevCommit> commits = git.log()
-                    .add(ref.getObjectId())
-                    .setMaxCount(1)
-                    .call()
-                    .iterator();
-
-            return metadadosDoCommitMaisRecente(commits);
+            return new RevWalk(repo).parseCommit(ref.getObjectId());
         }));
+
+        return metadadosDoCommitMaisRecente(commit);
     }
 
-    private Optional<Metadados> metadadosDoCommitMaisRecente(Iterator<RevCommit> commits) {
-        if (!commits.hasNext()) {
+    private Optional<Metadados> metadadosDoCommitMaisRecente(RevCommit commit) {
+        if (commit == null) {
             return empty();
         }
 
-        RevCommit commit = commits.next();
         return of(new Metadados()
                 .withRevisao(commit.getId().getName())
                 .withAutor(commit.getAuthorIdent().getName())
@@ -116,47 +125,54 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
+    private <T> T comRepositorioAbertoParaLeitura(Function<Git, T> fn) {
+        try (Git git = Git.open(raiz)) {
+            try {
+                this.git = git;
+                return fn.apply(git);
+            } finally {
+                this.git = null;
+            }
+        }
+    }
+
+    @SneakyThrows
     public <T> T comRepositorioAbertoNoBranch(String branch, Supplier<T> supplier) {
         return comRepositorioAberto(git -> {
-            checkout(git, branch);
+            checkout(branch);
             try {
                 return supplier.get();
             } finally {
-                checkoutMaster(git);
+                checkoutMaster();
             }
         });
     }
 
     @SneakyThrows
-    private void checkoutMaster(Git git) {
-        log.debug("git checkout master: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
+    private void checkoutMaster() {
+        log.debug("git checkout: {} -> {}", git.getRepository().getFullBranch(), R_HEADS + MASTER);
         git.checkout()
-                .setName(MASTER)
+                .setName(R_HEADS + MASTER)
                 .call();
     }
 
     @SneakyThrows
-    private void checkout(Git git, String branch) {
-        log.debug("git checkout: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), branch);
+    private void checkout(String branch) {
+        log.debug("git checkout: {} -> {}", git.getRepository().getFullBranch(), branch);
 
-        git.checkout()
-                .setName(branch.replaceAll("^" + R_HEADS, ""))
-                .setStartPoint(R_HEADS + MASTER)
-                .setUpstreamMode(NOTRACK)
-                .setCreateBranch(!branchExiste(git, branch))
-                .call();
-    }
-
-    @SneakyThrows
-    private boolean branchExiste(Git git, String branch) {
-        boolean resultado = git
-                .branchList()
-                .call()
-                .stream()
-                .anyMatch(b -> b.getName().equals(branch));
-
-        log.debug("git branch {} já existe? {}", branch, resultado);
-        return resultado;
+        if (git.getRepository().getRefDatabase().getRef(branch) == null) {
+            git.checkout()
+                    .setName(branch.replaceAll("^" + R_HEADS, ""))
+                    .setStartPoint(R_HEADS + MASTER)
+                    .setUpstreamMode(TRACK)
+                    .setCreateBranch(true)
+                    .call();
+        } else {
+            git.checkout()
+                    .setName(branch.replaceAll("^" + R_HEADS, ""))
+                    .setCreateBranch(false)
+                    .call();
+        }
     }
 
     public void pull() {
