@@ -38,6 +38,21 @@ header {
     margin-right: -1px;
     line-height: 2.25em;
 
+    #status-conexao .mensagem {
+      margin-left: .5em;
+      color: $branco;
+      font-size: 90%;
+
+      a {
+        text-decoration: none;
+        color: $branco;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
     #salvar {
       float: right;
       margin-top: em(2);

@@ -5,17 +5,29 @@ var ping = function (element, isInitialized) {
     var e = jQuery(element);
 
     var ok = function (resp) {
-      e.attr('class', 'fa fa-circle ok').attr('title', 'Conexão estabelecida');
+      if(resp.login) {
+        e.attr('class', 'fa fa-circle ok').attr('title', 'Conexão estabelecida').html('');
+
+      } else {
+        e.attr('class', 'fa fa-circle nok').attr('title', 'Sessão expirada')
+          .html('<span class="mensagem">Sua sessão expirou! <a href="/editar/" target="_blank">Clique aqui para entrar novamente.</a></span>');
+      }
     };
 
     var nok = function (resp) {
-      e.attr('class', 'fa fa-circle nok').attr('title', 'Conexão perdida');
+      e.attr('class', 'fa fa-circle nok').attr('title', 'Conexão perdida').html('');
     };
 
     var atualizarStatus = function () {
-      e.attr('class', 'fa fa-spinner fa-spin').attr('title', 'Verificando conexão');
+      e.attr('class', 'fa fa-spinner fa-spin').attr('title', 'Verificando conexão').html('');
       m.request({
         url: '/editar/api/ping',
+        extract: function(xhr) {
+          if(/\/editar\/login/.test(xhr.responseURL)) {
+            return '{"login": null}';
+          }
+          return xhr.responseText;
+        },
         background: true
       }).then(ok, nok);
     };
