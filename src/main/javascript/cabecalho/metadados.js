@@ -7,7 +7,15 @@ module.exports = {
       salvar: _.noop
     }, args);
 
-    this.salvar = config.salvar;
+    this.salvando = m.prop(false);
+    this.salvar = function () {
+      this.salvando(true);
+      return config.salvar().then(_.bind(function (resp) {
+        this.salvando(false);
+        m.redraw();
+        return resp;
+      }, this));
+    };
   },
 
   view: function (ctrl) {
@@ -17,13 +25,16 @@ module.exports = {
       m.component(require('componentes/status-conexao')),
 
       m('button#salvar', {
-          onclick: _.bind(ctrl.salvar, ctrl)
-        }, [
-        m('i.fa.fa-floppy-o'),
-        m.trust('&nbsp; Salvar')
-      ]),
-
-    ]);
+          onclick: _.bind(ctrl.salvar, ctrl),
+          disabled: ctrl.salvando() ? 'disabled' : ''
+        }, ctrl.salvando() ? [
+          m('i.fa.fa-spin.fa-spinner'),
+          m.trust('&nbsp; Salvando...')
+        ] : [
+          m('i.fa.fa-floppy-o'),
+          m.trust('&nbsp; Salvar')
+        ]),
+      ]);
     }
 
     return m('#metadados');

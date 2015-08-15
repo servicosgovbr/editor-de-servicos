@@ -7,6 +7,7 @@ module.exports = function (nome, xml, metadados) {
     method: 'POST',
     url: '/editar/v3/servico/' + nome,
     data: xml,
+    background: true,
 
     config: function (xhr) {
       xhr.setRequestHeader('Accepts', 'application/xml');
