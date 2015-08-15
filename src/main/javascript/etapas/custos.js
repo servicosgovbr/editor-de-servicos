@@ -3,6 +3,7 @@
 var Caso = require('etapas/caso');
 var Casos = require('etapas/casos');
 var ListaDeCustos = require('etapas/lista-de-custos');
+var modelos = new require('modelos');
 
 module.exports = {
 
@@ -12,6 +13,10 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    if (ctrl.custos() === null) {
+      ctrl.custos(new modelos.Custos());
+    }
+
     return m('#' + ctrl.custos().id, [
       m('h3', [
         'Custos da etapa ' + (ctrl.indice + 1),
