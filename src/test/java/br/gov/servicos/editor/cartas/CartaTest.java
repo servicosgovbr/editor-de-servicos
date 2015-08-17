@@ -180,7 +180,7 @@ public class CartaTest {
         Path caminho = Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml");
 
         verify(repositorio).add(caminho);
-        verify(repositorio).commit("Cria 'um-id-qualquer'", usuario, caminho);
+        verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", usuario);
         verify(repositorio).push("refs/heads/um-id-qualquer");
     }
 }

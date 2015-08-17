@@ -31,9 +31,11 @@ public class SalvarCartaController {
     }
 
     @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
-    RedirectView salvar(@PathVariable("id") Carta carta,
-                        @RequestBody DOMSource servico,
-                        @AuthenticationPrincipal User usuario) throws Exception {
+    RedirectView salvar(
+            @PathVariable("id") Carta carta,
+            @RequestBody DOMSource servico,
+            @AuthenticationPrincipal User usuario
+    ) throws Exception {
 
         String conteudo = reformatadorXml.formata(servico);
 

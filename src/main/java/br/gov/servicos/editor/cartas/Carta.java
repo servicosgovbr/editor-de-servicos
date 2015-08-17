@@ -84,7 +84,7 @@ public class Carta {
                 repositorio.add(getCaminhoRelativo());
 
                 String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
-                repositorio.commit(mensagem, usuario, getCaminhoRelativo());
+                repositorio.commit(getCaminhoRelativo(), mensagem, usuario);
 
             } finally {
                 repositorio.push(getBranchRef());

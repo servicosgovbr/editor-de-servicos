@@ -39,7 +39,7 @@ class RemoverCartaController {
 
             try {
                 repositorio.remove(carta.getCaminhoRelativo());
-                repositorio.commit("Remove '" + carta.getId() + "'", usuario, carta.getCaminhoRelativo());
+                repositorio.commit(carta.getCaminhoRelativo(), "Remove '" + carta.getId() + "'", usuario);
             } finally {
                 repositorio.push(carta.getBranchRef());
             }
