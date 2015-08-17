@@ -4,11 +4,11 @@ var slugify = require('slugify');
 var scrollTo = require('utils/scroll-to');
 
 var item = function (texto, extra) {
-  return m('li', {
-    config: scrollTo('#' + slugify(texto))
-  }, [
+  return m('li', [
     m('span.check.ok'),
-    texto,
+    m('span', {
+      config: scrollTo('#' + slugify(texto))
+    }, texto),
     extra
   ]);
 };
