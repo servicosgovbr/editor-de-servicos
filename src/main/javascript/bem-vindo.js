@@ -13,7 +13,7 @@ module.exports = {
         return [];
       }
 
-      var f = new RegExp(this.filtro());
+      var f = new RegExp(_.trim(_.deburr(this.filtro())), 'i');
       return this.servicos().filter(function (i) {
         return f.test(i.id);
       });
