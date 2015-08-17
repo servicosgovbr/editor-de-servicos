@@ -1,3 +1,61 @@
+.alertify {
+	width: 440px;
+	border: 1px solid #F0F2F1;
+    border-radius: 4px;
+    top: 54px;
+    left: 55%;
+
+    nav {
+    	background: none;
+    	border: none;
+    }
+
+    .alertify-buttons {
+    	padding: 10px;
+    }
+
+    .alertify-message {
+    	font-family: $base-font-family;
+    	padding: 10px;
+    }
+
+    .alertify-dialog {
+    	padding: 10px;
+    }
+
+    .alertify-button {
+    	font-family: $heading-font-family;
+    	color: white;
+		text-shadow: none;
+		box-shadow: none;
+		border: none;
+		border-radius: 4px;
+		font-weight: normal;
+		outline: none;
+		margin-right: 7px;
+		margin-left: 0;
+
+		&:focus, &:active, &:hover {
+			font-family: $heading-font-family;
+			outline: none;
+			padding: 6px 15px;
+			font-weight: normal;
+			box-shadow: none;
+			text-shadow: none;
+			margin-right: 7px;
+			margin-left: 0;
+		}
+    }
+
+    .alertify-button-ok {
+		background: $verde;
+    }
+
+    .alertify-button-cancel {
+    	background: #C5C5C5;
+    }
+}
+
 .alertify-log-success {
 	font-family: $heading-font-family;
 	background: $verde;

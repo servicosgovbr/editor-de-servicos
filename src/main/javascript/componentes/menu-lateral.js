@@ -47,7 +47,12 @@ module.exports = {
     this.servico = args.servico;
 
     this.remover = function (i) {
-      this.servico().etapas().splice(i, 1);
+      alertify.confirm('Você tem certeza que deseja remover essa etapa?', function (result) {
+        if(result) {
+           this.servico().etapas().splice(i, 1);
+           m.redraw();
+        }
+      }.bind(this));
     };
   },
 
