@@ -30,7 +30,7 @@ module.exports = {
         }, [
           m('h3', 'Tipo de solicitante'),
 
-           m('button.remove.absolute', {
+          i === 0 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 

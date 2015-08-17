@@ -23,7 +23,7 @@ module.exports = {
 
       ctrl.servico().legislacoes().map(function (legislacao, i) {
         return [
-          m('button.remove.absolute', {
+          i === 0 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 

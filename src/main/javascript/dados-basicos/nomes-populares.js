@@ -23,8 +23,7 @@ module.exports = {
 
       ctrl.servico().nomesPopulares().map(function (nomesPopulares, i) {
         return [
-
-          m('button.remove.absolute', {
+          i === 0 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
