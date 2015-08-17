@@ -24,7 +24,7 @@ module.exports = function (componente) {
       return m('.relative', [
         ctrl.casos().map(function (caso, i) {
           return [
-            m('label.titulo.margin-left', [
+            m('label.titulo.margin-left.opcional', [
               m('strong', ['Caso ' + (i + 1)]),
               ': nome do caso'
               ]),
