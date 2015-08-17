@@ -128,6 +128,7 @@ describe('deve limpar >', function () {
         var etapa = limparModelo(servico).etapas()[0];
         expect(etapa.documentos()).toBeDefined();
         expect(etapa.documentos().casoPadrao()).toBeDefined();
+        expect(etapa.documentos().casoPadrao().padrao).toBe(true);
         expect(etapa.documentos().casoPadrao().campos()).toEqual(['doc']);
       });
 
@@ -150,6 +151,7 @@ describe('deve limpar >', function () {
             new Etapa({
               custos: new Custos({
                 casoPadrao: new Caso('', {
+                  padrao: true,
                   campos: [new Custo({
                     moeda: ' u$ '
                   }), new Custo({
@@ -179,6 +181,7 @@ describe('deve limpar >', function () {
 
         expect(etapa.custos()).toBeDefined();
         expect(etapa.custos().casoPadrao()).toBeDefined();
+        expect(etapa.custos().casoPadrao().padrao).toBe(true);
         expect(etapa.custos().casoPadrao().campos().length).toBe(2);
 
         var custo1 = etapa.custos().casoPadrao().campos()[0];
@@ -215,6 +218,7 @@ describe('deve limpar >', function () {
           etapas: [new Etapa({
             canaisDePrestacao: new CanaisDePrestacao({
               casoPadrao: new Caso('', {
+                padrao: true,
                 descricao: ' a ',
                 campos: [new CanalDePrestacao(), new CanalDePrestacao({
                   tipo: '   canal caso padrao  ',

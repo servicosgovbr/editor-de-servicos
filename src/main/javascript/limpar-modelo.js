@@ -1,78 +1,145 @@
 'use strict';
 
-var trimProp = function (prop) {
-  prop(_.trim(prop()));
+var modelos = require('modelos');
+
+var isBlank = _.compose(_.isEmpty, _.trim);
+var dontContains = _.negate(_.contains);
+
+var allBlank = function() {
+  return dontContains(_.map(arguments, isBlank), false);
+};
+
+var allEmpty = function() {
+  return dontContains(_.map(arguments, _.isEmpty), false);
 };
 
 var limparSolicitante = function (solicitante) {
-  [solicitante.tipo, solicitante.requisitos].forEach(trimProp);
-  return (solicitante.tipo() || solicitante.requisitos()) ? solicitante : null;
+  if (allBlank(solicitante.tipo(), solicitante.requisitos())) {
+    return null;
+  }
+  return new modelos.Solicitante({
+    tipo: _.trim(solicitante.tipo()),
+    requisitos: _.trim(solicitante.requisitos())
+  });
 };
 
 var limparCaso = function (caso, fnLimpar) {
-  caso.descricao(_.trim(caso.descricao()));
-  caso.campos(_.compact(caso.campos().map(fnLimpar)));
-  return (caso.descricao() || !_.isEmpty(caso.campos())) ? caso : null;
+  var padrao = caso.padrao;
+  var descricao = _.trim(caso.descricao());
+  var campos = _.compact(caso.campos().map(fnLimpar));
+
+  if (allEmpty(descricao, campos)) {
+    return null;
+  }
+  return new modelos.Caso(null, {
+    padrao: padrao,
+    descricao: descricao,
+    campos: campos
+  });
 };
 
 var limparCasos = function (obj, fnLimpar) {
-  obj.casoPadrao(limparCaso(obj.casoPadrao(), fnLimpar));
-  obj.outrosCasos(_.compact(obj.outrosCasos().map(function (caso) {
+  var casoPadrao = limparCaso(obj.casoPadrao(), fnLimpar);
+  var outrosCasos = _.compact(obj.outrosCasos().map(function (caso) {
     return limparCaso(caso, fnLimpar);
-  })));
-  return obj.casoPadrao() || !_.isEmpty(obj.outrosCasos()) ? obj : null;
+  }));
+
+  if (!casoPadrao && _.isEmpty(outrosCasos)) {
+    return null;
+  }
+  return {
+    casoPadrao: casoPadrao,
+    outrosCasos: outrosCasos
+  };
 };
 
 var limparDocumentos = function (documentos) {
-  return limparCasos(documentos, _.trim);
+  var config = limparCasos(documentos, _.trim);
+  return config ? new modelos.Documentos(config) : null;
 };
 
 var limparCusto = function (custo) {
-  custo.descricao(_.trim(custo.descricao()));
-  custo.moeda(_.trim(custo.moeda()).toUpperCase());
-  custo.valor(_.trim(custo.valor()));
+  var descricao = _.trim(custo.descricao());
+  var moeda = _.trim(custo.moeda()).toUpperCase();
+  var valor = _.trim(custo.valor());
 
-  return (custo.descricao() || (custo.moeda() && custo.moeda() !== 'R$') || custo.valor()) ? custo : null;
+  if (allBlank(descricao, valor) && (isBlank(moeda) || moeda === 'R$')) {
+    return null;
+  }
+  return new modelos.Custo({
+    descricao: descricao,
+    moeda: moeda,
+    valor: valor
+  });
 };
 
 var limparCustos = function (custos) {
-  return limparCasos(custos, limparCusto);
+  var config = limparCasos(custos, limparCusto);
+  return config ? new modelos.Custos(config) : null;
 };
 
 var limparCanalDePrestacao = function (canal) {
-  canal.tipo(_.trim(canal.tipo()));
-  canal.descricao(_.trim(canal.descricao()));
+  var tipo = _.trim(canal.tipo());
+  var descricao = _.trim(canal.descricao());
 
-  return (canal.tipo() || canal.descricao()) ? canal : null;
+  if (allBlank(tipo, descricao)) {
+    return null;
+  }
+  return new modelos.CanalDePrestacao({
+    tipo: tipo,
+    descricao: descricao
+  });
 };
 
 var limparCanaisDePrestacao = function (canaisDePrestacao) {
-  return limparCasos(canaisDePrestacao, limparCanalDePrestacao);
+  var config = limparCasos(canaisDePrestacao, limparCanalDePrestacao);
+  return config ? new modelos.CanaisDePrestacao(config) : null;
 };
 
 var limparEtapa = function (etapa) {
-  [etapa.titulo, etapa.descricao].forEach(trimProp);
+  var titulo = _.trim(etapa.titulo());
+  var descricao = _.trim(etapa.descricao());
+  var docs = limparDocumentos(etapa.documentos());
+  var custos = limparCustos(etapa.custos());
+  var canaisDePrestacao = limparCanaisDePrestacao(etapa.canaisDePrestacao());
 
-  etapa.documentos(limparDocumentos(etapa.documentos()));
-  etapa.custos(limparCustos(etapa.custos()));
-  etapa.canaisDePrestacao(limparCanaisDePrestacao(etapa.canaisDePrestacao()));
-
-  return (etapa.titulo() || etapa.descricao() || !_.isEmpty(etapa.documentos()) || !_.isEmpty(etapa.custos()) || !_.isEmpty(etapa.canaisDePrestacao())) ? etapa : null;
+  if (allBlank(titulo, descricao, docs, custos, canaisDePrestacao)) {
+    return null;
+  }
+  return new modelos.Etapa({
+    titulo: titulo,
+    descricao: descricao,
+    documentos: docs,
+    custos: custos,
+    canaisDePrestacao: canaisDePrestacao
+  });
 };
 
 module.exports = function (servico) {
-  [servico.nome, servico.sigla, servico.descricao].forEach(trimProp);
-
-  servico.nomesPopulares(_.compact(servico.nomesPopulares().map(_.trim)));
-  servico.solicitantes(_.compact(servico.solicitantes().map(limparSolicitante)));
-  servico.etapas(_.compact(servico.etapas().map(limparEtapa)));
-
-
   var tte = servico.tempoTotalEstimado();
-  [tte.tipo, tte.entreMinimo, tte.entreMaximo, tte.entreTipoMaximo, tte.ateMaximo, tte.ateTipoMaximo].forEach(trimProp);
 
-  servico.palavrasChave(_.compact(servico.palavrasChave().map(_.trim)));
-  servico.legislacoes(_.compact(servico.legislacoes().map(_.trim)));
-
-  return servico;
+  return new modelos.Servico({
+        nome : _.trim(servico.nome()),
+        sigla : _.trim(servico.sigla()),
+        nomesPopulares : _.compact(servico.nomesPopulares().map(_.trim)),
+        descricao : _.trim(servico.descricao()),
+        gratuidade : _.trim(servico.gratuidade()),
+        solicitantes : _.compact(servico.solicitantes().map(limparSolicitante)),
+        tempoTotalEstimado : new modelos.TempoTotalEstimado({
+            tipo : _.trim(tte.tipo()),
+            entreMinimo : _.trim(tte.entreMinimo()),
+            ateMaximo : _.trim(tte.ateMaximo()),
+            ateTipoMaximo : _.trim(tte.ateTipoMaximo()),
+            entreMaximo : _.trim(tte.entreMaximo()),
+            entreTipoMaximo : _.trim(tte.entreTipoMaximo()),
+            descricao : _.trim(tte.descricao()),
+        }),
+        etapas : _.compact(servico.etapas().map(limparEtapa)),
+        orgao : _.trim(servico.orgao()),
+        segmentosDaSociedade : servico.segmentosDaSociedade(),
+        eventosDaLinhaDaVida : servico.eventosDaLinhaDaVida(),
+        areasDeInteresse : servico.areasDeInteresse(),
+        palavrasChave : _.compact(servico.palavrasChave().map(_.trim)),
+        legislacoes : _.compact(servico.legislacoes().map(_.trim)),
+  });
 };

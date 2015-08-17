@@ -34,6 +34,7 @@ var Cabecalho = function () {
 var Caso = function (parentId, config) {
   var data = (config || {});
   this.id = id((parentId ? parentId + '-' : '') + 'caso');
+  this.padrao = data.padrao;
   this.descricao = m.prop(data.descricao || '');
   this.campos = m.prop(data.campos || []);
 };
