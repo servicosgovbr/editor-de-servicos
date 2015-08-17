@@ -12,6 +12,8 @@ module.exports = {
       this.salvando(true);
       return config.salvar().then(_.bind(function (resp) {
         this.salvando(false);
+        alertify.set({ delay: 1500 });
+        alertify.success('Serviço salvo com sucesso!');
         m.redraw();
         return resp;
       }, this));

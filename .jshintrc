@@ -14,7 +14,8 @@
       "expect",
       "window",
       "beforeEach",
-      "moment"
+      "moment",
+      "alertify"
     ],
 
     "indent": 2,

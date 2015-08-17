@@ -1,0 +1,22 @@
+.alertify-log-success {
+	font-family: $heading-font-family;
+	background: $verde;
+	text-shadow: none;
+}
+
+.alertify-log {
+	position: initial;
+}
+
+.alertify-logs {
+    top: 45px;
+    right: 28%;
+}
+
+.alertify-log-hide {
+	-webkit-transform: translate(0, -35px);
+	   -moz-transform: translate(0, -35px);
+	    -ms-transform: translate(0, -35px);
+	     -o-transform: translate(0, -35px);
+	        transform: translate(0, -35px);
+}
