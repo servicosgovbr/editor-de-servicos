@@ -1,5 +1,7 @@
 'use strict';
 
+var focus = require('focus');
+
 module.exports = function (componente) {
 
   return {
@@ -8,6 +10,7 @@ module.exports = function (componente) {
       this.caso = args.caso;
       this.padrao = !!args.padrao;
       this.titulo = args.titulo;
+      this.adicionado = this.caso().adicionado;
     },
 
     view: function (ctrl) {
@@ -19,6 +22,7 @@ module.exports = function (componente) {
       } else {
         inputNome = m('input[type=text]', {
           value: ctrl.caso().descricao(),
+          config: focus(ctrl),
           onchange: m.withAttr('value', ctrl.caso().descricao)
         });
         className = '.margin-left';

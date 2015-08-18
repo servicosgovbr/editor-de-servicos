@@ -12,7 +12,9 @@ module.exports = function (componente) {
       this.casos = args.casos;
 
       this.adicionar = function () {
-        this.casos().push(new modelos.Caso());
+        var caso = new modelos.Caso();
+        caso.adicionado = true;
+        this.casos().push(caso);
       };
 
       this.remover = function (i) {
