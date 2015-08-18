@@ -9,6 +9,7 @@ module.exports = {
 
     this.adicionar = function () {
       this.servico().etapas().push(new modelos.Etapa());
+      this.adicionado = true;
     };
   },
 
@@ -23,7 +24,8 @@ module.exports = {
           m.component(require('etapas/etapa'), {
             etapa: etapa,
             gratuidade: ctrl.servico().gratuidade,
-            indice: i
+            indice: i,
+            adicionado: ctrl.adicionado
           })
         ]);
       }),

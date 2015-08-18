@@ -6,13 +6,15 @@ module.exports = {
     this.etapa = args.etapa;
     this.gratuidade = args.gratuidade;
     this.indice = args.indice;
+    this.adicionado = args.adicionado;
   },
 
   view: function (ctrl) {
     return m('fieldset#' + ctrl.etapa.id, [
       m.component(require('etapas/titulo'), {
         titulo: ctrl.etapa.titulo,
-        indice: ctrl.indice
+        indice: ctrl.indice,
+        adicionado: ctrl.adicionado
       }),
       m.component(require('etapas/descricao'), {
         descricao: ctrl.etapa.descricao,
