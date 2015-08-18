@@ -26,7 +26,7 @@ module.exports = {
         });
       }
 
-      return _.take(servicos, 25);
+      return _.sortBy(_.take(servicos, 25), 'id');
     };
 
     this.listarServicos = _.debounce(function () {
