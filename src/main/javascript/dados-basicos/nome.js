@@ -16,7 +16,8 @@ module.exports = {
 
       m('input[type=text]', {
         onchange: m.withAttr('value', ctrl.servico().nome),
-        value: ctrl.servico().nome()
+        value: ctrl.servico().nome(),
+        autofocus: 'autofocus'
       })
     ]);
   }
