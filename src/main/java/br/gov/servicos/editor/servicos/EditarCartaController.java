@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 
+import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -27,13 +28,13 @@ class EditarCartaController {
     ) throws FileNotFoundException {
         Metadados metadados = carta.getMetadados();
 
-        metadados.getPublicado().ifPresent(r -> {
+        ofNullable(metadados.getPublicado()).ifPresent(r -> {
             response.setHeader("X-Git-Commit-Publicado", r.getHash());
             response.setHeader("X-Git-Autor-Publicado", r.getAutor());
             response.setDateHeader("X-Git-Horario-Publicado", r.getHorario().getTime());
         });
 
-        metadados.getEditado().ifPresent(r -> {
+        ofNullable(metadados.getEditado()).ifPresent(r -> {
             response.setHeader("X-Git-Commit-Editado", r.getHash());
             response.setHeader("X-Git-Autor-Editado", r.getAutor());
             response.setDateHeader("X-Git-Horario-Editado", r.getHorario().getTime());

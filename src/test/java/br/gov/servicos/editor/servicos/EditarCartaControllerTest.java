@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.util.Date;
 
 import static java.lang.String.valueOf;
-import static java.util.Optional.of;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -27,8 +26,8 @@ public class EditarCartaControllerTest {
             .withHorario(HORARIO);
 
     static final Metadados METADADOS = new Metadados()
-            .withEditado(of(REVISAO))
-            .withPublicado(of(REVISAO));
+            .withEditado(REVISAO)
+            .withPublicado(REVISAO);
 
     @Mock
     Carta carta;

@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Revisao {
+public class Revisao implements Serializable {
     String hash;
     String autor;
     Date horario;

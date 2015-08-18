@@ -100,7 +100,7 @@ public class CartaTest {
         given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
                 .willReturn(of(REVISAO));
 
-        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(empty()).withEditado(of(REVISAO))));
+        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(null).withEditado(REVISAO)));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class CartaTest {
         given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
                 .willReturn(of(REVISAO));
 
-        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(of(REVISAO)).withEditado(empty())));
+        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(REVISAO).withEditado(null)));
     }
 
     @Test

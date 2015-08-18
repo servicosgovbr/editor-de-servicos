@@ -13,8 +13,8 @@ module.exports = {
     this.servicosFiltrados = function () {
       var servicos = this.servicos();
 
-      if(this.filtrarPublicados() === true) {
-        servicos = this.servicos().filter(function(s) {
+      if (this.filtrarPublicados() === true) {
+        servicos = this.servicos().filter(function (s) {
           return s.temAlteracoesNaoPublicadas;
         });
       }
@@ -72,8 +72,8 @@ module.exports = {
           m('table', [
             m('tr', [
               m('th[width="40%"]', 'Nome'),
-              m('th.center', 'Autor'),
-              m('th.center', 'Última atualização'),
+              m('th.center', 'Publicação'),
+              m('th.center', 'Edição'),
               m('th.right', '')
             ])
           ].concat(ctrl.servicosFiltrados().map(function (s) {
@@ -85,9 +85,17 @@ module.exports = {
                 s.id.replace(/\.xml$/, '').replace(/-/g, ' ')
               ])),
 
-              m('td.center', s.publicado.autor),
+              m('td.center', s.publicado ? [
+                moment(s.publicado.horario).fromNow(),
+                ', por ',
+                s.publicado.autor
+              ] : '—'),
 
-              m('td.center', moment(s.publicado.horario).fromNow()),
+              m('td.center', s.editado ? [
+                moment(s.editado.horario).fromNow(),
+                ', por ',
+                s.editado.autor
+              ] : '—'),
 
               m('td.right', [
                 m('a', {

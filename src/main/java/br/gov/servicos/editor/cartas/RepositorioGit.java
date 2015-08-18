@@ -102,7 +102,6 @@ public class RepositorioGit {
         if (commit == null) {
             log.debug("Branch {} não encontrado", branch);
             return empty();
-
         }
 
         log.debug("Branch {}: {}", branch, commit.getId().getName());

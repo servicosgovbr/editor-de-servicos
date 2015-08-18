@@ -48,7 +48,6 @@ class ListarCartasController {
                 .orElse(new File[0]);
 
         return Stream.of(arquivos)
-                .parallel()
                 .map(f -> f.getName().replaceAll(".xml$", ""))
                 .map(unchecked(id -> formatter.parse(id, getDefault())))
                 .map(Carta::getMetadados)

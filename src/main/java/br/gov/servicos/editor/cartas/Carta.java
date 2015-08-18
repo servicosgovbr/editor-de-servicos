@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
@@ -25,13 +26,14 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
 
-import static br.gov.servicos.editor.config.CacheConfig.COMMITS_RECENTES;
+import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @FieldDefaults(level = PRIVATE, makeFinal = true)
+@CacheConfig(cacheNames = METADADOS, keyGenerator = "geradorDeChavesParaCacheDeCommitsRecentes")
 public class Carta {
 
     @Getter
@@ -60,15 +62,15 @@ public class Carta {
         return repositorio.getCaminhoAbsoluto().relativize(getCaminhoAbsoluto());
     }
 
-    @Cacheable(value = COMMITS_RECENTES, key = "target.id")
+    @Cacheable
     public Metadados getMetadados() {
         Optional<Revisao> master = repositorio.getRevisaoMaisRecenteDoArquivo(getCaminhoRelativo());
         Optional<Revisao> branch = repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
 
         return new Metadados()
                 .withId(id)
-                .withPublicado(master)
-                .withEditado(branch);
+                .withPublicado(master.orElse(null))
+                .withEditado(branch.orElse(null));
     }
 
     public String getConteudo() throws FileNotFoundException {
@@ -79,7 +81,7 @@ public class Carta {
         );
     }
 
-    @CacheEvict(value = COMMITS_RECENTES, key = "target.id")
+    @CacheEvict
     public void salvar(User usuario, String conteudo) {
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
             repositorio.pull();
@@ -100,7 +102,7 @@ public class Carta {
         });
     }
 
-    @CacheEvict(value = COMMITS_RECENTES, key = "target.id")
+    @CacheEvict
     public void remover(User usuario) {
         repositorio.comRepositorioAbertoNoBranch(this.getBranchRef(), () -> {
             repositorio.pull();
