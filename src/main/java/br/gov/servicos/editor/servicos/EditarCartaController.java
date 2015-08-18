@@ -27,9 +27,17 @@ class EditarCartaController {
     ) throws FileNotFoundException {
         Metadados metadados = carta.getMetadados();
 
-        response.setHeader("X-Git-Revision", metadados.getRevisao());
-        response.setHeader("X-Git-Author", metadados.getAutor());
-        response.setDateHeader("Last-Modified", metadados.getHorario().getTime());
+        metadados.getPublicado().ifPresent(r -> {
+            response.setHeader("X-Git-Commit-Publicado", r.getHash());
+            response.setHeader("X-Git-Autor-Publicado", r.getAutor());
+            response.setDateHeader("X-Git-Horario-Publicado", r.getHorario().getTime());
+        });
+
+        metadados.getEditado().ifPresent(r -> {
+            response.setHeader("X-Git-Commit-Editado", r.getHash());
+            response.setHeader("X-Git-Autor-Editado", r.getAutor());
+            response.setDateHeader("X-Git-Horario-Editado", r.getHorario().getTime());
+        });
 
         return carta.getConteudo();
     }

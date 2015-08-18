@@ -6,14 +6,20 @@ var erro = require('utils/erro-ajax');
 module.exports = {
   controller: function (args) {
     this.filtro = m.prop('');
+    this.filtrarPublicados = m.prop();
+
     this.servicos = m.prop([]);
 
     this.servicosFiltrados = function () {
-      var servicos;
+      var servicos = this.servicos();
 
-      if (_.isEmpty(_.trim(this.filtro()))) {
-        servicos = this.servicos();
-      } else {
+      if(this.filtrarPublicados() === true) {
+        servicos = this.servicos().filter(function(s) {
+          return s.temAlteracoesNaoPublicadas;
+        });
+      }
+
+      if (!_.isEmpty(_.trim(this.filtro()))) {
         var f = new RegExp(_.trim(_.deburr(this.filtro())), 'i');
         servicos = this.servicos().filter(function (i) {
           return f.test(i.id);
@@ -56,6 +62,13 @@ module.exports = {
             oninput: m.withAttr('value', ctrl.filtro)
           }),
 
+          m('label', [
+            m('input[type=checkbox]', {
+              onchange: m.withAttr('checked', ctrl.filtrarPublicados)
+            }),
+            'Somente com alterações não publicadas'
+          ]),
+
           m('table', [
             m('tr', [
               m('th[width="40%"]', 'Nome'),
@@ -72,9 +85,9 @@ module.exports = {
                 s.id.replace(/\.xml$/, '').replace(/-/g, ' ')
               ])),
 
-              m('td.center', s.autor),
+              m('td.center', s.publicado.autor),
 
-              m('td.center', moment(s.horario).fromNow()),
+              m('td.center', moment(s.publicado.horario).fromNow()),
 
               m('td.right', [
                 m('a', {

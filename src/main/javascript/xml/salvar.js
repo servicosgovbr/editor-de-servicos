@@ -1,5 +1,7 @@
 'use strict';
 
+var extrairMetadados = require('utils/extrair-metadados');
+
 module.exports = function (nome, xml, metadados) {
 
   return m.request({
@@ -18,15 +20,7 @@ module.exports = function (nome, xml, metadados) {
       return new XMLSerializer().serializeToString(svc);
     },
 
-    extract: function (xhr) {
-      metadados({
-        autor: xhr.getResponseHeader && xhr.getResponseHeader('X-Git-Author'),
-        revisao: xhr.getResponseHeader && xhr.getResponseHeader('X-Git-Revision'),
-        horario: xhr.getResponseHeader && new Date(xhr.getResponseHeader('Last-Modified'))
-      });
-
-      return xhr.responseText;
-    },
+    extract: extrairMetadados(metadados),
 
     deserialize: function (str) {
       return new DOMParser().parseFromString(str, 'application/xml');

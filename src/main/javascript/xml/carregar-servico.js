@@ -3,6 +3,7 @@
 var slugify = require('slugify');
 var importar = require('xml/importar-v3');
 var erro = require('utils/erro-ajax');
+var extrairMetadados = require('utils/extrair-metadados');
 
 var config = function (versao, id, metadados) {
   return {
@@ -14,15 +15,7 @@ var config = function (versao, id, metadados) {
       xhr.setRequestHeader('Accept', 'application/xml');
     },
 
-    extract: function (xhr) {
-      metadados({
-        autor: xhr.getResponseHeader && xhr.getResponseHeader('X-Git-Author'),
-        revisao: xhr.getResponseHeader && xhr.getResponseHeader('X-Git-Revision'),
-        horario: xhr.getResponseHeader && new Date(xhr.getResponseHeader('Last-Modified'))
-      });
-
-      return xhr.responseText;
-    },
+    extract: extrairMetadados(metadados),
 
     deserialize: function (str) {
       return new DOMParser().parseFromString(str, 'application/xml');

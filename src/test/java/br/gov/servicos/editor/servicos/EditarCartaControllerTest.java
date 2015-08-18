@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.util.Date;
 
 import static java.lang.String.valueOf;
+import static java.util.Optional.of;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -19,13 +20,15 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class EditarCartaControllerTest {
 
-    private static final Date HORARIO = new Date();
+    static final Date HORARIO = new Date();
 
-    private static final Metadados METADADOS = new Metadados()
-            .withId("um-id-qualquer")
-            .withRevisao("1234567890abcdef1234567890abcdef")
+    static final Revisao REVISAO = new Revisao().withHash("da39a3ee5e6b4b0d3255bfef95601890afd80709")
             .withAutor("Fulano de Tal")
             .withHorario(HORARIO);
+
+    static final Metadados METADADOS = new Metadados()
+            .withEditado(of(REVISAO))
+            .withPublicado(of(REVISAO));
 
     @Mock
     Carta carta;
@@ -46,9 +49,13 @@ public class EditarCartaControllerTest {
 
         controller.editar(carta, response);
 
-        assertThat(response.getHeader("X-Git-Revision"), is("1234567890abcdef1234567890abcdef"));
-        assertThat(response.getHeader("X-Git-Author"), is("Fulano de Tal"));
-        assertThat(response.getHeader("Last-Modified"), is(valueOf(HORARIO.getTime())));
+        assertThat(response.getHeader("X-Git-Commit-Publicado"), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+        assertThat(response.getHeader("X-Git-Autor-Publicado"), is("Fulano de Tal"));
+        assertThat(response.getHeader("X-Git-Horario-Publicado"), is(valueOf(HORARIO.getTime())));
+
+        assertThat(response.getHeader("X-Git-Commit-Editado"), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+        assertThat(response.getHeader("X-Git-Autor-Editado"), is("Fulano de Tal"));
+        assertThat(response.getHeader("X-Git-Horario-Editado"), is(valueOf(HORARIO.getTime())));
     }
 
     @Test

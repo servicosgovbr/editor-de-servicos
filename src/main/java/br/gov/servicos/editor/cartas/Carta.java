@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
+import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
@@ -61,17 +62,13 @@ public class Carta {
 
     @Cacheable(value = COMMITS_RECENTES, key = "target.id")
     public Metadados getMetadados() {
-        Optional<Metadados> commit = repositorio.getCommitMaisRecenteDoArquivo(getCaminhoRelativo());
-        if (commit.isPresent()) {
-            return commit.get().withId(id);
-        }
+        Optional<Revisao> master = repositorio.getRevisaoMaisRecenteDoArquivo(getCaminhoRelativo());
+        Optional<Revisao> branch = repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
 
-        commit = repositorio.getCommitMaisRecenteDoBranch(getBranchRef());
-        if (commit.isPresent()) {
-            return commit.get().withId(id);
-        }
-
-        throw new RuntimeException("Não foi possível determinar a última revisão da carta '" + id + "'");
+        return new Metadados()
+                .withId(id)
+                .withPublicado(master)
+                .withEditado(branch);
     }
 
     public String getConteudo() throws FileNotFoundException {

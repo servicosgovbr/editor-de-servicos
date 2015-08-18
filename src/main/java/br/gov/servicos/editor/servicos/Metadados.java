@@ -1,14 +1,14 @@
 package br.gov.servicos.editor.servicos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
-import org.eclipse.jgit.revwalk.RevCommit;
 
-import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Wither
@@ -17,13 +17,21 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Metadados {
     String id;
-    String revisao;
-    String autor;
-    Date horario;
 
-    public Metadados(RevCommit commit) {
-        this.revisao = commit.getId().getName();
-        this.autor = commit.getAuthorIdent().getName();
-        this.horario = commit.getAuthorIdent().getWhen();
+    Optional<Revisao> publicado;
+    Optional<Revisao> editado;
+
+    public boolean getTemAlteracoesNaoPublicadas() {
+        return publicado.map(p -> editado.map(e -> e.getHorario().after(p.getHorario())).orElse(false)).orElse(false);
+    }
+
+    @JsonProperty("publicado")
+    public Revisao getPublicadoOuNull() {
+        return publicado.orElse(null);
+    }
+
+    @JsonProperty("editado")
+    public Revisao getEditadoOuNull() {
+        return publicado.orElse(null);
     }
 }

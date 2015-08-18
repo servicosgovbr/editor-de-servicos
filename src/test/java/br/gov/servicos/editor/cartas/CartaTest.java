@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
+import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
@@ -23,6 +24,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Collections.emptyList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -34,12 +37,13 @@ import static org.mockito.Mockito.verify;
 @SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
 public class CartaTest {
 
-    public static final Date HORARIO = new Date();
+    static final Date HORARIO = new Date();
 
-    public static final Metadados METADADOS = new Metadados()
-            .withRevisao("da39a3ee5e6b4b0d3255bfef95601890afd80709")
+    static final Revisao REVISAO = new Revisao().withHash("da39a3ee5e6b4b0d3255bfef95601890afd80709")
             .withAutor("User Name")
             .withHorario(HORARIO);
+
+    static final Metadados METADADOS = new Metadados().withId("um-id-qualquer");
 
     Carta carta;
 
@@ -87,47 +91,36 @@ public class CartaTest {
 
     @Test
     public void buscaMetadadosDoUltimoCommitQuandoExisteBranch() throws Exception {
-        given(repositorio.getCommitMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
+        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
                 .willReturn(Optional.empty());
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        given(repositorio.getCommitMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
-                .willReturn(Optional.of(METADADOS));
+        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
+                .willReturn(of(REVISAO));
 
-        assertThat(carta.getMetadados(), is(METADADOS.withId("um-id-qualquer")));
+        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(empty()).withEditado(of(REVISAO))));
     }
 
     @Test
     public void buscaMetadadosDoUltimoCommitQuandoNaoExisteBranch() throws Exception {
-        given(repositorio.getCaminhoAbsoluto())
-                .willReturn(Paths.get("/um/caminho/qualquer"));
-
-        given(repositorio.getCommitMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
-                .willReturn(Optional.of(METADADOS));
-
-        assertThat(carta.getMetadados(), is(METADADOS.withId("um-id-qualquer")));
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void jogaRuntimeExceptionQuandoNaoExisteNemNoBranchNemNoArquivo() throws Exception {
-        given(repositorio.getCommitMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
-                .willReturn(Optional.empty());
+        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
+                .willReturn(empty());
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        given(repositorio.getCommitMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
-                .willReturn(Optional.empty());
+        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
+                .willReturn(of(REVISAO));
 
-        carta.getMetadados();
+        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(of(REVISAO)).withEditado(empty())));
     }
 
     @Test
     public void retornaConteudoDoArquivoNoBranch() throws Exception {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
-                .willReturn(Optional.of("<servico/>"));
+                .willReturn(of("<servico/>"));
 
         assertThat(carta.getConteudo(), is("<servico/>"));
 
@@ -135,7 +128,7 @@ public class CartaTest {
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
         given(leitorDeArquivos.ler(new File("/um/caminho/qualquer/cartas-servico/v3/servicos/um-id-qualquer.xml")))
-                .willReturn(Optional.of("<servico/>"));
+                .willReturn(of("<servico/>"));
 
         assertThat(captor.getValue().get().get(), is("<servico/>"));
     }
@@ -143,7 +136,7 @@ public class CartaTest {
     @Test
     public void retornaConteudoVazioQuandoArquivoNaoExisteNoBranch() throws Exception {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
-                .willReturn(Optional.of("<servico/>"));
+                .willReturn(of("<servico/>"));
 
         assertThat(carta.getConteudo(), is("<servico/>"));
 

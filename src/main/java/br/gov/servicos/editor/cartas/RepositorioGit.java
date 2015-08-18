@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.cartas;
 
-import br.gov.servicos.editor.servicos.Metadados;
+import br.gov.servicos.editor.servicos.Revisao;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
@@ -62,7 +62,7 @@ public class RepositorioGit {
         return raiz.getAbsoluteFile().toPath();
     }
 
-    public Optional<Metadados> getCommitMaisRecenteDoArquivo(Path caminhoRelativo) {
+    public Optional<Revisao> getRevisaoMaisRecenteDoArquivo(Path caminhoRelativo) {
         RevCommit commit = comRepositorioAbertoParaLeitura(unchecked(git -> {
 
             Repository repo = git.getRepository();
@@ -77,12 +77,17 @@ public class RepositorioGit {
             }
             return null;
         }));
-        log.debug("Arquivo {} @ master: {}", caminhoRelativo, commit.getId().getName());
 
-        return metadadosDoCommitMaisRecente(commit);
+        if (commit == null) {
+            log.debug("Arquivo {} @ master não encontrado", caminhoRelativo);
+            return empty();
+        }
+
+        log.debug("Arquivo {} @ master: {}", caminhoRelativo, commit.getId().getName());
+        return of(new Revisao(commit));
     }
 
-    public Optional<Metadados> getCommitMaisRecenteDoBranch(String branch) {
+    public Optional<Revisao> getRevisaoMaisRecenteDoBranch(String branch) {
         RevCommit commit = comRepositorioAbertoParaLeitura(unchecked(git -> {
             Repository repo = git.getRepository();
             Ref ref = repo.getRef(branch);
@@ -94,19 +99,14 @@ public class RepositorioGit {
             return new RevWalk(repo).parseCommit(ref.getObjectId());
         }));
 
-        log.debug("Branch {}: {}", branch, commit.getId().getName());
-        return metadadosDoCommitMaisRecente(commit);
-    }
-
-    private Optional<Metadados> metadadosDoCommitMaisRecente(RevCommit commit) {
         if (commit == null) {
+            log.debug("Branch {} não encontrado", branch);
             return empty();
+
         }
 
-        return of(new Metadados()
-                .withRevisao(commit.getId().getName())
-                .withAutor(commit.getAuthorIdent().getName())
-                .withHorario(commit.getAuthorIdent().getWhen()));
+        log.debug("Branch {}: {}", branch, commit.getId().getName());
+        return of(new Revisao(commit));
     }
 
     @SneakyThrows
