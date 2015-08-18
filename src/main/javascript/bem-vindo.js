@@ -10,7 +10,7 @@ module.exports = {
 
     this.servicos = m.prop([]);
 
-    this.servicosFiltrados = function () {
+    this.servicosFiltrados = _.throttle(function () {
       var servicos = this.servicos();
 
       if (this.filtrarPublicados() === true) {
@@ -26,8 +26,11 @@ module.exports = {
         });
       }
 
-      return _.sortBy(_.take(servicos, 25), 'id');
-    };
+      return _.sortBy(servicos, 'id');
+    }, 500, {
+      leading: true,
+      trailing: true
+    });
 
     this.listarServicos = _.debounce(function () {
       m.request({
