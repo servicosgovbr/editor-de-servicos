@@ -1,5 +1,7 @@
 'use strict';
 
+var focus = require('focus');
+
 module.exports = {
 
   controller: function (args) {
@@ -7,6 +9,7 @@ module.exports = {
 
     this.adicionar = function () {
       this.servico().palavrasChave().push('');
+      this.adicionado = true;
     };
 
     this.remover = function (i) {
@@ -30,6 +33,7 @@ module.exports = {
 
           m('input.inline[type=text]', {
             value: palavras,
+            config: focus(ctrl),
             onchange: function (e) {
               ctrl.servico().palavrasChave()[i] = e.target.value;
             }

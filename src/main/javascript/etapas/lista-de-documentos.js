@@ -1,5 +1,7 @@
 'use strict';
 
+var focus = require('focus');
+
 module.exports = {
 
   controller: function (args) {
@@ -7,6 +9,7 @@ module.exports = {
 
     this.adicionar = function () {
       this.documentos().push('');
+      this.adicionado = true;
     };
 
     this.remover = function (i) {
@@ -27,6 +30,7 @@ module.exports = {
 
           m('input[type=text]', {
             value: documento,
+            config: focus(ctrl),
             onchange: function (e) {
               ctrl.documentos()[i] = e.target.value;
             }

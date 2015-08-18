@@ -1,5 +1,6 @@
 'use strict';
 
+var focus = require('focus');
 var modelos = require('modelos');
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
 
     this.adicionar = function () {
       this.servico().solicitantes().push(new modelos.Solicitante());
+      this.adicionado = true;
     };
 
     this.remover = function (i) {
@@ -36,6 +38,7 @@ module.exports = {
 
             m('input[type=text]', {
             value: s.tipo(),
+            config: focus(ctrl),
             onchange: m.withAttr('value', s.tipo)
           }),
 

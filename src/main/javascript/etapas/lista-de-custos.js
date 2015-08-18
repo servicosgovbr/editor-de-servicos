@@ -1,6 +1,7 @@
 'use strict';
 
 var modelos = require('modelos');
+var focus = require('focus');
 
 module.exports = {
 
@@ -9,6 +10,7 @@ module.exports = {
 
     this.adicionar = function () {
       this.custos().push(new modelos.Custo());
+      this.adicionado = true;
     };
 
     this.remover = function (i) {
@@ -24,6 +26,7 @@ module.exports = {
         }, [
           m('input.descricao[type=text]', {
             value: custo.descricao(),
+            config: focus(ctrl),
             onchange: m.withAttr('value', custo.descricao)
           }),
           ' ',
