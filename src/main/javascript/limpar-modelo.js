@@ -57,7 +57,7 @@ var limparCasos = function (obj, fnLimpar) {
 var limparDocumentos = function (documentos) {
   var config = limparCasos(documentos, _.trim);
 
-  if(!config) {
+  if (!config) {
     return;
   }
 
@@ -83,7 +83,7 @@ var limparCusto = function (custo) {
 var limparCustos = function (custos) {
   var config = limparCasos(custos, limparCusto);
 
-  if(!config) {
+  if (!config) {
     return;
   }
 
@@ -107,7 +107,7 @@ var limparCanalDePrestacao = function (canal) {
 var limparCanaisDePrestacao = function (canaisDePrestacao) {
   var config = limparCasos(canaisDePrestacao, limparCanalDePrestacao);
 
-  if(!config) {
+  if (!config) {
     return;
   }
 

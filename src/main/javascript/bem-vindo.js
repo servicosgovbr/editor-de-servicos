@@ -9,14 +9,18 @@ module.exports = {
     this.servicos = m.prop([]);
 
     this.servicosFiltrados = function () {
-      if (this.filtro() === '') {
-        return [];
+      var servicos;
+
+      if (_.isEmpty(_.trim(this.filtro()))) {
+        servicos = this.servicos();
+      } else {
+        var f = new RegExp(_.trim(_.deburr(this.filtro())), 'i');
+        servicos = this.servicos().filter(function (i) {
+          return f.test(i.id);
+        });
       }
 
-      var f = new RegExp(_.trim(_.deburr(this.filtro())), 'i');
-      return this.servicos().filter(function (i) {
-        return f.test(i.id);
-      });
+      return _.take(servicos, 25);
     };
 
     this.listarServicos = _.debounce(function () {
@@ -46,7 +50,7 @@ module.exports = {
         m('#bem-vindo', [
           m('h2', 'Bem-vindo!'),
 
-          m('input[type=search][placeholder="Buscar"]', {
+          m('input[type=search][placeholder="Filtrar por..."]', {
             oninput: m.withAttr('value', ctrl.filtro)
           }),
 
@@ -57,7 +61,7 @@ module.exports = {
               m('th.center', 'Última atualização'),
               m('th.right', '')
             ])
-              ].concat(ctrl.servicosFiltrados().map(function (s) {
+          ].concat(ctrl.servicosFiltrados().map(function (s) {
             return m('tr', [
 
               m('td', m('a', {
