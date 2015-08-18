@@ -23,7 +23,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Collections.emptyList;
-import static java.util.Locale.getDefault;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -59,7 +58,7 @@ public class CartaTest {
     @Before
     public void setUp() throws Exception {
         carta = new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos)
-                .parse("um-id-qualquer", getDefault());
+                .carta("um-id-qualquer");
     }
 
     @Test
@@ -88,6 +87,12 @@ public class CartaTest {
 
     @Test
     public void buscaMetadadosDoUltimoCommitQuandoExisteBranch() throws Exception {
+        given(repositorio.getCommitMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
+                .willReturn(Optional.empty());
+
+        given(repositorio.getCaminhoAbsoluto())
+                .willReturn(Paths.get("/um/caminho/qualquer"));
+
         given(repositorio.getCommitMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
                 .willReturn(Optional.of(METADADOS));
 
@@ -96,9 +101,6 @@ public class CartaTest {
 
     @Test
     public void buscaMetadadosDoUltimoCommitQuandoNaoExisteBranch() throws Exception {
-        given(repositorio.getCommitMaisRecenteDoBranch("refs/heads/um-id-qualquer"))
-                .willReturn(Optional.empty());
-
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 

@@ -22,8 +22,6 @@ import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +33,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static br.gov.servicos.editor.config.CacheConfig.COMMITS_RECENTES;
 import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -65,10 +62,8 @@ public class RepositorioGit {
         return raiz.getAbsoluteFile().toPath();
     }
 
-    @Cacheable(value = COMMITS_RECENTES, keyGenerator = "chavesParaCommitMaisRecenteDoArquivo", unless = "!#result.isPresent()")
     public Optional<Metadados> getCommitMaisRecenteDoArquivo(Path caminhoRelativo) {
         RevCommit commit = comRepositorioAbertoParaLeitura(unchecked(git -> {
-            log.debug("Branch não encontrado, pegando commit mais recente do arquivo {} no master", caminhoRelativo);
 
             Repository repo = git.getRepository();
             RevWalk revWalk = new RevWalk(repo);
@@ -82,11 +77,11 @@ public class RepositorioGit {
             }
             return null;
         }));
+        log.debug("Arquivo {} @ master: {}", caminhoRelativo, commit.getId().getName());
 
         return metadadosDoCommitMaisRecente(commit);
     }
 
-    @Cacheable(value = COMMITS_RECENTES, keyGenerator = "chavesParaCommitMaisRecenteDoBranch", unless = "!#result.isPresent()")
     public Optional<Metadados> getCommitMaisRecenteDoBranch(String branch) {
         RevCommit commit = comRepositorioAbertoParaLeitura(unchecked(git -> {
             Repository repo = git.getRepository();
@@ -96,10 +91,10 @@ public class RepositorioGit {
                 return null;
             }
 
-            log.debug("Branch {} encontrado, pegando commit mais recente dele", ref);
             return new RevWalk(repo).parseCommit(ref.getObjectId());
         }));
 
+        log.debug("Branch {}: {}", branch, commit.getId().getName());
         return metadadosDoCommitMaisRecente(commit);
     }
 
@@ -215,7 +210,6 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
-    @CacheEvict(value = COMMITS_RECENTES, keyGenerator = "chavesParaCommitMaisRecenteDoArquivo")
     public void commit(Path caminho, String mensagem, User usuario) {
         PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
         log.debug("git commit: {} ({}): '{}', {}, {}",
@@ -258,13 +252,7 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
-    @CacheEvict(value = COMMITS_RECENTES, keyGenerator = "chavesParaCommitMaisRecenteDoArquivo")
     public void remove(Path caminho) {
-        if (!caminho.toFile().exists()) {
-            log.debug("Caminho {} não existe, e não pode ser removido", caminho);
-            return;
-        }
-
         git.rm().addFilepattern(caminho.toString()).call();
         log.debug("git rm {}", caminho);
     }

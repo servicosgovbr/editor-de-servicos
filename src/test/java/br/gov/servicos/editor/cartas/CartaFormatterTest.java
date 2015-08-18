@@ -16,9 +16,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CartaFactoryTest {
+public class CartaFormatterTest {
 
-    Carta.Factory factory;
+    Carta.Formatter formatter;
 
     @Mock
     LeitorDeArquivos leitorDeArquivos;
@@ -31,12 +31,12 @@ public class CartaFactoryTest {
 
     @Before
     public void setUp() throws Exception {
-        factory = new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos);
+        formatter = new Carta.Formatter(new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos));
     }
 
     @Test
     public void geraSlugComIdRecebido() throws Exception {
-        assertThat(factory.parse("Um Título", getDefault()).getId(), is("um-titulo"));
+        assertThat(formatter.parse("Um Título", getDefault()).getId(), is("um-titulo"));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class CartaFactoryTest {
         Carta carta = mock(Carta.class);
         given(carta.getId()).willReturn("um-id");
 
-        assertThat(factory.print(carta, getDefault()), is("um-id"));
+        assertThat(formatter.print(carta, getDefault()), is("um-id"));
 
     }
 }
