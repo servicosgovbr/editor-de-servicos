@@ -15,7 +15,7 @@ module.exports = {
       ]),
 
       m('input[type=text]', {
-        onchange: m.withAttr('value', ctrl.titulo),
+        onkeyup: m.withAttr('value', ctrl.titulo),
         value: ctrl.titulo()
       })
     ]);
