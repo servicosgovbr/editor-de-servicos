@@ -44,7 +44,7 @@ var config = function (element, isInitialized) {
   var e = jQuery(element);
   var fn = _.bind(atualizarStatus, e);
 
-  window.setInterval(fn, 30000);
+  window.setInterval(fn, 10000);
   fn();
 };
 
