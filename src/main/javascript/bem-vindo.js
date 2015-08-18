@@ -42,6 +42,8 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    moment.locale('pt-br');
+
     return m('#conteudo', [
       m('span.cabecalho-cor'),
       m('#wrapper', [
