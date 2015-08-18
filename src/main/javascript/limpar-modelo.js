@@ -2,20 +2,19 @@
 
 var modelos = require('modelos');
 
-var isBlank = _.compose(_.isEmpty, _.trim);
-var dontContains = _.negate(_.contains);
+var isBlank = _.flow(_.trim, _.isEmpty);
 
 var allBlank = function () {
-  return dontContains(_.map(arguments, isBlank), false);
+  return _.every(arguments, isBlank);
 };
 
 var allEmpty = function () {
-  return dontContains(_.map(arguments, _.isEmpty), false);
+  return _.every(arguments, _.isEmpty);
 };
 
 var limparSolicitante = function (solicitante) {
   if (allBlank(solicitante.tipo(), solicitante.requisitos())) {
-    return null;
+    return;
   }
   return new modelos.Solicitante({
     tipo: _.trim(solicitante.tipo()),
@@ -29,8 +28,9 @@ var limparCaso = function (caso, fnLimpar) {
   var campos = _.compact(caso.campos().map(fnLimpar));
 
   if (allEmpty(descricao, campos)) {
-    return null;
+    return;
   }
+
   return new modelos.Caso(null, {
     padrao: padrao,
     descricao: descricao,
@@ -45,8 +45,9 @@ var limparCasos = function (obj, fnLimpar) {
   }));
 
   if (!casoPadrao && _.isEmpty(outrosCasos)) {
-    return null;
+    return;
   }
+
   return {
     casoPadrao: casoPadrao,
     outrosCasos: outrosCasos
@@ -55,7 +56,12 @@ var limparCasos = function (obj, fnLimpar) {
 
 var limparDocumentos = function (documentos) {
   var config = limparCasos(documentos, _.trim);
-  return config ? new modelos.Documentos(config) : null;
+
+  if(!config) {
+    return;
+  }
+
+  return new modelos.Documentos(config);
 };
 
 var limparCusto = function (custo) {
@@ -64,8 +70,9 @@ var limparCusto = function (custo) {
   var valor = _.trim(custo.valor());
 
   if (allBlank(descricao, valor) && (isBlank(moeda) || moeda === 'R$')) {
-    return null;
+    return;
   }
+
   return new modelos.Custo({
     descricao: descricao,
     moeda: moeda,
@@ -75,7 +82,12 @@ var limparCusto = function (custo) {
 
 var limparCustos = function (custos) {
   var config = limparCasos(custos, limparCusto);
-  return config ? new modelos.Custos(config) : null;
+
+  if(!config) {
+    return;
+  }
+
+  return new modelos.Custos(config);
 };
 
 var limparCanalDePrestacao = function (canal) {
@@ -83,8 +95,9 @@ var limparCanalDePrestacao = function (canal) {
   var descricao = _.trim(canal.descricao());
 
   if (allBlank(tipo, descricao)) {
-    return null;
+    return;
   }
+
   return new modelos.CanalDePrestacao({
     tipo: tipo,
     descricao: descricao
@@ -93,7 +106,12 @@ var limparCanalDePrestacao = function (canal) {
 
 var limparCanaisDePrestacao = function (canaisDePrestacao) {
   var config = limparCasos(canaisDePrestacao, limparCanalDePrestacao);
-  return config ? new modelos.CanaisDePrestacao(config) : null;
+
+  if(!config) {
+    return;
+  }
+
+  return new modelos.CanaisDePrestacao(config);
 };
 
 var limparEtapa = function (etapa) {
@@ -104,8 +122,9 @@ var limparEtapa = function (etapa) {
   var canaisDePrestacao = limparCanaisDePrestacao(etapa.canaisDePrestacao());
 
   if (allBlank(titulo, descricao, docs, custos, canaisDePrestacao)) {
-    return null;
+    return;
   }
+
   return new modelos.Etapa({
     titulo: titulo,
     descricao: descricao,
