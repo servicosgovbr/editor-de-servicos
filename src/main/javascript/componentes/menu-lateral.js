@@ -48,9 +48,9 @@ module.exports = {
 
     this.remover = function (i) {
       alertify.confirm('Você tem certeza que deseja remover essa etapa?', function (result) {
-        if(result) {
-           this.servico().etapas().splice(i, 1);
-           m.redraw();
+        if (result) {
+          this.servico().etapas().splice(i, 1);
+          m.redraw();
         }
       }.bind(this));
     };

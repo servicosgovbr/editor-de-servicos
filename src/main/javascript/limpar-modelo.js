@@ -5,11 +5,11 @@ var modelos = require('modelos');
 var isBlank = _.compose(_.isEmpty, _.trim);
 var dontContains = _.negate(_.contains);
 
-var allBlank = function() {
+var allBlank = function () {
   return dontContains(_.map(arguments, isBlank), false);
 };
 
-var allEmpty = function() {
+var allEmpty = function () {
   return dontContains(_.map(arguments, _.isEmpty), false);
 };
 
@@ -119,27 +119,27 @@ module.exports = function (servico) {
   var tte = servico.tempoTotalEstimado();
 
   return new modelos.Servico({
-        nome : _.trim(servico.nome()),
-        sigla : _.trim(servico.sigla()),
-        nomesPopulares : _.compact(servico.nomesPopulares().map(_.trim)),
-        descricao : _.trim(servico.descricao()),
-        gratuidade : _.trim(servico.gratuidade()),
-        solicitantes : _.compact(servico.solicitantes().map(limparSolicitante)),
-        tempoTotalEstimado : new modelos.TempoTotalEstimado({
-            tipo : _.trim(tte.tipo()),
-            entreMinimo : _.trim(tte.entreMinimo()),
-            ateMaximo : _.trim(tte.ateMaximo()),
-            ateTipoMaximo : _.trim(tte.ateTipoMaximo()),
-            entreMaximo : _.trim(tte.entreMaximo()),
-            entreTipoMaximo : _.trim(tte.entreTipoMaximo()),
-            descricao : _.trim(tte.descricao()),
-        }),
-        etapas : _.compact(servico.etapas().map(limparEtapa)),
-        orgao : _.trim(servico.orgao()),
-        segmentosDaSociedade : servico.segmentosDaSociedade(),
-        eventosDaLinhaDaVida : servico.eventosDaLinhaDaVida(),
-        areasDeInteresse : servico.areasDeInteresse(),
-        palavrasChave : _.compact(servico.palavrasChave().map(_.trim)),
-        legislacoes : _.compact(servico.legislacoes().map(_.trim)),
+    nome: _.trim(servico.nome()),
+    sigla: _.trim(servico.sigla()),
+    nomesPopulares: _.compact(servico.nomesPopulares().map(_.trim)),
+    descricao: _.trim(servico.descricao()),
+    gratuidade: _.trim(servico.gratuidade()),
+    solicitantes: _.compact(servico.solicitantes().map(limparSolicitante)),
+    tempoTotalEstimado: new modelos.TempoTotalEstimado({
+      tipo: _.trim(tte.tipo()),
+      entreMinimo: _.trim(tte.entreMinimo()),
+      ateMaximo: _.trim(tte.ateMaximo()),
+      ateTipoMaximo: _.trim(tte.ateTipoMaximo()),
+      entreMaximo: _.trim(tte.entreMaximo()),
+      entreTipoMaximo: _.trim(tte.entreTipoMaximo()),
+      descricao: _.trim(tte.descricao()),
+    }),
+    etapas: _.compact(servico.etapas().map(limparEtapa)),
+    orgao: _.trim(servico.orgao()),
+    segmentosDaSociedade: servico.segmentosDaSociedade(),
+    eventosDaLinhaDaVida: servico.eventosDaLinhaDaVida(),
+    areasDeInteresse: servico.areasDeInteresse(),
+    palavrasChave: _.compact(servico.palavrasChave().map(_.trim)),
+    legislacoes: _.compact(servico.legislacoes().map(_.trim)),
   });
 };
