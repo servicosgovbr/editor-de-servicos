@@ -60,7 +60,7 @@ var limparDocumentos = function (documentos) {
 
 var limparCusto = function (custo) {
   var descricao = _.trim(custo.descricao());
-  var moeda = _.trim(custo.moeda()).toUpperCase();
+  var moeda = _.trim(custo.moeda());
   var valor = _.trim(custo.valor());
 
   if (allBlank(descricao, valor) && (isBlank(moeda) || moeda === 'R$')) {
