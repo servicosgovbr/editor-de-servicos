@@ -6,7 +6,8 @@ module.exports = {
     this.etapa = args.etapa;
     this.gratuidade = args.gratuidade;
     this.indice = args.indice;
-    this.adicionado = args.adicionado;
+    this.adicionado = args.ctrl.adicionado;
+    args.ctrl.adicionado = false;
   },
 
   view: function (ctrl) {

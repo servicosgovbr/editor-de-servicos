@@ -25,7 +25,7 @@ module.exports = {
             etapa: etapa,
             gratuidade: ctrl.servico().gratuidade,
             indice: i,
-            adicionado: ctrl.adicionado
+            ctrl: ctrl
           })
         ]);
       }),
