@@ -26,9 +26,10 @@ var atualizarStatus = function () {
   m.request({
     url: '/editar/api/ping',
     extract: function (xhr) {
-      if (/\/editar\/login/.test(xhr.responseURL)) {
-        return '{"login": null}';
+      if (xhr.status === 0 || /\/editar\/login/.test(xhr.responseURL)) {
+        return '{}';
       }
+
       return xhr.responseText;
     },
     background: true
