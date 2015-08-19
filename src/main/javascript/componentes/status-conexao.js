@@ -13,13 +13,13 @@ var httpOk = function (resp) {
 };
 
 var httpError = function (resp) {
-  this.attr('class', 'fa fa-circle nok')
+  this.attr('class', 'fa fa-spinner fa-spin')
     .attr('title', 'Conexão perdida')
-    .html('');
+    .html('Você esta sem conexão com a internet');
 };
 
 var atualizarStatus = function () {
-  this.attr('class', 'fa fa-spinner fa-spin')
+  this.attr('class', '')
     .attr('title', 'Verificando conexão')
     .html('');
 
