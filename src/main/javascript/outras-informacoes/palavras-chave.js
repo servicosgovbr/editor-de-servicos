@@ -27,7 +27,7 @@ module.exports = {
 
       ctrl.servico().palavrasChave().map(function (palavras, i) {
         return [
-          i === 0 ? '' : m('button.remove.absolute', {
+          ctrl.servico().palavrasChave().length === 1 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 

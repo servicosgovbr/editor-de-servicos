@@ -35,7 +35,7 @@ module.exports = {
             m.component(require('tooltips').tipoSolicitante)
           ]),
 
-          i === 0 ? '' : m('button.remove.absolute', {
+          ctrl.servico().solicitantes().length === 1 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 

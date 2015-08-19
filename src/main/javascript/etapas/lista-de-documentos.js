@@ -24,7 +24,7 @@ module.exports = {
           key: documento.id
         }, [
 
-          i === 0 ? '' : m('button.remove.absolute', {
+          ctrl.documentos().length === 1 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 

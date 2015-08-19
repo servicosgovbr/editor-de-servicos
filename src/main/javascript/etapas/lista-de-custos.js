@@ -42,7 +42,7 @@ module.exports = {
             onchange: m.withAttr('value', custo.valor)
           }),
           ' ',
-          i === 0 ? m('') : m('button.remove', {
+          ctrl.custos().length === 1 ? m('') : m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [m('span')])
         ]);

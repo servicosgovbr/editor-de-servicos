@@ -30,7 +30,7 @@ module.exports = {
             prop: ctrl.canaisDePrestacao()[i].tipo
           }),
 
-          i === 0 ? '' : m('button.remove', {
+          ctrl.canaisDePrestacao().length === 1 ? '' : m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [m('span')]),
 

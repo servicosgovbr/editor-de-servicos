@@ -19,6 +19,7 @@
     &:hover {
       @extend .fa-trash;
      color: $vermelho;
+     background-color: transparent;
     }
   }
 
