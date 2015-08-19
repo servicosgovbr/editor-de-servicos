@@ -2,7 +2,7 @@
 
 var httpOk = function (resp) {
   if (resp.login) {
-    this.attr('class', 'fa fa-circle ok')
+    this.attr('class', '')
       .attr('title', 'Conexão estabelecida')
       .html('');
 
