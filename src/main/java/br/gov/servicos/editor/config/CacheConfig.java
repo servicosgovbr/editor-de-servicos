@@ -16,11 +16,17 @@ import static java.util.Arrays.asList;
 public class CacheConfig {
 
     public static final String METADADOS = "metadados";
+    public static final String ORGAOS = "orgaos";
+    public static final String VCGE = "vcge";
 
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager manager = new SimpleCacheManager();
-        manager.setCaches(asList(new ConcurrentMapCache(METADADOS)));
+        manager.setCaches(asList(
+                new ConcurrentMapCache(METADADOS),
+                new ConcurrentMapCache(ORGAOS),
+                new ConcurrentMapCache(VCGE)
+        ));
         return manager;
     }
 

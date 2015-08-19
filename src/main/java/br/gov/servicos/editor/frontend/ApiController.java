@@ -2,14 +2,14 @@ package br.gov.servicos.editor.frontend;
 
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 
@@ -20,20 +20,31 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/editar/api")
 class ApiController {
 
+    VCGE vcge;
+    Orgaos orgaos;
+
+    @Autowired
+    public ApiController(VCGE vcge, Orgaos orgaos) {
+        this.vcge = vcge;
+        this.orgaos = orgaos;
+    }
+
     @RequestMapping("/ping")
     @ResponseBody
     Ping ping(@AuthenticationPrincipal User user) {
         return new Ping(user.getUsername(), new Date().getTime());
     }
 
-    @Cacheable("orgaos")
+    @RequestMapping("/vcge")
+    @ResponseBody
+    String vcge() {
+        return vcge.get();
+    }
+
     @RequestMapping("/orgaos")
     @ResponseBody
     String orgaos() {
-        ResponseEntity<String> entity = new RestTemplate()
-                .getForEntity("http://estruturaorganizacional.dados.gov.br/doc/orgao-entidade/resumida.json", String.class);
-
-        return entity.getBody();
+        return orgaos.get();
     }
 
     @Data
@@ -42,4 +53,5 @@ class ApiController {
         String login;
         Long horario;
     }
+
 }

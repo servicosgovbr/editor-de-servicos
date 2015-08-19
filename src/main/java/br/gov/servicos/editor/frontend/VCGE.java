@@ -1,0 +1,33 @@
+package br.gov.servicos.editor.frontend;
+
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import static lombok.AccessLevel.PRIVATE;
+
+@Slf4j
+@Component
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+public class VCGE {
+
+    public static final String URL = "http://www.governoeletronico.gov.br/biblioteca/arquivos/vcge-2-0-3-no-formato-json";
+
+    RestTemplate rest;
+
+    @Autowired
+    public VCGE(RestTemplate rest) {
+        this.rest = rest;
+    }
+
+    @Cacheable("vcge")
+    public String get() {
+        log.info("Requisitando estrutura do VCGE...");
+        return rest.getForEntity(URL, String.class).getBody();
+    }
+}
