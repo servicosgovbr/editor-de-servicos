@@ -38,21 +38,6 @@ header {
     margin-right: -1px;
     line-height: 2.25em;
 
-    #status-conexao .mensagem {
-      margin-left: .5em;
-      color: $branco;
-      font-size: 90%;
-
-      a {
-        text-decoration: none;
-        color: $branco;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-
     #salvar {
       float: right;
       margin-top: em(2);
@@ -86,5 +71,27 @@ header {
         background-color: $azul-escuro;
       }
     }
+  }
+}
+
+.mensagem {
+  position: absolute;
+  top: 55px;
+  color: $branco;
+  padding: 0 12px;
+  border-radius: 4px;
+  font-family: $heading-font-family;
+  font-weight: normal;
+  font-size: 14px;
+  margin-left: 163px;
+
+
+  &.erro {
+    background: $vermelho-regular;
+  }
+
+  a {
+    text-decoration: underline;
+    color: $branco;
   }
 }
