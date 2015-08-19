@@ -15,7 +15,7 @@ module.exports = {
       ]),
 
       m.component(require('componentes/editor-markdown'), {
-        rows: 5,
+        rows: 3,
         oninput: m.withAttr('value', ctrl.descricao),
         value: ctrl.descricao()
       })
