@@ -45,7 +45,7 @@ module.exports = {
           m('h3.opcional', 'Requisitos necessários para o solicitante'),
 
           m.component(require('componentes/editor-markdown'), {
-            rows: 5,
+            rows: 3,
             value: s.requisitos(),
             onchange: m.withAttr('value', s.requisitos)
           })
