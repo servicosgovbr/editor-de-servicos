@@ -28,7 +28,7 @@ module.exports = function (componente) {
           return [
             m('label.titulo.margin-left.opcional', [
               m('strong', ['Caso ' + (i + 1)]),
-              ': nome do caso', 
+              ': nome do caso',
               m.component(require('tooltips').caso)
               ]),
 
