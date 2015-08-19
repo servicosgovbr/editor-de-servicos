@@ -30,7 +30,10 @@ module.exports = {
         return m('fieldset#' + s.id + '.relative', {
           key: s.id
         }, [
-          m('h3', 'Tipo de solicitante'),
+          m('h3', [
+            'Tipo de solicitante',
+            m.component(require('tooltips').tipoSolicitante)
+          ]),
 
           i === 0 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
@@ -42,7 +45,10 @@ module.exports = {
             onchange: m.withAttr('value', s.tipo)
           }),
 
-          m('h3.opcional', 'Requisitos necessários para o solicitante'),
+          m('h3.opcional', [
+            'Requisitos necessários para o solicitante',
+             m.component(require('tooltips').requisitosSolicitante)
+          ]),
 
           m.component(require('componentes/editor-markdown'), {
             rows: 3,

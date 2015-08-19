@@ -29,4 +29,8 @@ module.exports = {
   areasDeInteresse: t('Escolha uma ou mais áreas de interesse (VCGE) relacionadas a este serviço.'),
   palavrasChave: t('Escreva pelo menos três palavras-chave relacionadas a este serviço.'),
   legislacoes: t('Insira o link da legislação a partir do site LexML (www.lexml.gov.br).'),
+  tipoSolicitante: t(''),
+  requisitosSolicitante: t(''),
+  caso: t(''),
+  etapas: t('')
 };

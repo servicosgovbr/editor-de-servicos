@@ -15,7 +15,10 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#etapas-do-servico', [
-      m('h2', 'etapas do serviço'),
+      m('h2', [
+        'etapas do serviço',
+        m.component(require('tooltips').etapas)
+      ]),
 
       ctrl.servico().etapas().map(function (etapa, i) {
         return m('span', {
