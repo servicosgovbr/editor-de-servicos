@@ -38,21 +38,39 @@ header {
     margin-right: -1px;
     line-height: 2.25em;
 
-    #salvar {
+    #salvar, #publicar, #visualizar {
       float: right;
-      margin-top: em(6);
+      margin-top: em(2);
       color: $branco;
       margin-right: 1em;
       font-size: 14px;
-    }
-
-    #salvar {
       background-color: $verde;
+      border-bottom: 2px solid #199772;
+      border-right: 2px solid #199772;
+      border-top: 3px solid $verde; 
+      padding-bottom: 9px;
+      margin-left: -6px;
 
       &:hover {
-        background-color: darken($verde, 10%);
+        background-color: #199772;
+        border-top: 3px solid #199772; 
       }
     }
+      #publicar, #visualizar {
+        background-color: #2355b1;
+        border-bottom: 2px solid #244e9d;
+        border-right: 2px solid #244e9d;
+        border-top: 3px solid #2355b1; 
+
+        &:hover {
+          background-color: #244e9d;
+          border-top: 3px solid #244e9d; 
+        }
+      }
+
+
+
+
   }
 
   #logout {
