@@ -5,21 +5,34 @@ var importarXml = require('xml/importar-v3');
 var exportarXml = require('xml/exportar');
 var salvarXml = require('xml/salvar');
 var slugify = require('slugify');
+var limparModelo = require('limpar-modelo');
 var carregarServico = require('xml/carregar-servico');
+var validador = require('validador');
+var mensagemErro = require('mensagens-erro');
 
 module.exports = function (servico) {
   return {
     controller: function () {
       this.cabecalho = new modelos.Cabecalho();
       this.servico = servico || carregarServico(m.route.param('id'), this.cabecalho);
+      this.validador = new m.validator(validador);
 
       this.salvar = function () {
-        var erro = require('utils/erro-ajax');
+        servico = limparModelo(this.servico());
+        
+        this.validador.validate(servico);
+        if (this.validador.hasErrors()) {
+          var erro = mensagemErro(this.validador.hasError('nome'));
+          this.validador.clearErrors();
 
-        return salvarXml(slugify(this.servico().nome()), exportarXml(this.servico()), this.cabecalho.metadados)
-          .then(importarXml, erro)
-          .then(this.servico, erro)
-          .then(_.bind(this.cabecalho.limparErro, this.cabecalho), erro);
+          return m.deferred().reject(erro).promise;
+        }
+
+        var onAjaxError = require('utils/erro-ajax');
+        return salvarXml(slugify(servico.nome()), exportarXml(servico), this.cabecalho.metadados)
+          .then(importarXml, onAjaxError)
+          .then(this.servico, onAjaxError)
+          .then(_.bind(this.cabecalho.limparErro, this.cabecalho), onAjaxError);
       };
     },
 

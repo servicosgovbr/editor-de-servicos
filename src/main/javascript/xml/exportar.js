@@ -1,7 +1,5 @@
 'use strict';
 
-var limparModelo = require('limpar-modelo');
-
 var cdata = function (doc, selector) {
   _(doc.querySelectorAll(selector)).each(function (el) {
     var content = _(el.childNodes).map(function (cn) {
@@ -101,8 +99,6 @@ var xmlDoc = function (ns) {
 };
 
 module.exports = function (servico) {
-  servico = limparModelo(servico);
-
   var doc = xmlDoc('http://servicos.gov.br/v3/schema');
 
   m.render(doc, m('servico', {

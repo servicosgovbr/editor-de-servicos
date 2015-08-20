@@ -7,17 +7,22 @@ module.exports = {
       salvar: _.noop
     }, args);
 
+    alertify.set({
+      delay: 1500
+    });
+
     this.salvando = m.prop(false);
     this.salvar = function () {
       this.salvando(true);
       return config.salvar().then(_.bind(function (resp) {
         this.salvando(false);
-        alertify.set({
-          delay: 1500
-        });
         alertify.success('Serviço salvo com sucesso!');
         m.redraw();
         return resp;
+      }, this), _.bind(function(erro) {
+        this.salvando(false);
+        alertify.error(erro);
+        m.redraw();
       }, this));
     };
   },
