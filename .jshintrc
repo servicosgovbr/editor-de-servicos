@@ -15,8 +15,7 @@
       "window",
       "beforeEach",
       "moment",
-      "alertify",
-      "console"
+      "alertify"
     ],
 
     "indent": 2,
