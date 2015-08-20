@@ -23,7 +23,7 @@ describe('validação >', function () {
       validadorServico.validate(new modelos.Servico());
 
       expect(validadorServico.hasErrors()).toBe(1);
-      expect(validadorServico.hasError('nome')).toBe('Nome do serviço é obrigatório');
+      expect(validadorServico.hasError('nome')).toBe('nome-obrigatorio');
     });
 
     it('deve impedir salvamento de nome > 150', function () {
@@ -32,7 +32,7 @@ describe('validação >', function () {
       }));
 
       expect(validadorServico.hasErrors()).toBe(1);
-      expect(validadorServico.hasError('nome')).toBe('Nome do serviço pode conter no máximo 150 caracteres');
+      expect(validadorServico.hasError('nome')).toBe('nome-max-150');
     });
 
   });
