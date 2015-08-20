@@ -1,11 +1,13 @@
 'use strict';
 
 var xhr = require('lib/mithril-fake-xhr')(window);
-var editor = require('editor-de-servicos');
+var Editor = require('editor-de-servicos');
 
 describe('editor', function () {
 
+  var editor;
   beforeEach(function () {
+    editor = new Editor();
     m.route.param = function () {
       return 'ola-mundo';
     };
