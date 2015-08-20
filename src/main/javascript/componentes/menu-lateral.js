@@ -47,6 +47,8 @@ module.exports = {
     this.servico = args.servico;
 
     this.remover = function (i) {
+      alertify.labels.cancel = 'Cancelar';
+      alertify.labels.ok = 'Remover';
       alertify.confirm('Você tem certeza que deseja remover essa etapa?', function (result) {
         if (result) {
           this.servico().etapas().splice(i, 1);
