@@ -15,6 +15,7 @@ var language = {
 
     return message;
   },
+
   inputTooShort: function (args) {
     var remainingChars = args.minimum - args.input.length;
 
@@ -22,9 +23,11 @@ var language = {
 
     return message;
   },
+
   loadingMore: function () {
     return 'Carregando mais resultados…';
   },
+
   maximumSelected: function (args) {
     var message = 'Você só pode selecionar ' + args.maximum + ' ite';
 
@@ -36,9 +39,11 @@ var language = {
 
     return message;
   },
+
   noResults: function () {
     return 'Nenhum resultado encontrado.';
   },
+
   searching: function () {
     return 'Buscando…';
   }
