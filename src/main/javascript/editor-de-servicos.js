@@ -22,10 +22,12 @@ module.exports = function (servico) {
         
         this.validador.validate(servico);
         if (this.validador.hasErrors()) {
-          var erro = mensagemErro(this.validador.hasError('nome'));
+          var erros = [];
+          erros.push(mensagemErro(this.validador.hasError('nome')));
+          erros.push(mensagemErro(this.validador.hasError('sigla')));
           this.validador.clearErrors();
 
-          return m.deferred().reject(erro).promise;
+          return m.deferred().reject(erros.join('\n')).promise;
         }
 
         var onAjaxError = require('utils/erro-ajax');
