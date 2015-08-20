@@ -15,7 +15,7 @@ var httpOk = function (resp) {
 var httpError = function (resp) {
   this.attr('class', 'mensagem erro')
     .attr('title', 'Conexão perdida')
-    .html('Você está sem conexão com a internet');
+    .html('Sua internet está fora do ar. Tentando reconectar <span class="fa fa-spinner fa-spin"></span>');
 };
 
 var atualizarStatus = function () {
