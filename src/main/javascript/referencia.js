@@ -4,123 +4,6 @@ var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
 
 module.exports = {
-  areasDeInteresse: [
-    'Administração',
-    'Compras governamentais',
-    'Fiscalização do Estado',
-    'Normalização e Qualidade',
-    'Operações de dívida pública',
-    'Orçamento',
-    'Patrimônio',
-    'Planejamento',
-    'Recursos humanos',
-    'Serviços Públicos',
-    'Outros em Administração',
-    'Agropecuária',
-    'Abastecimento',
-    'Defesa agropecuária',
-    'Produção agropecuária',
-    'Outros em Agropecuária',
-    'Comércio e Serviços',
-    'Comercio externo',
-    'Defesa do Consumidor',
-    'Turismo',
-    'Outros em Comércio e serviços',
-    'Comunicações',
-    'Comunicações Postais',
-    'Telecomunicações',
-    'Outros em Comunicações',
-    'Cultura',
-    'Difusão Cultural',
-    'Patrimônio Cultural',
-    'Outros em Cultura',
-    'Defesa Nacional',
-    'Defesa Civil',
-    'Defesa militar',
-    'Outros em Defesa Nacional',
-    'Economia e Finanças',
-    'Politica econômica',
-    'Sistema Financeiro',
-    'Outros em Economia e Finanças',
-    'Educação',
-    'Educação básica',
-    'Educação profissionalizante',
-    'Educação superior',
-    'Outros em Educação',
-    'Energia',
-    'Combustíveis',
-    'Energia elétrica',
-    'Outros em Energia',
-    'Esporte e Lazer',
-    'Esporte comunitário',
-    'Esporte profissional',
-    'Lazer',
-    'Outros em Esporte e Lazer',
-    'Habitação',
-    'Habitação Rural',
-    'Habitação Urbana',
-    'Outros em Habitação',
-    'Indústria',
-    'Mineração',
-    'Produção Industrial',
-    'Propriedade Industrial',
-    'Outros em Industria',
-    'Meio ambiente',
-    'Água',
-    'Biodiversidade',
-    'Clima',
-    'Preservação e Conservação Ambiental',
-    'Outros em Meio Ambiente',
-    'Pesquisa e Desenvolvimento',
-    'Difusão',
-    'Outros em Pesquisa e Desenvolvimento',
-    'Previdência Social',
-    'Previdência Básica',
-    'Previdência Complementar',
-    'Outros em Previdência',
-    'Proteção social',
-    'Assistência à Criança e ao Adolescente',
-    'Assistência ao Idoso',
-    'Assistência ao Portador de Deficiência',
-    'Combate a desigualdade',
-    'Cidadania',
-    'Outros em Proteção Social',
-    'Relações Internacionais',
-    'Cooperação Internacional',
-    'Relações Diplomáticas',
-    'Outros em Relações Internacionais',
-    'Saneamento',
-    'Saneamento Básico Rural',
-    'Saneamento Básico Urbano',
-    'Outros em Saneamento',
-    'Saúde',
-    'Assistência Hospitalar e Ambulatorial',
-    'Atendimento básico',
-    'Combate a epidemias',
-    'Medicamentos e aparelhos',
-    'Vigilância Sanitária',
-    'Outros em Saúde',
-    'Segurança e Ordem Pública',
-    'Defesa Civil',
-    'Policiamento',
-    'Outros em Segurança e Ordem Pública',
-    'Trabalho',
-    'Empregabilidade',
-    'Fomento ao Trabalho',
-    'Proteção e Benefícios ao Trabalhador',
-    'Relações de Trabalho',
-    'Outros em Trabalho',
-    'Transportes',
-    'Transporte Aéreo',
-    'Transporte Ferroviário',
-    'Transporte Hidroviário',
-    'Transporte Rodoviário',
-    'Outros em Transporte',
-    'Urbanismo',
-    'Infraestrutura urbana',
-    'Serviços Urbanos',
-    'Outros em Urbanismo'
-  ],
 
   segmentosDaSociedade: [
     'Cidadãos',
@@ -172,6 +55,19 @@ module.exports = {
     };
   }),
 
+  areasDeInteresse: _.once(m.request({
+    method: 'GET',
+    url: '/editar/api/vcge'
+  }).then(function (vcge) {
+    return _.sortBy(_.compact(_.map(vcge, function (v, k) {
+      if (v.prefLabel) {
+        return v.prefLabel[0];
+      }
+    })), function (area) {
+      return _.deburr(area);
+    });
+  }, erro)),
+
   orgaos: _.once(m.request({
     method: 'GET',
     url: '/editar/api/orgaos'
@@ -183,7 +79,7 @@ module.exports = {
         text: nome
       };
     }), function (o) {
-      return o.text;
+      return o.id;
     });
   }, erro))
 
