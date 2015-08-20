@@ -13,9 +13,9 @@ var httpOk = function (resp) {
 };
 
 var httpError = function (resp) {
-  this.attr('class', 'fa fa-spinner fa-spin')
+  this.attr('class', 'mensagem erro')
     .attr('title', 'Conexão perdida')
-    .html('Você esta sem conexão com a internet');
+    .html('Você está sem conexão com a internet');
 };
 
 var atualizarStatus = function () {
