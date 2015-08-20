@@ -68,26 +68,29 @@ header {
         }
       }
 
-
+      #salvar {
+        margin-right: 30px;
+      }
 
 
   }
 
   #logout {
     @include span-columns(1 of 12);
-    margin-top: em(4);
+    margin-top: em(6);
     line-height: 2.25em;
     float: right;
+    font-size: 14px;
 
     > button {
       @include fill-parent;
       line-height: 2.25em;
-      padding: 0;
       margin: 0;
       color: $branco;
+      padding: 0;
 
       &:hover {
-        background-color: $azul-escuro;
+        background-color: $azul-escuro;  
       }
     }
   }
