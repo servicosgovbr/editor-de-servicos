@@ -29,21 +29,21 @@ module.exports = function (servico) {
       };
 
       return m('#conteudo', [
-      m('span.cabecalho-cor'),
-      m('#wrapper', [
-        m.component(require('componentes/cabecalho'), {
+        m('span.cabecalho-cor'),
+        m('#wrapper', [
+          m.component(require('componentes/cabecalho'), {
             salvar: _.bind(ctrl.salvar, ctrl),
             cabecalho: ctrl.cabecalho
           }),
-        m.component(require('componentes/menu-lateral'), binding),
+          m.component(require('componentes/menu-lateral'), binding),
 
-        m('#servico', m('.scroll', [
-          m.component(require('componentes/dados-basicos'), binding),
-          m.component(require('componentes/solicitantes'), binding),
-          m.component(require('componentes/etapas'), binding),
-          m.component(require('componentes/outras-informacoes'), binding),
-        ]))
-      ])
+          m('#servico', m('.scroll', [
+            m.component(require('componentes/dados-basicos'), binding),
+            m.component(require('componentes/solicitantes'), binding),
+            m.component(require('componentes/etapas'), binding),
+            m.component(require('componentes/outras-informacoes'), binding),
+          ]))
+        ])
     ]);
     }
   };

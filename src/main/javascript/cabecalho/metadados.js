@@ -39,12 +39,12 @@ module.exports = {
           m.trust('&nbsp; Salvar')
         ]),
 
-      m('button#visualizar',[
+      m('button#visualizar', [
           m('i.fa.fa-eye'),
           m.trust('&nbsp; Visualizar')
         ]),
 
-      m('button#publicar',[
+      m('button#publicar', [
           m('i.fa.fa-tv'),
           m.trust('&nbsp; Publicar')
         ]),
