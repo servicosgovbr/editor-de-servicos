@@ -19,7 +19,7 @@ module.exports = {
         alertify.success('Serviço salvo com sucesso!');
         m.redraw();
         return resp;
-      }, this), _.bind(function(erro) {
+      }, this), _.bind(function (erro) {
         this.salvando(false);
         alertify.error(erro);
         m.redraw();

@@ -37,7 +37,7 @@ describe('editor', function () {
     expect(response.count).toBe(1);
   });
 
-  it('deve validar e impedir salvamento', function() {
+  it('deve validar e impedir salvamento', function () {
     var ctrl = new editor.controller();
     ctrl.salvar();
 

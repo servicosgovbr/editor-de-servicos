@@ -19,7 +19,7 @@ module.exports = function (servico) {
 
       this.salvar = function () {
         servico = limparModelo(this.servico());
-        
+
         this.validador.validate(servico);
         if (this.validador.hasErrors()) {
           var erros = [];
