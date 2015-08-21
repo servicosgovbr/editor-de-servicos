@@ -101,7 +101,6 @@ var xmlDoc = function (ns) {
 module.exports = function (servico) {
   var doc = xmlDoc('http://servicos.gov.br/v3/schema');
 
-  window.console.log(servico.nome());
   m.render(doc, m('servico', {
     'xmlns': 'http://servicos.gov.br/v3/schema',
     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
