@@ -1,6 +1,6 @@
 'use strict';
 
-var validador = require('validador');
+var validador = require('validacoes');
 
 describe('validação >', function () {
   describe('servico >', function () {

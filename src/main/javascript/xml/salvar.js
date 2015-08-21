@@ -1,9 +1,14 @@
 'use strict';
 
+var slugify = require('slugify');
+var limparModelo = require('limpar-modelo');
 var extrairMetadados = require('utils/extrair-metadados');
+var mensagemErro = require('mensagens-erro');
+var importarXml = require('xml/importar-v3');
+var exportarXml = require('xml/exportar');
+var validacoes = require('validacoes');
 
-module.exports = function (nome, xml, metadados) {
-
+function postarServico(nome, xml, metadados) {
   return m.request({
 
     method: 'POST',
@@ -27,5 +32,37 @@ module.exports = function (nome, xml, metadados) {
     },
 
   });
+}
 
+function validarServico(servico) {
+
+  var validador = new m.validator(validacoes);
+  validador.validate(servico);
+
+  if (validador.hasErrors()) {
+
+    var erros = [];
+    erros.push(mensagemErro(validador.hasError('nome')));
+    erros.push(mensagemErro(validador.hasError('sigla')));
+    validador.clearErrors();
+
+    return erros;
+  }
+  return [];
+}
+
+module.exports = function (servicoProp, metadados) {
+  var servico = limparModelo(servicoProp());
+
+  var erros = validarServico(servico);
+  if (erros.length > 0) {
+    return m.deferred().reject(erros.join('\n')).promise;
+  }
+
+  var xml = exportarXml(servico);
+  var onAjaxError = require('utils/erro-ajax');
+
+  return postarServico(slugify(servico.nome()), xml, metadados)
+    .then(importarXml, onAjaxError)
+    .then(servicoProp);
 };
