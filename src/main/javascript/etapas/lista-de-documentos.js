@@ -41,7 +41,7 @@ module.exports = {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),
-        ' Adicionar documento '
+        ' Adicionar documentação '
       ])
     ]);
   }
