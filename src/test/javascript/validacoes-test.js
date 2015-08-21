@@ -25,6 +25,20 @@ describe('validação >', function () {
       expect(validador.sigla('0123456789012345')).toBe('sigla-max-15');
     });
 
+    it('nomes populares não são obrigatórios', function() {
+      expect(validador.nomesPopulares([])).toBeUndefined();
+    });
+
+    it('nomes populares devem ter no máximo 150 caracteres', function() {
+      var es = validador.nomesPopulares([_.repeat('a', 151), 'a']);
+
+      expect(es).toBeDefined();
+      expect(es.length).toBe(1);
+
+      expect(es[0].i).toBe(0);
+      expect(es[0].err).toBe('nome-pop-max-150');
+    });
+
   });
 
 });

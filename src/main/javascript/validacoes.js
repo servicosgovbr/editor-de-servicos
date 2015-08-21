@@ -1,5 +1,14 @@
 'use strict';
 
+function nomePopular(v, i) {
+  if (v.length > 150) {
+    return {
+      i: i,
+      err: 'nome-pop-max-150'
+    };
+  }
+}
+
 module.exports = {
   nome: function (nome) {
     if (!nome) {
@@ -16,5 +25,13 @@ module.exports = {
       return 'sigla-max-15';
     }
     return;
+  },
+
+  nomesPopulares: function(nomes) {
+    nomes = nomes || [];
+    var result = _.compact(_.map(nomes, nomePopular));
+    return result.length === 0
+      ? undefined
+      : result;
   }
 };
