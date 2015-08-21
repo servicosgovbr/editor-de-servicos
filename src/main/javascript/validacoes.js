@@ -29,9 +29,6 @@ module.exports = {
 
   nomesPopulares: function(nomes) {
     nomes = nomes || [];
-    var result = _.compact(_.map(nomes, nomePopular));
-    return result.length === 0
-      ? undefined
-      : result;
+    return _.compact(_.map(nomes, nomePopular));
   }
 };

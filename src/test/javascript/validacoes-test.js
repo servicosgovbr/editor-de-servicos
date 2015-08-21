@@ -26,7 +26,7 @@ describe('validação >', function () {
     });
 
     it('nomes populares não são obrigatórios', function() {
-      expect(validador.nomesPopulares([])).toBeUndefined();
+      expect(validador.nomesPopulares([]).length).toBe(0);
     });
 
     it('nomes populares devem ter no máximo 150 caracteres', function() {

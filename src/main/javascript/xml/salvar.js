@@ -44,9 +44,14 @@ function validarServico(servico) {
     var erros = [];
     erros.push(mensagemErro(validador.hasError('nome')));
     erros.push(mensagemErro(validador.hasError('sigla')));
+    validador.hasError('nomesPopulares').map(function(e) {
+      var msg = mensagemErro(e.err);
+      msg = e.i + ': ' + msg;
+      erros.push(msg);
+    });
     validador.clearErrors();
 
-    return erros;
+    return _.compact(erros);
   }
   return [];
 }
