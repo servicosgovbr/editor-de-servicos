@@ -4,8 +4,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,6 +26,11 @@ public class VCGE {
     @Cacheable("vcge")
     public String get() {
         log.info("Requisitando estrutura do VCGE...");
-        return rest.getForEntity(URL, String.class).getBody();
+        try {
+            return rest.getForEntity(URL, String.class).getBody();
+        } catch (Exception e) {
+            log.error("Erro ao requisitar lista de categorias do VCGE", e);
+            throw e;
+        }
     }
 }

@@ -72,7 +72,7 @@ module.exports = {
     method: 'GET',
     url: '/editar/api/orgaos'
   }).then(function (orgaos) {
-    return _.sortBy(orgaos.unidades.map(function (o) {
+    return _.sortBy((orgaos.unidades || []).map(function (o) {
       var nome = o.nome + ' (' + o.sigla + ')';
       return {
         id: slugify(nome),
