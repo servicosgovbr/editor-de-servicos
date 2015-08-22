@@ -18,7 +18,7 @@ describe('referencia >', function () {
     });
 
     it('deve ter uma descrição para o id de cada tipo', function () {
-      referencia.tiposDeCanalDePrestacao.map(function(tipo) {
+      referencia.tiposDeCanalDePrestacao.map(function (tipo) {
         expect(referencia.descricoesDeCanaisDePrestacao[tipo.id]).toBeDefined();
       });
     });
