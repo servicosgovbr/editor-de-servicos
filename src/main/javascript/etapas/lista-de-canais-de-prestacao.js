@@ -1,5 +1,6 @@
 'use strict';
 
+var referencia = require('referencia');
 var modelos = require('modelos');
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
   controller: function (args) {
     this.canaisDePrestacao = args.campos;
 
-    this.tiposDeCanalDePrestacao = m.prop(require('referencia').tiposDeCanalDePrestacao);
+    this.tiposDeCanalDePrestacao = m.prop(referencia.tiposDeCanalDePrestacao);
 
     this.adicionar = function () {
       this.canaisDePrestacao().push(new modelos.CanalDePrestacao());
@@ -34,7 +35,7 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [m('span')]),
 
-          m('label.titulo', ['descreva como usar este canal']),
+          m('label.titulo', referencia.descricoesDeCanaisDePrestacao[ctrl.canaisDePrestacao()[i].tipo() || 'Descreva como o cidadão deve utilizar este canal']),
           m.component(require('componentes/editor-markdown'), {
             rows: 3,
             value: canalDePrestacao.descricao(),
