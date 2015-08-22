@@ -4,40 +4,39 @@ var modelos = require('modelos');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar-servico');
 
-module.exports = function (servico) {
-  return {
-    controller: function () {
-      this.cabecalho = new modelos.Cabecalho();
-      this.servico = servico || carregarServico(m.route.param('id'), this.cabecalho);
+module.exports = {
 
-      this.salvar = function () {
-        return salvarServico(this.servico, this.cabecalho.metadados)
-          .then(_.bind(this.cabecalho.limparErro, this.cabecalho));
-      };
-    },
+  controller: function () {
+    this.cabecalho = new modelos.Cabecalho();
+    this.servico = carregarServico(m.route.param('id'), this.cabecalho);
 
-    view: function (ctrl) {
-      var binding = {
-        servico: ctrl.servico
-      };
+    this.salvar = function () {
+      return salvarServico(this.servico, this.cabecalho.metadados)
+        .then(_.bind(this.cabecalho.limparErro, this.cabecalho));
+    };
+  },
 
-      return m('#conteudo', [
-        m('span.cabecalho-cor'),
-        m('#wrapper', [
-          m.component(require('componentes/cabecalho'), {
-            salvar: _.bind(ctrl.salvar, ctrl),
-            cabecalho: ctrl.cabecalho
-          }),
-          m.component(require('componentes/menu-lateral'), binding),
+  view: function (ctrl) {
+    var binding = {
+      servico: ctrl.servico
+    };
 
-          m('#servico', m('.scroll', [
-            m.component(require('componentes/dados-basicos'), binding),
-            m.component(require('componentes/solicitantes'), binding),
-            m.component(require('componentes/etapas'), binding),
-            m.component(require('componentes/outras-informacoes'), binding),
-          ]))
-        ])
+    return m('#conteudo', [
+      m('span.cabecalho-cor'),
+      m('#wrapper', [
+        m.component(require('componentes/cabecalho'), {
+        salvar: _.bind(ctrl.salvar, ctrl),
+        cabecalho: ctrl.cabecalho
+      }),
+        m.component(require('componentes/menu-lateral'), binding),
+
+        m('#servico', m('.scroll', [
+          m.component(require('componentes/dados-basicos'), binding),
+          m.component(require('componentes/solicitantes'), binding),
+          m.component(require('componentes/etapas'), binding),
+          m.component(require('componentes/outras-informacoes'), binding),
+        ]))
+      ])
     ]);
-    }
-  };
+  }
 };
