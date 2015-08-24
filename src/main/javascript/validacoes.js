@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 var Servico = {
   nome: function (nome) {
     if (!nome) {
@@ -63,6 +61,16 @@ var Servico = {
   }
 };
 
+var TempoTotalEstimado = {
+  ateMaximo: function (maximo) {
+    if (!maximo) {
+      return 'tempo-obrigatorio';
+    }
+
+  }
+};
+
 module.exports = {
-  Servico: Servico
+  Servico: Servico,
+  TempoTotalEstimado: TempoTotalEstimado
 };

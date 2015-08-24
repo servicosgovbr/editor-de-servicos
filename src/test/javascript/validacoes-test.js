@@ -1,7 +1,9 @@
 'use strict';
 
+var modelos = require('modelos');
 var validacoes = require('validacoes');
 var ValidacoesServico = validacoes.Servico;
+var ValidacoesTempoTotalEstimado = validacoes.TempoTotalEstimado;
 
 describe('validação >', function () {
 
@@ -97,6 +99,19 @@ describe('validação >', function () {
   it('descrição deve ter no máximo 500 caracteres', function () {
     var _501 = _.repeat('s', 501);
     expect(ValidacoesServico.descricao(_501)).toBe('descricao-max-500');
+  });
+
+  describe('tempo total estimado', function() {
+    var tte;
+    beforeEach(function() {
+      tte = new modelos.TempoTotalEstimado();
+    });
+
+    it('deve preencher tempo máximo para "ate"', function() {
+      tte.tipo('ate');
+      expect(ValidacoesTempoTotalEstimado.ateMaximo(tte.ateMaximo())).toBe('tempo-obrigatorio');
+    });
+
   });
 
 });
