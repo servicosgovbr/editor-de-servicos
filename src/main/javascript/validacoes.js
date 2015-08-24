@@ -33,6 +33,15 @@ var Servico = {
     }));
   },
 
+  descricao: function (descricao) {
+    if (!descricao) {
+      return 'descricao-obrigatoria';
+    }
+    if (descricao.length > 500) {
+      return 'descricao-max-500';
+    }
+  },
+
   palavrasChave: function (palavrasChave) {
     palavrasChave = palavrasChave || [];
 

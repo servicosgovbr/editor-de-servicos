@@ -8,10 +8,10 @@ describe('validação >', function () {
   describe('servico >', function () {
 
     it('deve ter nome válido', function () {
-      expect(ValidacoesServico.nome('nome de testes')).toBeUndefined();
+      expect(ValidacoesServico.nome('nome de teste')).toBeUndefined();
     });
 
-    it('deve obrigar ter nome', function () {
+    it('nome obrigatório', function () {
       expect(ValidacoesServico.nome()).toBe('nome-obrigatorio');
       expect(ValidacoesServico.nome('')).toBe('nome-obrigatorio');
     });
@@ -82,6 +82,21 @@ describe('validação >', function () {
       expect(e2.msg).toBe('palavra-chave-max-50');
     });
 
+  });
+
+  it('descricao válida', function () {
+    var _500 = _.repeat('b', 500);
+    expect(ValidacoesServico.descricao(_500)).toBeUndefined();
+  });
+
+  it('descricao é obrigatória', function () {
+    expect(ValidacoesServico.descricao('')).toBe('descricao-obrigatoria');
+    expect(ValidacoesServico.descricao()).toBe('descricao-obrigatoria');
+  });
+
+  it('descrição deve ter no máximo 500 caracteres', function () {
+    var _501 = _.repeat('s', 501);
+    expect(ValidacoesServico.descricao(_501)).toBe('descricao-max-500');
   });
 
 });

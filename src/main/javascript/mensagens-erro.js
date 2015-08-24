@@ -6,7 +6,9 @@ var erros = {
   'sigla-max-15': 'Sigla não pode ter mais do que 15 caracteres',
   'nome-pop-max-150': 'Nome popular não pode passar de 150 caracteres',
   'min-3-palavras-chave': 'Deve haver no mínimo 3 palavras chave',
-  'palavra-chave-max-50': 'Palavra chave não pode passar de 50 caracteres'
+  'palavra-chave-max-50': 'Palavra chave não pode passar de 50 caracteres',
+  'descricao-obrigatoria': 'A descrição do serviço é obrigatória',
+  'descricao-max-500': 'Descrição não pode ultrapassar 500 caracteres'
 };
 
 module.exports = function (key) {

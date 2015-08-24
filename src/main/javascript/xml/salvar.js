@@ -49,6 +49,8 @@ function validarServico(servico) {
       erros.push(msg);
     });
 
+    erros.push(mensagemErro(validador.hasError('descricao')));
+
     var palavrasChave = validador.hasError('palavrasChave');
     erros.push(mensagemErro(palavrasChave.msg));
     palavrasChave.campos.map(function (e) {
