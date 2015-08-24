@@ -50,9 +50,9 @@ function validarServico(servico) {
     });
 
     var palavrasChave = validador.hasError('palavrasChave');
-    erros.push(palavrasChave.msg);
+    erros.push(mensagemErro(palavrasChave.msg));
     palavrasChave.campos.map(function (e) {
-      var msg = mensagemErro(e.err);
+      var msg = mensagemErro(e.msg);
       msg = e.i + ': ' + msg;
       erros.push(msg);
     });
