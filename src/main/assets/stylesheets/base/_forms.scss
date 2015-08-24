@@ -69,6 +69,22 @@ input[type="radio"] {
   margin-right: $small-spacing / 2;
 }
 
+input[type="checkbox"] {
+  @include appearance(none);
+  outline: none;
+
+  &:before {
+    @extend .fa;
+    @extend .fa-square-o;
+    color: $cinza-escuro;
+    width: 15px;
+  }
+
+  &:checked:before {
+    @extend .fa-check-square;
+  }
+}
+
 select {
   margin-bottom: $base-spacing;
   max-width: 100%;
@@ -90,6 +106,16 @@ label.titulo {
   &.erro {
     input, textarea {
       border: 2px solid $vermelho-regular;
+    }
+
+    input[type="checkbox"] {
+      border: none;
+      
+      &:not(:checked):before {
+        width: 15px;
+        @extend .fa-square-o;
+        color: $vermelho-regular;
+      }
     }
 
     &:after {
