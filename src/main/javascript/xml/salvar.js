@@ -6,7 +6,6 @@ var extrairMetadados = require('utils/extrair-metadados');
 var mensagemErro = require('mensagens-erro');
 var importarXml = require('xml/importar-v3');
 var exportarXml = require('xml/exportar');
-var validacoes = require('validacoes');
 
 function postarServico(nome, xml, metadados) {
   return m.request({
@@ -35,12 +34,10 @@ function postarServico(nome, xml, metadados) {
 }
 
 function validarServico(servico) {
-
-  var validador = new m.validator(validacoes);
-  validador.validate(servico);
+  servico.validar();
+  var validador = servico.validador();
 
   if (validador.hasErrors()) {
-
     var erros = [];
     erros.push(mensagemErro(validador.hasError('nome')));
     erros.push(mensagemErro(validador.hasError('sigla')));

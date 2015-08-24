@@ -1,5 +1,7 @@
 'use strict';
 
+var validacoes = require('validacoes');
+
 var id = (function () {
   var counters = {};
   var gerador = function (base) {
@@ -130,6 +132,13 @@ var Servico = function (config) {
   this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
   this.palavrasChave = m.prop(data.palavrasChave || []);
   this.legislacoes = m.prop(data.legislacoes || []);
+
+  this.validador = m.prop(new m.validator(validacoes.Servico));
+  this.validar = function() {
+    this.validador().validate(this);
+
+    //chamar validações das dependencias
+  };
 };
 
 module.exports = {

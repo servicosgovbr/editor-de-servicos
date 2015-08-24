@@ -9,7 +9,7 @@ function nomePopular(v, i) {
   }
 }
 
-module.exports = {
+var Servico = {
   nome: function (nome) {
     if (!nome) {
       return 'nome-obrigatorio';
@@ -19,6 +19,7 @@ module.exports = {
     }
     return;
   },
+
   sigla: function (sigla) {
     sigla = sigla || '';
     if (sigla.length > 15) {
@@ -31,4 +32,8 @@ module.exports = {
     nomes = nomes || [];
     return _.compact(_.map(nomes, nomePopular));
   }
+};
+
+module.exports = {
+  Servico: Servico
 };
