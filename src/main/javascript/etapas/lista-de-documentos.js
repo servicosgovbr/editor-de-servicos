@@ -28,13 +28,15 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('input[type=text]', {
-            value: documento,
-            config: focus(ctrl),
-            onchange: function (e) {
-              ctrl.documentos()[i] = e.target.value;
-            }
-          })
+          m('div.input-container', [
+            m('input[type=text]', {
+              value: documento,
+              config: focus(ctrl),
+              onchange: function (e) {
+                ctrl.documentos()[i] = e.target.value;
+              }
+            })
+          ])
         ]);
       }),
       m('button.adicionar.adicionar-documento', {

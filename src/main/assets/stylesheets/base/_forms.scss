@@ -88,7 +88,7 @@ label.titulo {
   position: relative;
 
   &.erro {
-    input {
+    input, textarea {
       border: 2px solid $vermelho-regular;
     }
 
@@ -105,7 +105,7 @@ label.titulo {
     &:before {
       position: absolute;
       right: 7%;
-      bottom: 50px;
+      top: -43px;
       margin-left: 8px;
       z-index: 2;
       height: 31px;

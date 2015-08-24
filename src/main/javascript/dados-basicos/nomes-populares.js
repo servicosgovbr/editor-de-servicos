@@ -30,13 +30,15 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('input.inline[type=text]', {
-            value: nomesPopulares,
-            config: focus(ctrl),
-            onchange: function (e) {
-              ctrl.servico().nomesPopulares()[i] = e.target.value;
-            }
-          })
+          m('div.input-container', [
+            m('input.inline[type=text]', {
+              value: nomesPopulares,
+              config: focus(ctrl),
+              onchange: function (e) {
+                ctrl.servico().nomesPopulares()[i] = e.target.value;
+              }
+            })
+          ])
         ];
       }),
 

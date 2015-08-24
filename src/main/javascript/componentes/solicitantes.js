@@ -39,11 +39,13 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
+          m('div.input-container', [
             m('input[type=text]', {
-            value: s.tipo(),
-            config: focus(ctrl),
-            onchange: m.withAttr('value', s.tipo)
-          }),
+              value: s.tipo(),
+              config: focus(ctrl),
+              onchange: m.withAttr('value', s.tipo)
+            })
+          ]),
 
           m('h3.opcional', [
             'Requisitos necessários para o solicitante',

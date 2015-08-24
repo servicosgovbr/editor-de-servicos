@@ -13,7 +13,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('.editor-markdown', [
+    return m('.editor-markdown.input-container', [
       m('textarea', ctrl.config),
       m('footer', [
         m('span.markdown-suportado', [

@@ -13,11 +13,12 @@ module.exports = {
         m.component(require('tooltips').sigla)
       ]),
 
-      m('input[type=text]', {
-        onchange: m.withAttr('value', ctrl.servico().sigla),
-        value: ctrl.servico().sigla()
-      })
+      m('div.input-container', [
+        m('input[type=text]', {
+          onchange: m.withAttr('value', ctrl.servico().sigla),
+          value: ctrl.servico().sigla()
+        })
+      ])
     ]);
   }
-
 };

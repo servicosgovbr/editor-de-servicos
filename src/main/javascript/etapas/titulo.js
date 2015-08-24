@@ -17,11 +17,13 @@ module.exports = {
         m.component(require('tooltips').tituloDaEtapa)
       ]),
 
-      m('input[type=text]', {
-        onkeyup: m.withAttr('value', ctrl.titulo),
-        config: focus(ctrl),
-        value: ctrl.titulo()
-      })
+      m('div.input-container', [
+        m('input[type=text]', {
+          onkeyup: m.withAttr('value', ctrl.titulo),
+          config: focus(ctrl),
+          value: ctrl.titulo()
+        })
+      ])
     ]);
   }
 };
