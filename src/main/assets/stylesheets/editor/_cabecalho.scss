@@ -33,7 +33,7 @@ header {
   }
 
   #metadados {
-    @include span-columns(8 of 12, block-collapse);
+    @include span-columns(7.75 of 12, block-collapse);
     margin-top: em(4);
     margin-right: -1px;
     line-height: 2.25em;
@@ -76,7 +76,7 @@ header {
   }
 
   #logout {
-    @include span-columns(1 of 12);
+    @include span-columns(1.25 of 12);
     margin-top: em(6);
     line-height: 2.25em;
     float: right;
