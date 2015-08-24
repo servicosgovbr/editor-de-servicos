@@ -83,3 +83,68 @@ label.titulo {
   margin-top: 20px;
   text-transform: uppercase;
 }
+
+.input-container {
+  position: relative;
+
+  &.erro {
+    input {
+      border: 2px solid $vermelho-regular;
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: -12px;
+      border-top: 8px solid #ff5151;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+    
+    &:before {
+      position: absolute;
+      right: 7%;
+      bottom: 50px;
+      margin-left: 8px;
+      z-index: 2;
+      height: 31px;
+      line-height: 28px;
+      padding: 0 12px;
+      background: #444;
+      color: #f3f3f3;
+      border-radius: 2px;
+      border-top-left-radius: 1px;
+      border-bottom-left-radius: 1px;
+      white-space: nowrap;
+      font-size: 13px;
+      border-radius: 4px;
+      background-color: #ff5151;
+      font-family: $openSansBold;
+    }
+
+    &.campo-obrigatorio:before {
+      content: 'Campo obrigatório';
+    }
+
+    &.caracteres-excedidos:before {
+      content: 'Caracteres excedidos';
+    }
+
+    &.selecione-opcao:before {
+      content: 'Selecione ao menos uma opção';
+    }
+
+    &.campo-obrigatorio:after {
+      right: 117px;
+    }
+
+    &.caracteres-excedidos:after {
+      right: 127px;
+    }
+
+    &.selecione-opcao:after {
+      right: 159px;
+    }
+  }
+}

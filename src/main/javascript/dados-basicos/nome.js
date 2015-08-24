@@ -14,12 +14,13 @@ module.exports = {
         m.component(require('tooltips').nome)
       ]),
 
-      m('input[type=text]', {
-        onchange: m.withAttr('value', ctrl.servico().nome),
-        value: ctrl.servico().nome(),
-        autofocus: 'autofocus'
-      })
+      m('div.input-container', [
+        m('input[type=text]', {
+          onchange: m.withAttr('value', ctrl.servico().nome),
+          value: ctrl.servico().nome(),
+          autofocus: 'autofocus'
+        })
+      ])
     ]);
   }
-
 };
