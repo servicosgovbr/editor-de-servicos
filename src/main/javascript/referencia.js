@@ -57,24 +57,24 @@ module.exports = {
   }),
 
   descricoesDeCanaisDePrestacao: {
-    'aplicativo-movel': 'Endereço para o download do aplicativo',
+    'aplicativo-movel': 'Endereço na web para o download do aplicativo',
     'e-mail': 'Endereço de e-mail que deverá ser utilizado',
     'fax': 'Número para qual o fax deverá ser enviado',
     'postal': 'Endereço para envio de correspondência',
-    'presencial': 'Endereço a visitar ',
+    'presencial': 'Endereço que deverá ser visitado',
     'sms': 'Número para qual o SMS deverá ser enviado',
-    'telefone': 'Número para qual a ligação deverá realizada',
-    'web': 'Endereço a visitar ',
-    'web-acompanhar': 'Endereço a visitar para acompanhar um pedido esta etapa',
-    'web-agendar': 'Endereço a visitar para agendar uma visita esta etapa',
-    'web-calcular-taxas': 'Endereço a visitar para calcular taxas nesta etapa',
-    'web-consultar': 'Endereço a visitar para consultar dados nesta etapa',
-    'web-declarar': 'Endereço a visitar para fazer declarações nesta etapa',
-    'web-emitir': 'Endereço a visitar para emitir documentos ou certidões nesta etapa',
-    'web-inscrever-se': 'Endereço a visitar para inscrever-se nesta etapa',
-    'web-postos-de-atendimento': 'Endereço a visitar para encontrar postos de atendimento que realizam esta etapa',
-    'web-preencher': 'Endereço a visitar para baixar ou preencher um formulário nesta etapa',
-    'web-simular': 'Endereço a visitar para simular esta etapa'
+    'telefone': 'Número para qual a ligação deverá ser realizada',
+    'web': 'Endereço na web que deverá ser visitado',
+    'web-acompanhar': 'Endereço na web para acompanhar um pedido desta etapa',
+    'web-agendar': 'Endereço na web para agendar uma visita nesta etapa',
+    'web-calcular-taxas': 'Endereço na web para calcular taxas desta etapa',
+    'web-consultar': 'Endereço na web para consultar dados desta etapa',
+    'web-declarar': 'Endereço na web para fazer declarações desta etapa',
+    'web-emitir': 'Endereço na web para emitir documentos ou certidões desta etapa',
+    'web-inscrever-se': 'Endereço na web para inscrever-se nesta etapa',
+    'web-postos-de-atendimento': 'Endereço na web para encontrar postos de atendimento que realizam esta etapa',
+    'web-preencher': 'Endereço na web baixar ou preencher um formulário desta etapa',
+    'web-simular': 'Endereço na web para simular esta etapa'
   },
 
   areasDeInteresse: _.once(m.request({
