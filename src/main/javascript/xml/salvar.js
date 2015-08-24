@@ -38,16 +38,26 @@ function validarServico(servico) {
   var validador = servico.validador();
 
   if (validador.hasErrors()) {
+
     var erros = [];
     erros.push(mensagemErro(validador.hasError('nome')));
     erros.push(mensagemErro(validador.hasError('sigla')));
+
     validador.hasError('nomesPopulares').map(function (e) {
       var msg = mensagemErro(e.err);
       msg = e.i + ': ' + msg;
       erros.push(msg);
     });
-    validador.clearErrors();
 
+    var palavrasChave = validador.hasError('palavrasChave');
+    erros.push(palavrasChave.msg);
+    palavrasChave.campos.map(function (e) {
+      var msg = mensagemErro(e.err);
+      msg = e.i + ': ' + msg;
+      erros.push(msg);
+    });
+
+    validador.clearErrors();
     return _.compact(erros);
   }
   return [];

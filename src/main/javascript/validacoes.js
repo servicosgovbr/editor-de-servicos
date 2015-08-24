@@ -1,13 +1,6 @@
 'use strict';
 
-function nomePopular(v, i) {
-  if (v.length > 150) {
-    return {
-      i: i,
-      err: 'nome-pop-max-150'
-    };
-  }
-}
+
 
 var Servico = {
   nome: function (nome) {
@@ -30,7 +23,34 @@ var Servico = {
 
   nomesPopulares: function (nomes) {
     nomes = nomes || [];
-    return _.compact(_.map(nomes, nomePopular));
+    return _.compact(_.map(nomes, function (v, i) {
+      if (v.length > 150) {
+        return {
+          i: i,
+          msg: 'nome-pop-max-150'
+        };
+      }
+    }));
+  },
+
+  palavrasChave: function (palavrasChave) {
+    palavrasChave = palavrasChave || [];
+
+    var err = {};
+    if (palavrasChave.length < 3) {
+      err.msg = 'min-3-palavras-chave';
+    }
+
+    err.campos = _.compact(_.map(palavrasChave, function (v, i) {
+      if (v.length > 50) {
+        return {
+          i: i,
+          msg: 'palavra-chave-max-50'
+        };
+      }
+    }));
+
+    return err;
   }
 };
 

@@ -35,6 +35,8 @@ describe('editor', function () {
     expect(ctrl.servico()).toBeDefined();
 
     ctrl.servico().nome('olá, mundo!');
+    ctrl.servico().palavrasChave(['a', 'b', 'c']);
+
     expect(ctrl.salvar).toBeDefined();
 
     ctrl.salvar();
