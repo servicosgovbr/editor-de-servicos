@@ -20,11 +20,13 @@ module.exports = function (componente) {
         inputNome = '';
         className = '';
       } else {
-        inputNome = m('input[type=text]', {
-          value: ctrl.caso().descricao(),
-          config: focus(ctrl),
-          onchange: m.withAttr('value', ctrl.caso().descricao)
-        });
+        inputNome = m('div.input-container', [
+          m('input[type=text]', {
+            value: ctrl.caso().descricao(),
+            config: focus(ctrl),
+            onchange: m.withAttr('value', ctrl.caso().descricao)
+          })
+        ]);
         className = '.margin-left';
       }
 
