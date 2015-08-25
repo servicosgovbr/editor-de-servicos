@@ -16,7 +16,7 @@ module.exports = {
       this.salvando(true);
       return config.salvar().then(_.bind(function (resp) {
         this.salvando(false);
-        alertify.success('Serviço salvo com sucesso!');
+        alertify.success('Rascunho salvo com sucesso!');
         m.redraw();
         return resp;
       }, this), _.bind(function (erro) {
