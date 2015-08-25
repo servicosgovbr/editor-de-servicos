@@ -1,24 +1,11 @@
 'use strict';
 
-var slugify = require('slugify');
+var referencia = require('referencia');
 
 var selectTipo = function (prop) {
-  var unidades = [
-    'minutos',
-    'horas',
-    'dias corridos',
-    'dias úteis',
-    'meses'
-  ].map(function (t) {
-    return {
-      id: slugify(t),
-      text: t
-    };
-  });
-
   return m.component(require('componentes/select2'), {
     prop: prop,
-    data: unidades
+    data: referencia.unidadesTempo
   });
 };
 

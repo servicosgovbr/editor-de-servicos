@@ -77,6 +77,19 @@ module.exports = {
     'web-simular': 'Endereço na web para simular esta etapa'
   },
 
+  unidadesTempo: [
+    'minutos',
+    'horas',
+    'dias corridos',
+    'dias úteis',
+    'meses'
+  ].map(function (t) {
+    return {
+      id: slugify(t),
+      text: t
+    };
+  }),
+
   areasDeInteresse: _.once(m.request({
     method: 'GET',
     url: '/editar/api/vcge'
