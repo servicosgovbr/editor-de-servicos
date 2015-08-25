@@ -18,6 +18,10 @@ select {
 label {
   margin-bottom: $small-spacing / 2;
 
+  &:not(.titulo) {
+    cursor: pointer;
+  }
+
   &.required::after {
     content: "*";
   }
