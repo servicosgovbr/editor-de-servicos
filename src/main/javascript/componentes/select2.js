@@ -56,7 +56,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('.clear.select2-container', m('select', {
+    return m('.clear.select2-message-container', m('select', {
       config: function (element, isInitialized) {
         var el = jQuery(element);
 
