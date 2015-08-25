@@ -22,6 +22,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    ctrl.servico.validar();
 
     var binding = {
       servico: ctrl.servico,

@@ -46,18 +46,4 @@ describe('editor', function () {
     expect(response.count).toBe(1);
   });
 
-  it('deve validar e impedir salvamento', function () {
-    xhr('GET', '/editar/api/servico/v3/ola-mundo').respondWith('<servico/>');
-
-    var ctrl = new editor.controller();
-    expect(ctrl.servico()).toBeDefined();
-
-    ctrl.servico().nome('');
-    expect(ctrl.salvar).toBeDefined();
-
-    ctrl.salvar();
-
-    expect(xhr.unexpectedRequests).toBe(0);
-  });
-
 });

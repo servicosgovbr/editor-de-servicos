@@ -134,11 +134,10 @@ var Servico = function (config) {
   this.legislacoes = m.prop(data.legislacoes || []);
 
   this.validador = m.prop(new m.validator(validacoes.Servico));
+
   this.validar = function () {
     this.validador().clearErrors();
     this.validador().validate(this);
-
-    //chamar validações das dependencias
   };
 };
 
