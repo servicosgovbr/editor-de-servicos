@@ -30,13 +30,15 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('input.inline[type=text]', {
-            value: legislacao,
-            config: focus(ctrl),
-            onchange: function (e) {
-              ctrl.servico().legislacoes()[i] = e.target.value;
-            }
-          })
+          m('.input-container', [
+            m('input.inline[type=text]', {
+              value: legislacao,
+              config: focus(ctrl),
+              onchange: function (e) {
+                ctrl.servico().legislacoes()[i] = e.target.value;
+              }
+            })
+          ])
         ];
       }),
       m('button.adicionar.adicionar-legislacao', {
