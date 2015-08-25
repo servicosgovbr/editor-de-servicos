@@ -100,77 +100,67 @@ label.titulo {
   text-transform: uppercase;
 }
 
+@mixin validacao-erro($mensagem, $posicao) {
+  input, textarea {
+    border: 2px solid $vermelho-regular;
+  }
+
+  input[type="checkbox"] {
+    border: none;
+    
+    &:not(:checked):before {
+      width: 15px;
+      @extend .fa-square-o;
+      color: $vermelho-regular;
+    }
+  }
+
+  &:before {
+    content: $mensagem;
+    position: absolute;
+    right: 7%;
+    top: -43px;
+    margin-left: 8px;
+    z-index: 2;
+    height: 31px;
+    line-height: 28px;
+    padding: 0 12px;
+    background: #444;
+    color: #f3f3f3;
+    border-radius: 2px;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    white-space: nowrap;
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: #ff5151;
+    font-family: $openSansBold;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: -12px;
+    border-top: 8px solid #ff5151;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    right: $posicao;
+  }
+}
+
 .input-container {
   position: relative;
 
-  &.erro {
-    input, textarea {
-      border: 2px solid $vermelho-regular;
-    }
+  &.campo-obrigatorio {
+    @include validacao-erro('Campo obrigatório', 117px);
+  }
 
-    input[type="checkbox"] {
-      border: none;
-      
-      &:not(:checked):before {
-        width: 15px;
-        @extend .fa-square-o;
-        color: $vermelho-regular;
-      }
-    }
+  &.caracteres-excedidos {
+    @include validacao-erro('Caracteres excedidos', 127px);
+  }
 
-    &:after {
-      content: "";
-      position: absolute;
-      z-index: 0;
-      top: -12px;
-      border-top: 8px solid #ff5151;
-      border-right: 8px solid transparent;
-      border-left: 8px solid transparent;
-    }
-    
-    &:before {
-      position: absolute;
-      right: 7%;
-      top: -43px;
-      margin-left: 8px;
-      z-index: 2;
-      height: 31px;
-      line-height: 28px;
-      padding: 0 12px;
-      background: #444;
-      color: #f3f3f3;
-      border-radius: 2px;
-      border-top-left-radius: 1px;
-      border-bottom-left-radius: 1px;
-      white-space: nowrap;
-      font-size: 13px;
-      border-radius: 4px;
-      background-color: #ff5151;
-      font-family: $openSansBold;
-    }
-
-    &.campo-obrigatorio:before {
-      content: 'Campo obrigatório';
-    }
-
-    &.caracteres-excedidos:before {
-      content: 'Caracteres excedidos';
-    }
-
-    &.selecione-opcao:before {
-      content: 'Selecione ao menos uma opção';
-    }
-
-    &.campo-obrigatorio:after {
-      right: 117px;
-    }
-
-    &.caracteres-excedidos:after {
-      right: 127px;
-    }
-
-    &.selecione-opcao:after {
-      right: 159px;
-    }
+  &.selecione-opcao {
+    @include validacao-erro('Selecione ao menos uma opção', 159px);
   }
 }
