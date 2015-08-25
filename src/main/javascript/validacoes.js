@@ -62,18 +62,26 @@ var Servico = {
 };
 
 var TempoTotalEstimado = {
+  descricao: function(descricao) {
+    descricao = descricao || '';
+
+    if (descricao.length > 500) {
+      return 'max-500';
+    }
+  },
+  
   ateMaximo: function (maximo) {
     if (!maximo) {
       return 'tempo-obrigatorio';
     }
-
   },
 
   ateTipoMaximo: function (tipoPeriodo) {
     if (!tipoPeriodo) {
       return 'tipo-periodo-obrigatorio';
     }
-  }
+  },
+
 
 };
 

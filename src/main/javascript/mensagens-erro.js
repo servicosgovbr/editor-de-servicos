@@ -11,6 +11,8 @@ var erros = {
   'descricao-max-500': 'Descrição não pode ultrapassar 500 caracteres',
   'tempo-obrigatorio': 'Preenchimento do tempo é obrigatório',
   'tipo-periodo-obrigatório': 'Obrigatório a seleção da unidade de tempo',
+  'campo-obrigatorio': 'Esse campo é obrigatório',
+  'max-500': 'Este campo não pode exceder 500 caracteres'
 };
 
 module.exports = function (key) {
