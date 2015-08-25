@@ -1,43 +1,46 @@
 'use strict';
 
+var maximo = _.curry(function(len, def, v) {
+  v = v || def;
+  if (v.length > len) {
+    return 'max-' + len;
+  }
+});
+
+var minimo = _.curry(function(len, def, v) {
+  v = v || def;
+  if (v.length < len) {
+    return 'min-' + len;
+  }
+});
+
+var obrigatorio = function(v) {
+  if (!v) {
+    return 'campo-obrigatorio';
+  }
+};
+
 var Servico = {
   nome: function (nome) {
-    if (!nome) {
-      return 'nome-obrigatorio';
-    }
-    if (nome.length > 150) {
-      return 'nome-max-150';
-    }
-    return;
+    return obrigatorio(nome) || maximo(150, '', nome);
   },
 
-  sigla: function (sigla) {
-    sigla = sigla || '';
-    if (sigla.length > 15) {
-      return 'sigla-max-15';
-    }
-    return;
-  },
+  sigla: maximo(15, ''),
 
   nomesPopulares: function (nomes) {
     nomes = nomes || [];
     return _.compact(_.map(nomes, function (v, i) {
-      if (v.length > 150) {
+      var e = maximo(150, '', v);
+      if (e) {
         return {
           i: i,
-          msg: 'nome-pop-max-150'
-        };
+          msg: e        };
       }
     }));
   },
 
   descricao: function (descricao) {
-    if (!descricao) {
-      return 'descricao-obrigatoria';
-    }
-    if (descricao.length > 500) {
-      return 'descricao-max-500';
-    }
+    return obrigatorio(descricao) || maximo(500, '', descricao);
   },
 
   palavrasChave: function (palavrasChave) {
@@ -45,44 +48,30 @@ var Servico = {
 
     var err = {};
     if (palavrasChave.length < 3) {
-      err.msg = 'min-3-palavras-chave';
+      err.msg = minimo(3, [], palavrasChave);
     }
 
     err.campos = _.compact(_.map(palavrasChave, function (v, i) {
-      if (v.length > 50) {
+      var e = maximo(50, '', v);
+      if (e) {
         return {
           i: i,
-          msg: 'palavra-chave-max-50'
+          msg: e
         };
       }
     }));
-
     return err;
   }
 };
 
+
 var TempoTotalEstimado = {
-  descricao: function(descricao) {
-    descricao = descricao || '';
-
-    if (descricao.length > 500) {
-      return 'max-500';
-    }
-  },
-  
-  ateMaximo: function (maximo) {
-    if (!maximo) {
-      return 'tempo-obrigatorio';
-    }
-  },
-
-  ateTipoMaximo: function (tipoPeriodo) {
-    if (!tipoPeriodo) {
-      return 'tipo-periodo-obrigatorio';
-    }
-  },
-
-
+  descricao: maximo(500, ''),
+  ateMaximo: obrigatorio,
+  ateTipoMaximo: obrigatorio,
+  entreMinimo: obrigatorio,
+  entreMaximo: obrigatorio,
+  entreTipoMaximo: obrigatorio
 };
 
 module.exports = {
