@@ -100,7 +100,7 @@ label.titulo {
   text-transform: uppercase;
 }
 
-@mixin validacao-erro-checkbox() {
+@mixin validacao-erro-inline($mensagem) {
   display: inline-block;
 
   & + div label input[type="checkbox"] {
@@ -113,8 +113,13 @@ label.titulo {
     }
   }
 
+  .select2 {
+    border: 2px solid $vermelho-regular;
+    border-radius: 4px;
+  }
+
   &:before {
-    content: 'Selecione ao menos uma opção';
+    content: $mensagem;
     position: absolute;
     left: 102%;
     top: -3px;
@@ -178,7 +183,7 @@ label.titulo {
   }
 }
 
-.input-container {
+div.input-container {
   position: relative;
 
   &.campo-obrigatorio {
@@ -195,5 +200,17 @@ label.titulo {
 }
 
 h3.input-container {
-  @include validacao-erro-checkbox();
+  position: relative;
+
+  &.selecione-opcao {
+    @include validacao-erro-inline('Selecione ao menos uma opção');
+  }
+}
+
+.select2-container {
+  position: relative;
+
+  &.campo-obrigatorio {
+    @include validacao-erro-inline('Campo obrigatório');
+  }
 }
