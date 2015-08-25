@@ -101,15 +101,18 @@ describe('validação >', function () {
     expect(ValidacoesServico.descricao(_501)).toBe('descricao-max-500');
   });
 
-  describe('tempo total estimado', function() {
+  describe('tempo total estimado', function () {
     var tte;
-    beforeEach(function() {
+    beforeEach(function () {
       tte = new modelos.TempoTotalEstimado();
     });
 
-    it('deve preencher tempo máximo para "ate"', function() {
-      tte.tipo('ate');
+    it('deve preencher tempo máximo para "ate"', function () {
       expect(ValidacoesTempoTotalEstimado.ateMaximo(tte.ateMaximo())).toBe('tempo-obrigatorio');
+    });
+
+    it('deve preencher o tipo de periodo para "ate"', function () {
+      expect(ValidacoesTempoTotalEstimado.ateTipoMaximo(tte.ateTipoMaximo())).toBe('tipo-periodo-obrigatorio');
     });
 
   });

@@ -42,6 +42,7 @@ function validarServico(servico) {
     var erros = [];
     erros.push(mensagemErro(validador.hasError('nome')));
     erros.push(mensagemErro(validador.hasError('sigla')));
+    erros.push(mensagemErro(validador.hasError('descricao')));
 
     validador.hasError('nomesPopulares').map(function (e) {
       var msg = mensagemErro(e.err);

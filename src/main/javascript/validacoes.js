@@ -67,7 +67,14 @@ var TempoTotalEstimado = {
       return 'tempo-obrigatorio';
     }
 
+  },
+
+  ateTipoMaximo: function (tipoPeriodo) {
+    if (!tipoPeriodo) {
+      return 'tipo-periodo-obrigatorio';
+    }
   }
+
 };
 
 module.exports = {
