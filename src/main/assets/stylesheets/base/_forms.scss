@@ -100,7 +100,7 @@ label.titulo {
   text-transform: uppercase;
 }
 
-@mixin validacao-erro-inline($mensagem) {
+@mixin validacao-erro-inline($mensagem, $top1, $top1) {
   display: inline-block;
 
   & + div label input[type="checkbox"] {
@@ -122,7 +122,7 @@ label.titulo {
     content: $mensagem;
     position: absolute;
     left: 102%;
-    top: -3px;
+    top: $top1;
     margin-left: 8px;
     z-index: 2;
     height: 31px;
@@ -140,7 +140,7 @@ label.titulo {
     content: "";
     position: absolute;
     z-index: 0;
-    top: 5px;
+    top: $top2;
     left: 102%;
     border-top: 8px solid transparent;
     border-right: 8px solid #ff5151;
@@ -203,7 +203,7 @@ h3.input-container {
   position: relative;
 
   &.selecione-opcao {
-    @include validacao-erro-inline('Selecione ao menos uma opção');
+    @include validacao-erro-inline('Selecione ao menos uma opção', -3px, 5px);
   }
 }
 
@@ -211,6 +211,6 @@ h3.input-container {
   position: relative;
 
   &.campo-obrigatorio {
-    @include validacao-erro-inline('Campo obrigatório');
+    @include validacao-erro-inline('Campo obrigatório', 7px, 15px);
   }
 }
