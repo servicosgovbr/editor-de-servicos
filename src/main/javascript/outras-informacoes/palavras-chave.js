@@ -31,13 +31,15 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('input.inline[type=text]', {
-            value: palavras,
-            config: focus(ctrl),
-            onchange: function (e) {
-              ctrl.servico().palavrasChave()[i] = e.target.value;
-            }
-          })
+          m('.input-container', [
+            m('input.inline[type=text]', {
+              value: palavras,
+              config: focus(ctrl),
+              onchange: function (e) {
+                ctrl.servico().palavrasChave()[i] = e.target.value;
+              }
+            })
+          ])
         ];
       }),
 
