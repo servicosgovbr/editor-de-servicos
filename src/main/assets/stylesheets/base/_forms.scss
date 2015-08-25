@@ -100,10 +100,8 @@ label.titulo {
   text-transform: uppercase;
 }
 
-@mixin validacao-erro($mensagem, $posicao) {
-  input, textarea {
-    border: 2px solid $vermelho-regular;
-  }
+@mixin validacao-erro-checkbox() {
+  display: inline-block;
 
   input[type="checkbox"] {
     border: none;
@@ -116,6 +114,41 @@ label.titulo {
   }
 
   &:before {
+    content: 'Selecione ao menos uma opção';
+    position: absolute;
+    left: 102%;
+    top: -3px;
+    margin-left: 8px;
+    z-index: 2;
+    height: 31px;
+    line-height: 28px;
+    padding: 0 12px;
+    color: $branco;
+    white-space: nowrap;
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: #ff5151;
+    font-family: $openSansBold;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 5px;
+    left: 102%;
+    border-top: 8px solid #ff5151;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+  }
+}
+
+@mixin validacao-erro-input($mensagem, $posicao) {
+  input, textarea {
+    border: 2px solid $vermelho-regular;
+  }
+
+  &:before {
     content: $mensagem;
     position: absolute;
     right: 7%;
@@ -125,11 +158,7 @@ label.titulo {
     height: 31px;
     line-height: 28px;
     padding: 0 12px;
-    background: #444;
-    color: #f3f3f3;
-    border-radius: 2px;
-    border-top-left-radius: 1px;
-    border-bottom-left-radius: 1px;
+    color: $branco;
     white-space: nowrap;
     font-size: 13px;
     border-radius: 4px;
@@ -153,14 +182,18 @@ label.titulo {
   position: relative;
 
   &.campo-obrigatorio {
-    @include validacao-erro('Campo obrigatório', 117px);
+    @include validacao-erro-input('Campo obrigatório', 117px);
   }
 
   &.caracteres-excedidos {
-    @include validacao-erro('Caracteres excedidos', 127px);
+    @include validacao-erro-input('Caracteres excedidos', 127px);
   }
 
   &.selecione-opcao {
-    @include validacao-erro('Selecione ao menos uma opção', 159px);
+    @include validacao-erro-input('Selecione ao menos uma opção', 159px);
   }
+}
+
+h3.input-container {
+  @include validacao-erro-checkbox();
 }
