@@ -228,6 +228,14 @@ div.input-container {
 h3.input-container {
   position: relative;
 
+  &.campo-obrigatorio {
+    @include validacao-erro-inline('Campo obrigatório', -3px, 5px);
+  }
+
+  &.caracteres-excedidos {
+    @include validacao-erro-inline('Caracteres excedidos', -3px, 5px);
+  }
+
   &.selecione-opcao {
     @include validacao-erro-inline('Selecione ao menos uma opção', -3px, 5px);
   }
@@ -238,5 +246,13 @@ h3.input-container {
 
   &.campo-obrigatorio {
     @include validacao-erro-inline('Campo obrigatório', 7px, 15px);
+  }
+
+  &.caracteres-excedidos {
+    @include validacao-erro-inline('Caracteres excedidos', 7px, 15px);
+  }
+
+  &.selecione-opcao {
+    @include validacao-erro-inline('Selecione ao menos uma opção', 7px, 15px);
   }
 }
