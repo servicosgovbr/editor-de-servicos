@@ -179,6 +179,11 @@ label.titulo {
     border: 2px solid $vermelho-regular;
   }
 
+  .select2 {
+    border: 2px solid $vermelho-regular;
+    border-radius: 4px;
+  }
+  
   &:before {
     content: $mensagem;
     position: absolute;

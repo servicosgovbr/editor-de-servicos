@@ -15,12 +15,14 @@ module.exports = {
         m.component(require('tooltips').orgaoResponsavel)
       ]),
 
-      m.component(require('componentes/select2'), {
-        prop: ctrl.servico().orgao,
-        data: ctrl.todosOrgaos(),
-        width: '100%',
-        minimumResultsForSearch: 1
-      })
+      m('.input-container', [
+        m.component(require('componentes/select2'), {
+          prop: ctrl.servico().orgao,
+          data: ctrl.todosOrgaos(),
+          width: '100%',
+          minimumResultsForSearch: 1
+        })
+      ])
     ]);
   }
 };
