@@ -41,7 +41,7 @@ module.exports = {
           display: ctrl.servico().tempoTotalEstimado().tipo() === 'ate' ? 'inline' : 'none'
         }
       }, [
-        m('input.ate-maximo[type="text"]', {
+        m('input.ate-maximo[type="number"]', {
           value: ctrl.servico().tempoTotalEstimado().ateMaximo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateMaximo)
         }),
@@ -54,14 +54,14 @@ module.exports = {
           display: ctrl.servico().tempoTotalEstimado().tipo() === 'entre' ? 'inline' : 'none'
         }
       }, [
-        m('input.entre-minimo[type="text"]', {
+        m('input.entre-minimo[type="number"]', {
           value: ctrl.servico().tempoTotalEstimado().entreMinimo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMinimo)
         }),
 
         m('span', ' e '),
 
-        m('input.entre-maximo[type="text"]', {
+        m('input.entre-maximo[type="number"]', {
           value: ctrl.servico().tempoTotalEstimado().entreMaximo(),
           onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMaximo)
         }),
