@@ -102,21 +102,21 @@ describe('validação >', function () {
     expect(ValidacoesServico.descricao(_501)).toBe('max-500');
   });
 
-  describe('tempo total estimado', function() {
+  describe('tempo total estimado', function () {
     var tte;
-    beforeEach(function() {
+    beforeEach(function () {
       tte = new modelos.TempoTotalEstimado();
     });
 
-    it('deve preencher tempo máximo para "ate"', function() {
+    it('deve preencher tempo máximo para "ate"', function () {
       expect(ValidacoesTempoTotalEstimado.ateMaximo(tte.ateMaximo())).toBe('campo-obrigatorio');
     });
 
-    it('deve preencher a unidade de tempo para "ate"', function() {
+    it('deve preencher a unidade de tempo para "ate"', function () {
       expect(ValidacoesTempoTotalEstimado.ateTipoMaximo(tte.ateTipoMaximo())).toBe('campo-obrigatorio');
-    }); 
+    });
 
-    it('campo de comentários não pode passar de 500 caracteres', function() {
+    it('campo de comentários não pode passar de 500 caracteres', function () {
       var _500 = _.repeat('*', 500);
       expect(ValidacoesTempoTotalEstimado.descricao(_500)).toBeUndefined();
 
@@ -124,19 +124,19 @@ describe('validação >', function () {
       expect(ValidacoesTempoTotalEstimado.descricao(_501)).toBe('max-500');
     });
 
-    it('entre minimo obrigatório', function() {
+    it('entre minimo obrigatório', function () {
       expect(ValidacoesTempoTotalEstimado.entreMinimo('1')).toBeUndefined();
       expect(ValidacoesTempoTotalEstimado.entreMinimo()).toBe('campo-obrigatorio');
       expect(ValidacoesTempoTotalEstimado.entreMinimo('')).toBe('campo-obrigatorio');
     });
 
-    it('entre maximo obrigatório', function(){
+    it('entre maximo obrigatório', function () {
       expect(ValidacoesTempoTotalEstimado.entreMaximo('2')).toBeUndefined();
       expect(ValidacoesTempoTotalEstimado.entreMaximo()).toBe('campo-obrigatorio');
       expect(ValidacoesTempoTotalEstimado.entreMaximo('')).toBe('campo-obrigatorio');
     });
 
-    it('deve preencher a unidade de tempo para "entre"', function() {
+    it('deve preencher a unidade de tempo para "entre"', function () {
       expect(ValidacoesTempoTotalEstimado.entreTipoMaximo(tte.ateTipoMaximo())).toBe('campo-obrigatorio');
     });
 

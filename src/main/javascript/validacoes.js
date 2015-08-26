@@ -1,20 +1,20 @@
 'use strict';
 
-var maximo = _.curry(function(len, def, v) {
+var maximo = _.curry(function (len, def, v) {
   v = v || def;
   if (v.length > len) {
     return 'max-' + len;
   }
 });
 
-var minimo = _.curry(function(len, def, v) {
+var minimo = _.curry(function (len, def, v) {
   v = v || def;
   if (v.length < len) {
     return 'min-' + len;
   }
 });
 
-var obrigatorio = function(v) {
+var obrigatorio = function (v) {
   if (!v) {
     return 'campo-obrigatorio';
   }
@@ -34,7 +34,8 @@ var Servico = {
       if (e) {
         return {
           i: i,
-          msg: e        };
+          msg: e
+        };
       }
     }));
   },
