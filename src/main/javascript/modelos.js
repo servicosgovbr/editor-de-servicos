@@ -135,7 +135,7 @@ var Servico = function (config) {
 
   this.validador = new m.validator(validacoes.Servico);
   this.validar = function () {
-    this.validador.clearErrors();
+    this.validador = new m.validator(validacoes.Servico);
     this.validador.validate(this);
   };
 };

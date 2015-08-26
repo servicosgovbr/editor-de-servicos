@@ -41,20 +41,10 @@ describe('validação >', function () {
       var es = ValidacoesServico.nomesPopulares([_.repeat('a', 151), 'a']);
 
       expect(es).toBeDefined();
-      expect(es.length).toBe(1);
+      expect(es.length).toBe(2);
 
-      expect(es[0].i).toBe(0);
-      expect(es[0].msg).toBe('erro-max-150');
-    });
-
-    it('validação nomes populares devem vir indexados', function () {
-      var es = ValidacoesServico.nomesPopulares([_.repeat('a', 151), 'a', _.repeat('b', 151), 'b', _.repeat('x', 151)]);
-
-      expect(es).toBeDefined();
-      expect(es.length).toBe(3);
-      expect(es[0].i).toBe(0);
-      expect(es[1].i).toBe(2);
-      expect(es[2].i).toBe(4);
+      expect(es[0]).toBe('erro-max-150');
+      expect(es[1]).toBeUndefined();
     });
 
     it('deve haver no mínimo 3 palavras chave', function () {

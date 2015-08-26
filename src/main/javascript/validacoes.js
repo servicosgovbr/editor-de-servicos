@@ -29,15 +29,9 @@ var Servico = {
 
   nomesPopulares: function (nomes) {
     nomes = nomes || [];
-    return _.compact(_.map(nomes, function (v, i) {
-      var e = maximo(150, '', v);
-      if (e) {
-        return {
-          i: i,
-          msg: e
-        };
-      }
-    }));
+    return _.map(nomes, function (v, i) {
+      return maximo(150, '', v);
+    });
   },
 
   descricao: function (descricao) {
