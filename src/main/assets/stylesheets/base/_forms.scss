@@ -221,12 +221,25 @@ label.titulo {
 div.input-container {
   position: relative;
 
-  &.campo-obrigatorio {
+  &.erro-campo-obrigatorio {
     @include validacao-erro-input('Campo obrigatório', 117px);
   }
 
-  &.caracteres-excedidos {
-    @include validacao-erro-input('Caracteres excedidos', 127px);
+  &.erro-max-500 {
+    @include validacao-erro-input('Campo não pode ultrapassar 500 caracteres', 127px);
+  }
+
+  &.erro-max-150 {
+    @include validacao-erro-input('Campo não pode ultrapassar 150 caracteres', 127px);
+  }
+
+  &.erro-max-50 {
+    @include validacao-erro-input('Campo não pode ultrapassar 50 caracteres', 127px);
+  }
+
+
+  &.erro-max-15 {
+    @include validacao-erro-input('Campo não pode ultrapassar 15 caracteres', 127px);
   }
 
   &.selecione-opcao {
@@ -237,31 +250,33 @@ div.input-container {
 h3.input-container {
   position: relative;
 
-  &.campo-obrigatorio {
+  &.erro-campo-obrigatorio {
     @include validacao-erro-inline('Campo obrigatório', -3px, 5px);
   }
 
-  &.caracteres-excedidos {
-    @include validacao-erro-inline('Caracteres excedidos', -3px, 5px);
+  &.erro-max-500 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
   }
 
-  &.selecione-opcao {
-    @include validacao-erro-inline('Selecione ao menos uma opção', -3px, 5px);
+  &.erro-max-150 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
   }
+
+  &.erro-max-50 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
+  &.erro-max-15 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
 }
 
 .select2-message-container {
   position: relative;
 
-  &.campo-obrigatorio {
-    @include validacao-erro-inline('Campo obrigatório', 7px, 15px);
-  }
-
-  &.caracteres-excedidos {
-    @include validacao-erro-inline('Caracteres excedidos', 7px, 15px);
-  }
-
-  &.selecione-opcao {
+  &.erro-campo-obrigatorio {
     @include validacao-erro-inline('Selecione ao menos uma opção', 7px, 15px);
   }
+
 }
