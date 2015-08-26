@@ -37,7 +37,13 @@ module.exports = function (servicoProp, metadados) {
   var xml = exportarXml(servico);
   var onAjaxError = require('utils/erro-ajax');
 
-  return postarServico(slugify(servico.nome()), xml, metadados)
-    .then(importarXml, onAjaxError)
-    .then(servicoProp);
+  var promise;
+  if (servico.nome()) {
+    promise = postarServico(slugify(servico.nome()), xml, metadados)
+      .then(importarXml, onAjaxError);
+  } else {
+    promise = m.deferred().resolve(servico).promise;
+  }
+
+  return promise.then(servicoProp);
 };
