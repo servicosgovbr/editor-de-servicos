@@ -3,20 +3,20 @@
 var maximo = _.curry(function (len, def, v) {
   v = v || def;
   if (v.length > len) {
-    return 'max-' + len;
+    return 'erro-max-' + len;
   }
 });
 
 var minimo = _.curry(function (len, def, v) {
   v = v || def;
   if (v.length < len) {
-    return 'min-' + len;
+    return 'erro-min-' + len;
   }
 });
 
 var obrigatorio = function (v) {
   if (!v) {
-    return 'campo-obrigatorio';
+    return 'erro-campo-obrigatorio';
   }
 };
 
@@ -64,7 +64,6 @@ var Servico = {
     return err;
   }
 };
-
 
 var TempoTotalEstimado = {
   descricao: maximo(500, ''),
