@@ -4,6 +4,7 @@ module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
+    this.validador = this.servico().validador;
   },
 
   view: function (ctrl) {
@@ -13,7 +14,7 @@ module.exports = {
         m.component(require('tooltips').sigla)
       ]),
 
-      m('div.input-container', [
+      m('div.input-container', {class: ctrl.validador.hasError('sigla')}, [
         m('input[type=text]', {
           onchange: m.withAttr('value', ctrl.servico().sigla),
           value: ctrl.servico().sigla()

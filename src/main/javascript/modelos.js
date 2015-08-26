@@ -133,11 +133,10 @@ var Servico = function (config) {
   this.palavrasChave = m.prop(data.palavrasChave || []);
   this.legislacoes = m.prop(data.legislacoes || []);
 
-  this.validador = m.prop(new m.validator(validacoes.Servico));
-
+  this.validador = new m.validator(validacoes.Servico);
   this.validar = function () {
-    this.validador().clearErrors();
-    this.validador().validate(this);
+    this.validador.clearErrors();
+    this.validador.validate(this);
   };
 };
 

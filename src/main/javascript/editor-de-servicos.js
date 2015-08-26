@@ -22,10 +22,10 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    ctrl.servico.validar();
+    ctrl.servico().validar();
 
     var binding = {
-      servico: ctrl.servico,
+      servico: ctrl.servico
     };
 
     return m('#conteudo', {
