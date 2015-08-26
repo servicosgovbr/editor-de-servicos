@@ -14,7 +14,9 @@ module.exports = {
         m.component(require('tooltips').sigla)
       ]),
 
-      m('div.input-container', {class: ctrl.validador.hasError('sigla')}, [
+      m('div.input-container', {
+        class: ctrl.validador.hasError('sigla')
+      }, [
         m('input[type=text]', {
           onchange: m.withAttr('value', ctrl.servico().sigla),
           value: ctrl.servico().sigla()

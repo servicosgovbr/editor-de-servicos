@@ -108,13 +108,13 @@ describe('validação >', function () {
       tte = new modelos.TempoTotalEstimado();
     });
 
-    it('deve preencher tempo máximo para "ate"', function() {
+    it('deve preencher tempo máximo para "ate"', function () {
       expect(ValidacoesTempoTotalEstimado.ateMaximo(tte.ateMaximo())).toBe('erro-campo-obrigatorio');
     });
 
-    it('deve preencher a unidade de tempo para "ate"', function() {
+    it('deve preencher a unidade de tempo para "ate"', function () {
       expect(ValidacoesTempoTotalEstimado.ateTipoMaximo(tte.ateTipoMaximo())).toBe('erro-campo-obrigatorio');
-    }); 
+    });
 
     it('campo de comentários não pode passar de 500 caracteres', function () {
       var _500 = _.repeat('*', 500);
@@ -136,7 +136,7 @@ describe('validação >', function () {
       expect(ValidacoesTempoTotalEstimado.entreMaximo('')).toBe('erro-campo-obrigatorio');
     });
 
-    it('deve preencher a unidade de tempo para "entre"', function() {
+    it('deve preencher a unidade de tempo para "entre"', function () {
       expect(ValidacoesTempoTotalEstimado.entreTipoMaximo(tte.ateTipoMaximo())).toBe('erro-campo-obrigatorio');
     });
 
