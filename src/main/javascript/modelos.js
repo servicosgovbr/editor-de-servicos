@@ -113,6 +113,12 @@ var TempoTotalEstimado = function (config) {
   this.entreMaximo = m.prop(data.entreMaximo || '');
   this.entreTipoMaximo = m.prop(data.entreTipoMaximo || '');
   this.descricao = m.prop(data.descricao || '');
+
+  this.validador = new m.validator(validacoes.TempoTotalEstimado);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.TempoTotalEstimado);
+    this.validador.validate(this);
+  };
 };
 
 var Servico = function (config) {

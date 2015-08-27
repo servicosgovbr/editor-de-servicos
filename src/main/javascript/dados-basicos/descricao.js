@@ -23,7 +23,9 @@ module.exports = {
         },
 
         value: ctrl.servico().descricao(),
-        erro: validador.hasError('descricao')
+        erro: function () {
+          return validador.hasError('descricao');
+        }
       })
     ]);
   }

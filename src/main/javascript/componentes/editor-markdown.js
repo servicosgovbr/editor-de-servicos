@@ -7,14 +7,18 @@ module.exports = {
       onkeyup: m.withAttr('value', function (txt) {
         this.caracteres(500 - txt.length);
       }.bind(this))
+
     });
+    this.erro = this.config.erro || _.identity;
+    this.config.erro = undefined;
 
     this.caracteres = m.prop(_.isString(this.config.value) ? 500 - this.config.value.length : 500);
   },
 
   view: function (ctrl) {
+    window.console.log(ctrl.erro());
     return m('.editor-markdown.input-container', {
-      class: ctrl.config.erro
+      class: ctrl.erro()
     }, [
       m('textarea', ctrl.config),
       m('footer', [
