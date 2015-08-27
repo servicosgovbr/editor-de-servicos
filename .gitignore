@@ -13,3 +13,4 @@ _book
 node_modules
 src/main/resources/static/editar/assets
 .idea
+.swp
