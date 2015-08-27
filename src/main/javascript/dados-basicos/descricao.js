@@ -7,6 +7,8 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    var validador = ctrl.servico().validador;
+
     return m('fieldset#descricao', [
       m('h3', [
         'Descrição do serviço',
@@ -20,7 +22,8 @@ module.exports = {
           ctrl.servico().descricao(e.target.value);
         },
 
-        value: ctrl.servico().descricao()
+        value: ctrl.servico().descricao(),
+        erro: validador.hasError('descricao')
       })
     ]);
   }
