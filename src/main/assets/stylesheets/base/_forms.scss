@@ -237,9 +237,12 @@ div.input-container {
     @include validacao-erro-input('Campo não pode ultrapassar 50 caracteres', 127px);
   }
 
-
   &.erro-max-15 {
     @include validacao-erro-input('Campo não pode ultrapassar 15 caracteres', 127px);
+  }
+
+  &.erro-min-3 {
+    @include validacao-erro-input('Deve haver no mínimo três', 127px);
   }
 
   &.selecione-opcao {
@@ -268,6 +271,10 @@ h3.input-container {
 
   &.erro-max-15 {
     @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
+  &.erro-min-3 {
+    @include validacao-erro-inline('Deve haver no mínimo três', -3px, 5px);
   }
 
 }

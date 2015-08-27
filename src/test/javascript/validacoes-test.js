@@ -59,20 +59,13 @@ describe('validação >', function () {
 
       var errs = ValidacoesServico.palavrasChave([_50, _51, _51, _50, _51]);
       expect(errs.campos).toBeDefined();
-      expect(errs.campos.length).toBe(3);
+      expect(errs.campos.length).toBe(5);
 
-      var e0 = errs.campos[0];
-
-      expect(e0.i).toBe(1);
-      expect(e0.msg).toBe('erro-max-50');
-
-      var e1 = errs.campos[1];
-      expect(e1.i).toBe(2);
-      expect(e1.msg).toBe('erro-max-50');
-
-      var e2 = errs.campos[2];
-      expect(e2.i).toBe(4);
-      expect(e2.msg).toBe('erro-max-50');
+      expect(errs.campos[0]).toBeUndefined();
+      expect(errs.campos[1]).toBe('erro-max-50');
+      expect(errs.campos[2]).toBe('erro-max-50');
+      expect(errs.campos[3]).toBeUndefined();
+      expect(errs.campos[4]).toBe('erro-max-50');
     });
 
   });

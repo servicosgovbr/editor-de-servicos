@@ -46,15 +46,9 @@ var Servico = {
       err.msg = minimo(3, [], palavrasChave);
     }
 
-    err.campos = _.compact(_.map(palavrasChave, function (v, i) {
-      var e = maximo(50, '', v);
-      if (e) {
-        return {
-          i: i,
-          msg: e
-        };
-      }
-    }));
+    err.campos = _.map(palavrasChave, function (v, i) {
+      return maximo(50, '', v);
+    });
     return err;
   }
 };

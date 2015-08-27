@@ -18,8 +18,10 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('fieldset#palavras-chave.relative', [
+    var validador = ctrl.servico().validador;
+    var erro = validador.hasError('palavrasChave');
 
+    return m('fieldset#palavras-chave.relative', [
       m('h3', [
         'Palavras-chave',
         m.component(require('tooltips').palavrasChave)
@@ -31,7 +33,9 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('.input-container', [
+          m('.input-container', {
+            class: erro.campos[i]
+          }, [
             m('input.inline[type=text]', {
               value: palavras,
               config: focus(ctrl),
