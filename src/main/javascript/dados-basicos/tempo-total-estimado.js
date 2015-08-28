@@ -75,7 +75,7 @@ module.exports = {
       m('label.titulo.opcional', 'Comentários sobre exceções ou informações adicionais ao tempo estimado'),
 
       m.component(require('componentes/editor-markdown'), {
-        rows: 5,
+        rows: 3,
         oninput: function (e) {
           ctrl.tempoTotalEstimado().descricao(e.target.value);
         },
