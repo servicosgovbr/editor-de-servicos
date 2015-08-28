@@ -62,7 +62,12 @@ var TempoTotalEstimado = {
   entreTipoMaximo: obrigatorio
 };
 
+var Etapa = {
+  descricao: maximo(500, '')
+};
+
 module.exports = {
   Servico: Servico,
-  TempoTotalEstimado: TempoTotalEstimado
+  TempoTotalEstimado: TempoTotalEstimado,
+  Etapa: Etapa
 };
