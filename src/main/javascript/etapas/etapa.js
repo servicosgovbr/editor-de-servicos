@@ -18,7 +18,8 @@ module.exports = {
       m.component(require('etapas/titulo'), {
         titulo: ctrl.etapa.titulo,
         indice: ctrl.indice,
-        adicionado: ctrl.adicionado
+        adicionado: ctrl.adicionado,
+        erro: validador.hasError('titulo')
       }),
       m.component(require('etapas/descricao'), {
         descricao: ctrl.etapa.descricao,
