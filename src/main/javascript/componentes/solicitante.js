@@ -25,9 +25,9 @@ module.exports = {
         'Tipo de solicitante',
         m.component(require('tooltips').tipoSolicitante)]),
 
-        (showDelete ? m('button.remove.absolute', {
-          onclick: removerFn
-        }) : ''),
+      (showDelete ? m('button.remove.absolute', {
+        onclick: removerFn
+      }) : ''),
 
         m('div.input-container', {
           class: validador.hasError('tipo')

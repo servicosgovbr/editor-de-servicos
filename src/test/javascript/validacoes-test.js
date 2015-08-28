@@ -92,6 +92,7 @@ describe('validação >', function () {
 
   describe('etapa', function () {
     itShouldMax('descrição', validacoes.Etapa.descricao, 500);
+    itShouldMax('titulo', validacoes.Etapa.titulo, 100);
   });
 
   describe('solicitante', function () {
