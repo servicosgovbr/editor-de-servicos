@@ -2,10 +2,6 @@
 
 var modelos = require('modelos');
 var validacoes = require('validacoes');
-var ValidacoesServico = validacoes.Servico;
-var ValidacoesTempoTotalEstimado = validacoes.TempoTotalEstimado;
-var ValidacoesTempoTotalEstimado = validacoes.TempoTotalEstimado;
-var ValidacoesEtapa = validacoes.Etapa;
 
 function itShouldMax(campo, fn, limite) {
   var noLimite = _.repeat('x', limite);
@@ -35,42 +31,42 @@ describe('validação >', function () {
   describe('servico >', function () {
 
     it('deve ter nome válido', function () {
-      expect(ValidacoesServico.nome('nome de teste')).toBeUndefined();
+      expect(validacoes.Servico.nome('nome de teste')).toBeUndefined();
     });
 
     it('nome obrigatório', function () {
-      expect(ValidacoesServico.nome()).toBe('erro-campo-obrigatorio');
-      expect(ValidacoesServico.nome('')).toBe('erro-campo-obrigatorio');
+      expect(validacoes.Servico.nome()).toBe('erro-campo-obrigatorio');
+      expect(validacoes.Servico.nome('')).toBe('erro-campo-obrigatorio');
     });
 
-    itShouldMax('nome', ValidacoesServico.nome, 150);
+    itShouldMax('nome', validacoes.Servico.nome, 150);
 
     it('deve permitir não ter sigla', function () {
-      expect(ValidacoesServico.sigla('')).toBeUndefined();
+      expect(validacoes.Servico.sigla('')).toBeUndefined();
     });
 
-    itShouldMax('sigla', ValidacoesServico.sigla, 15);
+    itShouldMax('sigla', validacoes.Servico.sigla, 15);
 
     it('nomes populares não são obrigatórios', function () {
-      expect(ValidacoesServico.nomesPopulares([]).length).toBe(0);
+      expect(validacoes.Servico.nomesPopulares([]).length).toBe(0);
     });
 
-    itemsShouldMax('nomes populares', ValidacoesServico.nomesPopulares, 150);
+    itemsShouldMax('nomes populares', validacoes.Servico.nomesPopulares, 150);
 
     it('deve haver no mínimo 3 palavras chave', function () {
-      expect(ValidacoesServico.palavrasChave([]).msg).toBe('erro-min-3');
-      expect(ValidacoesServico.palavrasChave(['p1', 'p2']).msg).toBe('erro-min-3');
-      expect(ValidacoesServico.palavrasChave(['p1', 'p2', 'p3']).msg).toBeUndefined();
+      expect(validacoes.Servico.palavrasChave([]).msg).toBe('erro-min-3');
+      expect(validacoes.Servico.palavrasChave(['p1', 'p2']).msg).toBe('erro-min-3');
+      expect(validacoes.Servico.palavrasChave(['p1', 'p2', 'p3']).msg).toBeUndefined();
     });
 
-    itemsShouldMax('palavras chave', ValidacoesServico.palavrasChave, 50, _.property('campos'));
+    itemsShouldMax('palavras chave', validacoes.Servico.palavrasChave, 50, _.property('campos'));
   });
 
-  itShouldMax('descricao', ValidacoesServico.descricao, 500);
+  itShouldMax('descricao', validacoes.Servico.descricao, 500);
 
   it('descricao é obrigatória', function () {
-    expect(ValidacoesServico.descricao('')).toBe('erro-campo-obrigatorio');
-    expect(ValidacoesServico.descricao()).toBe('erro-campo-obrigatorio');
+    expect(validacoes.Servico.descricao('')).toBe('erro-campo-obrigatorio');
+    expect(validacoes.Servico.descricao()).toBe('erro-campo-obrigatorio');
   });
 
   describe('tempo total estimado', function () {
@@ -80,35 +76,35 @@ describe('validação >', function () {
     });
 
     it('deve preencher tempo máximo para "ate"', function () {
-      expect(ValidacoesTempoTotalEstimado.ateMaximo(tte.ateMaximo())).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.ateMaximo(tte.ateMaximo())).toBe('erro-campo-obrigatorio');
     });
 
     it('deve preencher a unidade de tempo para "ate"', function () {
-      expect(ValidacoesTempoTotalEstimado.ateTipoMaximo(tte.ateTipoMaximo())).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.ateTipoMaximo(tte.ateTipoMaximo())).toBe('erro-campo-obrigatorio');
     });
 
-    itShouldMax('comentários ou informações adicionais', ValidacoesTempoTotalEstimado.descricao, 500);
+    itShouldMax('comentários ou informações adicionais', validacoes.TempoTotalEstimado.descricao, 500);
 
     it('entre minimo obrigatório', function () {
-      expect(ValidacoesTempoTotalEstimado.entreMinimo('1')).toBeUndefined();
-      expect(ValidacoesTempoTotalEstimado.entreMinimo()).toBe('erro-campo-obrigatorio');
-      expect(ValidacoesTempoTotalEstimado.entreMinimo('')).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.entreMinimo('1')).toBeUndefined();
+      expect(validacoes.TempoTotalEstimado.entreMinimo()).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.entreMinimo('')).toBe('erro-campo-obrigatorio');
     });
 
     it('entre maximo obrigatório', function () {
-      expect(ValidacoesTempoTotalEstimado.entreMaximo('2')).toBeUndefined();
-      expect(ValidacoesTempoTotalEstimado.entreMaximo()).toBe('erro-campo-obrigatorio');
-      expect(ValidacoesTempoTotalEstimado.entreMaximo('')).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.entreMaximo('2')).toBeUndefined();
+      expect(validacoes.TempoTotalEstimado.entreMaximo()).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.entreMaximo('')).toBe('erro-campo-obrigatorio');
     });
 
     it('deve preencher a unidade de tempo para "entre"', function () {
-      expect(ValidacoesTempoTotalEstimado.entreTipoMaximo(tte.ateTipoMaximo())).toBe('erro-campo-obrigatorio');
+      expect(validacoes.TempoTotalEstimado.entreTipoMaximo(tte.ateTipoMaximo())).toBe('erro-campo-obrigatorio');
     });
 
   });
 
   describe('etapas', function () {
-    itShouldMax('descrição', ValidacoesEtapa.descricao, 500);
+    itShouldMax('descrição', validacoes.Etapa.descricao, 500);
   });
 
 });
