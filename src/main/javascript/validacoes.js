@@ -77,7 +77,7 @@ var Solicitante = {
   tipo: function (solicitante) {
     return obrigatorio(solicitante) || maximo(500, '', solicitante);
   },
-  descricao: maximo(500, '')
+  requisitos: maximo(500, '')
 };
 
 module.exports = {
