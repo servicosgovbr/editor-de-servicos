@@ -67,7 +67,9 @@ var Etapa = {
 };
 
 var Solicitante = {
-  tipoSolicitante: obrigatorio,
+  tipoSolicitante: function (solicitante) {
+    return obrigatorio(solicitante) || maximo(500, '', solicitante);
+  },
   descricao: maximo(500, '')
 };
 
