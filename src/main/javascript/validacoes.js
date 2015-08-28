@@ -45,6 +45,14 @@ var Servico = {
     }
   },
 
+  etapas: function (etapas) {
+    etapas = etapas || [];
+
+    if (etapas.length < 1) {
+      return 'erro-min-1';
+    }
+  },
+
   palavrasChave: function (palavrasChave) {
     palavrasChave = palavrasChave || [];
 
@@ -57,7 +65,8 @@ var Servico = {
       return maximo(50, '', v);
     });
     return err;
-  }
+  },
+
 };
 
 var TempoTotalEstimado = {

@@ -71,6 +71,12 @@ describe('validação >', function () {
       expect(validacoes.Servico.solicitantes([])).toBe('erro-min-1');
     });
 
+    it('deve haver no minimo 1 etapa', function () {
+      expect(validacoes.Servico.etapas([{}])).toBeUndefined();
+      expect(validacoes.Servico.etapas()).toBe('erro-min-1');
+      expect(validacoes.Servico.etapas([])).toBe('erro-min-1');
+    });
+
   });
 
   itShouldMax('descricao', validacoes.Servico.descricao, 500);
