@@ -1,6 +1,5 @@
 'use strict';
 
-var focus = require('focus');
 var modelos = require('modelos');
 
 module.exports = {
@@ -27,37 +26,11 @@ module.exports = {
       ]),
 
       ctrl.servico().solicitantes().map(function (s, i) {
-        return m('fieldset#' + s.id + '.relative', {
-          key: s.id
-        }, [
-          m('h3', [
-            'Tipo de solicitante',
-            m.component(require('tooltips').tipoSolicitante)
-          ]),
-
-          ctrl.servico().solicitantes().length === 1 ? '' : m('button.remove.absolute', {
-            onclick: ctrl.remover.bind(ctrl, i)
-          }),
-
-          m('div.input-container', [
-            m('input[type=text]', {
-              value: s.tipo(),
-              config: focus(ctrl),
-              onchange: m.withAttr('value', s.tipo)
-            })
-          ]),
-
-          m('h3.opcional', [
-            'Requisitos necessários para o solicitante',
-             m.component(require('tooltips').requisitosSolicitante)
-          ]),
-
-          m.component(require('componentes/editor-markdown'), {
-            rows: 3,
-            value: s.requisitos(),
-            onchange: m.withAttr('value', s.requisitos)
-          })
-        ]);
+        return m.component(require('componentes/solicitante'), {
+          solicitante: s,
+          showDelete: ctrl.servico().solicitantes().length > 1,
+          remover: ctrl.remover.bind(ctrl, i)
+        });
       }),
 
       m('button.adicionar.adicionar-solicitante', {
