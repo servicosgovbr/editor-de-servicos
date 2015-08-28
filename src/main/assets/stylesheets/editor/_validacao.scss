@@ -1,0 +1,175 @@
+@mixin validacao-erro-inline($mensagem, $top1, $top2) {
+  display: inline-block;
+
+  & + div label input[type="checkbox"] {
+    border: none;
+    
+    &:not(:checked):before {
+      width: 15px;
+      @extend .fa-square-o;
+      color: $vermelho-regular;
+    }
+  }
+
+  & ~ label input[type="radio"] {
+    border: none;
+    
+    &:not(:checked):before {
+      width: 15px;
+      @extend .fa-circle-o;
+      color: $vermelho-regular;
+    }
+  }
+
+  .select2 {
+    border: 2px solid $vermelho-regular;
+    border-radius: 4px;
+  }
+
+  &:before {
+    content: $mensagem;
+    position: absolute;
+    left: 102%;
+    top: $top1;
+    margin-left: 8px;
+    z-index: 2;
+    height: 31px;
+    line-height: 28px;
+    padding: 0 12px;
+    color: $branco;
+    white-space: nowrap;
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: #ff5151;
+    font-family: $openSansBold;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: $top2;
+    left: 102%;
+    border-top: 8px solid transparent;
+    border-right: 8px solid #ff5151;
+    border-bottom: 8px solid transparent;
+  }
+}
+
+@mixin validacao-erro-input($mensagem, $posicao) {
+  input, textarea {
+    border: 2px solid $vermelho-regular;
+  }
+
+  .select2 {
+    border: 2px solid $vermelho-regular;
+    border-radius: 4px;
+  }
+  
+  &:before {
+    content: $mensagem;
+    position: absolute;
+    right: 7%;
+    top: -43px;
+    margin-left: 8px;
+    z-index: 2;
+    height: 31px;
+    line-height: 28px;
+    padding: 0 12px;
+    color: $branco;
+    white-space: nowrap;
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: #ff5151;
+    font-family: $openSansBold;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: -12px;
+    border-top: 8px solid #ff5151;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    right: $posicao;
+  }
+}
+
+div.input-container {
+  position: relative;
+
+  &.erro-campo-obrigatorio {
+    @include validacao-erro-input('Campo obrigatório', 117px);
+  }
+
+  &.erro-max-500 {
+    @include validacao-erro-input('Campo não pode ultrapassar 500 caracteres', 127px);
+  }
+
+  &.erro-max-150 {
+    @include validacao-erro-input('Campo não pode ultrapassar 150 caracteres', 127px);
+  }
+
+  &.erro-max-50 {
+    @include validacao-erro-input('Campo não pode ultrapassar 50 caracteres', 127px);
+  }
+
+  &.erro-max-15 {
+    @include validacao-erro-input('Campo não pode ultrapassar 15 caracteres', 127px);
+  }
+
+  &.erro-min-3 {
+    @include validacao-erro-input('Deve haver no mínimo três', 127px);
+  }
+
+  &.selecione-opcao {
+    @include validacao-erro-input('Selecione ao menos uma opção', 159px);
+  }
+
+   &.inline {
+    display: inline;
+
+    &:after {
+      right: 20px;
+    }
+  }
+}
+
+h3.input-container {
+  position: relative;
+
+  &.erro-campo-obrigatorio {
+    @include validacao-erro-inline('Campo obrigatório', -3px, 5px);
+  }
+
+  &.erro-max-500 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
+  &.erro-max-150 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
+  &.erro-max-50 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
+  &.erro-max-15 {
+    @include validacao-erro-inline('Campo não pode ultrapassar 500 caracteres', -3px, 5px);
+  }
+
+  &.erro-min-3 {
+    @include validacao-erro-inline('Deve haver no mínimo três', -3px, 5px);
+  }
+
+}
+
+.select2-message-container {
+  position: relative;
+
+  &.erro-campo-obrigatorio {
+    @include validacao-erro-inline('Selecione ao menos uma opção', 7px, 15px);
+  }
+
+}

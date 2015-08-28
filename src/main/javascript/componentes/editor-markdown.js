@@ -21,7 +21,7 @@ module.exports = {
       class: ctrl.erro()
     }, [
       m('textarea', ctrl.config),
-      m('footer', [
+      m('div.footer', [
         m('span.markdown-suportado', [
           'Este campo pode ser editado com ',
           m('a[href="/editar/ajuda-markdown"][target=_blank]', ['Markdown'])

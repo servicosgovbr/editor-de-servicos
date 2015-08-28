@@ -44,10 +44,11 @@
       width: 93%;
     }
 
-    footer {
+    .footer {
       color: $cinza-escuro;
       font-size: em(12);
       margin-bottom: 3.25em;
+      @include clearfix;
 
       .markdown-suportado {
         float: left;

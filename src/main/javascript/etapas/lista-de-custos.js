@@ -24,23 +24,23 @@ module.exports = {
         return m('.custo', {
           key: custo.id
         }, [
-          m('input.descricao[type=text]', {
+          m('.input-container.inline', [m('input.descricao[type=text]', {
             value: custo.descricao(),
             config: focus(ctrl),
             onchange: m.withAttr('value', custo.descricao)
-          }),
+          })]),
           ' ',
-          m('input.moeda[type=text][value="R$"]', {
+          m('.input-container.inline', [m('input.moeda[type=text][value="R$"]', {
             value: custo.moeda() || 'R$',
             placeholder: 'Unidade',
             onchange: m.withAttr('value', custo.moeda)
-          }),
+          })]),
           ' ',
-          m('input.valor[type=text]', {
+          m('.input-container.inline', [m('input.valor[type=text]', {
             value: custo.valor(),
             placeholder: '0,00',
             onchange: m.withAttr('value', custo.valor)
-          }),
+          })]),
           ' ',
           ctrl.custos().length === 1 ? m('') : m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
