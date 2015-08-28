@@ -95,8 +95,8 @@ describe('validação >', function () {
   });
 
   describe('solicitante', function () {
-    itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipoSolicitante);
-    itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipoSolicitante, 150);
+    itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipo);
+    itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipo, 150);
     itShouldMax('descrição', validacoes.Solicitante.descricao, 500);
   });
 
