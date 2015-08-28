@@ -132,7 +132,6 @@ var servico = function (x) {
     etapas: um(x.find('etapas > etapa', x).map(etapas).get(), etapas),
     orgao: x.find('servico > orgao').attr('id'),
     segmentosDaSociedade: x.find('servico > segmentos-da-sociedade > item').map(item).get(),
-    eventosDaLinhaDaVida: x.find('servico > eventos-da-linha-da-vida > item').map(item).get(),
     areasDeInteresse: x.find('servico > areas-de-interesse > item').map(item).get(),
     palavrasChave: um(x.find('servico > palavras-chave > item').map(item).get(), str),
     legislacoes: um(x.find('servico > legislacoes > item').map(item).get(), str),

@@ -156,7 +156,6 @@ module.exports = function (servico) {
     etapas: _.compact(servico.etapas().map(limparEtapa)),
     orgao: _.trim(servico.orgao()),
     segmentosDaSociedade: servico.segmentosDaSociedade(),
-    eventosDaLinhaDaVida: servico.eventosDaLinhaDaVida(),
     areasDeInteresse: servico.areasDeInteresse(),
     palavrasChave: _.compact(servico.palavrasChave().map(_.trim)),
     legislacoes: _.compact(servico.legislacoes().map(_.trim)),

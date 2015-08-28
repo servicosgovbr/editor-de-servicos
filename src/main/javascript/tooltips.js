@@ -25,7 +25,6 @@ module.exports = {
   canaisDePrestacao: t('Informe os canais de prestação disponíveis para realizar esta etapa.'),
   orgaoResponsavel: t('Selecione o órgão responsável por este serviço e que responde pela ouvidoria.'),
   segmentosDaSociedade: t('Escolha um ou mais segmentos da sociedade que acessam este serviço.'),
-  eventosDaLinhaDaVida: t('Escolha um ou mais eventos da linha da vida relacionados a este serviço.'),
   areasDeInteresse: t('Escolha uma ou mais áreas de interesse (VCGE) relacionadas a este serviço.'),
   palavrasChave: t('Escreva pelo menos três palavras-chave relacionadas a este serviço.'),
   legislacoes: t('Insira o link da legislação a partir do site LexML (www.lexml.gov.br).'),
