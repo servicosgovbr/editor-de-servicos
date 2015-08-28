@@ -64,6 +64,13 @@ describe('validação >', function () {
     });
 
     itemsShouldMax('palavras chave', validacoes.Servico.palavrasChave, 50, _.property('campos'));
+
+    it('deve haver no minimo 1 solicitante', function () {
+      expect(validacoes.Servico.solicitantes([{}])).toBeUndefined();
+      expect(validacoes.Servico.solicitantes()).toBe('erro-min-1');
+      expect(validacoes.Servico.solicitantes([])).toBe('erro-min-1');
+    });
+
   });
 
   itShouldMax('descricao', validacoes.Servico.descricao, 500);

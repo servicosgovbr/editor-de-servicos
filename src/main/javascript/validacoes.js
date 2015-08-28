@@ -38,6 +38,13 @@ var Servico = {
     return obrigatorio(descricao) || maximo(500, '', descricao);
   },
 
+  solicitantes: function (solicitantes) {
+    solicitantes = solicitantes || [];
+    if (solicitantes.length < 1) {
+      return 'erro-min-1';
+    }
+  },
+
   palavrasChave: function (palavrasChave) {
     palavrasChave = palavrasChave || [];
 
