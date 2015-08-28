@@ -107,6 +107,12 @@ var Solicitante = function (config) {
   this.id = id('solicitante');
   this.tipo = m.prop(data.tipo || '');
   this.requisitos = m.prop(data.requisitos || '');
+
+  this.validador = new m.validator(validacoes.Solicitante);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.Solicitante);
+    this.validador.validate(this);
+  };
 };
 
 var TempoTotalEstimado = function (config) {
