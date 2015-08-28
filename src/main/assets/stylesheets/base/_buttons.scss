@@ -26,6 +26,7 @@ button {
 
   &.adicionar-documento, &.adicionar-custo, &.adicionar-canal-de-prestacao {
     padding-left: 0;
+    @include clearfix;
   }
 
   &.adicionar-caso {

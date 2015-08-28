@@ -86,6 +86,8 @@
   }
 
   .custos .custo {
+    @include clearfix;
+
     input.descricao {
       @include span-columns(7.23 of 12, block-collapse);
       margin-right: 5px;
