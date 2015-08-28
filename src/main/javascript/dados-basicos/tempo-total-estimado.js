@@ -17,6 +17,7 @@ module.exports = {
 
   view: function (ctrl) {
     ctrl.tempoTotalEstimado().validar();
+    var validador = ctrl.tempoTotalEstimado().validador;
 
     return m('fieldset#tempo-total-estimado', [
       m('h3', [
@@ -79,9 +80,7 @@ module.exports = {
           ctrl.tempoTotalEstimado().descricao(e.target.value);
         },
         value: ctrl.tempoTotalEstimado().descricao(),
-        erro: function () {
-          return ctrl.tempoTotalEstimado().validador.hasError('descricao');
-        }
+        erro: validador.hasError('descricao')
       })
     ]);
   }

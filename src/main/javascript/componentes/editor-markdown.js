@@ -9,16 +9,12 @@ module.exports = {
       }.bind(this))
 
     });
-    this.erro = this.config.erro || _.identity;
-    this.config.erro = undefined;
-
     this.caracteres = m.prop(_.isString(this.config.value) ? 500 - this.config.value.length : 500);
   },
 
-  view: function (ctrl) {
-    window.console.log(ctrl.erro());
+  view: function (ctrl, args) {
     return m('.editor-markdown.input-container', {
-      class: ctrl.erro()
+      class: args.erro
     }, [
       m('textarea', ctrl.config),
       m('div.footer', [

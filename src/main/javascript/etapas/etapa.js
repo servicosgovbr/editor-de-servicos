@@ -11,6 +11,9 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    ctrl.etapa.validar();
+    var validador = ctrl.etapa.validador;
+
     return m('fieldset#' + ctrl.etapa.id, [
       m.component(require('etapas/titulo'), {
         titulo: ctrl.etapa.titulo,
@@ -19,8 +22,8 @@ module.exports = {
       }),
       m.component(require('etapas/descricao'), {
         descricao: ctrl.etapa.descricao,
-        indice: ctrl.indice
-
+        indice: ctrl.indice,
+        erro: validador.hasError('descricao')
       }),
       m.component(require('etapas/documentos'), {
         documentos: ctrl.etapa.documentos,

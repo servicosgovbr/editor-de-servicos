@@ -94,6 +94,12 @@ var Etapa = function (config) {
   this.documentos = m.prop(data.documentos || new Documentos());
   this.custos = m.prop(data.custos || new Custos());
   this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new CanaisDePrestacao());
+
+  this.validador = new m.validator(validacoes.Etapa);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.Etapa);
+    this.validador.validate(this);
+  };
 };
 
 var Solicitante = function (config) {

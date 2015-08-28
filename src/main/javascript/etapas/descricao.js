@@ -7,7 +7,7 @@ module.exports = {
     this.indice = args.indice;
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
     return m('.descricao', [
       m('h3.opcional', [
         'Descrição da etapa ' + (ctrl.indice + 1),
@@ -17,7 +17,8 @@ module.exports = {
       m.component(require('componentes/editor-markdown'), {
         rows: 3,
         oninput: m.withAttr('value', ctrl.descricao),
-        value: ctrl.descricao()
+        value: ctrl.descricao(),
+        erro: args.erro
       })
     ]);
   }
