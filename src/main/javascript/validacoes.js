@@ -66,8 +66,14 @@ var Etapa = {
   descricao: maximo(500, '')
 };
 
+var Solicitante = {
+  tipoSolicitante: obrigatorio,
+  descricao: maximo(500, '')
+};
+
 module.exports = {
   Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado,
-  Etapa: Etapa
+  Etapa: Etapa,
+  Solicitante: Solicitante
 };
