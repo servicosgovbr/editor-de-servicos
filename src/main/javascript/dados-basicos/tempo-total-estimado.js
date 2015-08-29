@@ -5,7 +5,7 @@ var referencia = require('referencia');
 var selectTipo = function (prop) {
   return m.component(require('componentes/select2'), {
     prop: prop,
-    data: referencia.unidadesTempo
+    data: referencia.unidadesDeTempo
   });
 };
 

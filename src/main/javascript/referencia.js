@@ -59,7 +59,7 @@ module.exports = {
     'web-simular': 'Endereço na web para simular esta etapa'
   },
 
-  unidadesTempo: [
+  unidadesDeTempo: [
     'minutos',
     'horas',
     'dias corridos',
