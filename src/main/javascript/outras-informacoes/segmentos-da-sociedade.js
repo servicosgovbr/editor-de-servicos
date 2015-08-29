@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = require('componentes/checkboxes-ajax').create({
   chave: 'segmentosDaSociedade',
   id: 'segmentos-da-sociedade',
