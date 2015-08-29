@@ -6,7 +6,10 @@ idea {
         excludeDirs += files(
                 '.git-crypt',
                 'gradle',
-                'tmp'
+                'node_modules',
+                'tmp',
+                'src/main/resources/vendor',
+                'src/main/resources/static/editar/assets',
         )
 
         //o ideal seria ter um testResourceDirs também, para não ter que fazer o que acontece abaixo
