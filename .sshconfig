@@ -20,13 +20,3 @@ Host alpha
   LogLevel=quiet
   UserKnownHostsFile=/dev/null
   StrictHostKeyChecking=no
-
-Host app-vagrant
-  Hostname localhost
-  User vagrant
-  Port 2222
-  IdentityFile ~/.vagrant.d/insecure_private_key
-  IdentityFile ./secrets/server_ssh_key
-  LogLevel=quiet
-  UserKnownHostsFile=/dev/null
-  StrictHostKeyChecking=no
