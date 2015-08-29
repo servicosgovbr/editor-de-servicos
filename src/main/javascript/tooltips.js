@@ -3,9 +3,7 @@
 var t = function (txt) {
   return {
     view: function () {
-      return m('span.tooltip.dica-campo', [
-        m('span', [txt])
-      ]);
+      return m('span.tooltip.dica-campo', m('span', txt));
     }
   };
 };
