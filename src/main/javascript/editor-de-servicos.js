@@ -2,7 +2,7 @@
 
 var modelos = require('modelos');
 var salvarServico = require('xml/salvar');
-var carregarServico = require('xml/carregar-servico');
+var carregarServico = require('xml/carregar');
 
 var modificado = m.prop(false);
 
