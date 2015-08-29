@@ -6,6 +6,7 @@ module.exports = {
 
   controller: function (args) {
     this.solicitante = args.solicitante;
+    this.index = args.index;
   },
 
   view: function (ctrl, args) {
@@ -22,7 +23,7 @@ module.exports = {
     }, [
 
       m('h3', [
-        'Tipo de solicitante',
+        'Tipo do solicitante ' + (ctrl.index + 1),
         m.component(require('tooltips').tipoSolicitante)]),
 
       (showDelete ? m('button.remove.absolute', {
@@ -40,7 +41,7 @@ module.exports = {
         ),
 
         m('h3.opcional', [
-          'Requisitos necessários para o solicitante',
+          'Requisitos necessários para o solicitante ' + (ctrl.index + 1),
           m.component(require('tooltips').requisitosSolicitante)
         ]),
 
