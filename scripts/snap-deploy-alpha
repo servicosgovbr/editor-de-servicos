@@ -17,6 +17,6 @@ docker-compose rm -f
 
 ./build
 
-docker-compose up
+docker-compose up -d
 
 EOF
