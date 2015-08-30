@@ -12,9 +12,10 @@ tmp="$(mktemp -d)"
 git clone "https://github.com/servicosgovbr/docker.git" "${tmp}"
 cd "$tmp"
 
-docker-compose kill editor1 editor2
-docker-compose rm -f editor1 editor2
+docker-compose stop
+docker-compose kill
+docker-compose rm -f
 ./build
-docker-compose up editor1 editor2
+docker-compose up
 
 EOF
