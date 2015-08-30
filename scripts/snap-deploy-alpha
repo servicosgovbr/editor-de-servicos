@@ -3,14 +3,14 @@ set -x
 set -e
 set -o pipefail
 
-ssh -F .sshconfig alpha 'sudo /bin/bash -s' <<-EOF
+ssh -F .sshconfig alpha 'sudo /bin/bash -s' << "EOF"
 set -x
 set -e
 set -o pipefail
 
-tmp=$(mktemp -d)
-git clone https://github.com/servicosgovbr/docker.git $tmp
-cd $tmp
+tmp="$(mktemp -d)"
+git clone "https://github.com/servicosgovbr/docker.git" "${tmp}"
+cd "$tmp"
 
 docker-compose kill editor1 editor2
 docker-compose rm -f editor1 editor2
