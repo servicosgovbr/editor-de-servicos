@@ -8,9 +8,13 @@ set -x
 set -e
 set -o pipefail
 
-yum makecache fast -y
-yum install -y "editor-de-servicos-1.0.${SNAP_PIPELINE_COUNTER:-0}-1"
+tmp=$(mktemp -d)
+git clone https://github.com/servicosgovbr/docker.git $tmp
+cd $tmp
 
-systemctl daemon-reload
-systemctl restart editor-de-servicos
+docker-compose kill editor1 editor2
+docker-compose rm -f editor1 editor2
+./build
+docker-compose up editor1 editor2
+
 EOF
