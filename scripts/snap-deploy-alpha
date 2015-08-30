@@ -8,14 +8,15 @@ set -x
 set -e
 set -o pipefail
 
-tmp="$(mktemp -d)"
-git clone "https://github.com/servicosgovbr/docker.git" "${tmp}"
-cd "$tmp"
+cd '/root/docker'
+git pull --rebase
 
 docker-compose stop
 docker-compose kill
 docker-compose rm -f
+
 ./build
+
 docker-compose up
 
 EOF
