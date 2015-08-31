@@ -14,6 +14,12 @@ var minimo = _.curry(function (len, def, v) {
   }
 });
 
+var numerico = function(v) {
+  if (v && !v.match(/^\d+(\.\d{3})*(,\d+)?$/)) {
+    return 'erro-campo-numerico';
+  }
+};
+
 var obrigatorio = function (v) {
   if (!v) {
     return 'erro-campo-obrigatorio';
@@ -84,7 +90,8 @@ var Etapa = {
 };
 
 var Custo = {
-  descricao: maximo(150, '')
+  descricao: maximo(150, ''),
+  valor: numerico
 };
 
 var Solicitante = {

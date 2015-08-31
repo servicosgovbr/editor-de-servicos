@@ -103,6 +103,10 @@ div.input-container {
     @include validacao-erro-input('Campo obrigatório', 117px);
   }
 
+  &.erro-campo-numerico {
+    @include validacao-erro-input('Campo pode conter apenas números, ponto e vírgula. Ex: 1.250,10', 127px);
+  }
+
   &.erro-max-500 {
     @include validacao-erro-input('Campo não pode ultrapassar 500 caracteres', 127px);
   }

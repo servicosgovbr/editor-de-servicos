@@ -40,7 +40,9 @@ module.exports = {
             onchange: m.withAttr('value', custo.moeda)
           })]),
           ' ',
-          m('.input-container.inline', [m('input.valor[type=text]', {
+          m('.input-container.inline', {
+            class: custo.validador.hasError('valor')
+          }, [m('input.valor[type=text]', {
             value: custo.valor(),
             placeholder: '0,00',
             onchange: m.withAttr('value', custo.valor)
