@@ -14,7 +14,7 @@ var minimo = _.curry(function (len, def, v) {
   }
 });
 
-var numerico = function(v) {
+var numerico = function (v) {
   if (v && !v.match(/^\d+(\.\d{3})*(,\d+)?$/)) {
     return 'erro-campo-numerico';
   }
@@ -84,9 +84,29 @@ var TempoTotalEstimado = {
   entreTipoMaximo: obrigatorio
 };
 
+var Documento = {
+  campo: maximo(150, '')
+};
+
+function validaCaso(caso, validaCampo) {
+  return {
+    descricao: maximo(150, '', caso.descricao()),
+    campos: _.map(caso.campos(), validaCampo)
+  };
+}
+
 var Etapa = {
   descricao: maximo(500, ''),
-  titulo: maximo(100, '')
+  titulo: maximo(100, ''),
+
+  documentos: function (documentos) {
+    return {
+      casoPadrao: validaCaso(documentos.casoPadrao(), Documento.campo),
+      outrosCasos: _.map(documentos.outrosCasos(), function (c) {
+        return validaCaso(c, Documento.campo);
+      })
+    };
+  }
 };
 
 var Custo = {
@@ -104,7 +124,8 @@ var Solicitante = {
 module.exports = {
   Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado,
-  Etapa: Etapa,
-  Custo: Custo,
   Solicitante: Solicitante,
+  Etapa: Etapa,
+  Documento: Documento,
+  Custo: Custo,
 };

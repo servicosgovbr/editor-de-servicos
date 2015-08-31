@@ -3,8 +3,13 @@
 var modelos = require('modelos');
 var validacoes = require('validacoes');
 
+function quote(str) {
+  str = _.trim(str);
+  return str ? '"' + str + '"' : '';
+}
+
 function itIsMandatory(campo, fn) {
-  it('campo "' + campo + '" obrigatório', function () {
+  it('campo ' + quote(campo) + ' obrigatório', function () {
     expect(fn('12345')).toBeUndefined();
     expect(fn()).toBe('erro-campo-obrigatorio');
     expect(fn('')).toBe('erro-campo-obrigatorio');
@@ -15,7 +20,7 @@ function itShouldMax(campo, fn, limite) {
   var noLimite = _.repeat('x', limite);
   var alemDoLimite = _.repeat('c', limite + 1);
 
-  it('campo "' + campo + '" não pode ultrapassar ' + limite + ' caracteres', function () {
+  it('campo ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
     expect(fn(noLimite)).toBeUndefined();
     expect(fn(alemDoLimite)).toBe('erro-max-' + limite);
   });
@@ -23,14 +28,58 @@ function itShouldMax(campo, fn, limite) {
 
 function itemsShouldMax(campo, fn, limite, fnCampos) {
   fnCampos = fnCampos || _.identity;
-
   var param = [_.repeat('x', limite), _.repeat('c', limite + 1)];
-
-  it('campo "' + campo + '" não pode ultrapassar ' + limite + ' caracteres', function () {
+  it('campo ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
     var erros = fnCampos(fn(param));
-
     expect(erros[0]).toBeUndefined();
     expect(erros[1]).toBe('erro-max-' + limite);
+  });
+}
+
+function novoCaso(campos) {
+  return new modelos.Caso('', {
+    descricao: _.repeat('a', 151),
+    campos: campos
+  });
+}
+
+function itIsCaso(Classe, validadorCaso, validadorCampo) {
+  var caso;
+
+  beforeEach(function () {
+    spyOn(validadorCampo, 'campo')
+      .and.returnValue('validou');
+
+    caso = new Classe({
+      casoPadrao: novoCaso([1, 2]),
+      outrosCasos: [novoCaso([]), novoCaso([3]), novoCaso([4, 5, 6])]
+    });
+  });
+
+  it('', function () {
+    var ret = validadorCaso(caso);
+    expect(ret).toEqual({
+      casoPadrao: {
+        descricao: 'erro-max-150',
+        campos: ['validou', 'validou']
+      },
+      outrosCasos: [
+        {
+          descricao: 'erro-max-150',
+          campos: []
+        }, {
+          descricao: 'erro-max-150',
+          campos: ['validou']
+        }, {
+          descricao: 'erro-max-150',
+          campos: ['validou', 'validou', 'validou']
+        }
+      ]
+    });
+
+    _.range(1, 7).forEach(function (n) {
+      expect(validadorCampo.campo).toHaveBeenCalledWith(n, jasmine.anything(), jasmine.anything());
+    });
   });
 }
 
@@ -96,15 +145,22 @@ describe('validação >', function () {
     itIsMandatory('unidade de tempo, entre', validacoes.TempoTotalEstimado.entreTipoMaximo);
   });
 
-  describe('etapa', function () {
-    itShouldMax('descrição', validacoes.Etapa.descricao, 500);
-    itShouldMax('titulo', validacoes.Etapa.titulo, 100);
-  });
-
   describe('solicitante', function () {
     itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipo);
     itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipo, 150);
     itShouldMax('requisitos de solicitante', validacoes.Solicitante.requisitos, 500);
   });
 
+  describe('etapa >', function () {
+    itShouldMax('descrição', validacoes.Etapa.descricao, 500);
+    itShouldMax('titulo', validacoes.Etapa.titulo, 100);
+
+    describe('documentos >', function () {
+      itIsCaso(modelos.Documentos, validacoes.Etapa.documentos, validacoes.Documento);
+
+      describe('documento', function () {
+        itShouldMax('', validacoes.Documento.campo, 150);
+      });
+    });
+  });
 });
