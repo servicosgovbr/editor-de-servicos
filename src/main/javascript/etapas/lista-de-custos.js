@@ -21,10 +21,14 @@ module.exports = {
   view: function (ctrl) {
     return m('.custos', [
       ctrl.custos().map(function (custo, i) {
+        custo.validar();
+
         return m('.custo', {
           key: custo.id
         }, [
-          m('.input-container.inline', [m('input.descricao[type=text]', {
+          m('.input-container.inline', {
+            class: custo.validador.hasError('descricao')
+          }, [m('input.descricao[type=text]', {
             value: custo.descricao(),
             config: focus(ctrl),
             onchange: m.withAttr('value', custo.descricao)

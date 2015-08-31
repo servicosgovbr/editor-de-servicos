@@ -83,6 +83,10 @@ var Etapa = {
   titulo: maximo(100, '')
 };
 
+var Custo = {
+  descricao: maximo(150, '')
+};
+
 var Solicitante = {
   tipo: function (solicitante) {
     return obrigatorio(solicitante) || maximo(500, '', solicitante);
@@ -94,5 +98,6 @@ module.exports = {
   Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado,
   Etapa: Etapa,
-  Solicitante: Solicitante
+  Custo: Custo,
+  Solicitante: Solicitante,
 };

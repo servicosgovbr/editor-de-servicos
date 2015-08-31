@@ -74,6 +74,11 @@ var Custo = function (config) {
   this.descricao = m.prop(data.descricao || '');
   this.moeda = m.prop(data.moeda || '');
   this.valor = m.prop(data.valor || '');
+
+  this.validador = new m.validator(validacoes.Custo);
+  this.validar = function () {
+    this.validador.validate(this);
+  };
 };
 
 var Custos = function (config) {
