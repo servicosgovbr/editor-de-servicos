@@ -1,4 +1,4 @@
 which npm > /dev/null || (echo 'npm não instalado!' && exit 1)
-[ -f './node_modules/.bin/karma' ] || (echo 'pacotes npm não instalados!' && exit 2)
+npm install
 
 ./node_modules/.bin/karma $*
