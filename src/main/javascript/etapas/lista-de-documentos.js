@@ -18,6 +18,10 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    if (ctrl.documentos().length === 0) {
+      ctrl.adicionar();
+    }
+
     return m('.documentos', [
       ctrl.documentos().map(function (documento, i) {
         return m('.documento.relative', {
