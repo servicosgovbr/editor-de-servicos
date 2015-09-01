@@ -166,6 +166,7 @@ describe('validação >', function () {
     shouldHaveMin('solicitantes', function () { return servico.solicitantes; }, 1);
     shouldHaveMin('etapas', function () { return servico.etapas; }, 1);
     shouldHaveMin('segmentos da sociedade', function () { return servico.segmentosDaSociedade; }, 1);
+    shouldHaveMin('areas de interesse', function () { return servico.areasDeInteresse; }, 1);
 
     it('deve haver no mínimo 3 palavras chave', function () {
       servico.palavrasChave([]);
@@ -178,11 +179,6 @@ describe('validação >', function () {
     it('cada palavra chave pode ter no máximo 50 caracteres', function () {
       servico.palavrasChave([_.repeat('a', 51), 'a', 'b']);
       expect(servico.palavrasChave.erro()).toEqual(['erro-max-50', undefined, undefined]);
-    });
-
-    it('deve haver no minimo 1 area de interesse selecionada', function () {
-      expect(validacoes.Servico.areasDeInteresse([{}])).toBeUndefined();
-      expect(validacoes.Servico.areasDeInteresse([])).toBe('erro-min-1');
     });
 
     it('deve haver no minimo 1 lei informada', function () {

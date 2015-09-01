@@ -147,7 +147,7 @@ var Servico = function (config) {
   this.etapas = v.prop(data.etapas || [], v.minimo(1));
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = v.prop(data.segmentosDaSociedade || [], v.minimo(1));
-  this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
+  this.areasDeInteresse = v.prop(data.areasDeInteresse || [], v.minimo(1));
   this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(v.maximo(50)), v.minimo(3));
   this.legislacoes = m.prop(data.legislacoes || []);
 
