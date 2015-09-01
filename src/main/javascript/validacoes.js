@@ -8,7 +8,7 @@ var primeiroErroPara = function (valor, validacoes) {
 
 var validador = function (property, validacoes) {
   var erro = m.prop();
-  var wrapper = function() {
+  var wrapper = function () {
     var novoValor = property.apply(property, arguments);
     erro(primeiroErroPara(novoValor, validacoes));
     return novoValor;
@@ -25,9 +25,8 @@ var prop = function () {
   return validador(m.prop(valorInicial), validacoes);
 };
 
-var maximo = _.curry(function (len, def, v) {
-  v = v || def;
-  if (v.length > len) {
+var maximo = _.curry(function (len, v) {
+  if (v && v.length > len) {
     return 'erro-max-' + len;
   }
 });
@@ -53,20 +52,20 @@ var obrigatorio = function (v) {
 
 var Servico = {
   nome: function (nome) {
-    return obrigatorio(nome) || maximo(150, '', nome);
+    return obrigatorio(nome) || maximo(150, nome);
   },
 
-  sigla: maximo(15, ''),
+  sigla: maximo(15),
 
   nomesPopulares: function (nomes) {
     nomes = nomes || [];
     return _.map(nomes, function (v, i) {
-      return maximo(150, '', v);
+      return maximo(150, v);
     });
   },
 
   descricao: function (descricao) {
-    return obrigatorio(descricao) || maximo(500, '', descricao);
+    return obrigatorio(descricao) || maximo(500, descricao);
   },
 
   solicitantes: minimo(1, []),
@@ -81,7 +80,7 @@ var Servico = {
     }
 
     err.campos = _.map(palavrasChave, function (v, i) {
-      return maximo(50, '', v);
+      return maximo(50, v);
     });
     return err;
   },
@@ -92,7 +91,7 @@ var Servico = {
 };
 
 var TempoTotalEstimado = {
-  descricao: maximo(500, ''),
+  descricao: maximo(500),
   ateMaximo: obrigatorio,
   ateTipoMaximo: obrigatorio,
   entreMinimo: obrigatorio,
@@ -101,12 +100,12 @@ var TempoTotalEstimado = {
 };
 
 var Documento = {
-  campo: maximo(150, '')
+  campo: maximo(150)
 };
 
 function validaCaso(caso, validadorCampo) {
   return {
-    descricao: maximo(150, '', caso.descricao()),
+    descricao: maximo(150, caso.descricao()),
     campos: _.map(caso.campos(), validadorCampo)
   };
 }
@@ -121,7 +120,7 @@ function validaCampoDeCasos(campo, validadorCampo) {
 }
 
 var Custo = {
-  descricao: maximo(150, ''),
+  descricao: maximo(150),
   valor: numerico,
 
   campo: function (custo) {
@@ -133,7 +132,7 @@ var Custo = {
 };
 
 var CanalDePrestacao = {
-  descricao: maximo(500, ''),
+  descricao: maximo(500),
   tipo: obrigatorio,
 
   campo: function (canal) {
@@ -145,8 +144,8 @@ var CanalDePrestacao = {
 };
 
 var Etapa = {
-  descricao: maximo(500, ''),
-  titulo: maximo(100, ''),
+  descricao: maximo(500),
+  //titulo: maximo(100),
 
   documentos: function (documentos) {
     return validaCampoDeCasos(documentos, Documento.campo);
@@ -162,9 +161,9 @@ var Etapa = {
 
 var Solicitante = {
   tipo: function (solicitante) {
-    return obrigatorio(solicitante) || maximo(500, '', solicitante);
+    return obrigatorio(solicitante) || maximo(500, solicitante);
   },
-  requisitos: maximo(500, '')
+  requisitos: maximo(500)
 };
 
 module.exports = {
@@ -177,6 +176,6 @@ module.exports = {
   CanalDePrestacao: CanalDePrestacao,
 
   prop: prop,
-  obrigatorio: obrigatorio
-
+  obrigatorio: obrigatorio,
+  maximo: maximo
 };

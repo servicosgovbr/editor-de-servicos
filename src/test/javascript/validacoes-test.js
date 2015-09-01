@@ -26,6 +26,24 @@ function itShouldMax(campo, fn, limite) {
   });
 }
 
+function shouldNotExceed(campo, context, limite) {
+
+  it('campo ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
+    var property = context();
+
+    property(_.repeat('a', limite + 1));
+    expect(property.erro()).toBe('erro-max-' + limite);
+  });
+
+  it('campo ' + quote(campo) + ' deve aceitar valores com tamanho até ' + limite + ' caracteres', function () {
+    var property = context();
+
+    property(_.repeat('b', limite));
+    expect(property.erro()).toBeUndefined();
+  });
+
+}
+
 function itShouldBeNumeric(campo, fn) {
   it(quote(campo) + ' deve aceitar ponto', function () {
     expect(fn('1.000.000')).toBeUndefined();
@@ -180,8 +198,18 @@ describe('validação >', function () {
   });
 
   describe('etapa >', function () {
+    var etapa;
+
+    beforeEach(function () {
+      etapa = new modelos.Etapa();
+    });
+
     itShouldMax('descrição', validacoes.Etapa.descricao, 500);
-    itShouldMax('titulo', validacoes.Etapa.titulo, 100);
+
+    shouldNotExceed('titulo', function () {
+      return etapa.titulo;
+    }, 100);
+
 
     describe('documentos >', function () {
       itIsCaso(modelos.Documentos, validacoes.Etapa.documentos, validacoes.Documento);
@@ -210,7 +238,7 @@ describe('validação >', function () {
     });
   });
 
-  describe('wrapper validação', function() {
+  describe('wrapper validação', function () {
 
     var campo;
 
