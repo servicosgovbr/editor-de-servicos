@@ -7,8 +7,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    var validador = ctrl.servico().validador;
-
     return m('fieldset#descricao', [
       m('h3', [
         'Descrição do serviço',

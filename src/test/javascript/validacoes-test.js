@@ -151,6 +151,16 @@ describe('validação >', function () {
       expect(servico.nomesPopulares.erro()).toEqual(['erro-max-150']);
     });
 
+    it('deve haver no minimo 1 solicitante', function () {
+      servico.solicitantes([]);
+      expect(servico.solicitantes.erro()).toBe('erro-min-1');
+    });
+
+    it('deve haver no minimo 1 etapa', function () {
+      servico.etapas([]);
+      expect(servico.etapas.erro()).toBe('erro-min-1');
+    });
+
     it('deve haver no mínimo 3 palavras chave', function () {
       expect(validacoes.Servico.palavrasChave([]).msg).toBe('erro-min-3');
       expect(validacoes.Servico.palavrasChave(['p1', 'p2']).msg).toBe('erro-min-3');
@@ -159,15 +169,7 @@ describe('validação >', function () {
 
     itemsShouldMax('palavras chave', validacoes.Servico.palavrasChave, 50, _.property('campos'));
 
-    it('deve haver no minimo 1 solicitante', function () {
-      expect(validacoes.Servico.solicitantes([{}])).toBeUndefined();
-      expect(validacoes.Servico.solicitantes([])).toBe('erro-min-1');
-    });
 
-    it('deve haver no minimo 1 etapa', function () {
-      expect(validacoes.Servico.etapas([{}])).toBeUndefined();
-      expect(validacoes.Servico.etapas([])).toBe('erro-min-1');
-    });
 
     it('deve haver no minimo 1 segmento de sociedade selecionado', function () {
       expect(validacoes.Servico.segmentosDaSociedade([{}])).toBeUndefined();

@@ -31,9 +31,8 @@ var maximo = _.curry(function (len, v) {
   }
 });
 
-var minimo = _.curry(function (len, def, v) {
-  v = v || def;
-  if (v.length < len) {
+var minimo = _.curry(function (len, v) {
+  if (v && v.length < len) {
     return 'erro-min-' + len;
   }
 });
@@ -76,15 +75,15 @@ var Servico = {
   //  return obrigatorio(descricao) || maximo(500, descricao);
   //},
 
-  solicitantes: minimo(1, []),
-  etapas: minimo(1, []),
+  //solicitantes: minimo(1),
+  //etapas: minimo(1),
 
   palavrasChave: function (palavrasChave) {
     palavrasChave = palavrasChave || [];
 
     var err = {};
     if (palavrasChave.length < 3) {
-      err.msg = minimo(3, [], palavrasChave);
+      err.msg = minimo(3, palavrasChave);
     }
 
     err.campos = _.map(palavrasChave, function (v, i) {
@@ -93,9 +92,9 @@ var Servico = {
     return err;
   },
 
-  segmentosDaSociedade: minimo(1, []),
-  areasDeInteresse: minimo(1, []),
-  legislacoes: minimo(1, [])
+  segmentosDaSociedade: minimo(1),
+  areasDeInteresse: minimo(1),
+  legislacoes: minimo(1)
 };
 
 var TempoTotalEstimado = {
@@ -186,5 +185,6 @@ module.exports = {
   prop: prop,
   cada: cada,
   obrigatorio: obrigatorio,
-  maximo: maximo
+  maximo: maximo,
+  minimo: minimo
 };
