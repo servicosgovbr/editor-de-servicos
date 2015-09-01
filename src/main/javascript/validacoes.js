@@ -58,46 +58,6 @@ var cada = function () {
   };
 };
 
-var Servico = {
-  //nome: function (nome) {
-  //  return obrigatorio(nome) || maximo(150, nome);
-  //},
-
-  //sigla: maximo(15),
-
-  //nomesPopulares: function (nomes) {
-  //  nomes = nomes || [];
-  //  return _.map(nomes, function (v, i) {
-  //    return maximo(150, v);
-  //  });
-  //},
-
-  //descricao: function (descricao) {
-  //  return obrigatorio(descricao) || maximo(500, descricao);
-  //},
-
-  //solicitantes: minimo(1),
-  //etapas: minimo(1),
-
-  //palavrasChave: function (palavrasChave) {
-  //  palavrasChave = palavrasChave || [];
-
-  //  var err = {};
-  //  if (palavrasChave.length < 3) {
-  //    err.msg = minimo(3, palavrasChave);
-  //  }
-
-  //  err.campos = _.map(palavrasChave, function (v, i) {
-  //    return maximo(50, v);
-  //  });
-  //  return err;
-  //},
-
-  //segmentosDaSociedade: minimo(1),
-  //areasDeInteresse: minimo(1),
-  //legislacoes: minimo(1)
-};
-
 var TempoTotalEstimado = {
   descricao: maximo(500),
   ateMaximo: obrigatorio,
@@ -175,7 +135,6 @@ var Solicitante = {
 };
 
 module.exports = {
-  Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado,
   Solicitante: Solicitante,
   Etapa: Etapa,
