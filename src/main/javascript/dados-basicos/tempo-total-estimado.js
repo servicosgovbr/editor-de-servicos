@@ -2,10 +2,11 @@
 
 var referencia = require('referencia');
 
-var selectTipo = function (prop) {
+var selectTipo = function (prop, erro) {
   return m.component(require('componentes/select2'), {
     prop: prop,
-    data: referencia.unidadesDeTempo
+    data: referencia.unidadesDeTempo,
+    erro: erro
   });
 };
 
@@ -44,12 +45,14 @@ module.exports = {
           display: ctrl.tempoTotalEstimado().tipo() === 'ate' ? 'inline' : 'none'
         }
       }, [
-        m('.input-container.inline.margin-right', [m('input.ate-maximo[type="number"]', {
+        m('.input-container.inline.margin-right', {
+          class: validador.hasError('ateMaximo')
+        }, [m('input.ate-maximo[type="number"]', {
           value: ctrl.tempoTotalEstimado().ateMaximo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().ateMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo),
+        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo, validador.hasError('ateTipoMaximo')),
       ]),
 
       m('span.tipo-entre', {
@@ -57,19 +60,23 @@ module.exports = {
           display: ctrl.tempoTotalEstimado().tipo() === 'entre' ? 'inline' : 'none'
         }
       }, [
-        m('.input-container.inline', [m('input.entre-minimo[type="number"]', {
+        m('.input-container.inline', {
+          class: validador.hasError('entreMinimo')
+        }, [m('input.entre-minimo[type="number"]', {
           value: ctrl.tempoTotalEstimado().entreMinimo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMinimo)
         })]),
 
         m('span', ' e '),
 
-        m('.input-container.inline.margin-right', [m('input.entre-maximo[type="number"]', {
+        m('.input-container.inline.margin-right', {
+          class: validador.hasError('entreMaximo')
+        }, [m('input.entre-maximo[type="number"]', {
           value: ctrl.tempoTotalEstimado().entreMaximo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo)
+        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo, validador.hasError('entreTipoMaximo'))
       ]),
 
       m('label.titulo.opcional', 'Comentários sobre exceções ou informações adicionais ao tempo estimado'),
