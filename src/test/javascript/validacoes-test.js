@@ -143,11 +143,10 @@ describe('validação >', function () {
     shouldNotExceed('nome', function () { return servico.nome; }, 150);
     shouldNotExceed('sigla', function () { return servico.sigla; }, 15);
 
-    it('nomes populares não são obrigatórios', function () {
-      expect(validacoes.Servico.nomesPopulares([]).length).toBe(0);
+    it('cada nome popular deve ter no máximo 150 caracteres', function () {
+      servico.nomesPopulares([_.repeat('x', 151)]);
+      expect(servico.nomesPopulares.erro()).toEqual(['erro-max-150']);
     });
-
-    itemsShouldMax('nomes populares', validacoes.Servico.nomesPopulares, 150);
 
     it('deve haver no mínimo 3 palavras chave', function () {
       expect(validacoes.Servico.palavrasChave([]).msg).toBe('erro-min-3');

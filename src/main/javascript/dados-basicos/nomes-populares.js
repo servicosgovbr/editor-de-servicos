@@ -18,8 +18,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    var validador = ctrl.servico().validador;
-
     return m('fieldset#nomes-populares.relative', [
       m('h3.opcional', [
         'Nomes populares',
@@ -33,7 +31,7 @@ module.exports = {
           }),
 
           m('div.input-container', {
-            class: validador.hasError('nomesPopulares')[i]
+            class: ctrl.servico().nomesPopulares.erro()[i]
           }, [
             m('input.inline[type=text]', {
               value: nomesPopulares,

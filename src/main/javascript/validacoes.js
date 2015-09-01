@@ -1,16 +1,16 @@
 'use strict';
 
-var primeiroErroPara = function (valor, validacoes) {
+var primeiroErroPara = _.curry(function (validacoes, valor) {
   return _.reduce(validacoes, function (erro, validador) {
     return erro || validador(valor);
   }, undefined);
-};
+});
 
 var validador = function (property, validacoes) {
   var erro = m.prop();
   var wrapper = function () {
     var novoValor = property.apply(property, arguments);
-    erro(primeiroErroPara(novoValor, validacoes));
+    erro(primeiroErroPara(validacoes, novoValor));
     return novoValor;
   };
 
@@ -50,6 +50,14 @@ var obrigatorio = function (v) {
   }
 };
 
+var cada = function () {
+  var validacoes = arguments;
+
+  return function (valores) {
+    return _.map(valores, primeiroErroPara(validacoes));
+  };
+};
+
 var Servico = {
   //nome: function (nome) {
   //  return obrigatorio(nome) || maximo(150, nome);
@@ -57,12 +65,12 @@ var Servico = {
 
   //sigla: maximo(15),
 
-  nomesPopulares: function (nomes) {
-    nomes = nomes || [];
-    return _.map(nomes, function (v, i) {
-      return maximo(150, v);
-    });
-  },
+  //nomesPopulares: function (nomes) {
+  //  nomes = nomes || [];
+  //  return _.map(nomes, function (v, i) {
+  //    return maximo(150, v);
+  //  });
+  //},
 
   descricao: function (descricao) {
     return obrigatorio(descricao) || maximo(500, descricao);
@@ -176,6 +184,7 @@ module.exports = {
   CanalDePrestacao: CanalDePrestacao,
 
   prop: prop,
+  cada: cada,
   obrigatorio: obrigatorio,
   maximo: maximo
 };
