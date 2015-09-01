@@ -21,6 +21,10 @@ module.exports = {
   view: function (ctrl, args) {
     var erros = args.erros || [];
 
+    if (ctrl.custos().length === 0) {
+      ctrl.adicionar();
+    }
+
     return m('.custos', [
       ctrl.custos().map(function (custo, i) {
         var erroCusto = erros[i] || {};
