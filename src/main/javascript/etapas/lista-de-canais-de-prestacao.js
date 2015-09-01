@@ -22,9 +22,13 @@ module.exports = {
   view: function (ctrl, args) {
     var erros = args.erros || [];
 
+    if (ctrl.canaisDePrestacao().length === 0) {
+      ctrl.adicionar();
+    }
+
     return m('.canais-de-prestacao', [
       ctrl.canaisDePrestacao().map(function (canalDePrestacao, i) {
-        var erroCanal = erros[i];
+        var erroCanal = erros[i] || {};
 
         return m('.canal-de-prestacao', {
           key: canalDePrestacao.id
