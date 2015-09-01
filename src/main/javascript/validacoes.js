@@ -78,19 +78,19 @@ var Servico = {
   //solicitantes: minimo(1),
   //etapas: minimo(1),
 
-  palavrasChave: function (palavrasChave) {
-    palavrasChave = palavrasChave || [];
+  //palavrasChave: function (palavrasChave) {
+  //  palavrasChave = palavrasChave || [];
 
-    var err = {};
-    if (palavrasChave.length < 3) {
-      err.msg = minimo(3, palavrasChave);
-    }
+  //  var err = {};
+  //  if (palavrasChave.length < 3) {
+  //    err.msg = minimo(3, palavrasChave);
+  //  }
 
-    err.campos = _.map(palavrasChave, function (v, i) {
-      return maximo(50, v);
-    });
-    return err;
-  },
+  //  err.campos = _.map(palavrasChave, function (v, i) {
+  //    return maximo(50, v);
+  //  });
+  //  return err;
+  //},
 
   segmentosDaSociedade: minimo(1),
   areasDeInteresse: minimo(1),

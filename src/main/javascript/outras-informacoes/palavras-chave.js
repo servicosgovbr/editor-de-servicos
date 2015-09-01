@@ -18,9 +18,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    var validador = ctrl.servico().validador;
-    var erro = validador.hasError('palavrasChave');
-
     return m('fieldset#palavras-chave.relative', [
       m('h3', [
         'Palavras-chave',
@@ -34,7 +31,7 @@ module.exports = {
           }),
 
           m('.input-container', {
-            class: erro.campos[i]
+            class: ctrl.servico().palavrasChave.erro()[i]
           }, [
             m('input.inline[type=text]', {
               value: palavras,

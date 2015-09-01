@@ -72,16 +72,6 @@ function itShouldBeNumeric(campo, fn) {
 
 }
 
-function itemsShouldMax(campo, fn, limite, fnCampos) {
-  fnCampos = fnCampos || _.identity;
-  var param = [_.repeat('x', limite), _.repeat('c', limite + 1)];
-  it('campo ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
-    var erros = fnCampos(fn(param));
-    expect(erros[0]).toBeUndefined();
-    expect(erros[1]).toBe('erro-max-' + limite);
-  });
-}
-
 function novoCaso(campos) {
   return new modelos.Caso('', {
     descricao: _.repeat('a', 151),
@@ -149,27 +139,39 @@ describe('validação >', function () {
     it('cada nome popular deve ter no máximo 150 caracteres', function () {
       servico.nomesPopulares([_.repeat('x', 151)]);
       expect(servico.nomesPopulares.erro()).toEqual(['erro-max-150']);
+
+      servico.nomesPopulares([_.repeat('x', 150)]);
+      expect(servico.nomesPopulares.erro()).toEqual([undefined]);
     });
 
     it('deve haver no minimo 1 solicitante', function () {
       servico.solicitantes([]);
       expect(servico.solicitantes.erro()).toBe('erro-min-1');
+
+      servico.solicitantes(['Solicitante 1']);
+      expect(servico.solicitantes.erro()).toBeUndefined();
     });
 
     it('deve haver no minimo 1 etapa', function () {
       servico.etapas([]);
       expect(servico.etapas.erro()).toBe('erro-min-1');
+
+      servico.etapas(['Etapa 1']);
+      expect(servico.etapas.erro()).toBeUndefined();
     });
 
     it('deve haver no mínimo 3 palavras chave', function () {
-      expect(validacoes.Servico.palavrasChave([]).msg).toBe('erro-min-3');
-      expect(validacoes.Servico.palavrasChave(['p1', 'p2']).msg).toBe('erro-min-3');
-      expect(validacoes.Servico.palavrasChave(['p1', 'p2', 'p3']).msg).toBeUndefined();
+      servico.palavrasChave([]);
+      expect(servico.palavrasChave.erro()).toBe('erro-min-3');
+
+      servico.palavrasChave(['a1', 'a2', 'a3']);
+      expect(servico.palavrasChave.erro()).toEqual([undefined, undefined, undefined]);
     });
 
-    itemsShouldMax('palavras chave', validacoes.Servico.palavrasChave, 50, _.property('campos'));
-
-
+    it('cada palavra chave pode ter no máximo 50 caracteres', function () {
+      servico.palavrasChave([_.repeat('a', 51), 'a', 'b']);
+      expect(servico.palavrasChave.erro()).toEqual(['erro-max-50', undefined, undefined]);
+    });
 
     it('deve haver no minimo 1 segmento de sociedade selecionado', function () {
       expect(validacoes.Servico.segmentosDaSociedade([{}])).toBeUndefined();

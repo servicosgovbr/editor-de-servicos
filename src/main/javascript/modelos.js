@@ -148,7 +148,7 @@ var Servico = function (config) {
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
-  this.palavrasChave = m.prop(data.palavrasChave || []);
+  this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(v.maximo(50)), v.minimo(3));
   this.legislacoes = m.prop(data.legislacoes || []);
 
   this.validador = new m.validator(validacoes.Servico);
