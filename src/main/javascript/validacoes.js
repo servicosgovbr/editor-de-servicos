@@ -44,20 +44,8 @@ var Servico = {
     return obrigatorio(descricao) || maximo(500, '', descricao);
   },
 
-  solicitantes: function (solicitantes) {
-    solicitantes = solicitantes || [];
-    if (solicitantes.length < 1) {
-      return 'erro-min-1';
-    }
-  },
-
-  etapas: function (etapas) {
-    etapas = etapas || [];
-
-    if (etapas.length < 1) {
-      return 'erro-min-1';
-    }
-  },
+  solicitantes: minimo(1, []),
+  etapas: minimo(1, []),
 
   palavrasChave: function (palavrasChave) {
     palavrasChave = palavrasChave || [];
@@ -73,6 +61,7 @@ var Servico = {
     return err;
   },
 
+  segmentosDaSociedade: minimo(1, [])
 };
 
 var TempoTotalEstimado = {

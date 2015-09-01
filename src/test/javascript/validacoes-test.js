@@ -132,14 +132,17 @@ describe('validação >', function () {
 
     it('deve haver no minimo 1 solicitante', function () {
       expect(validacoes.Servico.solicitantes([{}])).toBeUndefined();
-      expect(validacoes.Servico.solicitantes()).toBe('erro-min-1');
       expect(validacoes.Servico.solicitantes([])).toBe('erro-min-1');
     });
 
     it('deve haver no minimo 1 etapa', function () {
       expect(validacoes.Servico.etapas([{}])).toBeUndefined();
-      expect(validacoes.Servico.etapas()).toBe('erro-min-1');
       expect(validacoes.Servico.etapas([])).toBe('erro-min-1');
+    });
+
+    it('deve haver no minimo 1 segmento de sociedade selecionado', function () {
+      expect(validacoes.Servico.segmentosDaSociedade([{}])).toBeUndefined();
+      expect(validacoes.Servico.segmentosDaSociedade([])).toBe('erro-min-1');
     });
 
   });
