@@ -19,16 +19,21 @@ module.exports = {
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var erros = args.erros || [];
+
     return m('.canais-de-prestacao', [
       ctrl.canaisDePrestacao().map(function (canalDePrestacao, i) {
+        var erroCanal = erros[i];
+
         return m('.canal-de-prestacao', {
           key: canalDePrestacao.id
         }, [
 
           m.component(require('componentes/select2'), {
             data: ctrl.tiposDeCanalDePrestacao(),
-            prop: ctrl.canaisDePrestacao()[i].tipo
+            prop: ctrl.canaisDePrestacao()[i].tipo,
+            erro: erroCanal.tipo
           }),
 
           ctrl.canaisDePrestacao().length === 1 ? '' : m('button.remove', {
@@ -39,7 +44,8 @@ module.exports = {
           m.component(require('componentes/editor-markdown'), {
             rows: 3,
             value: canalDePrestacao.descricao(),
-            onchange: m.withAttr('value', canalDePrestacao.descricao)
+            onchange: m.withAttr('value', canalDePrestacao.descricao),
+            erro: erroCanal.descricao
           }),
         ]);
       }),

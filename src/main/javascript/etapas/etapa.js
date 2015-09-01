@@ -43,7 +43,8 @@ module.exports = {
 
       m.component(require('etapas/canais-de-prestacao'), {
         canaisDePrestacao: ctrl.etapa.canaisDePrestacao,
-        indice: ctrl.indice
+        indice: ctrl.indice,
+        erros: validador.hasError('canaisDePrestacao')
       }),
     ]);
   }

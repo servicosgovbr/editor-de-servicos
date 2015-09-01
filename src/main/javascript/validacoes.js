@@ -123,7 +123,7 @@ var CanalDePrestacao = {
   campo: function (canal) {
     return {
       descricao: CanalDePrestacao.descricao(canal.descricao()),
-      tipo: CanalDePrestacao.tipo(canal.tipo)
+      tipo: CanalDePrestacao.tipo(canal.tipo())
     };
   }
 };
