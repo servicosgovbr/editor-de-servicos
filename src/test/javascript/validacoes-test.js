@@ -140,7 +140,10 @@ describe('validação >', function () {
     });
 
     shouldBePresent('nome', function () { return servico.nome; });
+    shouldBePresent('descricao', function () { return servico.descricao; });
+
     shouldNotExceed('nome', function () { return servico.nome; }, 150);
+    shouldNotExceed('descricao', function () { return servico.descricao; }, 500);
     shouldNotExceed('sigla', function () { return servico.sigla; }, 15);
 
     it('cada nome popular deve ter no máximo 150 caracteres', function () {
@@ -181,9 +184,6 @@ describe('validação >', function () {
       expect(validacoes.Servico.legislacoes([])).toBe('erro-min-1');
     });
   });
-
-  itShouldMax('descricao', validacoes.Servico.descricao, 500);
-  itIsMandatory('descricao', validacoes.Servico.descricao);
 
   describe('tempo total estimado', function () {
     var tte;

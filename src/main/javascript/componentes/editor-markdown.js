@@ -14,7 +14,7 @@ module.exports = {
 
   view: function (ctrl, args) {
     return m('.editor-markdown.input-container', {
-      class: args.erro()
+      class: args.erro
     }, [
       m('textarea', ctrl.config),
       m('div.footer', [

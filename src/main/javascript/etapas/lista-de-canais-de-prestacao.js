@@ -49,7 +49,7 @@ module.exports = {
             rows: 3,
             value: canalDePrestacao.descricao(),
             onchange: m.withAttr('value', canalDePrestacao.descricao),
-            erro: function () { return erroCanal.descricao; }
+            erro: erroCanal.descricao
           }),
         ]);
       }),

@@ -72,9 +72,9 @@ var Servico = {
   //  });
   //},
 
-  descricao: function (descricao) {
-    return obrigatorio(descricao) || maximo(500, descricao);
-  },
+  //descricao: function (descricao) {
+  //  return obrigatorio(descricao) || maximo(500, descricao);
+  //},
 
   solicitantes: minimo(1, []),
   etapas: minimo(1, []),

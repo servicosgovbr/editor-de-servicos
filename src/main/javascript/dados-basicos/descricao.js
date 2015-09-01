@@ -23,7 +23,7 @@ module.exports = {
         },
 
         value: ctrl.servico().descricao(),
-        erro: function () { return validador.hasError('descricao'); }
+        erro: ctrl.servico().descricao.erro()
       })
     ]);
   }
