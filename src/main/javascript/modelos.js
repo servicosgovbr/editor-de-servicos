@@ -1,6 +1,7 @@
 'use strict';
 
 var validacoes = require('validacoes');
+var v = require('validacoes');
 
 var id = (function () {
   var counters = {};
@@ -89,8 +90,8 @@ var Custos = function (config) {
 var Etapa = function (config) {
   var data = (config || {});
   this.id = id('etapa');
-  this.titulo = validacoes.prop(data.titulo || '', validacoes.maximo(100));
-  this.descricao = m.prop(data.descricao || '');
+  this.titulo = v.prop(data.titulo || '', v.maximo(100));
+  this.descricao = v.prop(data.descricao || '', v.maximo(500));
   this.documentos = m.prop(data.documentos || new Documentos());
   this.custos = m.prop(data.custos || new Custos());
   this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new CanaisDePrestacao());

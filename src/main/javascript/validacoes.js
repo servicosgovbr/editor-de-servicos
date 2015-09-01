@@ -144,7 +144,7 @@ var CanalDePrestacao = {
 };
 
 var Etapa = {
-  descricao: maximo(500),
+  //descricao: maximo(500),
   //titulo: maximo(100),
 
   documentos: function (documentos) {

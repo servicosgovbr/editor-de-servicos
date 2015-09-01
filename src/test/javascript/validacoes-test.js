@@ -204,12 +204,8 @@ describe('validação >', function () {
       etapa = new modelos.Etapa();
     });
 
-    itShouldMax('descrição', validacoes.Etapa.descricao, 500);
-
-    shouldNotExceed('titulo', function () {
-      return etapa.titulo;
-    }, 100);
-
+    shouldNotExceed('titulo', function () { return etapa.titulo; }, 100);
+    shouldNotExceed('descrição', function () { return etapa.descricao; }, 500);
 
     describe('documentos >', function () {
       itIsCaso(modelos.Documentos, validacoes.Etapa.documentos, validacoes.Documento);
