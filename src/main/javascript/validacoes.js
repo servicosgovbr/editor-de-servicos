@@ -116,6 +116,18 @@ var Custo = {
   }
 };
 
+var CanalDePrestacao = {
+  descricao: maximo(500, ''),
+  tipo: obrigatorio,
+
+  campo: function (canal) {
+    return {
+      descricao: CanalDePrestacao.descricao(canal.descricao()),
+      tipo: CanalDePrestacao.tipo(canal.tipo)
+    };
+  }
+};
+
 var Etapa = {
   descricao: maximo(500, ''),
   titulo: maximo(100, ''),
@@ -125,6 +137,10 @@ var Etapa = {
   },
   custos: function (custos) {
     return validaCampoDeCasos(custos, Custo.campo);
+  },
+
+  canaisDePrestacao: function (canais) {
+    return validaCampoDeCasos(canais, CanalDePrestacao.campo);
   }
 };
 
@@ -142,4 +158,5 @@ module.exports = {
   Etapa: Etapa,
   Documento: Documento,
   Custo: Custo,
+  CanalDePrestacao: CanalDePrestacao
 };

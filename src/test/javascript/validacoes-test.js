@@ -187,5 +187,14 @@ describe('validação >', function () {
         itShouldBeNumeric('valor', validacoes.Custo.valor);
       });
     });
+
+    describe('canais de prestação >', function () {
+      itIsCaso(modelos.CanaisDePrestacao, validacoes.Etapa.canaisDePrestacao, validacoes.CanalDePrestacao);
+
+      describe('canal de prestação >', function () {
+        itShouldMax('descricao', validacoes.CanalDePrestacao.descricao, 500);
+        itIsMandatory('tipo', validacoes.CanalDePrestacao.tipo);
+      });
+    });
   });
 });
