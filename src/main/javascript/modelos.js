@@ -149,7 +149,7 @@ var Servico = function (config) {
   this.segmentosDaSociedade = v.prop(data.segmentosDaSociedade || [], v.minimo(1));
   this.areasDeInteresse = v.prop(data.areasDeInteresse || [], v.minimo(1));
   this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(v.maximo(50)), v.minimo(3));
-  this.legislacoes = m.prop(data.legislacoes || []);
+  this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1));
 
   this.validador = new m.validator(validacoes.Servico);
   this.validar = function () {
