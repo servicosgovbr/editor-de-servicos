@@ -1,5 +1,30 @@
 'use strict';
 
+var primeiroErroPara = function (valor, validacoes) {
+  return _.reduce(validacoes, function (erro, validador) {
+    return erro || validador(valor);
+  }, undefined);
+};
+
+var validador = function (property, validacoes) {
+  var erro = m.prop();
+  var wrapper = function() {
+    var novoValor = property.apply(property, arguments);
+    erro(primeiroErroPara(novoValor, validacoes));
+    return novoValor;
+  };
+
+  wrapper.erro = erro;
+  return wrapper;
+};
+
+var prop = function () {
+  var valorInicial = _.head(arguments);
+  var validacoes = _.tail(arguments);
+
+  return validador(m.prop(valorInicial), validacoes);
+};
+
 var maximo = _.curry(function (len, def, v) {
   v = v || def;
   if (v.length > len) {
@@ -149,5 +174,9 @@ module.exports = {
   Etapa: Etapa,
   Documento: Documento,
   Custo: Custo,
-  CanalDePrestacao: CanalDePrestacao
+  CanalDePrestacao: CanalDePrestacao,
+
+  prop: prop,
+  obrigatorio: obrigatorio
+
 };

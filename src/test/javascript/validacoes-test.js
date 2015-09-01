@@ -209,4 +209,29 @@ describe('validação >', function () {
       });
     });
   });
+
+  describe('wrapper validação', function() {
+
+    var campo;
+
+    beforeEach(function () {
+      campo = validacoes.prop(null, validacoes.obrigatorio);
+    });
+
+    it('não deve validar estado inicial', function () {
+      expect(campo.erro()).toBeUndefined();
+    });
+
+    it('deve conter erro ao setar valor inválido', function () {
+      campo('');
+      expect(campo.erro()).toBe('erro-campo-obrigatorio');
+    });
+
+    it('não deve conter erro ao setar valor válido', function () {
+      campo('um valor válido');
+      expect(campo.erro()).toBeUndefined();
+    });
+
+  });
+
 });
