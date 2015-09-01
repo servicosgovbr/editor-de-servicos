@@ -10,6 +10,7 @@ module.exports = function (componente) {
       this.caso = args.caso;
       this.padrao = !!args.padrao;
       this.titulo = args.titulo;
+      this.opcional = args.opcional;
       this.adicionado = this.caso().adicionado;
     },
 
@@ -35,7 +36,9 @@ module.exports = function (componente) {
       }, [
 
         inputNome,
-        m('label.titulo', ctrl.titulo),
+        m('label.titulo', {
+          class: ctrl.opcional ? 'opcional' : ''
+        }, ctrl.titulo),
         m.component(componente, {
           id: ctrl.caso().id,
           campos: ctrl.caso().campos

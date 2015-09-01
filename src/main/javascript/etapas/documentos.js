@@ -27,6 +27,7 @@ module.exports = {
       m.component(new Caso(ListaDeDocumentos), {
         padrao: true,
         titulo: 'Documentação em comum para todos os casos',
+        opcional: true,
         caso: ctrl.documentos().casoPadrao
       }),
 
