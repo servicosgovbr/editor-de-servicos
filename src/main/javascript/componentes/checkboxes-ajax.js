@@ -28,7 +28,7 @@ module.exports.create = function (config) {
     view: function (ctrl, args) {
       return m('fieldset#' + config.id, [
         m('h3.input-container', {
-          class: args.servico().validador.hasError(config.chave)
+          class: (config.id === 'segmentos-da-sociedade' ? args.servico().segmentosDaSociedade.erro() : args.servico().validador.hasError(config.chave))
         }, [
           config.titulo,
           m.component(require('tooltips')[config.chave])

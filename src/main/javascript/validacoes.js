@@ -53,7 +53,8 @@ var cada = function () {
   var validacoes = arguments;
 
   return function (valores) {
-    return _.map(valores, primeiroErroPara(validacoes));
+    var erros = _.map(valores, primeiroErroPara(validacoes));
+    return !_.isEmpty(erros) ? erros : undefined;
   };
 };
 
@@ -92,7 +93,7 @@ var Servico = {
   //  return err;
   //},
 
-  segmentosDaSociedade: minimo(1),
+  //segmentosDaSociedade: minimo(1),
   areasDeInteresse: minimo(1),
   legislacoes: minimo(1)
 };

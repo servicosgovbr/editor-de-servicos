@@ -174,8 +174,8 @@ describe('validação >', function () {
     });
 
     it('deve haver no minimo 1 segmento de sociedade selecionado', function () {
-      expect(validacoes.Servico.segmentosDaSociedade([{}])).toBeUndefined();
-      expect(validacoes.Servico.segmentosDaSociedade([])).toBe('erro-min-1');
+      servico.segmentosDaSociedade([]);
+      expect(servico.segmentosDaSociedade.erro()).toBe('erro-min-1');
     });
 
     it('deve haver no minimo 1 area de interesse selecionada', function () {
