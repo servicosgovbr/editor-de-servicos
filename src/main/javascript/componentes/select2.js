@@ -55,8 +55,10 @@ module.exports = {
     this.options = _.omit(args, 'prop');
   },
 
-  view: function (ctrl) {
-    return m('.clear.select2-message-container', m('select', {
+  view: function (ctrl, args) {
+    return m('.clear.select2-message-container', {
+      class: args.erro
+    }, m('select', {
       config: function (element, isInitialized) {
         var el = jQuery(element);
 
