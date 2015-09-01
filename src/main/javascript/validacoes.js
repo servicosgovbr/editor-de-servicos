@@ -51,11 +51,11 @@ var obrigatorio = function (v) {
 };
 
 var Servico = {
-  nome: function (nome) {
-    return obrigatorio(nome) || maximo(150, nome);
-  },
+  //nome: function (nome) {
+  //  return obrigatorio(nome) || maximo(150, nome);
+  //},
 
-  sigla: maximo(15),
+  //sigla: maximo(15),
 
   nomesPopulares: function (nomes) {
     nomes = nomes || [];

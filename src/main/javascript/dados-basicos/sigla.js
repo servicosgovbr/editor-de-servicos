@@ -7,8 +7,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    var validador = ctrl.servico().validador;
-
     return m('fieldset#sigla', [
       m('h3.opcional', [
         'Sigla do serviço',
@@ -16,7 +14,7 @@ module.exports = {
       ]),
 
       m('div.input-container', {
-        class: validador.hasError('sigla')
+        class: ctrl.servico().sigla.erro()
       }, [
         m('input[type=text]', {
           onchange: m.withAttr('value', ctrl.servico().sigla),

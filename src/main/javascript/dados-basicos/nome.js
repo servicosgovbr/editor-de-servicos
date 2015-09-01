@@ -7,7 +7,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    var validador = ctrl.servico().validador;
+    var servico = ctrl.servico();
 
     return m('fieldset#nome', [
       m('h2', 'dados básicos'),
@@ -17,11 +17,11 @@ module.exports = {
       ]),
 
       m('div.input-container', {
-        class: validador.hasError('nome')
+        class: servico.nome.erro()
       }, [
         m('input[type=text]', {
-          onchange: m.withAttr('value', ctrl.servico().nome),
-          value: ctrl.servico().nome(),
+          onchange: m.withAttr('value', servico.nome),
+          value: servico.nome(),
           autofocus: 'autofocus'
         })
       ])

@@ -18,7 +18,7 @@ module.exports = {
         rows: 3,
         oninput: m.withAttr('value', ctrl.descricao),
         value: ctrl.descricao(),
-        erro: args.erro
+        erro: function () { return args.erro; }
       })
     ]);
   }

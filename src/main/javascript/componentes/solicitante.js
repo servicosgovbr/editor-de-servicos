@@ -49,7 +49,7 @@ module.exports = {
         rows: 3,
         value: s.requisitos(),
         onchange: m.withAttr('value', s.requisitos),
-        erro: validador.hasError('requisitos')
+        erro: function() { return validador.hasError('requisitos'); }
       })
 
     ]);

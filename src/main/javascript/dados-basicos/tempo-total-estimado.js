@@ -87,7 +87,7 @@ module.exports = {
           ctrl.tempoTotalEstimado().descricao(e.target.value);
         },
         value: ctrl.tempoTotalEstimado().descricao(),
-        erro: validador.hasError('descricao')
+        erro: function () { return validador.hasError('descricao'); }
       })
     ]);
   }

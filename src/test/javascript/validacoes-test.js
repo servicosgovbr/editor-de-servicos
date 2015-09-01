@@ -16,6 +16,18 @@ function itIsMandatory(campo, fn) {
   });
 }
 
+function shouldBePresent(campo, context) {
+  it('campo ' + quote(campo) + ' deve ser obrigatório', function () {
+    var prop = context();
+
+    prop(null);
+    expect(prop.erro()).toBe('erro-campo-obrigatorio');
+
+    prop('algum valor');
+    expect(prop.erro()).toBeUndefined();
+  });
+}
+
 function itShouldMax(campo, fn, limite) {
   var noLimite = _.repeat('x', limite);
   var alemDoLimite = _.repeat('c', limite + 1);
@@ -121,18 +133,15 @@ describe('validação >', function () {
 
   describe('servico >', function () {
 
-    it('deve ter nome válido', function () {
-      expect(validacoes.Servico.nome('nome de teste')).toBeUndefined();
+    var servico;
+
+    beforeEach(function () {
+      servico = new modelos.Servico();
     });
 
-    itIsMandatory('nome', validacoes.Servico.nome);
-    itShouldMax('nome', validacoes.Servico.nome, 150);
-
-    it('deve permitir não ter sigla', function () {
-      expect(validacoes.Servico.sigla('')).toBeUndefined();
-    });
-
-    itShouldMax('sigla', validacoes.Servico.sigla, 15);
+    shouldBePresent('nome', function () { return servico.nome; });
+    shouldNotExceed('nome', function () { return servico.nome; }, 150);
+    shouldNotExceed('sigla', function () { return servico.sigla; }, 15);
 
     it('nomes populares não são obrigatórios', function () {
       expect(validacoes.Servico.nomesPopulares([]).length).toBe(0);
