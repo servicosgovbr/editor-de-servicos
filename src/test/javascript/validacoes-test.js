@@ -42,18 +42,43 @@ function shouldNotExceed(campo, context, limite) {
 
   it('campo ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
     var property = context();
-
     property(_.repeat('a', limite + 1));
     expect(property.erro()).toBe('erro-max-' + limite);
   });
 
   it('campo ' + quote(campo) + ' deve aceitar valores com tamanho até ' + limite + ' caracteres', function () {
     var property = context();
-
     property(_.repeat('b', limite));
     expect(property.erro()).toBeUndefined();
   });
 
+}
+
+function eachItemShouldNotExceed(campo, context, limite) {
+
+  it('cada ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
+    var property = context();
+    property([_.repeat('a', limite + 1)]);
+    expect(property.erro()).toEqual(['erro-max-' + limite]);
+  });
+
+  it('campo ' + quote(campo) + ' deve aceitar valores com tamanho até ' + limite + ' caracteres', function () {
+    var property = context();
+    property([_.repeat('b', limite)]);
+    expect(property.erro()).toEqual([undefined]);
+  });
+
+}
+
+function shouldHaveMin(campo, context, min) {
+    it('deve haver no minimo ' + min + ' ' + quote(campo), function () {
+      var property = context();
+      property([]);
+      expect(property.erro()).toBe('erro-min-' + min);
+
+      property(_.fill(new Array(min), 'x'));
+      expect(property.erro()).toBeUndefined();
+    });
 }
 
 function itShouldBeNumeric(campo, fn) {
@@ -136,29 +161,11 @@ describe('validação >', function () {
     shouldNotExceed('descricao', function () { return servico.descricao; }, 500);
     shouldNotExceed('sigla', function () { return servico.sigla; }, 15);
 
-    it('cada nome popular deve ter no máximo 150 caracteres', function () {
-      servico.nomesPopulares([_.repeat('x', 151)]);
-      expect(servico.nomesPopulares.erro()).toEqual(['erro-max-150']);
+    eachItemShouldNotExceed('nome popular', function () { return servico.nomesPopulares; }, 150);
 
-      servico.nomesPopulares([_.repeat('x', 150)]);
-      expect(servico.nomesPopulares.erro()).toEqual([undefined]);
-    });
-
-    it('deve haver no minimo 1 solicitante', function () {
-      servico.solicitantes([]);
-      expect(servico.solicitantes.erro()).toBe('erro-min-1');
-
-      servico.solicitantes(['Solicitante 1']);
-      expect(servico.solicitantes.erro()).toBeUndefined();
-    });
-
-    it('deve haver no minimo 1 etapa', function () {
-      servico.etapas([]);
-      expect(servico.etapas.erro()).toBe('erro-min-1');
-
-      servico.etapas(['Etapa 1']);
-      expect(servico.etapas.erro()).toBeUndefined();
-    });
+    shouldHaveMin('solicitantes', function () { return servico.solicitantes; }, 1);
+    shouldHaveMin('etapas', function () { return servico.etapas; }, 1);
+    shouldHaveMin('segmentos da sociedade', function () { return servico.segmentosDaSociedade; }, 1);
 
     it('deve haver no mínimo 3 palavras chave', function () {
       servico.palavrasChave([]);
@@ -171,11 +178,6 @@ describe('validação >', function () {
     it('cada palavra chave pode ter no máximo 50 caracteres', function () {
       servico.palavrasChave([_.repeat('a', 51), 'a', 'b']);
       expect(servico.palavrasChave.erro()).toEqual(['erro-max-50', undefined, undefined]);
-    });
-
-    it('deve haver no minimo 1 segmento de sociedade selecionado', function () {
-      servico.segmentosDaSociedade([]);
-      expect(servico.segmentosDaSociedade.erro()).toBe('erro-min-1');
     });
 
     it('deve haver no minimo 1 area de interesse selecionada', function () {
