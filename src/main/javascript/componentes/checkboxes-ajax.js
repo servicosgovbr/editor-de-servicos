@@ -25,9 +25,11 @@ module.exports.create = function (config) {
       };
     },
 
-    view: function (ctrl) {
+    view: function (ctrl, args) {
       return m('fieldset#' + config.id, [
-        m('h3', [
+        m('h3.input-container', {
+          class: args.servico().validador.hasError(config.chave)
+        }, [
           config.titulo,
           m.component(require('tooltips')[config.chave])
         ]),
