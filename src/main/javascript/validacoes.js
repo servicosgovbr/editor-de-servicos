@@ -104,18 +104,28 @@ function validaCampoDeCasos(campo, validadorCampo) {
   };
 }
 
+var Custo = {
+  descricao: maximo(150, ''),
+  valor: numerico,
+
+  campo: function (custo) {
+    return {
+      descricao: Custo.maximo(150, '', custo.descricao()),
+      valor: Custo.numerico(custo.valor())
+    };
+  }
+};
+
 var Etapa = {
   descricao: maximo(500, ''),
   titulo: maximo(100, ''),
 
   documentos: function (documentos) {
     return validaCampoDeCasos(documentos, Documento.campo);
+  },
+  custos: function (custos) {
+    return validaCampoDeCasos(custos, Custo.campo);
   }
-};
-
-var Custo = {
-  descricao: maximo(150, ''),
-  valor: numerico
 };
 
 var Solicitante = {

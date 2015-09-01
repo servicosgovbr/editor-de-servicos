@@ -26,6 +26,22 @@ function itShouldMax(campo, fn, limite) {
   });
 }
 
+function itShouldBeNumeric(campo, fn) {
+  it(quote(campo) + ' deve aceitar ponto', function () {
+    expect(fn('1.000.000')).toBeUndefined();
+  });
+  it(quote(campo) + ' deve aceitar virgula', function () {
+    expect(fn('999,99')).toBeUndefined();
+  });
+  it(quote(campo) + ' deve aceitar apenas números', function () {
+    expect(fn('1234567890')).toBeUndefined();
+    expect(fn('a1234')).toBe('erro-campo-numerico');
+    expect(fn('abc')).toBe('erro-campo-numerico');
+    expect(fn('123-456')).toBe('erro-campo-numerico');
+  });
+
+}
+
 function itemsShouldMax(campo, fn, limite, fnCampos) {
   fnCampos = fnCampos || _.identity;
   var param = [_.repeat('x', limite), _.repeat('c', limite + 1)];
@@ -160,6 +176,15 @@ describe('validação >', function () {
 
       describe('documento', function () {
         itShouldMax('', validacoes.Documento.campo, 150);
+      });
+    });
+
+    describe('custos >', function () {
+      itIsCaso(modelos.Custos, validacoes.Etapa.custos, validacoes.Custo);
+
+      describe('custo >', function () {
+        itShouldMax('descricao', validacoes.Custo.descricao, 150);
+        itShouldBeNumeric('valor', validacoes.Custo.valor);
       });
     });
   });
