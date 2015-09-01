@@ -37,7 +37,8 @@ module.exports = {
 
       ctrl.gratuidade() ? null : m.component(require('etapas/custos'), {
         custos: ctrl.etapa.custos,
-        indice: ctrl.indice
+        indice: ctrl.indice,
+        erros: validador.hasError('custos')
       }),
 
       m.component(require('etapas/canais-de-prestacao'), {

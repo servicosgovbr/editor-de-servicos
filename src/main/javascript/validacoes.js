@@ -110,8 +110,8 @@ var Custo = {
 
   campo: function (custo) {
     return {
-      descricao: Custo.maximo(150, '', custo.descricao()),
-      valor: Custo.numerico(custo.valor())
+      descricao: Custo.descricao(custo.descricao()),
+      valor: Custo.valor(custo.valor())
     };
   }
 };

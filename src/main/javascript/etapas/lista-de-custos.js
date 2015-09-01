@@ -18,16 +18,18 @@ module.exports = {
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var erros = args.erros || [];
+
     return m('.custos', [
       ctrl.custos().map(function (custo, i) {
-        custo.validar();
+        var erroCusto = erros[i] || {};
 
         return m('.custo', {
           key: custo.id
         }, [
           m('.input-container.inline', {
-            class: custo.validador.hasError('descricao')
+            class: erroCusto.descricao
           }, [m('input.descricao[type=text]', {
             value: custo.descricao(),
             config: focus(ctrl),
@@ -41,7 +43,7 @@ module.exports = {
           })]),
           ' ',
           m('.input-container.inline', {
-            class: custo.validador.hasError('valor')
+            class: erroCusto.valor
           }, [m('input.valor[type=text]', {
             value: custo.valor(),
             placeholder: '0,00',

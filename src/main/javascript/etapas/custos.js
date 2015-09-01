@@ -12,7 +12,9 @@ module.exports = {
     this.indice = args.indice;
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var erros = args.erros || {};
+
     if (ctrl.custos() === null) {
       ctrl.custos(new modelos.Custos());
     }
@@ -26,11 +28,13 @@ module.exports = {
       m.component(new Caso(ListaDeCustos), {
         padrao: true,
         titulo: 'nome do custo',
-        caso: ctrl.custos().casoPadrao
+        caso: ctrl.custos().casoPadrao,
+        erros: erros.casoPadrao
       }),
       m.component(new Casos(ListaDeCustos), {
         titulo: 'custos para este caso',
-        casos: ctrl.custos().outrosCasos
+        casos: ctrl.custos().outrosCasos,
+        erros: erros.outrosCasos
       })
     ]);
   }
