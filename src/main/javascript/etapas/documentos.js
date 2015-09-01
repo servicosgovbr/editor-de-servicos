@@ -10,10 +10,11 @@ module.exports = {
   controller: function (args) {
     this.documentos = args.documentos;
     this.indice = args.indice;
-
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var erros = args.erros || {};
+
     if (ctrl.documentos() === null) {
       ctrl.documentos(new modelos.Documentos());
     }
@@ -25,15 +26,17 @@ module.exports = {
       ]),
 
       m.component(new Caso(ListaDeDocumentos), {
-        padrao: true,
         titulo: 'Documentação em comum para todos os casos',
+        padrao: true,
         opcional: true,
+        erros: erros.casoPadrao,
         caso: ctrl.documentos().casoPadrao
       }),
 
       m.component(new Casos(ListaDeDocumentos), {
         titulo: 'Documentação para este caso',
-        casos: ctrl.documentos().outrosCasos
+        casos: ctrl.documentos().outrosCasos,
+        erros: erros.outrosCasos
       })
     ]);
   }

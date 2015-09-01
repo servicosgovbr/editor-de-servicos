@@ -22,7 +22,9 @@ module.exports = function (componente) {
       };
     },
 
-    view: function (ctrl) {
+    view: function (ctrl, args) {
+      var erros = args.erros || [];
+
       return m('.relative', [
         ctrl.casos().map(function (caso, i) {
           return [
@@ -38,7 +40,8 @@ module.exports = function (componente) {
 
             m.component(new Caso(componente), {
               titulo: ctrl.tituloCaso,
-              caso: m.prop(caso)
+              caso: m.prop(caso),
+              erros: erros[i]
             })
           ];
         }),

@@ -14,14 +14,18 @@ module.exports = function (componente) {
       this.adicionado = this.caso().adicionado;
     },
 
-    view: function (ctrl) {
+    view: function (ctrl, args) {
+      var erros = args.erros || {};
+
       var inputNome;
       var className;
       if (ctrl.padrao) {
         inputNome = '';
         className = '';
       } else {
-        inputNome = m('div.input-container', [
+        inputNome = m('div.input-container', {
+          class: erros.descricao
+        }, [
           m('input[type=text]', {
             value: ctrl.caso().descricao(),
             config: focus(ctrl),
@@ -41,7 +45,8 @@ module.exports = function (componente) {
         }, ctrl.titulo),
         m.component(componente, {
           id: ctrl.caso().id,
-          campos: ctrl.caso().campos
+          campos: ctrl.caso().campos,
+          erros: erros.campos
         })
       ]);
     }

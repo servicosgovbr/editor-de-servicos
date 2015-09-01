@@ -17,7 +17,9 @@ module.exports = {
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var erros = args.erros;
+
     if (ctrl.documentos().length === 0) {
       ctrl.adicionar();
     }
@@ -32,7 +34,9 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('div.input-container', [
+          m('div.input-container', {
+            class: erros[i]
+          }, [
             m('input[type=text]', {
               value: documento,
               config: focus(ctrl),
