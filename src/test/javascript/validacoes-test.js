@@ -145,6 +145,11 @@ describe('validação >', function () {
       expect(validacoes.Servico.segmentosDaSociedade([])).toBe('erro-min-1');
     });
 
+    it('deve haver no minimo 1 area de interesse selecionada', function () {
+      expect(validacoes.Servico.areasDeInteresse([{}])).toBeUndefined();
+      expect(validacoes.Servico.areasDeInteresse([])).toBe('erro-min-1');
+    });
+
   });
 
   itShouldMax('descricao', validacoes.Servico.descricao, 500);

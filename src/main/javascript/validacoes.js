@@ -61,7 +61,8 @@ var Servico = {
     return err;
   },
 
-  segmentosDaSociedade: minimo(1, [])
+  segmentosDaSociedade: minimo(1, []),
+  areasDeInteresse: minimo(1, [])
 };
 
 var TempoTotalEstimado = {
