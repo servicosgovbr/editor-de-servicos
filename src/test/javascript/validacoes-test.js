@@ -150,6 +150,10 @@ describe('validação >', function () {
       expect(validacoes.Servico.areasDeInteresse([])).toBe('erro-min-1');
     });
 
+    it('deve haver no minimo 1 lei informada', function () {
+      expect(validacoes.Servico.legislacoes([{}])).toBeUndefined();
+      expect(validacoes.Servico.legislacoes([])).toBe('erro-min-1');
+    });
   });
 
   itShouldMax('descricao', validacoes.Servico.descricao, 500);
