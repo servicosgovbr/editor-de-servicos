@@ -88,10 +88,19 @@ var Documento = {
   campo: maximo(150, '')
 };
 
-function validaCaso(caso, validaCampo) {
+function validaCaso(caso, validadorCampo) {
   return {
     descricao: maximo(150, '', caso.descricao()),
-    campos: _.map(caso.campos(), validaCampo)
+    campos: _.map(caso.campos(), validadorCampo)
+  };
+}
+
+function validaCampoDeCasos(campo, validadorCampo) {
+  return {
+    casoPadrao: validaCaso(campo.casoPadrao(), validadorCampo),
+    outrosCasos: _.map(campo.outrosCasos(), function (c) {
+      return validaCaso(c, validadorCampo);
+    })
   };
 }
 
@@ -100,12 +109,7 @@ var Etapa = {
   titulo: maximo(100, ''),
 
   documentos: function (documentos) {
-    return {
-      casoPadrao: validaCaso(documentos.casoPadrao(), Documento.campo),
-      outrosCasos: _.map(documentos.outrosCasos(), function (c) {
-        return validaCaso(c, Documento.campo);
-      })
-    };
+    return validaCampoDeCasos(documentos, Documento.campo);
   }
 };
 
