@@ -73,8 +73,8 @@ var documentos = function (d) {
 
   return new modelos.Documentos({
     casoPadrao: new modelos.Caso(null, {
-      campos: um(t.find('> default item').map(toDocumento).get(), function () { 
-        return new modelos.Documento(); 
+      campos: um(t.find('> default item').map(toDocumento).get(), function () {
+        return new modelos.Documento();
       }),
     }),
     outrosCasos: t.find('caso').map(caso(toDocumento)).get()

@@ -53,14 +53,14 @@ function eachItemShouldNotExceed(campo, context, limite) {
 }
 
 function shouldHaveMin(campo, context, min) {
-    it('deve haver no minimo ' + min + ' ' + quote(campo), function () {
-      var property = context();
-      property([]);
-      expect(property.erro()).toBe('erro-min-' + min);
+  it('deve haver no minimo ' + min + ' ' + quote(campo), function () {
+    var property = context();
+    property([]);
+    expect(property.erro()).toBe('erro-min-' + min);
 
-      property(_.fill(new Array(min), 'x'));
-      expect(property.erro()).toBeUndefined();
-    });
+    property(_.fill(new Array(min), 'x'));
+    expect(property.erro()).toBeUndefined();
+  });
 }
 
 function shouldBeNumeric(campo, context) {
@@ -104,20 +104,42 @@ describe('validação >', function () {
       servico = new modelos.Servico();
     });
 
-    shouldBePresent('nome', function () { return servico.nome; });
-    shouldBePresent('descricao', function () { return servico.descricao; });
+    shouldBePresent('nome', function () {
+      return servico.nome;
+    });
+    shouldBePresent('descricao', function () {
+      return servico.descricao;
+    });
 
-    shouldNotExceed('nome', function () { return servico.nome; }, 150);
-    shouldNotExceed('descricao', function () { return servico.descricao; }, 500);
-    shouldNotExceed('sigla', function () { return servico.sigla; }, 15);
+    shouldNotExceed('nome', function () {
+      return servico.nome;
+    }, 150);
+    shouldNotExceed('descricao', function () {
+      return servico.descricao;
+    }, 500);
+    shouldNotExceed('sigla', function () {
+      return servico.sigla;
+    }, 15);
 
-    eachItemShouldNotExceed('nome popular', function () { return servico.nomesPopulares; }, 150);
+    eachItemShouldNotExceed('nome popular', function () {
+      return servico.nomesPopulares;
+    }, 150);
 
-    shouldHaveMin('solicitantes', function () { return servico.solicitantes; }, 1);
-    shouldHaveMin('etapas', function () { return servico.etapas; }, 1);
-    shouldHaveMin('segmentos da sociedade', function () { return servico.segmentosDaSociedade; }, 1);
-    shouldHaveMin('areas de interesse', function () { return servico.areasDeInteresse; }, 1);
-    shouldHaveMin('legislações', function () { return servico.legislacoes; }, 1);
+    shouldHaveMin('solicitantes', function () {
+      return servico.solicitantes;
+    }, 1);
+    shouldHaveMin('etapas', function () {
+      return servico.etapas;
+    }, 1);
+    shouldHaveMin('segmentos da sociedade', function () {
+      return servico.segmentosDaSociedade;
+    }, 1);
+    shouldHaveMin('areas de interesse', function () {
+      return servico.areasDeInteresse;
+    }, 1);
+    shouldHaveMin('legislações', function () {
+      return servico.legislacoes;
+    }, 1);
 
     it('deve haver no mínimo 3 palavras chave', function () {
       servico.palavrasChave([]);
@@ -140,13 +162,25 @@ describe('validação >', function () {
       tte = new modelos.TempoTotalEstimado();
     });
 
-    shouldNotExceed('descricao', function () { return tte.descricao; }, 500);
+    shouldNotExceed('descricao', function () {
+      return tte.descricao;
+    }, 500);
 
-    shouldBePresent('ate', function () { return tte.ateMaximo; });
-    shouldBePresent('unidade de tempo, ate', function () { return tte.ateTipoMaximo; });
-    shouldBePresent('entre minimo', function () { return tte.entreMinimo; });
-    shouldBePresent('entre maximo', function () { return tte.entreMaximo; });
-    shouldBePresent('unidade de tempo, entre', function () { return tte.entreTipoMaximo; });
+    shouldBePresent('ate', function () {
+      return tte.ateMaximo;
+    });
+    shouldBePresent('unidade de tempo, ate', function () {
+      return tte.ateTipoMaximo;
+    });
+    shouldBePresent('entre minimo', function () {
+      return tte.entreMinimo;
+    });
+    shouldBePresent('entre maximo', function () {
+      return tte.entreMaximo;
+    });
+    shouldBePresent('unidade de tempo, entre', function () {
+      return tte.entreTipoMaximo;
+    });
   });
 
   describe('solicitante', function () {
@@ -156,10 +190,16 @@ describe('validação >', function () {
       solicitante = new modelos.Solicitante();
     });
 
-    shouldBePresent('tipo de solicitante', function () { return solicitante.tipo; });
+    shouldBePresent('tipo de solicitante', function () {
+      return solicitante.tipo;
+    });
 
-    shouldNotExceed('tipo de solicitante', function () { return solicitante.tipo; }, 150);
-    shouldNotExceed('requisitos de solicitante', function () { return solicitante.requisitos; }, 500);
+    shouldNotExceed('tipo de solicitante', function () {
+      return solicitante.tipo;
+    }, 150);
+    shouldNotExceed('requisitos de solicitante', function () {
+      return solicitante.requisitos;
+    }, 500);
   });
 
   describe('etapa >', function () {
@@ -169,8 +209,12 @@ describe('validação >', function () {
       etapa = new modelos.Etapa();
     });
 
-    shouldNotExceed('titulo', function () { return etapa.titulo; }, 100);
-    shouldNotExceed('descrição', function () { return etapa.descricao; }, 500);
+    shouldNotExceed('titulo', function () {
+      return etapa.titulo;
+    }, 100);
+    shouldNotExceed('descrição', function () {
+      return etapa.descricao;
+    }, 500);
 
     describe('caso', function () {
       var caso;
@@ -178,7 +222,9 @@ describe('validação >', function () {
         caso = new modelos.Caso();
       });
 
-      shouldNotExceed('descricao', function () { return caso.descricao; }, 150);
+      shouldNotExceed('descricao', function () {
+        return caso.descricao;
+      }, 150);
     });
 
     describe('documento', function () {
@@ -187,7 +233,9 @@ describe('validação >', function () {
         documento = new modelos.Documento();
       });
 
-      shouldNotExceed('descricao', function () { return documento.descricao; }, 150);
+      shouldNotExceed('descricao', function () {
+        return documento.descricao;
+      }, 150);
     });
 
     describe('custos > custo', function () {
@@ -195,8 +243,12 @@ describe('validação >', function () {
       beforeEach(function () {
         custo = new modelos.Custo();
       });
-      shouldNotExceed('descricao', function () { return custo.descricao; }, 150);
-      shouldBeNumeric('valor', function () { return custo.valor; });
+      shouldNotExceed('descricao', function () {
+        return custo.descricao;
+      }, 150);
+      shouldBeNumeric('valor', function () {
+        return custo.valor;
+      });
     });
 
     describe('canais de prestação > canal de prestação', function () {
@@ -205,8 +257,12 @@ describe('validação >', function () {
         canalDePresetacao = new modelos.CanalDePrestacao();
       });
 
-      shouldBePresent('tipo', function () { return canalDePresetacao.tipo; });
-      shouldNotExceed('descricao', function () { return canalDePresetacao.descricao; }, 500);
+      shouldBePresent('tipo', function () {
+        return canalDePresetacao.tipo;
+      });
+      shouldNotExceed('descricao', function () {
+        return canalDePresetacao.descricao;
+      }, 500);
     });
   });
 

@@ -107,7 +107,9 @@ describe('deve limpar >', function () {
               documentos: new Documentos({
                 casoPadrao: new Caso('', {
                   padrao: true,
-                  campos: [new modelos.Documento(), null, undefined, new modelos.Documento({ descricao: ' doc '})]
+                  campos: [new modelos.Documento(), null, undefined, new modelos.Documento({
+                    descricao: ' doc '
+                  })]
                 }),
                 outrosCasos: [
                   new Caso(), new Caso('', {
@@ -117,7 +119,9 @@ describe('deve limpar >', function () {
                     descricao: '   a   '
                   }),
                   new Caso('', {
-                    campos: [new modelos.Documento(), null, undefined, new modelos.Documento({ descricao: ' le doc     '})]
+                    campos: [new modelos.Documento(), null, undefined, new modelos.Documento({
+                      descricao: ' le doc     '
+                    })]
                   })]
               })
             })]
