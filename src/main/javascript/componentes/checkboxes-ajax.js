@@ -25,10 +25,10 @@ module.exports.create = function (config) {
       };
     },
 
-    view: function (ctrl, args) {
+    view: function (ctrl) {
       return m('fieldset#' + config.id, [
         m('h3.input-container', {
-          class: args.servico()[config.chave].erro()
+          class: ctrl[config.chave].erro()
         }, [
           config.titulo,
           m.component(require('tooltips')[config.chave])

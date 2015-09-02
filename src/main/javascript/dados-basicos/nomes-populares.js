@@ -24,7 +24,7 @@ module.exports = {
         m.component(require('tooltips').nomesPopulares)
       ]),
 
-      ctrl.servico().nomesPopulares().map(function (nomesPopulares, i) {
+      ctrl.servico().nomesPopulares().map(function (nomePopular, i) {
         return [
           ctrl.servico().nomesPopulares().length === 1 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
@@ -34,10 +34,12 @@ module.exports = {
             class: (ctrl.servico().nomesPopulares.erro() || [])[i]
           }, [
             m('input.inline[type=text]', {
-              value: nomesPopulares,
+              value: nomePopular,
               config: focus(ctrl),
               onchange: function (e) {
-                ctrl.servico().nomesPopulares()[i] = e.target.value;
+                var nomesPopulares = ctrl.servico().nomesPopulares();
+                nomesPopulares[i] = e.target.value;
+                ctrl.servico().nomesPopulares(nomesPopulares);
               }
             })
           ])

@@ -37,7 +37,9 @@ module.exports = {
               value: palavras,
               config: focus(ctrl),
               onchange: function (e) {
-                ctrl.servico().palavrasChave()[i] = e.target.value;
+                var palavrasChave = ctrl.servico().palavrasChave();
+                palavrasChave[i] = e.target.value;
+                ctrl.servico().palavrasChave(palavrasChave);
               }
             })
           ])
