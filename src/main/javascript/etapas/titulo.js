@@ -20,7 +20,7 @@ module.exports = {
       ]),
 
       m('div.input-container', {
-        class: erro()
+        class: erro
       }, [
         m('input[type=text]', {
           onkeyup: m.withAttr('value', ctrl.titulo),
