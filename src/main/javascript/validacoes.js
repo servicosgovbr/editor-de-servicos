@@ -58,44 +58,7 @@ var cada = function () {
   };
 };
 
-function validaCaso(caso, validadorCampo) {
-  return {
-    descricao: maximo(150, caso.descricao()),
-    campos: _.map(caso.campos(), validadorCampo)
-  };
-}
-
-function validaCampoDeCasos(campo, validadorCampo) {
-  return {
-    casoPadrao: validaCaso(campo.casoPadrao(), validadorCampo),
-    outrosCasos: _.map(campo.outrosCasos(), function (c) {
-      return validaCaso(c, validadorCampo);
-    })
-  };
-}
-
-var CanalDePrestacao = {
-  descricao: maximo(500),
-  tipo: obrigatorio,
-
-  campo: function (canal) {
-    return {
-      descricao: CanalDePrestacao.descricao(canal.descricao()),
-      tipo: CanalDePrestacao.tipo(canal.tipo())
-    };
-  }
-};
-
-var Etapa = {
-  canaisDePrestacao: function (canais) {
-    return validaCampoDeCasos(canais, CanalDePrestacao.campo);
-  }
-};
-
 module.exports = {
-  Etapa: Etapa,
-  CanalDePrestacao: CanalDePrestacao,
-
   prop: prop,
   cada: cada,
   obrigatorio: obrigatorio,

@@ -8,14 +8,6 @@ function quote(str) {
   return str ? '"' + str + '"' : '';
 }
 
-function itIsMandatory(campo, fn) {
-  it('campo ' + quote(campo) + ' obrigatório', function () {
-    expect(fn('12345')).toBeUndefined();
-    expect(fn()).toBe('erro-campo-obrigatorio');
-    expect(fn('')).toBe('erro-campo-obrigatorio');
-  });
-}
-
 function shouldBePresent(campo, context) {
   it('campo ' + quote(campo) + ' deve ser obrigatório', function () {
     var prop = context();
@@ -25,16 +17,6 @@ function shouldBePresent(campo, context) {
 
     prop('algum valor');
     expect(prop.erro()).toBeUndefined();
-  });
-}
-
-function itShouldMax(campo, fn, limite) {
-  var noLimite = _.repeat('x', limite);
-  var alemDoLimite = _.repeat('c', limite + 1);
-
-  it('campo ' + quote(campo) + ' não pode ultrapassar ' + limite + ' caracteres', function () {
-    expect(fn(noLimite)).toBeUndefined();
-    expect(fn(alemDoLimite)).toBe('erro-max-' + limite);
   });
 }
 
@@ -110,53 +92,6 @@ function shouldBeNumeric(campo, context) {
     expect(property.erro()).toBe('erro-campo-numerico');
   });
 
-}
-
-function novoCaso(campos) {
-  return new modelos.Caso('', {
-    descricao: _.repeat('a', 151),
-    campos: campos
-  });
-}
-
-function itIsCaso(Classe, validadorCaso, validadorCampo) {
-  var caso;
-
-  beforeEach(function () {
-    spyOn(validadorCampo, 'campo')
-      .and.returnValue('validou');
-
-    caso = new Classe({
-      casoPadrao: novoCaso([1, 2]),
-      outrosCasos: [novoCaso([]), novoCaso([3]), novoCaso([4, 5, 6])]
-    });
-  });
-
-  it('', function () {
-    var ret = validadorCaso(caso);
-    expect(ret).toEqual({
-      casoPadrao: {
-        descricao: 'erro-max-150',
-        campos: ['validou', 'validou']
-      },
-      outrosCasos: [
-        {
-          descricao: 'erro-max-150',
-          campos: []
-        }, {
-          descricao: 'erro-max-150',
-          campos: ['validou']
-        }, {
-          descricao: 'erro-max-150',
-          campos: ['validou', 'validou', 'validou']
-        }
-      ]
-    });
-
-    _.range(1, 7).forEach(function (n) {
-      expect(validadorCampo.campo).toHaveBeenCalledWith(n, jasmine.anything(), jasmine.anything());
-    });
-  });
 }
 
 describe('validação >', function () {
@@ -264,13 +199,14 @@ describe('validação >', function () {
       shouldBeNumeric('valor', function () { return custo.valor; });
     });
 
-    describe('canais de prestação >', function () {
-      itIsCaso(modelos.CanaisDePrestacao, validacoes.Etapa.canaisDePrestacao, validacoes.CanalDePrestacao);
-
-      describe('canal de prestação >', function () {
-        itShouldMax('descricao', validacoes.CanalDePrestacao.descricao, 500);
-        itIsMandatory('tipo', validacoes.CanalDePrestacao.tipo);
+    describe('canais de prestação > canal de prestação', function () {
+      var canalDePresetacao;
+      beforeEach(function () {
+        canalDePresetacao = new modelos.CanalDePrestacao();
       });
+
+      shouldBePresent('tipo', function () { return canalDePresetacao.tipo; });
+      shouldNotExceed('descricao', function () { return canalDePresetacao.descricao; }, 500);
     });
   });
 

@@ -11,9 +11,7 @@ module.exports = {
     this.indice = args.indice;
   },
 
-  view: function (ctrl, args) {
-    var erros = args.erros || {};
-
+  view: function (ctrl) {
     return m('#' + ctrl.canaisDePrestacao().id, [
       m('h3', [
         'Canais de prestacao da etapa ' + (ctrl.indice + 1),
@@ -23,14 +21,12 @@ module.exports = {
       m.component(new Caso(ListaDeCanaisDePrestacao), {
         padrao: true,
         titulo: '',
-        caso: ctrl.canaisDePrestacao().casoPadrao,
-        erros: erros.casoPadrao
+        caso: ctrl.canaisDePrestacao().casoPadrao
       }),
 
       m.component(new Casos(ListaDeCanaisDePrestacao), {
         titulo: '',
-        casos: ctrl.canaisDePrestacao().outrosCasos,
-        erros: erros.outrosCasos
+        casos: ctrl.canaisDePrestacao().outrosCasos
       })
     ]);
   }

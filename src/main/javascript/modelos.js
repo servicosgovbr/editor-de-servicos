@@ -1,6 +1,5 @@
 'use strict';
 
-var validacoes = require('validacoes');
 var v = require('validacoes');
 
 var id = (function () {
@@ -55,8 +54,8 @@ var CanaisDePrestacao = function (config) {
 var CanalDePrestacao = function (config) {
   var data = (config || {});
   this.id = id('canal-de-prestacao');
-  this.tipo = m.prop(data.tipo || '');
-  this.descricao = m.prop(data.descricao || '');
+  this.tipo = v.prop(data.tipo || '', v.obrigatorio);
+  this.descricao = v.prop(data.descricao || '', v.maximo(500));
 };
 
 var Documentos = function (config) {
@@ -101,12 +100,6 @@ var Etapa = function (config) {
   this.documentos = m.prop(data.documentos || new Documentos());
   this.custos = m.prop(data.custos || new Custos());
   this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new CanaisDePrestacao());
-
-  this.validador = new m.validator(validacoes.Etapa);
-  this.validar = function () {
-    this.validador = new m.validator(validacoes.Etapa);
-    this.validador.validate(this);
-  };
 };
 
 var Solicitante = function (config) {

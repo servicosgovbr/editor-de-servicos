@@ -11,9 +11,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    ctrl.etapa.validar();
-    var validador = ctrl.etapa.validador;
-
     return m('fieldset#' + ctrl.etapa.id, [
 
       m.component(require('etapas/titulo'), {
@@ -32,19 +29,16 @@ module.exports = {
       m.component(require('etapas/documentos'), {
         documentos: ctrl.etapa.documentos,
         indice: ctrl.indice,
-        erros: validador.hasError('documentos')
       }),
 
       ctrl.gratuidade() ? null : m.component(require('etapas/custos'), {
         custos: ctrl.etapa.custos,
         indice: ctrl.indice,
-        erros: validador.hasError('custos')
       }),
 
       m.component(require('etapas/canais-de-prestacao'), {
         canaisDePrestacao: ctrl.etapa.canaisDePrestacao,
         indice: ctrl.indice,
-        erros: validador.hasError('canaisDePrestacao')
       }),
     ]);
   }
