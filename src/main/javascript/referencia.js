@@ -87,19 +87,4 @@ module.exports = {
     });
   }, erro)),
 
-  orgaos: _.once(m.request({
-    method: 'GET',
-    url: '/editar/api/orgaos'
-  }).then(function (orgaos) {
-    return _.sortBy((orgaos.unidades || []).map(function (o) {
-      var nome = o.nome + ' (' + o.sigla + ')';
-      return {
-        id: slugify(nome),
-        text: nome
-      };
-    }), function (o) {
-      return o.id;
-    });
-  }, erro))
-
 };

@@ -41,8 +41,9 @@ public class ApiControllerTest {
 
     @Test
     public void listaOrgaosDisponiveis() throws Exception {
-        controller.orgaos();
-        verify(orgaos).get();
+        final String orgao = "Instituo";
+        controller.orgaos(orgao);
+        verify(orgaos).get(orgao);
     }
 
     @Test
