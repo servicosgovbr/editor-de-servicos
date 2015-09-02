@@ -16,15 +16,7 @@ module.exports = {
         m.component(require('tooltips').nome)
       ]),
 
-      m('div.input-container', {
-        class: servico.nome.erro()
-      }, [
-        m('input[type=text]', {
-          onchange: m.withAttr('value', servico.nome),
-          value: servico.nome(),
-          autofocus: 'autofocus'
-        })
-      ])
+      m('label', servico.nome())
     ]);
   }
 };
