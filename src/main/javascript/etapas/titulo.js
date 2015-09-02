@@ -11,8 +11,6 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    var erro = args.erro;
-
     return m('.titulo', [
       m('h3', [
         'Título da etapa ' + (ctrl.indice + 1),
@@ -20,7 +18,7 @@ module.exports = {
       ]),
 
       m('div.input-container', {
-        class: erro
+        class: ctrl.titulo.erro()
       }, [
         m('input[type=text]', {
           onkeyup: m.withAttr('value', ctrl.titulo),

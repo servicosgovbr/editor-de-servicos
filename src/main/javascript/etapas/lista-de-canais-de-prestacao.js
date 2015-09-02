@@ -32,8 +32,7 @@ module.exports = {
 
           m.component(require('componentes/select2'), {
             data: ctrl.tiposDeCanalDePrestacao(),
-            prop: canalDePrestacao.tipo,
-            erro: canalDePrestacao.tipo.erro()
+            prop: canalDePrestacao.tipo
           }),
 
           ctrl.canaisDePrestacao().length === 1 ? '' : m('button.remove', {

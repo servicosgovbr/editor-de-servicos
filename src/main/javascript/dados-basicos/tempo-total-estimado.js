@@ -2,11 +2,10 @@
 
 var referencia = require('referencia');
 
-var selectTipo = function (prop, erro) {
+var selectTipo = function (prop) {
   return m.component(require('componentes/select2'), {
     prop: prop,
-    data: referencia.unidadesDeTempo,
-    erro: erro
+    data: referencia.unidadesDeTempo
   });
 };
 
@@ -49,7 +48,7 @@ module.exports = {
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().ateMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo, ctrl.tempoTotalEstimado().ateTipoMaximo.erro())
+        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo)
       ]),
 
       m('span.tipo-entre', {
@@ -73,16 +72,14 @@ module.exports = {
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo, ctrl.tempoTotalEstimado().entreTipoMaximo.erro())
+        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo)
       ]),
 
       m('label.titulo.opcional', 'Comentários sobre exceções ou informações adicionais ao tempo estimado'),
 
       m.component(require('componentes/editor-markdown'), {
         rows: 3,
-        oninput: function (e) {
-          ctrl.tempoTotalEstimado().descricao(e.target.value);
-        },
+        onchange: m.withAttr('value', ctrl.tempoTotalEstimado().descricao),
         value: ctrl.tempoTotalEstimado().descricao(),
         erro: ctrl.tempoTotalEstimado().descricao.erro()
       })
