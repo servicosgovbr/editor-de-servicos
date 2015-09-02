@@ -13,10 +13,12 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
+    var config = _.extend(ctrl.config, args);
+
     return m('.editor-markdown.input-container', {
       class: args.erro
     }, [
-      m('textarea', ctrl.config),
+      m('textarea', config),
       m('div.footer', [
         m('span.markdown-suportado', [
           'Este campo pode ser editado com ',
