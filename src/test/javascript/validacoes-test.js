@@ -222,12 +222,22 @@ describe('validação >', function () {
     shouldNotExceed('titulo', function () { return etapa.titulo; }, 100);
     shouldNotExceed('descrição', function () { return etapa.descricao; }, 500);
 
-    describe('documentos >', function () {
-      itIsCaso(modelos.Documentos, validacoes.Etapa.documentos, validacoes.Documento);
-
-      describe('documento', function () {
-        itShouldMax('', validacoes.Documento.campo, 150);
+    describe('caso', function () {
+      var caso;
+      beforeEach(function () {
+        caso = new modelos.Caso();
       });
+
+      shouldNotExceed('descricao', function () { return caso.descricao; }, 150);
+    });
+
+    describe('documento', function () {
+      var documento;
+      beforeEach(function () {
+        documento = new modelos.Documento();
+      });
+
+      shouldNotExceed('descricao', function () { return documento.descricao; }, 150);
     });
 
     describe('custos >', function () {

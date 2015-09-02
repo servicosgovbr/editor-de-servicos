@@ -47,8 +47,12 @@ var casos = function (e, nome, itemDoCaso) {
   ]);
 };
 
+var documento = function (e) {
+  return m('item', e.descricao());
+};
+
 var documentos = function (e) {
-  return e ? casos(e, 'documentos', item) : '';
+  return e ? casos(e, 'documentos', documento) : '';
 };
 
 var custo = function (e) {

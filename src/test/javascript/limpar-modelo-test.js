@@ -107,7 +107,7 @@ describe('deve limpar >', function () {
               documentos: new Documentos({
                 casoPadrao: new Caso('', {
                   padrao: true,
-                  campos: ['', null, undefined, ' doc ']
+                  campos: [new modelos.Documento(), null, undefined, new modelos.Documento({ descricao: ' doc '})]
                 }),
                 outrosCasos: [
                   new Caso(), new Caso('', {
@@ -117,7 +117,7 @@ describe('deve limpar >', function () {
                     descricao: '   a   '
                   }),
                   new Caso('', {
-                    campos: ['', null, undefined, ' le doc        ']
+                    campos: [new modelos.Documento(), null, undefined, new modelos.Documento({ descricao: ' le doc     '})]
                   })]
               })
             })]
@@ -129,7 +129,8 @@ describe('deve limpar >', function () {
         expect(etapa.documentos()).toBeDefined();
         expect(etapa.documentos().casoPadrao()).toBeDefined();
         expect(etapa.documentos().casoPadrao().padrao).toBe(true);
-        expect(etapa.documentos().casoPadrao().campos()).toEqual(['doc']);
+        expect(etapa.documentos().casoPadrao().campos().length).toEqual(1);
+        expect(etapa.documentos().casoPadrao().campos()[0].descricao()).toEqual('doc');
       });
 
       it('outros casos', function () {
@@ -140,7 +141,8 @@ describe('deve limpar >', function () {
         var caso2 = etapa.documentos().outrosCasos()[1];
 
         expect(caso1.descricao()).toBe('a');
-        expect(caso2.campos()).toEqual(['le doc']);
+        expect(caso2.campos().length).toEqual(1);
+        expect(caso2.campos()[0].descricao()).toEqual('le doc');
       });
     });
 

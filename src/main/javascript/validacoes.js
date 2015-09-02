@@ -58,10 +58,6 @@ var cada = function () {
   };
 };
 
-var Documento = {
-  campo: maximo(150)
-};
-
 function validaCaso(caso, validadorCampo) {
   return {
     descricao: maximo(150, caso.descricao()),
@@ -103,12 +99,6 @@ var CanalDePrestacao = {
 };
 
 var Etapa = {
-  //descricao: maximo(500),
-  //titulo: maximo(100),
-
-  documentos: function (documentos) {
-    return validaCampoDeCasos(documentos, Documento.campo);
-  },
   custos: function (custos) {
     return validaCampoDeCasos(custos, Custo.campo);
   },
@@ -120,7 +110,6 @@ var Etapa = {
 
 module.exports = {
   Etapa: Etapa,
-  Documento: Documento,
   Custo: Custo,
   CanalDePrestacao: CanalDePrestacao,
 

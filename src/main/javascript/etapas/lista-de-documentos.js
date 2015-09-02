@@ -1,6 +1,7 @@
 'use strict';
 
 var focus = require('focus');
+var modelos = require('modelos');
 
 module.exports = {
 
@@ -8,7 +9,7 @@ module.exports = {
     this.documentos = args.campos;
 
     this.adicionar = function () {
-      this.documentos().push('');
+      this.documentos().push(new modelos.Documento());
       this.adicionado = true;
     };
 
@@ -18,8 +19,6 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    var erros = args.erros;
-
     if (ctrl.documentos().length === 0) {
       ctrl.adicionar();
     }
@@ -29,19 +28,18 @@ module.exports = {
         return m('.documento.relative', {
           key: documento.id
         }, [
-
           ctrl.documentos().length === 1 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
           m('div.input-container', {
-            class: erros[i]
+            class: documento.descricao.erro()
           }, [
             m('input[type=text]', {
-              value: documento,
+              value: documento.descricao(),
               config: focus(ctrl),
               onchange: function (e) {
-                ctrl.documentos()[i] = e.target.value;
+                documento.descricao(e.target.value);
               }
             })
           ])

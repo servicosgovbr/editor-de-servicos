@@ -15,8 +15,6 @@ module.exports = function (componente) {
     },
 
     view: function (ctrl, args) {
-      var erros = args.erros || {};
-
       var inputNome;
       var className;
       if (ctrl.padrao) {
@@ -24,7 +22,7 @@ module.exports = function (componente) {
         className = '';
       } else {
         inputNome = m('div.input-container', {
-          class: erros.descricao
+          class: ctrl.caso().descricao.erro()
         }, [
           m('input[type=text]', {
             value: ctrl.caso().descricao(),
@@ -45,8 +43,7 @@ module.exports = function (componente) {
         }, ctrl.titulo),
         m.component(componente, {
           id: ctrl.caso().id,
-          campos: ctrl.caso().campos,
-          erros: erros.campos
+          campos: ctrl.caso().campos
         })
       ]);
     }

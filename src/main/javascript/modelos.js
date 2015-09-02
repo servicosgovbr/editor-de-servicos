@@ -38,7 +38,7 @@ var Caso = function (parentId, config) {
   var data = (config || {});
   this.id = id((parentId ? parentId + '-' : '') + 'caso');
   this.padrao = data.padrao;
-  this.descricao = m.prop(data.descricao || '');
+  this.descricao = v.prop(data.descricao || '', v.maximo(150));
   this.campos = m.prop(data.campos || []);
 };
 
@@ -67,6 +67,12 @@ var Documentos = function (config) {
     campos: []
   }));
   this.outrosCasos = m.prop(data.outrosCasos || []);
+};
+
+var Documento = function (config) {
+  var data = (config || {});
+  this.id = id('documento');
+  this.descricao = v.prop(data.descricao || '', v.maximo(150));
 };
 
 var Custo = function (config) {
@@ -148,6 +154,7 @@ module.exports = {
   CanalDePrestacao: CanalDePrestacao,
   Documentos: Documentos,
   Custo: Custo,
+  Documento: Documento,
   Custos: Custos,
   Etapa: Etapa,
   Solicitante: Solicitante,

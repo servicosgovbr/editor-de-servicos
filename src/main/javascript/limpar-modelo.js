@@ -54,8 +54,18 @@ var limparCasos = function (obj, fnLimpar) {
   };
 };
 
+var limparDocumento = function (documento) {
+  if (!documento || isBlank(documento.descricao())) {
+    return;
+  }
+
+  return new modelos.Documento({
+    descricao: _.trim(documento.descricao())
+  });
+};
+
 var limparDocumentos = function (documentos) {
-  var config = limparCasos(documentos, _.trim);
+  var config = limparCasos(documentos, limparDocumento);
 
   if (!config) {
     return;

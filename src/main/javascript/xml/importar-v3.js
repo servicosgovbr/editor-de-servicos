@@ -64,11 +64,20 @@ var caso = function (tipo) {
 
 var documentos = function (d) {
   var t = jQuery(d);
+
+  var toDocumento = function (i, n) {
+    return new modelos.Documento({
+      descricao: item(i, n)
+    });
+  };
+
   return new modelos.Documentos({
     casoPadrao: new modelos.Caso(null, {
-      campos: um(t.find('> default item').map(item).get(), str),
+      campos: um(t.find('> default item').map(toDocumento).get(), function () { 
+        return new modelos.Documento(); 
+      }),
     }),
-    outrosCasos: t.find('caso').map(caso(item)).get()
+    outrosCasos: t.find('caso').map(caso(toDocumento)).get()
   });
 };
 
