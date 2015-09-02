@@ -15,7 +15,9 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#etapas-do-servico', [
-      m('h2', [
+      m('h2', {
+        class: ctrl.servico().etapas.erro()
+      }, [
         'etapas do serviço',
         m.component(require('tooltips').etapas)
       ]),
@@ -33,12 +35,14 @@ module.exports = {
         ]);
       }),
 
-      m('button.adicionar.adicionar-etapa', {
-        onclick: ctrl.adicionar.bind(ctrl)
-      }, [
-        m('i.fa.fa-plus'),
-        ' Adicionar etapa '
-      ])
+      m('p', 
+          m('button.adicionar.adicionar-etapa', {
+            onclick: ctrl.adicionar.bind(ctrl)
+          }, [
+          m('i.fa.fa-plus'),
+          ' Adicionar etapa '
+          ])
+       )
     ]);
   }
 };

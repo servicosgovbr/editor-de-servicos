@@ -157,6 +157,11 @@ h3.input-container {
 
 }
 
+h2.erro-min-1 {
+  position: relative;
+  @include validacao-erro-inline('Deve haver no mínimo um item', -3px, 5px);
+}
+
 .select2-message-container {
   position: relative;
 
