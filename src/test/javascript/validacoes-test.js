@@ -150,8 +150,8 @@ describe('validação >', function () {
     });
 
     it('cada palavra chave pode ter no máximo 50 caracteres', function () {
-      servico.palavrasChave([_.repeat('a', 51), 'a', 'b']);
-      expect(servico.palavrasChave.erro()).toEqual(['erro-max-50', undefined, undefined]);
+      servico.palavrasChave([_.repeat('a', 151), 'a', 'b']);
+      expect(servico.palavrasChave.erro()).toEqual(['erro-max-150', undefined, undefined]);
     });
 
   });
@@ -211,7 +211,7 @@ describe('validação >', function () {
 
     shouldNotExceed('titulo', function () {
       return etapa.titulo;
-    }, 100);
+    }, 150);
     shouldNotExceed('descrição', function () {
       return etapa.descricao;
     }, 500);

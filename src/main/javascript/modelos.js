@@ -2,6 +2,9 @@
 
 var v = require('validacoes');
 
+var textoCurto = v.maximo(150);
+var textoLongo = v.maximo(500);
+
 var id = (function () {
   var counters = {};
   var gerador = function (base) {
@@ -37,7 +40,7 @@ var Caso = function (parentId, config) {
   var data = (config || {});
   this.id = id((parentId ? parentId + '-' : '') + 'caso');
   this.padrao = data.padrao;
-  this.descricao = v.prop(data.descricao || '', v.maximo(150));
+  this.descricao = v.prop(data.descricao || '', textoCurto);
   this.campos = m.prop(data.campos || []);
 };
 
@@ -55,7 +58,7 @@ var CanalDePrestacao = function (config) {
   var data = (config || {});
   this.id = id('canal-de-prestacao');
   this.tipo = v.prop(data.tipo || '', v.obrigatorio);
-  this.descricao = v.prop(data.descricao || '', v.maximo(500));
+  this.descricao = v.prop(data.descricao || '', textoLongo);
 };
 
 var Documentos = function (config) {
@@ -71,13 +74,13 @@ var Documentos = function (config) {
 var Documento = function (config) {
   var data = (config || {});
   this.id = id('documento');
-  this.descricao = v.prop(data.descricao || '', v.maximo(150));
+  this.descricao = v.prop(data.descricao || '', textoCurto);
 };
 
 var Custo = function (config) {
   var data = (config || {});
   this.id = id('custo');
-  this.descricao = v.prop(data.descricao || '', v.maximo(150));
+  this.descricao = v.prop(data.descricao || '', textoCurto);
   this.moeda = m.prop(data.moeda || '');
   this.valor = v.prop(data.valor || '', v.numerico);
 };
@@ -95,8 +98,8 @@ var Custos = function (config) {
 var Etapa = function (config) {
   var data = (config || {});
   this.id = id('etapa');
-  this.titulo = v.prop(data.titulo || '', v.maximo(100));
-  this.descricao = v.prop(data.descricao || '', v.maximo(500));
+  this.titulo = v.prop(data.titulo || '', textoCurto);
+  this.descricao = v.prop(data.descricao || '', textoLongo);
   this.documentos = m.prop(data.documentos || new Documentos());
   this.custos = m.prop(data.custos || new Custos());
   this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new CanaisDePrestacao());
@@ -105,8 +108,8 @@ var Etapa = function (config) {
 var Solicitante = function (config) {
   var data = (config || {});
   this.id = id('solicitante');
-  this.tipo = v.prop(data.tipo || '', v.obrigatorio, v.maximo(150));
-  this.requisitos = v.prop(data.requisitos || '', v.maximo(500));
+  this.tipo = v.prop(data.tipo || '', v.obrigatorio, textoCurto);
+  this.requisitos = v.prop(data.requisitos || '', textoLongo);
 };
 
 var TempoTotalEstimado = function (config) {
@@ -118,16 +121,16 @@ var TempoTotalEstimado = function (config) {
   this.ateTipoMaximo = v.prop(data.ateTipoMaximo || '', v.obrigatorio);
   this.entreMaximo = v.prop(data.entreMaximo || '', v.obrigatorio);
   this.entreTipoMaximo = v.prop(data.entreTipoMaximo || '', v.obrigatorio);
-  this.descricao = v.prop(data.descricao || '', v.maximo(500));
+  this.descricao = v.prop(data.descricao || '', textoLongo);
 };
 
 var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
-  this.nome = v.prop(data.nome || '', v.obrigatorio, v.maximo(150));
+  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto);
   this.sigla = v.prop(data.sigla || '', v.maximo(15));
-  this.nomesPopulares = v.prop(data.nomesPopulares || [], v.cada(v.maximo(150)));
-  this.descricao = v.prop(data.descricao || '', v.obrigatorio, v.maximo(500));
+  this.nomesPopulares = v.prop(data.nomesPopulares || [], v.cada(textoCurto));
+  this.descricao = v.prop(data.descricao || '', v.obrigatorio, textoLongo);
   this.gratuidade = m.prop(data.gratuidade);
   this.solicitantes = v.prop(data.solicitantes || [], v.minimo(1));
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new TempoTotalEstimado());
@@ -135,7 +138,7 @@ var Servico = function (config) {
   this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = v.prop(data.segmentosDaSociedade || [], v.minimo(1));
   this.areasDeInteresse = v.prop(data.areasDeInteresse || [], v.minimo(1));
-  this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(v.maximo(50)), v.minimo(3));
+  this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(textoCurto), v.minimo(3));
   this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1));
 };
 
