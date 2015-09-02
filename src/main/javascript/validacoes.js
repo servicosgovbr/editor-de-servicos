@@ -74,18 +74,6 @@ function validaCampoDeCasos(campo, validadorCampo) {
   };
 }
 
-var Custo = {
-  descricao: maximo(150),
-  valor: numerico,
-
-  campo: function (custo) {
-    return {
-      descricao: Custo.descricao(custo.descricao()),
-      valor: Custo.valor(custo.valor())
-    };
-  }
-};
-
 var CanalDePrestacao = {
   descricao: maximo(500),
   tipo: obrigatorio,
@@ -99,10 +87,6 @@ var CanalDePrestacao = {
 };
 
 var Etapa = {
-  custos: function (custos) {
-    return validaCampoDeCasos(custos, Custo.campo);
-  },
-
   canaisDePrestacao: function (canais) {
     return validaCampoDeCasos(canais, CanalDePrestacao.campo);
   }
@@ -110,12 +94,12 @@ var Etapa = {
 
 module.exports = {
   Etapa: Etapa,
-  Custo: Custo,
   CanalDePrestacao: CanalDePrestacao,
 
   prop: prop,
   cada: cada,
   obrigatorio: obrigatorio,
   maximo: maximo,
-  minimo: minimo
+  minimo: minimo,
+  numerico: numerico
 };

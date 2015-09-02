@@ -78,9 +78,9 @@ var Documento = function (config) {
 var Custo = function (config) {
   var data = (config || {});
   this.id = id('custo');
-  this.descricao = m.prop(data.descricao || '');
+  this.descricao = v.prop(data.descricao || '', v.maximo(150));
   this.moeda = m.prop(data.moeda || '');
-  this.valor = m.prop(data.valor || '');
+  this.valor = v.prop(data.valor || '', v.numerico);
 };
 
 var Custos = function (config) {

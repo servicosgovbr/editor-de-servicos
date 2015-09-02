@@ -19,21 +19,17 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    var erros = args.erros || [];
-
     if (ctrl.custos().length === 0) {
       ctrl.adicionar();
     }
 
     return m('.custos', [
       ctrl.custos().map(function (custo, i) {
-        var erroCusto = erros[i] || {};
-
         return m('.custo', {
           key: custo.id
         }, [
           m('.input-container.inline', {
-            class: erroCusto.descricao
+            class: custo.descricao.erro()
           }, [m('input.descricao[type=text]', {
             value: custo.descricao(),
             config: focus(ctrl),
@@ -47,7 +43,7 @@ module.exports = {
           })]),
           ' ',
           m('.input-container.inline', {
-            class: erroCusto.valor
+            class: custo.valor.erro()
           }, [m('input.valor[type=text]', {
             value: custo.valor(),
             placeholder: '0,00',

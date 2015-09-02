@@ -81,18 +81,33 @@ function shouldHaveMin(campo, context, min) {
     });
 }
 
-function itShouldBeNumeric(campo, fn) {
+function shouldBeNumeric(campo, context) {
   it(quote(campo) + ' deve aceitar ponto', function () {
-    expect(fn('1.000.000')).toBeUndefined();
+    var property = context();
+    property('1.000.000');
+    expect(property.erro()).toBeUndefined();
   });
+
   it(quote(campo) + ' deve aceitar virgula', function () {
-    expect(fn('999,99')).toBeUndefined();
+    var property = context();
+    property('999,99');
+    expect(property.erro()).toBeUndefined();
   });
+
   it(quote(campo) + ' deve aceitar apenas números', function () {
-    expect(fn('1234567890')).toBeUndefined();
-    expect(fn('a1234')).toBe('erro-campo-numerico');
-    expect(fn('abc')).toBe('erro-campo-numerico');
-    expect(fn('123-456')).toBe('erro-campo-numerico');
+    var property = context();
+
+    property('1234567890');
+    expect(property.erro()).toBeUndefined();
+
+    property('a1234');
+    expect(property.erro()).toBe('erro-campo-numerico');
+
+    property('abc');
+    expect(property.erro()).toBe('erro-campo-numerico');
+
+    property('123-456');
+    expect(property.erro()).toBe('erro-campo-numerico');
   });
 
 }
@@ -240,13 +255,13 @@ describe('validação >', function () {
       shouldNotExceed('descricao', function () { return documento.descricao; }, 150);
     });
 
-    describe('custos >', function () {
-      itIsCaso(modelos.Custos, validacoes.Etapa.custos, validacoes.Custo);
-
-      describe('custo >', function () {
-        itShouldMax('descricao', validacoes.Custo.descricao, 150);
-        itShouldBeNumeric('valor', validacoes.Custo.valor);
+    describe('custos > custo', function () {
+      var custo;
+      beforeEach(function () {
+        custo = new modelos.Custo();
       });
+      shouldNotExceed('descricao', function () { return custo.descricao; }, 150);
+      shouldBeNumeric('valor', function () { return custo.valor; });
     });
 
     describe('canais de prestação >', function () {
