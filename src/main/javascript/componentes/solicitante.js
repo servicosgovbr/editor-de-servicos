@@ -12,11 +12,7 @@ module.exports = {
   view: function (ctrl, args) {
     var showDelete = args.showDelete;
     var removerFn = args.remover;
-
     var s = ctrl.solicitante;
-
-    s.validar();
-    var validador = s.validador;
 
     return m('fieldset#' + s.id + '.relative', {
       key: s.id
@@ -31,7 +27,7 @@ module.exports = {
       }) : ''),
 
         m('div.input-container', {
-          class: validador.hasError('tipo')
+          class: s.tipo.erro()
         },
         m('input[type=text]', {
           value: s.tipo(),
@@ -49,7 +45,7 @@ module.exports = {
         rows: 3,
         value: s.requisitos(),
         onchange: m.withAttr('value', s.requisitos),
-        erro: validador.hasError('requisitos')
+        erro: s.requisitos.erro()
       })
 
     ]);

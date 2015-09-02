@@ -106,14 +106,8 @@ var Etapa = function (config) {
 var Solicitante = function (config) {
   var data = (config || {});
   this.id = id('solicitante');
-  this.tipo = m.prop(data.tipo || '');
-  this.requisitos = m.prop(data.requisitos || '');
-
-  this.validador = new m.validator(validacoes.Solicitante);
-  this.validar = function () {
-    this.validador = new m.validator(validacoes.Solicitante);
-    this.validador.validate(this);
-  };
+  this.tipo = v.prop(data.tipo || '', v.obrigatorio, v.maximo(150));
+  this.requisitos = v.prop(data.requisitos || '', v.maximo(500));
 };
 
 var TempoTotalEstimado = function (config) {

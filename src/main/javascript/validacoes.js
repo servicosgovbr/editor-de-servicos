@@ -118,15 +118,7 @@ var Etapa = {
   }
 };
 
-var Solicitante = {
-  tipo: function (solicitante) {
-    return obrigatorio(solicitante) || maximo(500, solicitante);
-  },
-  requisitos: maximo(500)
-};
-
 module.exports = {
-  Solicitante: Solicitante,
   Etapa: Etapa,
   Documento: Documento,
   Custo: Custo,

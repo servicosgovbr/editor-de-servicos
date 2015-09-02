@@ -200,9 +200,16 @@ describe('validação >', function () {
   });
 
   describe('solicitante', function () {
-    itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipo);
-    itIsMandatory('tipo de solicitante', validacoes.Solicitante.tipo, 150);
-    itShouldMax('requisitos de solicitante', validacoes.Solicitante.requisitos, 500);
+    var solicitante;
+
+    beforeEach(function () {
+      solicitante = new modelos.Solicitante();
+    });
+
+    shouldBePresent('tipo de solicitante', function () { return solicitante.tipo; });
+
+    shouldNotExceed('tipo de solicitante', function () { return solicitante.tipo; }, 150);
+    shouldNotExceed('requisitos de solicitante', function () { return solicitante.requisitos; }, 500);
   });
 
   describe('etapa >', function () {
