@@ -18,10 +18,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    if (ctrl.servico().palavrasChave().length < 3) {
-      _.times(3 - ctrl.servico().palavrasChave().length, ctrl.adicionar.bind(ctrl));
-    }
-
     return m('fieldset#palavras-chave.relative', [
       m('h3', [
         'Palavras-chave',

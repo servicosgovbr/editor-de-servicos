@@ -6,12 +6,15 @@ var str = function () {
   return '';
 };
 
-var um = function (lista, fn) {
-  if (lista && lista.length > 0) {
+var peloMenos = _.curry(function (n, lista, fn) {
+  if (lista && lista.length >= n) {
     return lista;
   }
-  return [fn()];
-};
+  return _.times(n - lista.length, fn);
+});
+
+var um = peloMenos(1);
+var tres = peloMenos(3);
 
 var item = function (i, n) {
   return n.textContent;
@@ -142,7 +145,7 @@ var servico = function (x) {
     orgao: x.find('servico > orgao').attr('id'),
     segmentosDaSociedade: x.find('servico > segmentos-da-sociedade > item').map(item).get(),
     areasDeInteresse: x.find('servico > areas-de-interesse > item').map(item).get(),
-    palavrasChave: um(x.find('servico > palavras-chave > item').map(item).get(), str),
+    palavrasChave: tres(x.find('servico > palavras-chave > item').map(item).get(), str),
     legislacoes: um(x.find('servico > legislacoes > item').map(item).get(), str),
   });
 };
