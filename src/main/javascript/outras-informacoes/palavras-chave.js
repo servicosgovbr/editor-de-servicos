@@ -18,6 +18,10 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    if (ctrl.servico().palavrasChave().length < 3) {
+      _.times(3 - ctrl.servico().palavrasChave().length, ctrl.adicionar.bind(ctrl));
+    }
+
     return m('fieldset#palavras-chave.relative', [
       m('h3', [
         'Palavras-chave',
@@ -26,7 +30,7 @@ module.exports = {
 
       ctrl.servico().palavrasChave().map(function (palavras, i) {
         return [
-          ctrl.servico().palavrasChave().length === 1 ? '' : m('button.remove.absolute', {
+          ctrl.servico().palavrasChave().length <= 3 ? '' : m('button.remove.absolute', {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
