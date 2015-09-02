@@ -8,9 +8,13 @@ var primeiroErroPara = _.curry(function (validacoes, valor) {
 
 var validador = function (property, validacoes) {
   var erro = m.prop();
+
   var wrapper = function () {
     var novoValor = property.apply(property, arguments);
-    erro(primeiroErroPara(validacoes, novoValor));
+    if (!_.isEmpty(arguments)) {
+      erro(primeiroErroPara(validacoes, novoValor));
+    }
+
     return novoValor;
   };
 

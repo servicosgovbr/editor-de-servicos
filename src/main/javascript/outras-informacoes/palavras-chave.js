@@ -31,7 +31,7 @@ module.exports = {
           }),
 
           m('.input-container', {
-            class: ctrl.servico().palavrasChave.erro()[i]
+            class: (ctrl.servico().palavrasChave.erro() || [])[i]
           }, [
             m('input.inline[type=text]', {
               value: palavras,

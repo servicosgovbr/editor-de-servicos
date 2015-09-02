@@ -31,7 +31,7 @@ module.exports = {
           }),
 
           m('div.input-container', {
-            class: ctrl.servico().nomesPopulares.erro()[i]
+            class: (ctrl.servico().nomesPopulares.erro() || [])[i]
           }, [
             m('input.inline[type=text]', {
               value: nomesPopulares,
