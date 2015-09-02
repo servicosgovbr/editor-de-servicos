@@ -17,9 +17,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    ctrl.tempoTotalEstimado().validar();
-    var validador = ctrl.tempoTotalEstimado().validador;
-
     return m('fieldset#tempo-total-estimado', [
       m('h3', [
         'Tempo estimado para realizar esse serviço',
@@ -46,13 +43,13 @@ module.exports = {
         }
       }, [
         m('.input-container.inline.margin-right', {
-          class: validador.hasError('ateMaximo')
+          class: ctrl.tempoTotalEstimado().ateMaximo.erro()
         }, [m('input.ate-maximo[type="number"]', {
           value: ctrl.tempoTotalEstimado().ateMaximo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().ateMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo, validador.hasError('ateTipoMaximo')),
+        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo, ctrl.tempoTotalEstimado().ateTipoMaximo.erro())
       ]),
 
       m('span.tipo-entre', {
@@ -61,7 +58,7 @@ module.exports = {
         }
       }, [
         m('.input-container.inline', {
-          class: validador.hasError('entreMinimo')
+          class: ctrl.tempoTotalEstimado().entreMinimo.erro()
         }, [m('input.entre-minimo[type="number"]', {
           value: ctrl.tempoTotalEstimado().entreMinimo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMinimo)
@@ -70,13 +67,13 @@ module.exports = {
         m('span', ' e '),
 
         m('.input-container.inline.margin-right', {
-          class: validador.hasError('entreMaximo')
+          class: ctrl.tempoTotalEstimado().entreMaximo.erro()
         }, [m('input.entre-maximo[type="number"]', {
           value: ctrl.tempoTotalEstimado().entreMaximo(),
           onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo, validador.hasError('entreTipoMaximo'))
+        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo, ctrl.tempoTotalEstimado().entreTipoMaximo.erro())
       ]),
 
       m('label.titulo.opcional', 'Comentários sobre exceções ou informações adicionais ao tempo estimado'),

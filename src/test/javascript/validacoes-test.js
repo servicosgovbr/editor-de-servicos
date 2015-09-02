@@ -192,12 +192,11 @@ describe('validação >', function () {
 
     shouldNotExceed('descricao', function () { return tte.descricao; }, 500);
 
-    itIsMandatory('ate', validacoes.TempoTotalEstimado.ateMaximo);
-    itIsMandatory('unidade de tempo, ate', validacoes.TempoTotalEstimado.ateTipoMaximo);
-    itShouldMax('comentários ou informações adicionais', validacoes.TempoTotalEstimado.descricao, 500);
-    itIsMandatory('entre minimo', validacoes.TempoTotalEstimado.entreMinimo);
-    itIsMandatory('entre maximo', validacoes.TempoTotalEstimado.entreMaximo);
-    itIsMandatory('unidade de tempo, entre', validacoes.TempoTotalEstimado.entreTipoMaximo);
+    shouldBePresent('ate', function () { return tte.ateMaximo; });
+    shouldBePresent('unidade de tempo, ate', function () { return tte.ateTipoMaximo; });
+    shouldBePresent('entre minimo', function () { return tte.entreMinimo; });
+    shouldBePresent('entre maximo', function () { return tte.entreMaximo; });
+    shouldBePresent('unidade de tempo, entre', function () { return tte.entreTipoMaximo; });
   });
 
   describe('solicitante', function () {

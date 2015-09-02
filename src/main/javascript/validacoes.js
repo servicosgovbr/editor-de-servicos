@@ -58,15 +58,6 @@ var cada = function () {
   };
 };
 
-var TempoTotalEstimado = {
-  descricao: maximo(500),
-  ateMaximo: obrigatorio,
-  ateTipoMaximo: obrigatorio,
-  entreMinimo: obrigatorio,
-  entreMaximo: obrigatorio,
-  entreTipoMaximo: obrigatorio
-};
-
 var Documento = {
   campo: maximo(150)
 };
@@ -135,7 +126,6 @@ var Solicitante = {
 };
 
 module.exports = {
-  TempoTotalEstimado: TempoTotalEstimado,
   Solicitante: Solicitante,
   Etapa: Etapa,
   Documento: Documento,
