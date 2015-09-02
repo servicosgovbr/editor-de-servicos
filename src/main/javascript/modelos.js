@@ -125,7 +125,7 @@ var TempoTotalEstimado = function (config) {
   this.ateTipoMaximo = m.prop(data.ateTipoMaximo || '');
   this.entreMaximo = m.prop(data.entreMaximo || '');
   this.entreTipoMaximo = m.prop(data.entreTipoMaximo || '');
-  this.descricao = m.prop(data.descricao || '');
+  this.descricao = v.prop(data.descricao || '', v.maximo(500));
 
   this.validador = new m.validator(validacoes.TempoTotalEstimado);
   this.validar = function () {

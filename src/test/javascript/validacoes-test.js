@@ -190,6 +190,8 @@ describe('validação >', function () {
       tte = new modelos.TempoTotalEstimado();
     });
 
+    shouldNotExceed('descricao', function () { return tte.descricao; }, 500);
+
     itIsMandatory('ate', validacoes.TempoTotalEstimado.ateMaximo);
     itIsMandatory('unidade de tempo, ate', validacoes.TempoTotalEstimado.ateTipoMaximo);
     itShouldMax('comentários ou informações adicionais', validacoes.TempoTotalEstimado.descricao, 500);
