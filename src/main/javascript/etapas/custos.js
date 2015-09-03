@@ -3,7 +3,7 @@
 var Caso = require('etapas/caso');
 var Casos = require('etapas/casos');
 var ListaDeCustos = require('etapas/lista-de-custos');
-var modelos = new require('modelos');
+var modelos = require('modelos');
 
 module.exports = {
 

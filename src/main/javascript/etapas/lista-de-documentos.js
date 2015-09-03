@@ -24,7 +24,7 @@ module.exports = {
   view: function (ctrl, args) {
     var documentos = args.campos;
     if (documentos().length === 0) {
-      ctrl.adicionar(documentos);
+      documentos([new modelos.Documento()]);
     }
 
     return m('.documentos', [

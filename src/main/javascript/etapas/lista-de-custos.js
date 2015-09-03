@@ -9,7 +9,6 @@ module.exports = {
     this.adicionar = function (prop) {
       var custos = prop();
       custos.push(new modelos.Custo());
-
       prop(custos);
       this.adicionado = true;
     };
@@ -24,7 +23,7 @@ module.exports = {
   view: function (ctrl, args) {
     var custos = args.campos;
     if (custos().length === 0) {
-      ctrl.adicionar(custos);
+      custos([new modelos.Custo()]);
     }
 
     return m('.custos', [
