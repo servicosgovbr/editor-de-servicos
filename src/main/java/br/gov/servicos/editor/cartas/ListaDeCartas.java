@@ -23,17 +23,19 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class ListaDeCartas {
 
+    Importador importador;
     RepositorioGit repositorioGit;
     Formatter<Carta> formatter;
 
     @Autowired
-    public ListaDeCartas(RepositorioGit repositorioGit, Formatter<Carta> formatter) {
+    public ListaDeCartas(Importador importador, RepositorioGit repositorioGit, Formatter<Carta> formatter) {
         this.repositorioGit = repositorioGit;
         this.formatter = formatter;
+        this.importador = importador;
     }
 
     @PostConstruct
-    public void esquentarCacheDeMetadados(Importador importador) throws Exception {
+    public void esquentarCacheDeMetadados() throws Exception {
         if(importador.isImportadoComSucesso()) {
             listar();
             log.info("Cache de metadados das cartas criado com sucesso");
