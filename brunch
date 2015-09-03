@@ -1,3 +1,5 @@
+#!/bin/sh
+
 which npm > /dev/null || (echo 'npm não instalado!' && exit 1)
 npm install
 
