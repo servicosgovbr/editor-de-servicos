@@ -2,11 +2,12 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.InitializingBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Optional;
@@ -17,9 +18,10 @@ import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
+@Slf4j
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class ListaDeCartas implements InitializingBean {
+public class ListaDeCartas {
 
     RepositorioGit repositorioGit;
     Formatter<Carta> formatter;
@@ -30,9 +32,13 @@ public class ListaDeCartas implements InitializingBean {
         this.formatter = formatter;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        listar(); // esquenta o cache dos metadados
+    @PostConstruct
+    public void esquentarCacheDeMetadados(Importador importador) throws Exception {
+        if(importador.isImportadoComSucesso()) {
+            listar();
+            log.info("Cache de metadados das cartas criado com sucesso");
+        }
+        log.warn("Cache de metadados das cartas não foi criado - houve algum problema com o clone do repositório?");
     }
 
     public Iterable<Metadados> listar() throws FileNotFoundException, java.text.ParseException {

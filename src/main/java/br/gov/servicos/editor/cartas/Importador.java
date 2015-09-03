@@ -1,7 +1,9 @@
 package br.gov.servicos.editor.cartas;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.TextProgressMonitor;
@@ -22,6 +24,10 @@ class Importador {
     String repositorioCartas;
     File repositorioCartasLocal;
 
+    @NonFinal
+    @Getter
+    boolean importadoComSucesso;
+
     @Autowired
     Importador(@Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
                File repositorioCartasLocal) {
@@ -39,6 +45,7 @@ class Importador {
                 .setDirectory(repositorioCartasLocal)
                 .setProgressMonitor(new TextProgressMonitor())
                 .call();
+        importadoComSucesso = true;
     }
 
 }
