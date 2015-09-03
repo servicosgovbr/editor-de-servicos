@@ -164,7 +164,10 @@ module.exports = function (servico) {
       descricao: _.trim(tte.descricao()),
     }),
     etapas: _.compact(servico.etapas().map(limparEtapa)),
-    orgao: _.trim(servico.orgao()),
+    orgao: new modelos.Orgao({
+      id: _.trim(servico.orgao().id()),
+      nome: _.trim(servico.orgao().nome())
+    }),
     segmentosDaSociedade: servico.segmentosDaSociedade(),
     areasDeInteresse: servico.areasDeInteresse(),
     palavrasChave: _.compact(servico.palavrasChave().map(_.trim)),
