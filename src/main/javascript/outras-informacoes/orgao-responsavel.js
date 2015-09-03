@@ -1,6 +1,5 @@
 'use strict';
 
-var erro = require('utils/erro-ajax');
 var slugify = require('slugify');
 
 module.exports = {

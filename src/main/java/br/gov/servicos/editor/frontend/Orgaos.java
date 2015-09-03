@@ -59,7 +59,8 @@ public class Orgaos implements InitializingBean {
         log.info("Buscando órgãos com termo '{}'", termo);
         return estruturaOrganizacional.getUnidades()
                 .stream()
-                .filter(u -> u.getNome().toLowerCase().contains(termo.toLowerCase()))
+                .filter(u -> slugify.slugify(u.getNome()).replace('-', ' ').contains(termo.toLowerCase())
+                        || slugify.slugify(u.getNome()).replace('-', ' ').contains(termo.toLowerCase()))
                 .map(u -> new Orgao().withNome(u.getNome()).withId(slugify.slugify(u.getNome() + " - " + u.getSigla())))
                 .sorted((l, r) -> l.getId().compareTo(r.getId()))
                 .collect(toList());
