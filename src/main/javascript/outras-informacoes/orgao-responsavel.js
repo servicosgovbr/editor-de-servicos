@@ -44,7 +44,13 @@ module.exports = {
           prop: ctrl.servico().orgao,
           width: '100%',
           minimumResultsForSearch: 1,
-          minimumInputLength: 3
+          minimumInputLength: 3,
+          initSelection: function(item, callback) {
+            callback({
+              id: ctrl.servico().orgao().id(),
+              text: ctrl.servico().orgao().nome()
+            });
+          }
         })
       ])
     ]);

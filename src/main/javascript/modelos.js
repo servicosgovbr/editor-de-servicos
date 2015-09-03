@@ -1,9 +1,6 @@
 'use strict';
 
-var v = require('validacoes');
-
-var textoCurto = v.maximo(150);
-var textoLongo = v.maximo(500);
+var validacoes = require('validacoes');
 
 var id = (function () {
   var counters = {};
@@ -40,7 +37,7 @@ var Caso = function (parentId, config) {
   var data = (config || {});
   this.id = id((parentId ? parentId + '-' : '') + 'caso');
   this.padrao = data.padrao;
-  this.descricao = v.prop(data.descricao || '', textoCurto);
+  this.descricao = m.prop(data.descricao || '');
   this.campos = m.prop(data.campos || []);
 };
 
@@ -57,8 +54,8 @@ var CanaisDePrestacao = function (config) {
 var CanalDePrestacao = function (config) {
   var data = (config || {});
   this.id = id('canal-de-prestacao');
-  this.tipo = v.prop(data.tipo || '', v.obrigatorio);
-  this.descricao = v.prop(data.descricao || '', textoLongo);
+  this.tipo = m.prop(data.tipo || '');
+  this.descricao = m.prop(data.descricao || '');
 };
 
 var Documentos = function (config) {
@@ -71,18 +68,17 @@ var Documentos = function (config) {
   this.outrosCasos = m.prop(data.outrosCasos || []);
 };
 
-var Documento = function (config) {
-  var data = (config || {});
-  this.id = id('documento');
-  this.descricao = v.prop(data.descricao || '', textoCurto);
-};
-
 var Custo = function (config) {
   var data = (config || {});
   this.id = id('custo');
-  this.descricao = v.prop(data.descricao || '', textoCurto);
+  this.descricao = m.prop(data.descricao || '');
   this.moeda = m.prop(data.moeda || '');
-  this.valor = v.prop(data.valor || '', v.numerico);
+  this.valor = m.prop(data.valor || '');
+
+  this.validador = new m.validator(validacoes.Custo);
+  this.validar = function () {
+    this.validador.validate(this);
+  };
 };
 
 var Custos = function (config) {
@@ -98,48 +94,78 @@ var Custos = function (config) {
 var Etapa = function (config) {
   var data = (config || {});
   this.id = id('etapa');
-  this.titulo = v.prop(data.titulo || '', textoCurto);
-  this.descricao = v.prop(data.descricao || '', textoLongo);
+  this.titulo = m.prop(data.titulo || '');
+  this.descricao = m.prop(data.descricao || '');
   this.documentos = m.prop(data.documentos || new Documentos());
   this.custos = m.prop(data.custos || new Custos());
   this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new CanaisDePrestacao());
+
+  this.validador = new m.validator(validacoes.Etapa);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.Etapa);
+    this.validador.validate(this);
+  };
+};
+
+var Orgao = function (config) {
+  var data = (config || {});
+  this.id = m.prop(data.id || '');
+  this.nome = m.prop(data.nome || []);
 };
 
 var Solicitante = function (config) {
   var data = (config || {});
   this.id = id('solicitante');
-  this.tipo = v.prop(data.tipo || '', v.obrigatorio, textoCurto);
-  this.requisitos = v.prop(data.requisitos || '', textoLongo);
+  this.tipo = m.prop(data.tipo || '');
+  this.requisitos = m.prop(data.requisitos || '');
+
+  this.validador = new m.validator(validacoes.Solicitante);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.Solicitante);
+    this.validador.validate(this);
+  };
 };
 
 var TempoTotalEstimado = function (config) {
   var data = (config || {});
   this.id = id('tempo-total-estimado');
   this.tipo = m.prop(data.tipo || '');
-  this.descricao = v.prop(data.descricao || '', textoLongo);
-  this.ateMaximo = v.prop(data.ateMaximo || '', v.se(this.tipo, 'ate', v.obrigatorio));
-  this.ateTipoMaximo = v.prop(data.ateTipoMaximo || '', v.se(this.tipo, 'ate', v.obrigatorio));
-  this.entreMinimo = v.prop(data.entreMinimo || '', v.se(this.tipo, 'entre', v.obrigatorio));
-  this.entreMaximo = v.prop(data.entreMaximo || '', v.se(this.tipo, 'entre', v.obrigatorio));
-  this.entreTipoMaximo = v.prop(data.entreTipoMaximo || '', v.se(this.tipo, 'entre', v.obrigatorio));
+  this.entreMinimo = m.prop(data.entreMinimo || '');
+  this.ateMaximo = m.prop(data.ateMaximo || '');
+  this.ateTipoMaximo = m.prop(data.ateTipoMaximo || '');
+  this.entreMaximo = m.prop(data.entreMaximo || '');
+  this.entreTipoMaximo = m.prop(data.entreTipoMaximo || '');
+  this.descricao = m.prop(data.descricao || '');
+
+  this.validador = new m.validator(validacoes.TempoTotalEstimado);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.TempoTotalEstimado);
+    this.validador.validate(this);
+  };
 };
 
 var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
-  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto);
-  this.sigla = v.prop(data.sigla || '', v.maximo(15));
-  this.nomesPopulares = v.prop(data.nomesPopulares || [], v.cada(textoCurto));
-  this.descricao = v.prop(data.descricao || '', v.obrigatorio, textoLongo);
+  this.nome = m.prop(data.nome || '');
+  this.sigla = m.prop(data.sigla || '');
+  this.nomesPopulares = m.prop(data.nomesPopulares || []);
+  this.descricao = m.prop(data.descricao || '');
   this.gratuidade = m.prop(data.gratuidade);
-  this.solicitantes = v.prop(data.solicitantes || [], v.minimo(1));
+  this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new TempoTotalEstimado());
-  this.etapas = v.prop(data.etapas || [], v.minimo(1));
-  this.orgao = m.prop(data.orgao || '');
-  this.segmentosDaSociedade = v.prop(data.segmentosDaSociedade || [], v.minimo(1));
-  this.areasDeInteresse = v.prop(data.areasDeInteresse || [], v.minimo(1));
-  this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(textoCurto), v.minimo(3));
-  this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1));
+  this.etapas = m.prop(data.etapas || []);
+  this.orgao = m.prop(data.orgao || new Orgao());
+  this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
+  this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
+  this.palavrasChave = m.prop(data.palavrasChave || []);
+  this.legislacoes = m.prop(data.legislacoes || []);
+
+  this.validador = new m.validator(validacoes.Servico);
+  this.validar = function () {
+    this.validador = new m.validator(validacoes.Servico);
+    this.validador.validate(this);
+  };
 };
 
 module.exports = {
@@ -150,9 +176,9 @@ module.exports = {
   CanalDePrestacao: CanalDePrestacao,
   Documentos: Documentos,
   Custo: Custo,
-  Documento: Documento,
   Custos: Custos,
   Etapa: Etapa,
+  Orgao: Orgao,
   Solicitante: Solicitante,
   Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado
