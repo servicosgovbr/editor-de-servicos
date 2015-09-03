@@ -33,7 +33,7 @@ public class ApiControllerTest {
 
     @Test
     public void pingDeveRetornarLoginEHorario() throws Exception {
-        ApiController.Ping ping = controller.ping(USUARIO);
+        Ping ping = controller.ping(USUARIO);
 
         assertThat(ping.getLogin(), is("Fulano de Tal"));
         assertThat(System.currentTimeMillis() - ping.getHorario(), is(lessThan(1000L)));
@@ -41,9 +41,8 @@ public class ApiControllerTest {
 
     @Test
     public void listaOrgaosDisponiveis() throws Exception {
-        final String orgao = "Instituo";
-        controller.orgaos(orgao);
-        verify(orgaos).get(orgao);
+        controller.orgaos("Instituto");
+        verify(orgaos).get("Instituto");
     }
 
     @Test
