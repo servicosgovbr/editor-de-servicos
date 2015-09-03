@@ -35,10 +35,10 @@ module.exports = {
         ]);
       }),
 
-      m('p', 
-          m('button.adicionar.adicionar-etapa', {
-            onclick: ctrl.adicionar.bind(ctrl)
-          }, [
+      m('p',
+        m('button.adicionar.adicionar-etapa', {
+          onclick: ctrl.adicionar.bind(ctrl)
+        }, [
           m('i.fa.fa-plus'),
           ' Adicionar etapa '
           ])
