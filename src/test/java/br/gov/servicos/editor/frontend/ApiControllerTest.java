@@ -7,11 +7,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.Optional;
+
 import static java.util.Collections.emptyList;
+import static java.util.Optional.of;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApiControllerTest {
@@ -24,11 +28,14 @@ public class ApiControllerTest {
     @Mock
     Orgaos orgaos;
 
+    @Mock
+    Siorg siorg;
+
     ApiController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ApiController(vcge, orgaos);
+        controller = new ApiController(vcge, orgaos, siorg);
     }
 
     @Test
@@ -49,5 +56,12 @@ public class ApiControllerTest {
     public void listaCategoriasDoVcgeDisponiveis() throws Exception {
         controller.vcge();
         verify(vcge).get();
+    }
+
+    @Test
+    public void buscaOrgaosDisponivel() throws Exception {
+        when(siorg.slugDoOrgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404")).thenReturn(of(""));
+        controller.orgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404");
+        verify(siorg).slugDoOrgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404");
     }
 }
