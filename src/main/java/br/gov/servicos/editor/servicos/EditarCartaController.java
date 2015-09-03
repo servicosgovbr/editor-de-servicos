@@ -40,7 +40,7 @@ class EditarCartaController {
             response.setDateHeader("X-Git-Horario-Editado", r.getHorario().getTime());
         });
 
-        return carta.getConteudo();
+        return carta.getConteudoRaw();
     }
 
 }

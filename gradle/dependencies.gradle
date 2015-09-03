@@ -18,6 +18,10 @@ dependencies {
     compile 'org.springframework.security:spring-security-web:4.0.0.RELEASE'
     compile 'org.springframework.security:spring-security-config:4.0.0.RELEASE'
 
+    compile 'com.sun.xml.bind:jaxb-core:2.2.11'
+    compile 'com.sun.xml.bind:jaxb-impl:2.2.11'
+    compile 'javax.xml.bind:jaxb-api:2.2.12-b141001.1542'
+
     compile 'org.jolokia:jolokia-osgi:1.2.2'
     compile 'org.pegdown:pegdown:1.4.2'
     compile 'com.github.slugify:slugify:2.1.3'

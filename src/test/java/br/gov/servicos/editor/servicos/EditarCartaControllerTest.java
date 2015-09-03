@@ -62,7 +62,7 @@ public class EditarCartaControllerTest {
         given(carta.getMetadados())
                 .willReturn(METADADOS);
 
-        given(carta.getConteudo())
+        given(carta.getConteudoRaw())
                 .willReturn("<servico/>");
 
         String conteudo = controller.editar(carta, new MockHttpServletResponse());
@@ -74,7 +74,7 @@ public class EditarCartaControllerTest {
         given(carta.getMetadados())
                 .willReturn(METADADOS);
 
-        given(carta.getConteudo())
+        given(carta.getConteudoRaw())
                 .willThrow(new FileNotFoundException());
 
         controller.editar(carta, new MockHttpServletResponse());

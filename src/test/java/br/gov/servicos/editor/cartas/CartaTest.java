@@ -122,7 +122,7 @@ public class CartaTest {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
                 .willReturn(of("<servico/>"));
 
-        assertThat(carta.getConteudo(), is("<servico/>"));
+        assertThat(carta.getConteudoRaw(), is("<servico/>"));
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
@@ -138,7 +138,7 @@ public class CartaTest {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
                 .willReturn(of("<servico/>"));
 
-        assertThat(carta.getConteudo(), is("<servico/>"));
+        assertThat(carta.getConteudoRaw(), is("<servico/>"));
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
@@ -153,7 +153,7 @@ public class CartaTest {
     public void jogaFileNotFoundExceptionCasoNaoHajaArquivoNoBranch() throws Exception {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), anyObject())).willReturn(Optional.empty());
 
-        carta.getConteudo();
+        carta.getConteudoRaw();
     }
 
     @Test

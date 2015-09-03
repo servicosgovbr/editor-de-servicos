@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
+import br.gov.servicos.editor.cartas.Carta;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class Metadados implements Serializable {
 
     Revisao publicado;
     Revisao editado;
+
+    Carta.Servico servico;
 
     public boolean getTemAlteracoesNaoPublicadas() {
         return publicado != null && editado != null && editado.getHorario().after(publicado.getHorario());
