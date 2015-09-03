@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
 
 import static java.util.stream.Collectors.toList;
@@ -59,10 +60,9 @@ public class Orgaos implements InitializingBean {
         log.info("Buscando órgãos com termo '{}'", termo);
         return estruturaOrganizacional.getUnidades()
                 .stream()
-                .filter(u -> slugify.slugify(u.getNome()).replace('-', ' ').contains(slugify.slugify(termo).replace('-', ' '))
-                        || slugify.slugify(u.getNome()).replace('-', ' ').contains(slugify.slugify(termo).replace('-', ' ')))
-                        .map(u -> new Orgao().withNome(u.getNome()).withId(u.getCodigoUnidade()))
-                        .sorted((l, r) -> l.getId().compareTo(r.getId()))
+                .filter(new FiltroDeOrgaos(termo))
+                .map(u -> new Orgao().withNome(u.getNome()).withId(u.getCodigoUnidade()))
+                .sorted((l, r) -> l.getId().compareTo(r.getId()))
                 .collect(toList());
     }
 
@@ -99,5 +99,25 @@ public class Orgaos implements InitializingBean {
         String codigoPoder;
         String codigoNaturezaJuridica;
         String codigoSubNaturezaJuridica;
+    }
+
+    @FieldDefaults(level = PRIVATE, makeFinal = true)
+    private class FiltroDeOrgaos implements Predicate<Unidade> {
+
+        String termo;
+
+        public FiltroDeOrgaos(String termo) {
+            this.termo = termo;
+        }
+
+        @Override
+        public boolean test(Unidade u) {
+            return limpa(u.getNome()).contains(limpa(termo)) || limpa(u.getSigla()).contains(limpa(termo));
+        }
+
+        private String limpa(String s) {
+            return slugify.slugify(s).replace('-', ' ');
+        }
+
     }
 }
