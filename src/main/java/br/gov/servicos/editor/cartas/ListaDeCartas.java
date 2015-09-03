@@ -2,6 +2,7 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Metadados;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class ListaDeCartas {
+public class ListaDeCartas implements InitializingBean {
 
     RepositorioGit repositorioGit;
     Formatter<Carta> formatter;
@@ -27,6 +28,11 @@ public class ListaDeCartas {
     public ListaDeCartas(RepositorioGit repositorioGit, Formatter<Carta> formatter) {
         this.repositorioGit = repositorioGit;
         this.formatter = formatter;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        listar(); // esquenta o cache dos metadados
     }
 
     public Iterable<Metadados> listar() throws FileNotFoundException, java.text.ParseException {
@@ -46,4 +52,5 @@ public class ListaDeCartas {
                 .map(Carta::getMetadados)
                 .collect(toList());
     }
+
 }
