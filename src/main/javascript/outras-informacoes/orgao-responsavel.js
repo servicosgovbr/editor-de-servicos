@@ -19,25 +19,29 @@ module.exports = {
 
       m('.input-container', [
         m.component(require('componentes/select2'), {
-            ajax: {
-                url: '/editar/api/orgaos',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {orgao: params.term, page: params.page};
-                },
-                processResults: function (data, page) {
-                    var result = _.map(data, function(o) {
-                        var nome = o.nome + ' (' + o.id + ')';
-                        return {
-                            id: slugify(nome),
-                            text: nome
-                        };
-                    });
-                    return { results: result };
-                },
-                cache: true
+          ajax: {
+            url: '/editar/api/orgaos',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+              return {
+                q: params.term
+              };
             },
+            processResults: function (data, page) {
+              var result = _.map(data, function (o) {
+                var nome = o.nome + ' (' + o.id + ')';
+                return {
+                  id: slugify(nome),
+                  text: nome
+                };
+              });
+              return {
+                results: result
+              };
+            },
+            cache: true
+          },
           prop: ctrl.servico().orgao,
           width: '100%',
           minimumResultsForSearch: 1,
