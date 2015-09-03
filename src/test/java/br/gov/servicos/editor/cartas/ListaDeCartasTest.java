@@ -30,13 +30,16 @@ public class ListaDeCartasTest {
     Formatter<Carta> formatter;
 
     @Mock
+    Importador importador;
+
+    @Mock
     Carta carta;
 
     ListaDeCartas listaDeCartas;
 
     @Before
     public void setUp() throws Exception {
-        listaDeCartas = new ListaDeCartas(repositorioGit, formatter);
+        listaDeCartas = new ListaDeCartas(importador, repositorioGit, formatter);
     }
 
     @Test
