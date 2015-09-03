@@ -107,12 +107,6 @@ var Etapa = function (config) {
   };
 };
 
-var Orgao = function (config) {
-  var data = (config || {});
-  this.id = m.prop(data.id || '');
-  this.nome = m.prop(data.nome || []);
-};
-
 var Solicitante = function (config) {
   var data = (config || {});
   this.id = id('solicitante');
@@ -155,7 +149,7 @@ var Servico = function (config) {
   this.solicitantes = m.prop(data.solicitantes || []);
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new TempoTotalEstimado());
   this.etapas = m.prop(data.etapas || []);
-  this.orgao = m.prop(data.orgao || new Orgao());
+  this.orgao = m.prop(data.orgao || '');
   this.segmentosDaSociedade = m.prop(data.segmentosDaSociedade || []);
   this.areasDeInteresse = m.prop(data.areasDeInteresse || []);
   this.palavrasChave = m.prop(data.palavrasChave || []);
@@ -178,7 +172,6 @@ module.exports = {
   Custo: Custo,
   Custos: Custos,
   Etapa: Etapa,
-  Orgao: Orgao,
   Solicitante: Solicitante,
   Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado
