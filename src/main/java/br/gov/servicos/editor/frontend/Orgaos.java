@@ -61,7 +61,7 @@ public class Orgaos implements InitializingBean {
                 .stream()
                 .filter(u -> slugify.slugify(u.getNome()).replace('-', ' ').contains(slugify.slugify(termo).replace('-', ' '))
                         || slugify.slugify(u.getNome()).replace('-', ' ').contains(slugify.slugify(termo).replace('-', ' ')))
-                        .map(u -> new Orgao().withNome(u.getNome()).withId(slugify.slugify(u.getNome() + " - " + u.getSigla())))
+                        .map(u -> new Orgao().withNome(u.getNome()).withId(u.getCodigoUnidade()))
                         .sorted((l, r) -> l.getId().compareTo(r.getId()))
                 .collect(toList());
     }
