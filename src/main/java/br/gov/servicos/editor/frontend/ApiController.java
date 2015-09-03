@@ -43,8 +43,8 @@ class ApiController {
 
     @RequestMapping("/orgaos")
     @ResponseBody
-    List<Orgao> orgaos(@RequestParam("orgao") final String orgao) {
-        return orgaos.get(orgao);
+    List<Orgao> orgaos(@RequestParam("q") String termo) {
+        return orgaos.get(termo);
     }
 
 }
