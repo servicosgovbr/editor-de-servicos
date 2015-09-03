@@ -8,12 +8,17 @@ module.exports = {
     this.servico = args.servico;
 
     this.adicionar = function () {
-      this.servico().solicitantes().push(new modelos.Solicitante());
+      var solicitantes = this.servico().solicitantes();
+      solicitantes.push(new modelos.Solicitante());
+
+      this.servico().solicitantes(solicitantes);
       this.adicionado = true;
     };
 
     this.remover = function (i) {
-      this.servico().solicitantes().splice(i, 1);
+      var solicitantes = this.servico().solicitantes();
+      solicitantes.splice(i, 1);
+      this.servico().solicitantes(solicitantes);
     };
   },
 

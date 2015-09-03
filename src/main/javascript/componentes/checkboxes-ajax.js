@@ -8,27 +8,26 @@ module.exports.create = function (config) {
 
   return {
     controller: function (args) {
-      this[config.chave] = args.servico()[config.chave];
-
+      this.servico = args.servico;
       this['todos' + capitalize(config.chave)] = m.prop(config.itens);
 
       this.adicionar = function (e) {
         var obj = e.target.value;
-        var objs = this[config.chave]();
+        var objs = this.servico()[config.chave]();
 
         objs = _.without(objs, obj);
         if (e.target.checked) {
           objs.push(obj);
         }
 
-        this[config.chave](objs);
+        this.servico()[config.chave](objs);
       };
     },
 
     view: function (ctrl) {
       return m('fieldset#' + config.id, [
         m('h3.input-container', {
-          class: ctrl[config.chave].erro()
+          class: ctrl.servico()[config.chave].erro()
         }, [
           config.titulo,
           m.component(require('tooltips')[config.chave])
@@ -38,7 +37,7 @@ module.exports.create = function (config) {
           return m('label', [
             m('input[type=checkbox]', {
               value: obj,
-              checked: _.contains(ctrl[config.chave](), obj),
+              checked: _.contains(ctrl.servico()[config.chave](), obj),
               onchange: ctrl.adicionar.bind(ctrl)
             }),
             obj

@@ -7,33 +7,30 @@ var modelos = new require('modelos');
 
 module.exports = {
 
-  controller: function (args) {
-    this.custos = args.custos;
-    this.indice = args.indice;
-  },
-
   view: function (ctrl, args) {
+    var custos = args.custos;
+    var indice = args.indice;
     var erros = args.erros || {};
 
-    if (ctrl.custos() === null) {
-      ctrl.custos(new modelos.Custos());
+    if (custos() === null) {
+      custos(new modelos.Custos());
     }
 
-    return m('#' + ctrl.custos().id, [
+    return m('#' + custos().id, [
       m('h3', [
-        'Custos da etapa ' + (ctrl.indice + 1),
+        'Custos da etapa ' + (indice + 1),
         m.component(require('tooltips').custos)
       ]),
 
       m.component(new Caso(ListaDeCustos), {
         padrao: true,
         titulo: 'nome do custo',
-        caso: ctrl.custos().casoPadrao,
+        caso: custos().casoPadrao,
         erros: erros.casoPadrao
       }),
       m.component(new Casos(ListaDeCustos), {
         titulo: 'custos para este caso',
-        casos: ctrl.custos().outrosCasos,
+        casos: custos().outrosCasos,
         erros: erros.outrosCasos
       })
     ]);

@@ -8,7 +8,10 @@ module.exports = {
     this.servico = args.servico;
 
     this.adicionar = function () {
-      this.servico().etapas().push(new modelos.Etapa());
+      var etapas = this.servico().etapas();
+      etapas.push(new modelos.Etapa());
+
+      this.servico().etapas(etapas);
       this.adicionado = true;
     };
   },

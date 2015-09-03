@@ -4,22 +4,18 @@ var focus = require('focus');
 
 module.exports = {
 
-  controller: function (args) {
-    this.solicitante = args.solicitante;
-    this.index = args.index;
-  },
-
   view: function (ctrl, args) {
+    var solicitante = args.solicitante;
+    var index = args.index;
     var showDelete = args.showDelete;
     var removerFn = args.remover;
-    var s = ctrl.solicitante;
 
-    return m('fieldset#' + s.id + '.relative', {
-      key: s.id
+    return m('fieldset#' + solicitante.id + '.relative', {
+      key: solicitante.id
     }, [
 
       m('h3', [
-        'Tipo do solicitante ' + (ctrl.index + 1),
+        'Tipo do solicitante ' + (index + 1),
         m.component(require('tooltips').tipoSolicitante)]),
 
       (showDelete ? m('button.remove.absolute', {
@@ -27,25 +23,25 @@ module.exports = {
       }) : ''),
 
         m('div.input-container', {
-          class: s.tipo.erro()
+          class: solicitante.tipo.erro()
         },
         m('input[type=text]', {
-          value: s.tipo(),
+          value: solicitante.tipo(),
           config: focus(ctrl),
-          onchange: m.withAttr('value', s.tipo)
+          onchange: m.withAttr('value', solicitante.tipo)
         })
         ),
 
         m('h3.opcional', [
-          'Requisitos necessários para o solicitante ' + (ctrl.index + 1),
+          'Requisitos necessários para o solicitante ' + (index + 1),
           m.component(require('tooltips').requisitosSolicitante)
         ]),
 
         m.component(require('componentes/editor-markdown'), {
         rows: 3,
-        value: s.requisitos(),
-        onchange: m.withAttr('value', s.requisitos),
-        erro: s.requisitos.erro()
+        value: solicitante.requisitos(),
+        onchange: m.withAttr('value', solicitante.requisitos),
+        erro: solicitante.requisitos.erro()
       })
 
     ]);

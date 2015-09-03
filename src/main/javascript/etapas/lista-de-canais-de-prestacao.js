@@ -6,26 +6,29 @@ var modelos = require('modelos');
 module.exports = {
 
   controller: function (args) {
-    this.canaisDePrestacao = args.campos;
-
     this.tiposDeCanalDePrestacao = m.prop(referencia.tiposDeCanalDePrestacao);
 
-    this.adicionar = function () {
-      this.canaisDePrestacao().push(new modelos.CanalDePrestacao());
+    this.adicionar = function (prop) {
+      var canaisDePrestacao = prop();
+      canaisDePrestacao.push(new modelos.CanalDePrestacao());
+      prop(canaisDePrestacao);
     };
 
-    this.remover = function (i) {
-      this.canaisDePrestacao().splice(i, 1);
+    this.remover = function (prop, i) {
+      var canaisDePrestacao = prop();
+      canaisDePrestacao.splice(i, 1);
+      prop(canaisDePrestacao);
     };
   },
 
-  view: function (ctrl) {
-    if (ctrl.canaisDePrestacao().length === 0) {
-      ctrl.adicionar();
+  view: function (ctrl, args) {
+    var canaisDePrestacao = args.campos;
+    if (canaisDePrestacao().length === 0) {
+      ctrl.adicionar(canaisDePrestacao);
     }
 
     return m('.canais-de-prestacao', [
-      ctrl.canaisDePrestacao().map(function (canalDePrestacao, i) {
+      canaisDePrestacao().map(function (canalDePrestacao, i) {
         return m('.canal-de-prestacao', {
           key: canalDePrestacao.id
         }, [
@@ -35,8 +38,8 @@ module.exports = {
             prop: canalDePrestacao.tipo
           }),
 
-          ctrl.canaisDePrestacao().length === 1 ? '' : m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
+          canaisDePrestacao().length === 1 ? '' : m('button.remove', {
+            onclick: ctrl.remover.bind(ctrl, canaisDePrestacao, i)
           }, [m('span')]),
 
           m('label.titulo', referencia.descricoesDeCanaisDePrestacao[canalDePrestacao.tipo() || 'Descreva como o cidadão deve utilizar este canal']),
@@ -49,7 +52,7 @@ module.exports = {
         ]);
       }),
       m('button.adicionar.adicionar-canal-de-prestacao', {
-        onclick: ctrl.adicionar.bind(ctrl)
+        onclick: ctrl.adicionar.bind(ctrl, canaisDePrestacao)
       }, [
         m('i.fa.fa-plus'),
         ' Adicionar canal '

@@ -3,27 +3,24 @@
 var focus = require('focus');
 
 module.exports = {
-
-  controller: function (args) {
-    this.titulo = args.titulo;
-    this.indice = args.indice;
-    this.adicionado = args.adicionado;
-  },
-
   view: function (ctrl, args) {
+    ctrl.adicionado = args.adicionado;
+    var titulo = args.titulo;
+    var indice = args.indice;
+
     return m('.titulo', [
       m('h3', [
-        'Título da etapa ' + (ctrl.indice + 1),
+        'Título da etapa ' + (indice + 1),
         m.component(require('tooltips').tituloDaEtapa)
       ]),
 
       m('div.input-container', {
-        class: ctrl.titulo.erro()
+        class: titulo.erro()
       }, [
         m('input[type=text]', {
-          onkeyup: m.withAttr('value', ctrl.titulo),
+          onkeyup: m.withAttr('value', titulo),
           config: focus(ctrl),
-          value: ctrl.titulo()
+          value: titulo()
         })
       ])
     ]);

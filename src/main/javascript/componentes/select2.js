@@ -50,13 +50,10 @@ var language = {
 };
 
 module.exports = {
-  controller: function (args) {
-    this.prop = args.prop;
-    this.options = _.omit(args, 'prop');
-  },
-
-  view: function (ctrl) {
-    var erro = _.isFunction(ctrl.prop.erro) ? ctrl.prop.erro() : '';
+  view: function (ctrl, args) {
+    var prop = args.prop;
+    var options = _.omit(args, 'prop');
+    var erro = _.isFunction(prop.erro) ? prop.erro() : '';
 
     return m('.clear.select2-message-container', {
       class: erro
@@ -69,21 +66,21 @@ module.exports = {
             language: language,
             placeholder: 'Selecione...',
             minimumResultsForSearch: Infinity
-          }, ctrl.options));
+          }, options));
 
           select2.on('change', function (e) {
-            if (!el.val() || ctrl.prop() === el.val()) {
+            if (!el.val() || prop() === el.val()) {
               e.stopPropagation();
               return false;
             }
 
             m.startComputation();
-            ctrl.prop(el.val());
+            prop(el.val());
             m.endComputation();
           });
         }
 
-        el.select2('val', ctrl.prop());
+        el.select2('val', prop());
       }
     }));
   }

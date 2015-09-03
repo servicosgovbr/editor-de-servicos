@@ -6,30 +6,34 @@ var modelos = require('modelos');
 module.exports = {
 
   controller: function (args) {
-    this.documentos = args.campos;
+    this.adicionar = function (prop) {
+      var documentos = prop();
+      documentos.push(new modelos.Documento());
+      prop(documentos);
 
-    this.adicionar = function () {
-      this.documentos().push(new modelos.Documento());
       this.adicionado = true;
     };
 
-    this.remover = function (i) {
-      this.documentos().splice(i, 1);
+    this.remover = function (prop, i) {
+      var documentos = prop();
+      documentos.splice(i, 1);
+      prop(documentos);
     };
   },
 
   view: function (ctrl, args) {
-    if (ctrl.documentos().length === 0) {
-      ctrl.adicionar();
+    var documentos = args.campos;
+    if (documentos().length === 0) {
+      ctrl.adicionar(documentos);
     }
 
     return m('.documentos', [
-      ctrl.documentos().map(function (documento, i) {
+      documentos().map(function (documento, i) {
         return m('.documento.relative', {
           key: documento.id
         }, [
-          ctrl.documentos().length === 1 ? '' : m('button.remove.absolute', {
-            onclick: ctrl.remover.bind(ctrl, i)
+          documentos().length === 1 ? '' : m('button.remove.absolute', {
+            onclick: ctrl.remover.bind(ctrl, documentos, i)
           }),
 
           m('div.input-container', {
@@ -46,7 +50,7 @@ module.exports = {
         ]);
       }),
       m('button.adicionar.adicionar-documento', {
-        onclick: ctrl.adicionar.bind(ctrl)
+        onclick: ctrl.adicionar.bind(ctrl, documentos)
       }, [
         m('i.fa.fa-plus'),
         ' Adicionar documentação '

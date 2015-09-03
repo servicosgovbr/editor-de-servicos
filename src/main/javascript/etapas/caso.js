@@ -5,45 +5,42 @@ var focus = require('focus');
 module.exports = function (componente) {
 
   return {
-
-    controller: function (args) {
-      this.caso = args.caso;
-      this.padrao = !!args.padrao;
-      this.titulo = args.titulo;
-      this.opcional = args.opcional;
-      this.adicionado = this.caso().adicionado;
-    },
-
     view: function (ctrl, args) {
+      var caso = args.caso;
+      var padrao = !!args.padrao;
+      var titulo = args.titulo;
+      var opcional = args.opcional;
+      ctrl.adicionado = caso().adicionado;
+
       var inputNome;
       var className;
-      if (ctrl.padrao) {
+      if (padrao) {
         inputNome = '';
         className = '';
       } else {
         inputNome = m('div.input-container', {
-          class: ctrl.caso().descricao.erro()
+          class: caso().descricao.erro()
         }, [
           m('input[type=text]', {
-            value: ctrl.caso().descricao(),
+            value: caso().descricao(),
             config: focus(ctrl),
-            onchange: m.withAttr('value', ctrl.caso().descricao)
+            onchange: m.withAttr('value', caso().descricao)
           })
         ]);
         className = '.margin-left';
       }
 
-      return m('#' + ctrl.caso().id + '.caso' + className, {
-        key: ctrl.caso().id
+      return m('#' + caso().id + '.caso' + className, {
+        key: caso().id
       }, [
 
         inputNome,
         m('label.titulo', {
-          class: ctrl.opcional ? 'opcional' : ''
-        }, ctrl.titulo),
+          class: opcional ? 'opcional' : ''
+        }, titulo),
         m.component(componente, {
-          id: ctrl.caso().id,
-          campos: ctrl.caso().campos
+          id: caso().id,
+          campos: caso().campos
         })
       ]);
     }

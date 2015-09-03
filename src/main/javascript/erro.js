@@ -1,8 +1,6 @@
 'use strict';
 
 module.exports = {
-  controller: function (args) {},
-
   view: function (ctrl) {
     return m('#conteudo', [
       m('span.cabecalho-cor'),

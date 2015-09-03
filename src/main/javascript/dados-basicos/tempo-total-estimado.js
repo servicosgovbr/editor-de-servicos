@@ -12,7 +12,7 @@ var selectTipo = function (prop) {
 module.exports = {
 
   controller: function (args) {
-    this.tempoTotalEstimado = args.servico().tempoTotalEstimado;
+    this.servico = args.servico;
   },
 
   view: function (ctrl) {
@@ -23,7 +23,7 @@ module.exports = {
       ]),
 
       m.component(require('componentes/select2'), {
-        prop: ctrl.tempoTotalEstimado().tipo,
+        prop: ctrl.servico().tempoTotalEstimado().tipo,
         data: [
           {
             id: 'ate',
@@ -38,50 +38,50 @@ module.exports = {
 
       m('span.tipo-ate', {
         style: {
-          display: ctrl.tempoTotalEstimado().tipo() === 'ate' ? 'inline' : 'none'
+          display: ctrl.servico().tempoTotalEstimado().tipo() === 'ate' ? 'inline' : 'none'
         }
       }, [
         m('.input-container.inline.margin-right', {
-          class: ctrl.tempoTotalEstimado().ateMaximo.erro()
+          class: ctrl.servico().tempoTotalEstimado().ateMaximo.erro()
         }, [m('input.ate-maximo[type="number"]', {
-          value: ctrl.tempoTotalEstimado().ateMaximo(),
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado().ateMaximo)
+          value: ctrl.servico().tempoTotalEstimado().ateMaximo(),
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().ateMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().ateTipoMaximo)
+        selectTipo(ctrl.servico().tempoTotalEstimado().ateTipoMaximo)
       ]),
 
       m('span.tipo-entre', {
         style: {
-          display: ctrl.tempoTotalEstimado().tipo() === 'entre' ? 'inline' : 'none'
+          display: ctrl.servico().tempoTotalEstimado().tipo() === 'entre' ? 'inline' : 'none'
         }
       }, [
         m('.input-container.inline', {
-          class: ctrl.tempoTotalEstimado().entreMinimo.erro()
+          class: ctrl.servico().tempoTotalEstimado().entreMinimo.erro()
         }, [m('input.entre-minimo[type="number"]', {
-          value: ctrl.tempoTotalEstimado().entreMinimo(),
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMinimo)
+          value: ctrl.servico().tempoTotalEstimado().entreMinimo(),
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMinimo)
         })]),
 
         m('span', ' e '),
 
         m('.input-container.inline.margin-right', {
-          class: ctrl.tempoTotalEstimado().entreMaximo.erro()
+          class: ctrl.servico().tempoTotalEstimado().entreMaximo.erro()
         }, [m('input.entre-maximo[type="number"]', {
-          value: ctrl.tempoTotalEstimado().entreMaximo(),
-          onchange: m.withAttr('value', ctrl.tempoTotalEstimado().entreMaximo)
+          value: ctrl.servico().tempoTotalEstimado().entreMaximo(),
+          onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().entreMaximo)
         })]),
 
-        selectTipo(ctrl.tempoTotalEstimado().entreTipoMaximo)
+        selectTipo(ctrl.servico().tempoTotalEstimado().entreTipoMaximo)
       ]),
 
       m('label.titulo.opcional', 'Comentários sobre exceções ou informações adicionais ao tempo estimado'),
 
       m.component(require('componentes/editor-markdown'), {
         rows: 3,
-        onchange: m.withAttr('value', ctrl.tempoTotalEstimado().descricao),
-        value: ctrl.tempoTotalEstimado().descricao(),
-        erro: ctrl.tempoTotalEstimado().descricao.erro()
+        onchange: m.withAttr('value', ctrl.servico().tempoTotalEstimado().descricao),
+        value: ctrl.servico().tempoTotalEstimado().descricao(),
+        erro: ctrl.servico().tempoTotalEstimado().descricao.erro()
       })
     ]);
   }

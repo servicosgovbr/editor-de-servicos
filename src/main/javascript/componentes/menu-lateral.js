@@ -51,7 +51,9 @@ module.exports = {
       alertify.labels.ok = 'Remover';
       alertify.confirm('Você tem certeza que deseja remover essa etapa?', function (result) {
         if (result) {
-          this.servico().etapas().splice(i, 1);
+          var etapas = this.servico().etapas();
+          etapas.splice(i, 1);
+          this.servico().etapas(etapas);
           m.redraw();
         }
       }.bind(this));

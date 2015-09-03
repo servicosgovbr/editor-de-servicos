@@ -16,7 +16,7 @@ module.exports = {
         m.component(require('tooltips').nome)
       ]),
 
-      m('label', servico.nome())
+      m('span', servico.nome())
     ]);
   }
 };

@@ -6,25 +6,29 @@ var focus = require('focus');
 module.exports = {
 
   controller: function (args) {
-    this.custos = args.campos;
+    this.adicionar = function (prop) {
+      var custos = prop();
+      custos.push(new modelos.Custo());
 
-    this.adicionar = function () {
-      this.custos().push(new modelos.Custo());
+      prop(custos);
       this.adicionado = true;
     };
 
-    this.remover = function (i) {
-      this.custos().splice(i, 1);
+    this.remover = function (prop, i) {
+      var custos = prop();
+      custos.splice(i, 1);
+      prop(custos);
     };
   },
 
   view: function (ctrl, args) {
-    if (ctrl.custos().length === 0) {
-      ctrl.adicionar();
+    var custos = args.campos;
+    if (custos().length === 0) {
+      ctrl.adicionar(custos);
     }
 
     return m('.custos', [
-      ctrl.custos().map(function (custo, i) {
+      custos().map(function (custo, i) {
         return m('.custo', {
           key: custo.id
         }, [
@@ -50,7 +54,7 @@ module.exports = {
             onchange: m.withAttr('value', custo.valor)
           })]),
           ' ',
-          ctrl.custos().length === 1 ? m('') : m('button.remove', {
+          custos().length === 1 ? m('') : m('button.remove', {
             onclick: ctrl.remover.bind(ctrl, i)
           }, [m('span')])
         ]);

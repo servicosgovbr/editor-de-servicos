@@ -1,24 +1,21 @@
 'use strict';
 
 module.exports = {
+  view: function (ctrl, args) {
+    var descricao = args.descricao;
+    var indice = args.indice;
 
-  controller: function (args) {
-    this.descricao = args.descricao;
-    this.indice = args.indice;
-  },
-
-  view: function (ctrl) {
     return m('.descricao', [
       m('h3.opcional', [
-        'Descrição da etapa ' + (ctrl.indice + 1),
+        'Descrição da etapa ' + (indice + 1),
         m.component(require('tooltips').descricaoDaEtapa)
       ]),
 
       m.component(require('componentes/editor-markdown'), {
         rows: 3,
-        onchange: m.withAttr('value', ctrl.descricao),
-        value: ctrl.descricao(),
-        erro: ctrl.descricao.erro()
+        onchange: m.withAttr('value', descricao),
+        value: descricao(),
+        erro: descricao.erro()
       })
     ]);
   }
