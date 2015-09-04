@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.servicos.Revisao;
+import br.gov.servicos.editor.utils.LogstashProgressMonitor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
@@ -9,18 +10,17 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.jgit.api.errors.RefNotAdvertisedException;
 import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
+import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -29,15 +29,16 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
+import static net.logstash.logback.marker.Markers.append;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
@@ -80,7 +81,6 @@ public class RepositorioGit {
         }));
 
         if (commit == null) {
-            log.debug("Arquivo {} @ master não encontrado", caminhoRelativo);
             return empty();
         }
 
@@ -100,7 +100,6 @@ public class RepositorioGit {
         }));
 
         if (commit == null) {
-            log.debug("Branch {} não encontrado", branch);
             return empty();
         }
 
@@ -147,7 +146,11 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkoutMaster() {
-        log.debug("git checkout: {} -> {}", git.getRepository().getFullBranch(), R_HEADS + MASTER);
+        Marker marker = append("branch.from", git.getRepository().getBranch())
+                .and(append("branch.to", MASTER));
+
+        log.info(marker, "git checkout");
+
         git.checkout()
                 .setName(R_HEADS + MASTER)
                 .call();
@@ -155,58 +158,55 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkout(String branch) {
-        log.debug("git checkout: {} -> {}", git.getRepository().getFullBranch(), branch);
+        String novoBranch = branch.replaceAll("^" + R_HEADS, "");
 
         if (git.getRepository().getRefDatabase().getRef(branch) == null) {
-            git.checkout()
-                    .setName(branch.replaceAll("^" + R_HEADS, ""))
+            Ref result = git.checkout()
+                    .setName(novoBranch)
                     .setStartPoint(R_HEADS + MASTER)
                     .setUpstreamMode(TRACK)
                     .setCreateBranch(true)
                     .call();
+
+            Marker marker = append("branch.from", git.getRepository().getBranch())
+                    .and(append("branch.to", novoBranch))
+                    .and(append("branch.created", true))
+                    .and(append("result", result.getName()));
+
+            log.info(marker, "git checkout");
+
         } else {
-            git.checkout()
-                    .setName(branch.replaceAll("^" + R_HEADS, ""))
+            Ref result = git.checkout()
+                    .setName(novoBranch)
                     .setCreateBranch(false)
                     .call();
+
+            Marker marker = append("branch.from", git.getRepository().getBranch())
+                    .and(append("branch.to", novoBranch))
+                    .and(append("branch.created", false))
+                    .and(append("result", result.getName()));
+
+            log.info(marker, "git checkout");
         }
     }
 
-    public PullResult pull() {
-        PullResult result;
+    public void pull() {
         try {
-            result = git.pull()
+            PullResult result = git.pull()
                     .setRebase(true)
                     .setStrategy(THEIRS)
-                    .setProgressMonitor(new TextProgressMonitor())
+                    .setProgressMonitor(new LogstashProgressMonitor(log))
                     .call();
 
-            log.info("git pull: {} ({}): {}",
-                    git.getRepository().getBranch(),
-                    git.getRepository().getRepositoryState(),
-                    result);
+            log.info(append("pull", result.getFetchedFrom()), "git pull em {}", git.getRepository().getBranch());
 
-        } catch (RefNotAdvertisedException e) {
-            try {
-                result = git.pull()
-                        .setRebase(true)
-                        .setStrategy(THEIRS)
-                        .setProgressMonitor(new TextProgressMonitor())
-                        .setRemoteBranchName(MASTER)
-                        .call();
-
-                log.info("git pull: {} ({}): {}",
-                        git.getRepository().getBranch(),
-                        git.getRepository().getRepositoryState(),
-                        result);
-
-            } catch (IOException | GitAPIException e1) {
-                throw new RuntimeException(e1);
+            if (!result.isSuccessful()) {
+                throw new IllegalStateException("Não foi possível completar o git pull");
             }
+
         } catch (IOException | GitAPIException e) {
             throw new RuntimeException(e);
         }
-        return result;
     }
 
     @SneakyThrows
@@ -221,21 +221,23 @@ public class RepositorioGit {
     @SneakyThrows
     public void commit(Path caminho, String mensagem, User usuario) {
         PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
-        log.debug("git commit: {} ({}): '{}', {}, {}",
-                git.getRepository().getBranch(),
-                git.getRepository().getRepositoryState(),
-                mensagem,
-                ident,
-                caminho
-        );
-
         try {
-            git.commit()
+            RevCommit result = git.commit()
                     .setMessage(mensagem)
                     .setCommitter(ident)
                     .setAuthor(ident)
                     .setOnly(caminho.toString())
                     .call();
+
+            Marker marker = append("commit", result.getName())
+                    .and(append("commit.message", mensagem))
+                    .and(append("commit.author", ident.getName()))
+                    .and(append("commit.email", ident.getEmailAddress()))
+                    .and(append("commit.path", caminho.toString()))
+                    .and(append("branch", git.getRepository().getBranch()))
+                    .and(append("state", git.getRepository().getRepositoryState().toString()));
+
+            log.info(marker, "git commit");
 
         } catch (JGitInternalException e) {
             if (e.getMessage().equals(JGitText.get().emptyCommit)) {
@@ -246,22 +248,30 @@ public class RepositorioGit {
         }
     }
 
-    @SneakyThrows
     public void push(String branch) {
-        if (fazerPush) {
-            log.info("git push: {} ({}): {}",
-                    git.getRepository().getBranch(),
-                    git.getRepository().getRepositoryState(),
+//        if (!fazerPush) {
+//            log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
+//            return;
+//        }
 
-                    git.push()
-                            .setRemote(DEFAULT_REMOTE_NAME)
-                            .setRefSpecs(new RefSpec(branch + ":" + branch))
-                            .setProgressMonitor(new TextProgressMonitor())
-                            .call()
-            );
-        } else {
-            log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
+        List<Map<String, Object>> info = new ArrayList<>();
+        try {
+            git.push()
+                    .setRemote(DEFAULT_REMOTE_NAME)
+                    .setRefSpecs(new RefSpec(branch + ":" + branch))
+                    .setProgressMonitor(new LogstashProgressMonitor(log))
+                    .call()
+                    .forEach(result -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("messages", result.getMessages());
+                        m.put("updates", result.getRemoteUpdates().stream().map(u -> u.getStatus().toString()).collect(toList()));
+                        info.add(m);
+                    });
+        } catch (GitAPIException e) {
+            log.error(append("branch", branch), "git push falhou", e);
         }
+
+        log.info(append("push", info), "git push em {}", branch);
     }
 
     @SneakyThrows

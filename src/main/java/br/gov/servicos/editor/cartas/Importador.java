@@ -1,12 +1,12 @@
 package br.gov.servicos.editor.cartas;
 
+import br.gov.servicos.editor.utils.LogstashProgressMonitor;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -43,7 +43,7 @@ class Importador {
         Git.cloneRepository()
                 .setURI(repositorioCartas)
                 .setDirectory(repositorioCartasLocal)
-                .setProgressMonitor(new TextProgressMonitor())
+                .setProgressMonitor(new LogstashProgressMonitor(log))
                 .call();
         importadoComSucesso = true;
     }

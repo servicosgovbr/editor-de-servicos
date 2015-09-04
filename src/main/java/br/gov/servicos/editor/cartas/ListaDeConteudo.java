@@ -89,6 +89,8 @@ public class ListaDeConteudo {
                 .ofNullable(dir.listFiles((x, name) -> name.endsWith('.' + ext)))
                 .orElse(new File[0]);
 
+        log.info("{} arquivos encontrados em {}", arquivos.length, caminho);
+
         return Stream.of(arquivos)
                 .map(f -> f.getName().replaceAll("\\." + ext + '$', ""))
                 .map(unchecked(id -> formatter.parse(id, getDefault())));
