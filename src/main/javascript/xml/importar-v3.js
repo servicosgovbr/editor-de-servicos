@@ -10,7 +10,7 @@ var peloMenos = _.curry(function (n, lista, fn) {
   if (lista && lista.length >= n) {
     return lista;
   }
-  return _.times(n - lista.length, fn);
+  return lista.concat(_.times(n - lista.length, fn));
 });
 
 var um = peloMenos(1);
