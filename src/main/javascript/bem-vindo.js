@@ -85,7 +85,7 @@ module.exports = {
             return m('tr', [
 
               m('td', m('a', {
-                href: '/editar/servico/' + slugify(s.id)
+                href: '/editar/'+ s.conteudo.tipo + '/' + slugify(s.id)
               }, [
                 m('span.fa', {
                   class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
