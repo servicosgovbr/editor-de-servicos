@@ -24,7 +24,9 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#palavras-chave.relative', [
-      m('h3', [
+      m('h3.input-container', {
+        class: ctrl.servico().palavrasChave.erro()
+      }, [
         'Palavras-chave',
         m.component(require('tooltips').palavrasChave)
       ]),

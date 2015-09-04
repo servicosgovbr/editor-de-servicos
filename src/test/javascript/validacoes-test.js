@@ -47,7 +47,7 @@ function eachItemShouldNotExceed(campo, context, limite) {
   it('campo ' + quote(campo) + ' deve aceitar valores com tamanho até ' + limite + ' caracteres', function () {
     var property = context();
     property([_.repeat('b', limite)]);
-    expect(property.erro()).toEqual([undefined]);
+    expect(property.erro()).toBeUndefined();
   });
 
 }
@@ -146,7 +146,7 @@ describe('validação >', function () {
       expect(servico.palavrasChave.erro()).toBe('erro-min-3');
 
       servico.palavrasChave(['a1', 'a2', 'a3']);
-      expect(servico.palavrasChave.erro()).toEqual([undefined, undefined, undefined]);
+      expect(servico.palavrasChave.erro()).toBeUndefined();
     });
 
     it('cada palavra chave pode ter no máximo 50 caracteres', function () {

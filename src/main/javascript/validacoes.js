@@ -80,7 +80,7 @@ var cada = function () {
 
   return function (valores) {
     var erros = _.map(valores, primeiroErroPara(validacoes));
-    return !_.isEmpty(erros) ? erros : undefined;
+    return !_.isEmpty(_.compact(erros)) ? erros : undefined;
   };
 };
 
