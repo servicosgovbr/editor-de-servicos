@@ -4,6 +4,7 @@ var modelos = require('modelos');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
 var validacoes = require('validacoes');
+var limparModelo = require('limpar-modelo');
 
 var modificado = m.prop(false);
 
@@ -22,6 +23,7 @@ module.exports = {
     };
 
     this.publicar = function () {
+      this.servico(limparModelo(this.servico()));
       return validacoes.valida(this.servico());
     };
   },
