@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.servicos;
 
-import br.gov.servicos.editor.cartas.Carta;
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ class ListarConteudoController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/conteudos", method = GET)
-    Iterable<Metadados<Carta.Servico>> listar() throws IOException, ParseException {
+    Iterable<Metadados<?>> listar() throws IOException, ParseException {
         return listaDeConteudo.listar();
     }
 

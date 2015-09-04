@@ -16,52 +16,49 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import java.io.File;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
-import static javax.xml.bind.JAXB.unmarshal;
-import static javax.xml.bind.annotation.XmlAccessType.NONE;
+import static br.gov.servicos.editor.utils.Unchecked.Supplier.unchecked;
+import static com.google.common.io.Files.readFirstLine;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.lib.Constants.MASTER;
 import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class Carta extends ConteudoVersionado<Carta.Servico> {
+public class PaginaDeOrgao extends ConteudoVersionado<PaginaDeOrgao.Orgao> {
 
     @Getter
     String id;
 
-    private Carta(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
+    private PaginaDeOrgao(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
         super(repositorio, leitorDeArquivos, escritorDeArquivos);
         this.id = id;
     }
 
     @Override
     public Path getCaminho() {
-        return Paths.get("cartas-servico", "v3", "servicos", id + ".xml");
+        return Paths.get("conteudo", "orgaos", id + ".md");
     }
 
-    public Servico getConteudo() {
+    public Orgao getConteudo() {
         File arquivo = getCaminhoAbsoluto().toFile();
         try {
             return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
-                    () -> unmarshal(arquivo, Servico.class));
+                    unchecked(() -> new Orgao().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
         } catch (Exception e) {
             return getRepositorio().comRepositorioAbertoNoBranch(R_HEADS + MASTER,
-                    () -> unmarshal(arquivo, Servico.class));
+                    unchecked(() -> new Orgao().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
         }
     }
 
     @Component
     @FieldDefaults(level = PRIVATE, makeFinal = true)
-    public static class Formatter implements org.springframework.format.Formatter<Carta> {
+    public static class Formatter implements org.springframework.format.Formatter<PaginaDeOrgao> {
         Factory factory;
 
         @Autowired
@@ -70,12 +67,12 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
         }
 
         @Override
-        public Carta parse(String text, Locale locale) {
-            return factory.carta(text);
+        public PaginaDeOrgao parse(String text, Locale locale) {
+            return factory.paginaDeOrgao(text);
         }
 
         @Override
-        public String print(Carta object, Locale locale) {
+        public String print(PaginaDeOrgao object, Locale locale) {
             return object.getId();
         }
 
@@ -99,8 +96,8 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
 
         @Bean // necessário para @Cacheable
         @Scope("prototype")
-        public Carta carta(String texto) {
-            return new Carta(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos);
+        public PaginaDeOrgao paginaDeOrgao(String texto) {
+            return new PaginaDeOrgao(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos);
         }
     }
 
@@ -109,27 +106,9 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
     @NoArgsConstructor
     @AllArgsConstructor
     @FieldDefaults(level = PRIVATE)
-    @XmlAccessorType(NONE)
-    @XmlType(name = "Servico", propOrder = {"nome", "orgao"})
-    public static class Servico {
-        String tipo = "servico";
-
-        @XmlElement(required = true)
-        String nome;
-
-        @XmlElement(required = true)
-        Orgao orgao;
-    }
-
-    @Data
-    @Wither
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @FieldDefaults(level = PRIVATE)
-    @XmlAccessorType(NONE)
-    @XmlType(name = "Orgao", propOrder = {"id"})
     public static class Orgao {
-        @XmlAttribute(required = true)
-        String id;
+        String tipo = "orgao";
+        String nome;
     }
+
 }

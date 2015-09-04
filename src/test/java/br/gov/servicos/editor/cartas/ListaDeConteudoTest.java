@@ -33,7 +33,10 @@ public class ListaDeConteudoTest {
     RepositorioGit repositorioGit;
 
     @Mock
-    Formatter<Carta> formatter;
+    Formatter<Carta> formatterCarta;
+
+    @Mock
+    Formatter<PaginaDeOrgao> formatterOrgao;
 
     @Mock
     Importador importador;
@@ -42,26 +45,30 @@ public class ListaDeConteudoTest {
     Carta carta;
 
     @Mock
+    PaginaDeOrgao paginaDeOrgao;
+
+    @Mock
     CacheManager cacheManager;
 
     ListaDeConteudo listaDeConteudo;
 
     @Before
     public void setUp() throws Exception {
-        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatter, cacheManager);
+        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatterCarta, formatterOrgao, cacheManager, true);
 
         Path dir = Files.createTempDirectory("listar-cartas-controller");
-        Path v3 = dir.resolve("cartas-servico/v3/servicos");
+        Path servicos = dir.resolve("cartas-servico/v3/servicos");
+        Path orgaos = dir.resolve("conteudo/orgaos");
 
-        assertTrue(v3.toFile().mkdirs());
-        Files.createFile(v3.resolve("id-qualquer.xml"));
+        assertTrue(servicos.toFile().mkdirs());
+        assertTrue(orgaos.toFile().mkdirs());
 
-        given(repositorioGit.getCaminhoAbsoluto())
-                .willReturn(dir);
+        Files.createFile(servicos.resolve("id-qualquer.xml"));
+        Files.createFile(orgaos.resolve("outro-id-qualquer.md"));
 
-        given(formatter.parse("id-qualquer", getDefault()))
-                .willReturn(carta);
-
+        given(repositorioGit.getCaminhoAbsoluto()).willReturn(dir);
+        given(formatterCarta.parse("id-qualquer", getDefault())).willReturn(carta);
+        given(formatterOrgao.parse("outro-id-qualquer", getDefault())).willReturn(paginaDeOrgao);
     }
 
     @Test
@@ -69,7 +76,7 @@ public class ListaDeConteudoTest {
         Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
         given(carta.getMetadados()).willReturn(m1);
 
-        Iterable<Metadados<Carta.Servico>> metadados = listaDeConteudo.listar();
+        Iterable<Metadados<?>> metadados = listaDeConteudo.listar();
 
         assertThat(metadados.iterator().next(), is(m1));
     }
@@ -87,13 +94,18 @@ public class ListaDeConteudoTest {
         Cache cache = mock(Cache.class);
 
         Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
-        given(importador.isImportadoComSucesso()).willReturn(true);
-        given(carta.getMetadados()).willReturn(m1);
-        given(cacheManager.getCache(METADADOS)).willReturn(new GuavaCache(METADADOS, cache));
+        Metadados<PaginaDeOrgao.Orgao> m2 = new Metadados<PaginaDeOrgao.Orgao>().withId("outro-id-qualquer");
 
+        given(importador.isImportadoComSucesso()).willReturn(true);
+
+        given(carta.getMetadados()).willReturn(m1);
+        given(paginaDeOrgao.getMetadados()).willReturn(m2);
+
+        given(cacheManager.getCache(METADADOS)).willReturn(new GuavaCache(METADADOS, cache));
 
         listaDeConteudo.esquentarCacheDeMetadados();
 
         verify(cache).put("id-qualquer", m1);
+        verify(cache).put("outro-id-qualquer", m2);
     }
 }

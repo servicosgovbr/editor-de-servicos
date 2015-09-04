@@ -77,11 +77,20 @@ module.exports = {
               m('th.right', '')
             ])
           ].concat(ctrl.servicosFiltrados().map(function (s) {
+            var iconesDeTipo = {
+              servico: 'fa-file-text-o',
+              orgao: 'fa-building-o'
+            };
+
             return m('tr', [
 
               m('td', m('a', {
                 href: '/editar/servico/' + slugify(s.id)
               }, [
+                m('span.fa', {
+                  class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
+                }),
+                m.trust(' &nbsp; ') ,
                 s.conteudo.nome
               ])),
 

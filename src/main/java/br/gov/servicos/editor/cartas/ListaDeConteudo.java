@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
@@ -28,49 +29,69 @@ import static lombok.AccessLevel.PRIVATE;
 public class ListaDeConteudo {
 
     Importador importador;
-    CacheManager cacheManager;
     RepositorioGit repositorioGit;
-    Formatter<Carta> formatter;
+    Formatter<Carta> formatterCarta;
+    Formatter<PaginaDeOrgao> formatterOrgao;
+    CacheManager cacheManager;
+    boolean esquentarCache;
 
     @Autowired
-    public ListaDeConteudo(Importador importador, RepositorioGit repositorioGit, Formatter<Carta> formatter, CacheManager cacheManager) {
-        this.repositorioGit = repositorioGit;
-        this.formatter = formatter;
+    public ListaDeConteudo(
+            Importador importador,
+            RepositorioGit repositorioGit,
+            Formatter<Carta> formatterCarta,
+            Formatter<PaginaDeOrgao> formatterOrgao,
+            CacheManager cacheManager,
+            @Value("${flags.esquentar.cache}") boolean esquentarCache
+    ) {
         this.importador = importador;
+        this.repositorioGit = repositorioGit;
+        this.formatterCarta = formatterCarta;
+        this.formatterOrgao = formatterOrgao;
         this.cacheManager = cacheManager;
+        this.esquentarCache = esquentarCache;
     }
 
     @PostConstruct
     @SneakyThrows
     public void esquentarCacheDeMetadados() {
+        if (!esquentarCache) {
+            return;
+        }
+
         if (importador.isImportadoComSucesso()) {
             @SuppressWarnings("unchecked")
-            Cache<String, Metadados<Carta.Servico>> metadados =
+            Cache<String, Metadados<?>> metadados =
                     (Cache) cacheManager.getCache(METADADOS).getNativeCache();
 
             listar().forEach(c -> metadados.put(c.getId(), c));
             log.info("Cache de metadados das cartas criado com sucesso");
+
         } else {
             log.warn("Cache de metadados das cartas não foi criado - houve algum problema com o clone do repositório?");
         }
     }
 
-    public Iterable<Metadados<Carta.Servico>> listar() throws FileNotFoundException, java.text.ParseException {
-        File dir = repositorioGit.getCaminhoAbsoluto().resolve("cartas-servico/v3/servicos").toFile();
+    public Iterable<Metadados<?>> listar() throws FileNotFoundException, java.text.ParseException {
+        return Stream.concat(
+                listar("cartas-servico/v3/servicos", "xml", formatterCarta).map(Carta::getMetadados),
+                listar("conteudo/orgaos", "md", formatterOrgao).map(PaginaDeOrgao::getMetadados)
+        ).collect(toList());
+    }
 
+    private <T extends ConteudoVersionado> Stream<T> listar(String caminho, String ext, Formatter<T> formatter) throws FileNotFoundException {
+        File dir = repositorioGit.getCaminhoAbsoluto().resolve(caminho).toFile();
         if (!dir.exists()) {
             throw new FileNotFoundException("Diretório " + dir + " não encontrado!");
         }
 
         File[] arquivos = Optional
-                .ofNullable(dir.listFiles((x, name) -> name.endsWith(".xml")))
+                .ofNullable(dir.listFiles((x, name) -> name.endsWith('.' + ext)))
                 .orElse(new File[0]);
 
         return Stream.of(arquivos)
-                .map(f -> f.getName().replaceAll(".xml$", ""))
-                .map(unchecked(id -> formatter.parse(id, getDefault())))
-                .map(Carta::getMetadados)
-                .collect(toList());
+                .map(f -> f.getName().replaceAll("\\." + ext + '$', ""))
+                .map(unchecked(id -> formatter.parse(id, getDefault())));
     }
 
 }

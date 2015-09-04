@@ -17,6 +17,7 @@ management:
 
 flags:
   git.push: false
+  esquentar.cache: true
 
 eds:
   cartas:

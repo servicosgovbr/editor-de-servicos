@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.config;
 
-import br.gov.servicos.editor.cartas.Carta;
+import br.gov.servicos.editor.cartas.ConteudoVersionado;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCacheManager;
@@ -21,6 +21,6 @@ public class CacheConfig {
 
     @Bean
     public KeyGenerator geradorDeChavesParaCacheDeCommitsRecentes() {
-        return (target, method, params) -> ((Carta) target).getId();
+        return (target, method, params) -> ((ConteudoVersionado<?>) target).getId();
     }
 }
