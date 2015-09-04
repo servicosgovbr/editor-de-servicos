@@ -7,10 +7,12 @@ var importarXml = require('xml/importar-v3');
 var exportarXml = require('xml/exportar');
 
 function postarServico(nome, xml, metadados) {
+  var id = slugify(nome);
+
   return m.request({
 
     method: 'POST',
-    url: '/editar/v3/servico/' + nome,
+    url: '/editar/v3/servico/' + id,
     data: xml,
     background: true,
 
@@ -39,7 +41,7 @@ module.exports = function (servicoProp, metadados) {
 
   var promise;
   if (servico.nome()) {
-    promise = postarServico(slugify(servico.nome()), xml, metadados)
+    promise = postarServico(servico.nome(), xml, metadados)
       .then(importarXml, onAjaxError);
   } else {
     promise = m.deferred().resolve(servico).promise;

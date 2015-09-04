@@ -1,6 +1,7 @@
 'use strict';
 
 var modelos = require('modelos');
+var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
 var validacoes = require('validacoes');
@@ -19,7 +20,9 @@ module.exports = {
         .then(_.bind(this.cabecalho.limparErro, this.cabecalho))
         .then(function () {
           modificado(false);
-        });
+        }).then(function () {
+          m.route('/editar/servico/' + slugify(this.servico().nome()));
+        }.bind(this));
     };
 
     this.publicar = function () {
@@ -30,7 +33,8 @@ module.exports = {
 
   view: function (ctrl) {
     var binding = {
-      servico: ctrl.servico
+      servico: ctrl.servico,
+      novo: m.route.param('id') === 'novo'
     };
 
     return m('#conteudo', {

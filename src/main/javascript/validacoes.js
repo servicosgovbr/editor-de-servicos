@@ -35,17 +35,17 @@ var prop = function () {
 };
 
 var valida = function (obj) {
-  switch(typeof obj) {
-    case 'object':
-      return _.every(_.map(obj, valida));
+  switch (typeof obj) {
+  case 'object':
+    return _.every(_.map(obj, valida));
 
-    case 'function':
-      if (_.isFunction(obj.valida)) {
-        var erro = obj.valida();
-        return (_.isUndefined(erro) || _.compact(erro).length === 0) && valida(obj());
-      }
+  case 'function':
+    if (_.isFunction(obj.valida)) {
+      var erro = obj.valida();
+      return (_.isUndefined(erro) || _.compact(erro).length === 0) && valida(obj());
+    }
 
-      return valida(obj());
+    return valida(obj());
   }
 
   return true;

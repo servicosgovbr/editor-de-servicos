@@ -43,4 +43,9 @@ class EditarCartaController {
         return carta.getConteudoRaw();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/editar/api/servico/v3/novo", method = GET, produces = "application/xml")
+    String editarNovo()  {
+        return "<servico/>";
+    }
 }

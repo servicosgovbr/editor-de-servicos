@@ -55,8 +55,8 @@ module.exports = {
         ]),
 
       m('button#publicar', {
-        onclick: _.bind(ctrl.publicar, ctrl)
-      }, [
+          onclick: _.bind(ctrl.publicar, ctrl)
+        }, [
           m('i.fa.fa-tv'),
           m.trust('&nbsp; Publicar')
         ]),

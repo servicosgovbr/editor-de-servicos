@@ -58,9 +58,14 @@ module.exports = {
         m('#bem-vindo', [
           m('h2', 'Bem-vindo!'),
 
-          m('input[type=search][placeholder="Filtrar por..."]', {
-            oninput: m.withAttr('value', ctrl.filtro)
-          }),
+          m('div.busca', [
+            m('input[type=search][placeholder="Filtrar por..."]', {
+              oninput: m.withAttr('value', ctrl.filtro)
+            }),
+            m('button#novo', m('a', {
+              href: '/editar/servico/novo'
+            }, 'Novo Serviço')),
+          ]),
 
           m('label', [
             m('input[type=checkbox]', {
@@ -85,12 +90,12 @@ module.exports = {
             return m('tr', [
 
               m('td', m('a', {
-                href: '/editar/'+ s.conteudo.tipo + '/' + slugify(s.id)
+                href: '/editar/' + s.conteudo.tipo + '/' + slugify(s.id)
               }, [
                 m('span.fa', {
                   class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
                 }),
-                m.trust(' &nbsp; ') ,
+                m.trust(' &nbsp; '),
                 s.conteudo.nome
               ])),
 

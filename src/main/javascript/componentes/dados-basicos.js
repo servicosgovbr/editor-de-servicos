@@ -1,15 +1,8 @@
 'use strict';
 
 module.exports = {
-
-  controller: function (args) {
-    this.servico = args.servico;
-  },
-
-  view: function (ctrl) {
-    var binding = {
-      servico: ctrl.servico
-    };
+  view: function (ctrl, args) {
+    var binding = args;
 
     return m('#dados-basicos', [
       m.component(require('dados-basicos/nome'), binding),

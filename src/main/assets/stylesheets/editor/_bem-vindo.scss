@@ -2,7 +2,18 @@
 
 #bem-vindo {
   @include span-columns(12);
+
   margin-top: $tamanho-do-cabecalho + 2em;
+
+  .busca {
+    @include span-columns(12);
+    input[type=search] {
+      @include span-columns(9);
+    }
+    button#novo {
+      @include span-columns(2);
+    }
+  }
 
   table {
     margin-top: 50px;
