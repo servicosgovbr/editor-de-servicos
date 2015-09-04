@@ -116,12 +116,12 @@ var TempoTotalEstimado = function (config) {
   var data = (config || {});
   this.id = id('tempo-total-estimado');
   this.tipo = m.prop(data.tipo || '');
-  this.entreMinimo = v.prop(data.entreMinimo || '', v.obrigatorio);
-  this.ateMaximo = v.prop(data.ateMaximo || '', v.obrigatorio);
-  this.ateTipoMaximo = v.prop(data.ateTipoMaximo || '', v.obrigatorio);
-  this.entreMaximo = v.prop(data.entreMaximo || '', v.obrigatorio);
-  this.entreTipoMaximo = v.prop(data.entreTipoMaximo || '', v.obrigatorio);
   this.descricao = v.prop(data.descricao || '', textoLongo);
+  this.ateMaximo = v.prop(data.ateMaximo || '', v.se(this.tipo, 'ate', v.obrigatorio));
+  this.ateTipoMaximo = v.prop(data.ateTipoMaximo || '', v.se(this.tipo, 'ate', v.obrigatorio));
+  this.entreMinimo = v.prop(data.entreMinimo || '', v.se(this.tipo, 'entre', v.obrigatorio));
+  this.entreMaximo = v.prop(data.entreMaximo || '', v.se(this.tipo, 'entre', v.obrigatorio));
+  this.entreTipoMaximo = v.prop(data.entreTipoMaximo || '', v.se(this.tipo, 'entre', v.obrigatorio));
 };
 
 var Servico = function (config) {

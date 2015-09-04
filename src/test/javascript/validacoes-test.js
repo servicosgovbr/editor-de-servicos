@@ -167,18 +167,23 @@ describe('validação >', function () {
     }, 500);
 
     shouldBePresent('ate', function () {
+      tte.tipo('ate');
       return tte.ateMaximo;
     });
     shouldBePresent('unidade de tempo, ate', function () {
+      tte.tipo('ate');
       return tte.ateTipoMaximo;
     });
     shouldBePresent('entre minimo', function () {
+      tte.tipo('entre');
       return tte.entreMinimo;
     });
     shouldBePresent('entre maximo', function () {
+      tte.tipo('entre');
       return tte.entreMaximo;
     });
     shouldBePresent('unidade de tempo, entre', function () {
+      tte.tipo('entre');
       return tte.entreTipoMaximo;
     });
   });

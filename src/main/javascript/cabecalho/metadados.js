@@ -4,7 +4,8 @@ module.exports = {
 
   controller: function (args) {
     var config = _.merge({
-      salvar: _.noop
+      salvar: _.noop,
+      publicar: _.noop
     }, args);
 
     alertify.set({
@@ -20,6 +21,14 @@ module.exports = {
         m.redraw();
         return resp;
       }, this));
+    };
+
+    this.publicar = function () {
+      if (!config.publicar()) {
+        alertify.error('Serviço ainda contém erros.');
+      } else {
+        alertify.success('Serviço está pronto!');
+      }
     };
   },
 
@@ -45,7 +54,9 @@ module.exports = {
           m.trust('&nbsp; Visualizar')
         ]),
 
-      m('button#publicar', [
+      m('button#publicar', {
+        onclick: _.bind(ctrl.publicar, ctrl)
+      }, [
           m('i.fa.fa-tv'),
           m.trust('&nbsp; Publicar')
         ]),

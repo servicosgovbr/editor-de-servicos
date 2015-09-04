@@ -9,16 +9,21 @@ var primeiroErroPara = _.curry(function (validacoes, valor) {
 var validador = function (property, validacoes) {
   var erro = m.prop();
 
+  var valida = function (valor) {
+    return erro(primeiroErroPara(validacoes, valor || property()));
+  };
+
   var wrapper = function () {
     var novoValor = property.apply(property, arguments);
     if (!_.isEmpty(arguments)) {
-      erro(primeiroErroPara(validacoes, novoValor));
+      valida(novoValor);
     }
 
     return novoValor;
   };
 
   wrapper.erro = erro;
+  wrapper.valida = valida;
   return wrapper;
 };
 
@@ -27,6 +32,23 @@ var prop = function () {
   var validacoes = _.tail(arguments);
 
   return validador(m.prop(valorInicial), validacoes);
+};
+
+var valida = function (obj) {
+  switch(typeof obj) {
+    case 'object':
+      return _.every(_.map(obj, valida));
+
+    case 'function':
+      if (_.isFunction(obj.valida)) {
+        var erro = obj.valida();
+        return (_.isUndefined(erro) || _.compact(erro).length === 0) && valida(obj());
+      }
+
+      return valida(obj());
+  }
+
+  return true;
 };
 
 var maximo = _.curry(function (len, v) {
@@ -62,9 +84,23 @@ var cada = function () {
   };
 };
 
+var se = function () {
+  var propTeste = arguments[0];
+  var valorTeste = arguments[1];
+  var validacoes = _.drop(arguments, 2);
+
+  return function (valor) {
+    if (propTeste.apply(propTeste) === valorTeste) {
+      return primeiroErroPara(validacoes, valor);
+    }
+  };
+};
+
 module.exports = {
+  valida: valida,
   prop: prop,
   cada: cada,
+  se: se,
   obrigatorio: obrigatorio,
   maximo: maximo,
   minimo: minimo,

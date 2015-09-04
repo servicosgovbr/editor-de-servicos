@@ -3,6 +3,7 @@
 var modelos = require('modelos');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
+var validacoes = require('validacoes');
 
 var modificado = m.prop(false);
 
@@ -18,6 +19,10 @@ module.exports = {
         .then(function () {
           modificado(false);
         });
+    };
+
+    this.publicar = function () {
+      return validacoes.valida(this.servico());
     };
   },
 
@@ -47,6 +52,7 @@ module.exports = {
       m('#wrapper', [
         m.component(require('componentes/cabecalho'), {
           salvar: _.bind(ctrl.salvar, ctrl),
+          publicar: _.bind(ctrl.publicar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
         m.component(require('componentes/menu-lateral'), binding),
