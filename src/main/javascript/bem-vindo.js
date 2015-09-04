@@ -29,7 +29,7 @@ module.exports = {
       return _.sortBy(servicos, 'id');
     };
 
-    this.listarServicos = _.debounce(function () {
+    this.listarConteudos = _.debounce(function () {
       m.request({
           method: 'GET',
           url: '/editar/api/conteudos'
@@ -37,14 +37,14 @@ module.exports = {
         .then(this.servicos, erro);
     }.bind(this), 500);
 
-    this.excluirServico = function (id) {
+    this.excluirConteudo = function (id) {
       m.request({
         method: 'DELETE',
         url: '/editar/api/servico/' + slugify(id),
-      }).then(this.listarServicos, erro);
+      }).then(this.listarConteudos, erro);
     };
 
-    this.listarServicos();
+    this.listarConteudos();
   },
 
   view: function (ctrl) {
@@ -82,7 +82,7 @@ module.exports = {
               m('td', m('a', {
                 href: '/editar/servico/' + slugify(s.id)
               }, [
-                s.servico.nome
+                s.conteudo.nome
               ])),
 
               m('td.center', s.publicado ? [
@@ -104,7 +104,7 @@ module.exports = {
                   m('span.fa.fa-pencil')
                 ])),
                   m('button', {
-                  onclick: _.bind(ctrl.excluirServico, ctrl, s.id)
+                  onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id)
                 }, [
                   m('span.fa.fa-trash-o')
                 ])
