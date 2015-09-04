@@ -110,6 +110,8 @@ public abstract class ConteudoVersionado<T> {
     }
 
     public String getConteudoRaw() throws FileNotFoundException {
+        repositorio.comRepositorioAbertoNoBranch(getBranchRef(), repositorio::pull);
+
         return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
                 () -> leitorDeArquivos.ler(getCaminhoAbsoluto().toFile())
         ).orElseThrow(

@@ -172,9 +172,10 @@ public class RepositorioGit {
         }
     }
 
-    public void pull() {
+    public PullResult pull() {
+        PullResult result;
         try {
-            PullResult result = git.pull()
+            result = git.pull()
                     .setRebase(true)
                     .setStrategy(THEIRS)
                     .setProgressMonitor(new TextProgressMonitor())
@@ -187,7 +188,7 @@ public class RepositorioGit {
 
         } catch (RefNotAdvertisedException e) {
             try {
-                PullResult result = git.pull()
+                result = git.pull()
                         .setRebase(true)
                         .setStrategy(THEIRS)
                         .setProgressMonitor(new TextProgressMonitor())
@@ -205,6 +206,7 @@ public class RepositorioGit {
         } catch (IOException | GitAPIException e) {
             throw new RuntimeException(e);
         }
+        return result;
     }
 
     @SneakyThrows
