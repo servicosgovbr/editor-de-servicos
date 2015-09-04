@@ -26,7 +26,7 @@ class ListarConteudoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/servicos", method = GET)
+    @RequestMapping(value = "/editar/api/conteudos", method = GET)
     Iterable<Metadados<Carta.Servico>> listar() throws IOException, ParseException {
         return listaDeConteudo.listar();
     }

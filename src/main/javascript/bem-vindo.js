@@ -32,7 +32,7 @@ module.exports = {
     this.listarServicos = _.debounce(function () {
       m.request({
           method: 'GET',
-          url: '/editar/api/servicos'
+          url: '/editar/api/conteudos'
         })
         .then(this.servicos, erro);
     }.bind(this), 500);
