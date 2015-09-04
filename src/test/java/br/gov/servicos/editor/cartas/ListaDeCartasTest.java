@@ -67,10 +67,10 @@ public class ListaDeCartasTest {
 
     @Test
     public void deveListarDiretorioDeCartas() throws Exception {
-        Metadados m1 = new Metadados().withId("id-qualquer");
+        Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
         given(carta.getMetadados()).willReturn(m1);
 
-        Iterable<Metadados> metadados = listaDeCartas.listar();
+        Iterable<Metadados<Carta.Servico>> metadados = listaDeCartas.listar();
 
         assertThat(metadados.iterator().next(), is(m1));
     }
@@ -87,7 +87,7 @@ public class ListaDeCartasTest {
     public void forcaAtualizacaoDoCacheAoInicializar() throws Exception {
         Cache cache = mock(Cache.class);
 
-        Metadados m1 = new Metadados().withId("id-qualquer");
+        Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
         given(importador.isImportadoComSucesso()).willReturn(true);
         given(carta.getMetadados()).willReturn(m1);
         given(cacheManager.getCache(METADADOS)).willReturn(new GuavaCache(METADADOS, cache));

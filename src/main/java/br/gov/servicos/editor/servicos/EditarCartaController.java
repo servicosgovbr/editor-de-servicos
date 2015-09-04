@@ -26,7 +26,7 @@ class EditarCartaController {
             @PathVariable("id") Carta carta,
             HttpServletResponse response
     ) throws FileNotFoundException {
-        Metadados metadados = carta.getMetadados();
+        Metadados<Carta.Servico> metadados = carta.getMetadados();
 
         ofNullable(metadados.getPublicado()).ifPresent(r -> {
             response.setHeader("X-Git-Commit-Publicado", r.getHash());

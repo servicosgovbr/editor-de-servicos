@@ -43,9 +43,10 @@ public class ListaDeCartas {
     @PostConstruct
     @SneakyThrows
     public void esquentarCacheDeMetadados() {
-        if(importador.isImportadoComSucesso()) {
+        if (importador.isImportadoComSucesso()) {
             @SuppressWarnings("unchecked")
-            Cache<String, Metadados> metadados = (Cache<String, Metadados>) cacheManager.getCache(METADADOS).getNativeCache();
+            Cache<String, Metadados<Carta.Servico>> metadados =
+                    (Cache) cacheManager.getCache(METADADOS).getNativeCache();
 
             listar().forEach(c -> metadados.put(c.getId(), c));
             log.info("Cache de metadados das cartas criado com sucesso");
@@ -54,7 +55,7 @@ public class ListaDeCartas {
         }
     }
 
-    public Iterable<Metadados> listar() throws FileNotFoundException, java.text.ParseException {
+    public Iterable<Metadados<Carta.Servico>> listar() throws FileNotFoundException, java.text.ParseException {
         File dir = repositorioGit.getCaminhoAbsoluto().resolve("cartas-servico/v3/servicos").toFile();
 
         if (!dir.exists()) {

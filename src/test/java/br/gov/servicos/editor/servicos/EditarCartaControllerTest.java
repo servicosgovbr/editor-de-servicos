@@ -25,7 +25,7 @@ public class EditarCartaControllerTest {
             .withAutor("Fulano de Tal")
             .withHorario(HORARIO);
 
-    static final Metadados METADADOS = new Metadados()
+    static final Metadados<Carta.Servico> METADADOS = new Metadados<Carta.Servico>()
             .withEditado(REVISAO)
             .withPublicado(REVISAO);
 
