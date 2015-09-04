@@ -25,7 +25,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Slf4j
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class ListaDeCartas {
+public class ListaDeConteudo {
 
     Importador importador;
     CacheManager cacheManager;
@@ -33,7 +33,7 @@ public class ListaDeCartas {
     Formatter<Carta> formatter;
 
     @Autowired
-    public ListaDeCartas(Importador importador, RepositorioGit repositorioGit, Formatter<Carta> formatter, CacheManager cacheManager) {
+    public ListaDeConteudo(Importador importador, RepositorioGit repositorioGit, Formatter<Carta> formatter, CacheManager cacheManager) {
         this.repositorioGit = repositorioGit;
         this.formatter = formatter;
         this.importador = importador;

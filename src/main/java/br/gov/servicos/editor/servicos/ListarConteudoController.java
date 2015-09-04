@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
-import br.gov.servicos.editor.cartas.ListaDeCartas;
+import br.gov.servicos.editor.cartas.ListaDeConteudo;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,19 +16,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class ListarCartasController {
+class ListarConteudoController {
 
-    ListaDeCartas listaDeCartas;
+    ListaDeConteudo listaDeConteudo;
 
     @Autowired
-    ListarCartasController(ListaDeCartas listaDeCartas) {
-        this.listaDeCartas = listaDeCartas;
+    ListarConteudoController(ListaDeConteudo listaDeConteudo) {
+        this.listaDeConteudo = listaDeConteudo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/servicos", method = GET)
     Iterable<Metadados<Carta.Servico>> listar() throws IOException, ParseException {
-        return listaDeCartas.listar();
+        return listaDeConteudo.listar();
     }
 
 }

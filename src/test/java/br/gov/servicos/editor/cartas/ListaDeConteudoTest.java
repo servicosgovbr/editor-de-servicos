@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 
 @SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
 @RunWith(MockitoJUnitRunner.class)
-public class ListaDeCartasTest {
+public class ListaDeConteudoTest {
     @Mock
     RepositorioGit repositorioGit;
 
@@ -44,12 +44,11 @@ public class ListaDeCartasTest {
     @Mock
     CacheManager cacheManager;
 
-    ListaDeCartas listaDeCartas;
+    ListaDeConteudo listaDeConteudo;
 
     @Before
     public void setUp() throws Exception {
-        listaDeCartas = new ListaDeCartas(importador, repositorioGit, formatter, cacheManager);
-
+        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatter, cacheManager);
 
         Path dir = Files.createTempDirectory("listar-cartas-controller");
         Path v3 = dir.resolve("cartas-servico/v3/servicos");
@@ -70,7 +69,7 @@ public class ListaDeCartasTest {
         Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
         given(carta.getMetadados()).willReturn(m1);
 
-        Iterable<Metadados<Carta.Servico>> metadados = listaDeCartas.listar();
+        Iterable<Metadados<Carta.Servico>> metadados = listaDeConteudo.listar();
 
         assertThat(metadados.iterator().next(), is(m1));
     }
@@ -79,7 +78,7 @@ public class ListaDeCartasTest {
     public void jogaExcecaoCasoDiretorioDeCartasNaoExista() throws Exception {
         given(repositorioGit.getCaminhoAbsoluto()).willReturn(Paths.get("/caminho/nao/existente"));
 
-        listaDeCartas.listar();
+        listaDeConteudo.listar();
     }
 
     @Test
@@ -93,7 +92,7 @@ public class ListaDeCartasTest {
         given(cacheManager.getCache(METADADOS)).willReturn(new GuavaCache(METADADOS, cache));
 
 
-        listaDeCartas.esquentarCacheDeMetadados();
+        listaDeConteudo.esquentarCacheDeMetadados();
 
         verify(cache).put("id-qualquer", m1);
     }

@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.servicos;
 
-import br.gov.servicos.editor.cartas.ListaDeCartas;
+import br.gov.servicos.editor.cartas.ListaDeConteudo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,21 +10,21 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ListarCartasControllerTest {
+public class ListarConteudoControllerTest {
 
-    ListarCartasController controller;
+    ListarConteudoController controller;
 
     @Mock
-    ListaDeCartas listaDeCartas;
+    ListaDeConteudo listaDeConteudo;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ListarCartasController(listaDeCartas);
+        controller = new ListarConteudoController(listaDeConteudo);
     }
 
     @Test
     public void deveDelegarParaListagem() throws Exception {
         controller.listar();
-        verify(listaDeCartas).listar();
+        verify(listaDeConteudo).listar();
     }
 }
