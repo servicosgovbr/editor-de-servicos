@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
 
+import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static java.lang.String.format;
 import static javax.xml.bind.JAXB.unmarshal;
 import static javax.xml.bind.annotation.XmlAccessType.NONE;
@@ -42,7 +43,7 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-@CacheConfig(cacheNames = "metadados", keyGenerator = "geradorDeChavesParaCacheDeCommitsRecentes")
+@CacheConfig(cacheNames = METADADOS, keyGenerator = "geradorDeChavesParaCacheDeCommitsRecentes")
 public class Carta {
 
     @Getter

@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CacheConfig {
 
+    public static final String METADADOS = "metadados";
+
     @Bean
     public CacheManager cacheManager() {
         return new GuavaCacheManager();
