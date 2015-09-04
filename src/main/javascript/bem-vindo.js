@@ -82,7 +82,7 @@ module.exports = {
               m('td', m('a', {
                 href: '/editar/servico/' + slugify(s.id)
               }, [
-                s.id.replace(/\.xml$/, '').replace(/-/g, ' ')
+                s.servico.nome
               ])),
 
               m('td.center', s.publicado ? [
