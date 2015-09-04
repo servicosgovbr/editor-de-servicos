@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.RefNotAdvertisedException;
@@ -83,7 +84,6 @@ public class RepositorioGit {
             return empty();
         }
 
-        log.debug("Arquivo {} @ master: {}", caminhoRelativo, commit.getId().getName());
         return of(new Revisao(commit));
     }
 
@@ -104,7 +104,6 @@ public class RepositorioGit {
             return empty();
         }
 
-        log.debug("Branch {}: {}", branch, commit.getId().getName());
         return of(new Revisao(commit));
     }
 
@@ -175,23 +174,32 @@ public class RepositorioGit {
 
     public void pull() {
         try {
-            log.info("git pull: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
-
-            git.pull()
+            PullResult result = git.pull()
                     .setRebase(true)
                     .setStrategy(THEIRS)
                     .setProgressMonitor(new TextProgressMonitor())
                     .call();
 
+            log.info("git pull: {} ({}): {}",
+                    git.getRepository().getBranch(),
+                    git.getRepository().getRepositoryState(),
+                    result);
+
         } catch (RefNotAdvertisedException e) {
             try {
-                git.pull()
+                PullResult result = git.pull()
                         .setRebase(true)
                         .setStrategy(THEIRS)
                         .setProgressMonitor(new TextProgressMonitor())
                         .setRemoteBranchName(MASTER)
                         .call();
-            } catch (GitAPIException e1) {
+
+                log.info("git pull: {} ({}): {}",
+                        git.getRepository().getBranch(),
+                        git.getRepository().getRepositoryState(),
+                        result);
+
+            } catch (IOException | GitAPIException e1) {
                 throw new RuntimeException(e1);
             }
         } catch (IOException | GitAPIException e) {
@@ -238,13 +246,17 @@ public class RepositorioGit {
 
     @SneakyThrows
     public void push(String branch) {
-        log.info("git push: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState());
         if (fazerPush) {
-            git.push()
-                    .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(new RefSpec(branch + ":" + branch))
-                    .setProgressMonitor(new TextProgressMonitor())
-                    .call();
+            log.info("git push: {} ({}): {}",
+                    git.getRepository().getBranch(),
+                    git.getRepository().getRepositoryState(),
+
+                    git.push()
+                            .setRemote(DEFAULT_REMOTE_NAME)
+                            .setRefSpecs(new RefSpec(branch + ":" + branch))
+                            .setProgressMonitor(new TextProgressMonitor())
+                            .call()
+            );
         } else {
             log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
         }
