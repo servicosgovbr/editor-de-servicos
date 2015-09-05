@@ -263,10 +263,10 @@ public class RepositorioGit {
     }
 
     public void push(String branch) {
-//        if (!fazerPush) {
-//            log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
-//            return;
-//        }
+        if (!fazerPush) {
+            log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
+            return;
+        }
 
         List<Map<String, Object>> info = new ArrayList<>();
         try {
