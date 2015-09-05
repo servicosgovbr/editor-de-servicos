@@ -244,9 +244,9 @@ public class RepositorioGit {
             Map<String, Object> info = new HashMap<>();
             info.put("fetched.from", result.getFetchedFrom());
             info.put("fetch.result.updates", result.getFetchResult() == null ? null : result.getFetchResult().getMessages());
-            info.put("fetch.result.updates", result.getFetchResult() == null ? null : result.getFetchResult().getTrackingRefUpdates().stream().map(TrackingRefUpdate::getResult).collect(toList()));
-            info.put("rebase.result", result.getRebaseResult() == null ? null : result.getRebaseResult().getStatus());
-            info.put("merge.result", result.getMergeResult() == null ? null : result.getMergeResult().getMergeStatus());
+            info.put("fetch.result.updates", result.getFetchResult() == null ? null : result.getFetchResult().getTrackingRefUpdates().stream().map(TrackingRefUpdate::getResult).map(Enum::toString).collect(toList()));
+            info.put("rebase.result", result.getRebaseResult() == null ? null : result.getRebaseResult().getStatus().toString());
+            info.put("merge.result", result.getMergeResult() == null ? null : result.getMergeResult().getMergeStatus().toString());
 
             Marker marker = append("git.state", git.getRepository().getRepositoryState())
                     .and(append("pull", info));
