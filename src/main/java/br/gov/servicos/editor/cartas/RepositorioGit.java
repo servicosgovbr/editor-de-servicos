@@ -17,6 +17,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.transport.TrackingRefUpdate;
 import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
@@ -147,9 +148,10 @@ public class RepositorioGit {
     @SneakyThrows
     private void checkoutMaster() {
         Marker marker = append("branch.from", git.getRepository().getBranch())
-                .and(append("branch.to", MASTER));
+                .and(append("branch.to", MASTER))
+                .and(append("git.state", git.getRepository().getRepositoryState()));
 
-        log.info(marker, "git checkout");
+        log.info(marker, "git checkout master");
 
         git.checkout()
                 .setName(R_HEADS + MASTER)
@@ -171,9 +173,10 @@ public class RepositorioGit {
             Marker marker = append("branch.from", git.getRepository().getBranch())
                     .and(append("branch.to", novoBranch))
                     .and(append("branch.created", true))
-                    .and(append("result", result.getName()));
+                    .and(append("result", result.getName()))
+                    .and(append("git.state", git.getRepository().getRepositoryState()));
 
-            log.info(marker, "git checkout");
+            log.info(marker, "git checkout {}", novoBranch);
 
         } else {
             Ref result = git.checkout()
@@ -184,34 +187,16 @@ public class RepositorioGit {
             Marker marker = append("branch.from", git.getRepository().getBranch())
                     .and(append("branch.to", novoBranch))
                     .and(append("branch.created", false))
-                    .and(append("result", result.getName()));
+                    .and(append("result", result.getName()))
+                    .and(append("git.state", git.getRepository().getRepositoryState()));
 
-            log.info(marker, "git checkout");
-        }
-    }
-
-    public void pull() {
-        try {
-            PullResult result = git.pull()
-                    .setRebase(true)
-                    .setStrategy(THEIRS)
-                    .setProgressMonitor(new LogstashProgressMonitor(log))
-                    .call();
-
-            log.info(append("pull", result.getFetchedFrom()), "git pull em {}", git.getRepository().getBranch());
-
-            if (!result.isSuccessful()) {
-                throw new IllegalStateException("Não foi possível completar o git pull");
-            }
-
-        } catch (IOException | GitAPIException e) {
-            throw new RuntimeException(e);
+            log.info(marker, "git checkout {}", novoBranch);
         }
     }
 
     @SneakyThrows
     public void add(Path caminho) {
-        log.debug("git add: {} ({})", git.getRepository().getBranch(), git.getRepository().getRepositoryState(), caminho);
+        log.debug(append("git.state", git.getRepository().getRepositoryState()), "git add: {}", git.getRepository().getBranch(), caminho);
 
         git.add()
                 .addFilepattern(caminho.toString())
@@ -235,9 +220,9 @@ public class RepositorioGit {
                     .and(append("commit.email", ident.getEmailAddress()))
                     .and(append("commit.path", caminho.toString()))
                     .and(append("branch", git.getRepository().getBranch()))
-                    .and(append("state", git.getRepository().getRepositoryState().toString()));
+                    .and(append("git.state", git.getRepository().getRepositoryState().toString()));
 
-            log.info(marker, "git commit");
+            log.info(marker, "git commit {}", caminho);
 
         } catch (JGitInternalException e) {
             if (e.getMessage().equals(JGitText.get().emptyCommit)) {
@@ -245,6 +230,35 @@ public class RepositorioGit {
             } else {
                 throw e;
             }
+        }
+    }
+
+    public void pull() {
+        try {
+            PullResult result = git.pull()
+                    .setRebase(true)
+                    .setStrategy(THEIRS)
+                    .setProgressMonitor(new LogstashProgressMonitor(log))
+                    .call();
+
+            Map<String, Object> info = new HashMap<>();
+            info.put("fetched.from", result.getFetchedFrom());
+            info.put("fetch.result.updates", result.getFetchResult() == null ? null : result.getFetchResult().getMessages());
+            info.put("fetch.result.updates", result.getFetchResult() == null ? null : result.getFetchResult().getTrackingRefUpdates().stream().map(TrackingRefUpdate::getResult).collect(toList()));
+            info.put("rebase.result", result.getRebaseResult() == null ? null : result.getRebaseResult().getStatus());
+            info.put("merge.result", result.getMergeResult() == null ? null : result.getMergeResult().getMergeStatus());
+
+            Marker marker = append("git.state", git.getRepository().getRepositoryState())
+                    .and(append("pull", info));
+
+            log.info(marker, "git pull em {}", git.getRepository().getBranch());
+
+            if (!result.isSuccessful()) {
+                throw new IllegalStateException("Não foi possível completar o git pull");
+            }
+
+        } catch (IOException | GitAPIException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -267,16 +281,20 @@ public class RepositorioGit {
                         m.put("updates", result.getRemoteUpdates().stream().map(u -> u.getStatus().toString()).collect(toList()));
                         info.add(m);
                     });
+
         } catch (GitAPIException e) {
             log.error(append("branch", branch), "git push falhou", e);
         }
 
-        log.info(append("push", info), "git push em {}", branch);
+        Marker marker = append("push", info)
+                .and(append("git.state", git.getRepository().getRepositoryState()));
+
+        log.info(marker, "git push em {}", branch);
     }
 
     @SneakyThrows
     public void remove(Path caminho) {
         git.rm().addFilepattern(caminho.toString()).call();
-        log.debug("git rm {}", caminho);
+        log.debug(append("git.state", git.getRepository().getRepositoryState()), "git rm {}", caminho);
     }
 }
