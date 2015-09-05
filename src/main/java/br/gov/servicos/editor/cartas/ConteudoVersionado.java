@@ -111,14 +111,10 @@ public abstract class ConteudoVersionado<T> {
 
     @CacheEvict
     public String getConteudoRaw() throws FileNotFoundException {
-        repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
+        return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
             repositorio.pull();
-            return null;
-        });
-
-        return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
-                () -> leitorDeArquivos.ler(getCaminhoAbsoluto().toFile())
-        ).orElseThrow(
+            return leitorDeArquivos.ler(getCaminhoAbsoluto().toFile());
+        }).orElseThrow(
                 () -> new FileNotFoundException("Não foi possível encontrar o serviço referente ao arquivo '" + getId() + "'")
         );
     }
