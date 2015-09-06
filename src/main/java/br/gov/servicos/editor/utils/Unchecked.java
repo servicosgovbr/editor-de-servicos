@@ -9,7 +9,7 @@ public abstract class Unchecked {
      */
     public interface Function<T, R> {
         @SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef"})
-        static <T, R> java.util.function.Function<T, R> unchecked(Unchecked.Function<T, R> delegate) {
+        static <T, R> java.util.function.Function<T, R> uncheckedFunction(Unchecked.Function<T, R> delegate) {
             return new java.util.function.Function<T, R>() {
                 @Override
                 @SneakyThrows
@@ -27,7 +27,7 @@ public abstract class Unchecked {
      */
     public interface Supplier<T> {
         @SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef"})
-        static <T> java.util.function.Supplier<T> unchecked(Unchecked.Supplier<T> delegate) {
+        static <T> java.util.function.Supplier<T> uncheckedSupplier(Unchecked.Supplier<T> delegate) {
             return new java.util.function.Supplier<T>() {
                 @Override
                 @SneakyThrows
@@ -38,5 +38,23 @@ public abstract class Unchecked {
         }
 
         T get() throws Exception;
+    }
+
+    /**
+     * Retorna uma versão @SneakyThrows do supplier passado
+     */
+    public interface Consumer<T> {
+        @SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef"})
+        static <T> java.util.function.Consumer<T> uncheckedConsumer(Unchecked.Consumer<T> delegate) {
+            return new java.util.function.Consumer<T>() {
+                @Override
+                @SneakyThrows
+                public void accept(T t) {
+                    delegate.accept(t);
+                }
+            };
+        }
+
+        void accept(T t) throws Exception;
     }
 }

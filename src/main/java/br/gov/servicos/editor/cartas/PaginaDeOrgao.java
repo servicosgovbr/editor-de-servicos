@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
-import static br.gov.servicos.editor.utils.Unchecked.Supplier.unchecked;
+import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static com.google.common.io.Files.readFirstLine;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.lib.Constants.MASTER;
@@ -49,10 +49,10 @@ public class PaginaDeOrgao extends ConteudoVersionado<PaginaDeOrgao.Orgao> {
         File arquivo = getCaminhoAbsoluto().toFile();
         try {
             return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
-                    unchecked(() -> new Orgao().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
+                    uncheckedSupplier(() -> new Orgao().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
         } catch (Exception e) {
             return getRepositorio().comRepositorioAbertoNoBranch(R_HEADS + MASTER,
-                    unchecked(() -> new Orgao().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
+                    uncheckedSupplier(() -> new Orgao().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
         }
     }
 

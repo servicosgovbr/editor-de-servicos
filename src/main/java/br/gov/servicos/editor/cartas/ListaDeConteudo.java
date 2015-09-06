@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
-import static br.gov.servicos.editor.utils.Unchecked.Function.unchecked;
+import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
@@ -93,7 +93,7 @@ public class ListaDeConteudo {
 
         return Stream.of(arquivos)
                 .map(f -> f.getName().replaceAll("\\." + ext + '$', ""))
-                .map(unchecked(id -> formatter.parse(id, getDefault())));
+                .map(uncheckedFunction(id -> formatter.parse(id, getDefault())));
     }
 
 }
