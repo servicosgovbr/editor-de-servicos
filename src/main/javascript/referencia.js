@@ -76,11 +76,13 @@ module.exports = {
     method: 'GET',
     url: '/editar/api/vcge'
   }).then(function (vcge) {
-    return _.sortBy(_.compact(_.map(vcge, function (v, k) {
+    return _.sortBy(_.filter(_.compact(_.map(vcge, function (v, k) {
       if (v.prefLabel) {
         return v.prefLabel[0];
       }
     })), function (area) {
+      return area.indexOf('Outros em') >= 0;
+    }), function (area) {
       return _.deburr(area);
     });
   }, erro)),
