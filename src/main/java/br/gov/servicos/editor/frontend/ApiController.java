@@ -9,13 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -56,7 +53,7 @@ class ApiController {
     @RequestMapping("/orgao")
     @ResponseBody
     String orgao(@RequestParam("urlOrgao") String urlOrgao) throws IOException {
-        return siorg.slugDoOrgao(urlOrgao).orElse("");
+        return siorg.nomeDoOrgao(urlOrgao).orElse("");
     }
 
 }

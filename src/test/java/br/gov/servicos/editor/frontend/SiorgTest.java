@@ -26,7 +26,7 @@ public class SiorgTest {
 
     @Before
     public void setUp() throws Exception {
-        siorg = new Siorg(restTemplate, new Slugify());
+        siorg = new Siorg(restTemplate);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SiorgTest {
 
         verifyNoMoreInteractions(restTemplate);
 
-        assertThat(siorg.slugDoOrgao(urlOrgao), is(empty()));
+        assertThat(siorg.nomeDoOrgao(urlOrgao), is(empty()));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class SiorgTest {
         given(restTemplate.getForEntity(urlOrgao, Siorg.Orgao.class))
                 .willThrow(new RuntimeException("Connection refused"));
 
-        assertThat(siorg.slugDoOrgao(urlOrgao), is(empty()));
+        assertThat(siorg.nomeDoOrgao(urlOrgao), is(empty()));
     }
 
     @Test
@@ -55,17 +55,17 @@ public class SiorgTest {
         given(restTemplate.getForEntity(urlOrgao, Siorg.Orgao.class))
                 .willReturn(new ResponseEntity<>(new Siorg.Orgao().withServico(new Siorg.Servico().withCodigoErro(102).withMensagem("Unidade não existe")).withUnidade(null), HttpStatus.OK));
 
-        assertThat(siorg.slugDoOrgao(urlOrgao), is(empty()));
+        assertThat(siorg.nomeDoOrgao(urlOrgao), is(empty()));
     }
 
     @Test
-    public void retornaSlugDoOrgao() throws Exception {
+    public void retornaNomeESiglaDoOrgao() throws Exception {
         String urlOrgao = "http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/1934";
 
         given(restTemplate.getForEntity(urlOrgao, Siorg.Orgao.class))
                 .willReturn(new ResponseEntity<>(new Siorg.Orgao().withServico(new Siorg.Servico().withCodigoErro(0)).withUnidade(new Siorg.Unidade().withNome("Secretaria do Secretariado Secretarial").withSigla("SSS")), HttpStatus.OK));
 
-        assertThat(siorg.slugDoOrgao(urlOrgao).get(), is("secretaria-do-secretariado-secretarial-sss"));
+        assertThat(siorg.nomeDoOrgao(urlOrgao).get(), is("Secretaria do Secretariado Secretarial (SSS)"));
     }
 
 }

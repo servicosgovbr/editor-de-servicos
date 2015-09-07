@@ -26,16 +26,14 @@ public class Siorg {
     public static final Predicate<String> URL_PREDICATE = Pattern.compile("http://estruturaorganizacional\\.dados\\.gov\\.br/doc/unidade-organizacional/\\d+").asPredicate();
 
     private RestTemplate restTemplate;
-    private Slugify slugify;
 
     @Autowired
-    public Siorg(RestTemplate restTemplate, Slugify slugify) {
+    public Siorg(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.slugify = slugify;
     }
 
-    @Cacheable(value = "slugsSiorg", unless = "#result.isPresent()")
-    public Optional<String> slugDoOrgao(String urlOrgao) {
+    @Cacheable(value = "orgaoSiorg", unless = "#result.isPresent()")
+    public Optional<String> nomeDoOrgao(String urlOrgao) {
         if (URL_PREDICATE.negate().test(urlOrgao)) {
             log.warn("URL {} não é uma URL para órgão no Siorg", urlOrgao);
             return empty();
@@ -50,7 +48,7 @@ public class Siorg {
                 return empty();
             }
 
-            return ofNullable(slugify.slugify(body.getUnidade().getNome() + " - " + body.getUnidade().getSigla()));
+            return ofNullable(String.format("%s (%s)", body.getUnidade().getNome(), body.getUnidade().getSigla()));
 
         } catch (Exception e) {
             log.warn("Erro ao acessar Siorg", e);

@@ -7,8 +7,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Optional;
-
 import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static org.hamcrest.Matchers.lessThan;
@@ -60,8 +58,8 @@ public class ApiControllerTest {
 
     @Test
     public void buscaOrgaosDisponivel() throws Exception {
-        when(siorg.slugDoOrgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404")).thenReturn(of(""));
+        when(siorg.nomeDoOrgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404")).thenReturn(of(""));
         controller.orgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404");
-        verify(siorg).slugDoOrgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404");
+        verify(siorg).nomeDoOrgao("http://estruturaorganizacional.dados.gov.br/doc/unidade-organizacional/404");
     }
 }
