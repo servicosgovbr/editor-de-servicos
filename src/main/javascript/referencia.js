@@ -81,7 +81,7 @@ module.exports = {
         return v.prefLabel[0];
       }
     })), function (area) {
-      return area.indexOf('Outros em') >= 0;
+      return area.indexOf('Outros em') < 0;
     }), function (area) {
       return _.deburr(area);
     });
