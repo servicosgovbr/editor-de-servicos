@@ -61,7 +61,8 @@ public class Orgaos implements InitializingBean {
         return estruturaOrganizacional.getUnidades()
                 .stream()
                 .filter(new FiltroDeOrgaos(termo))
-                .map(u -> new Orgao().withNome(u.getNome()).withId(u.getCodigoUnidade()))
+                .map(u -> new Orgao().withNome(String.format("%s (%s)", u.getNome(), u.getSigla()))
+                        .withId(u.getCodigoUnidade()))
                 .sorted((l, r) -> l.getId().compareTo(r.getId()))
                 .collect(toList());
     }
