@@ -78,8 +78,6 @@ module.exports = {
             m.endComputation();
           });
         }
-
-        el.select2('val', ctrl.prop());
       }
     }));
   }

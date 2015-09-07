@@ -1,6 +1,6 @@
 'use strict';
 
-var slugify = require('slugify');
+var erro = require('utils/erro-ajax');
 
 module.exports = {
 
@@ -29,10 +29,9 @@ module.exports = {
             },
             processResults: function (data, page) {
               var result = _.map(data, function (o) {
-                var nome = o.nome + ' (' + o.id + ')';
                 return {
-                  id: slugify(nome),
-                  text: nome
+                  id: o.id,
+                  text: o.nome
                 };
               });
               return {
@@ -44,7 +43,20 @@ module.exports = {
           prop: ctrl.servico().orgao,
           width: '100%',
           minimumResultsForSearch: 1,
-          minimumInputLength: 3
+          minimumInputLength: 3,
+          initSelection: function (element, callback) {
+              m.request({
+                  method: 'GET',
+                  url: '/editar/api/orgao',
+                  data: { urlOrgao: ctrl.servico().orgao() },
+                  deserialize: function (data) {
+                    return data;
+                  }
+              }).then(function(orgao) {
+                  callback({id: ctrl.servico().orgao(), text: orgao});
+              }, erro);
+
+          }
         })
       ])
     ]);
