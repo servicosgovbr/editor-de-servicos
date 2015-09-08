@@ -45,16 +45,21 @@ module.exports = {
           minimumResultsForSearch: 1,
           minimumInputLength: 3,
           initSelection: function (element, callback) {
-              m.request({
-                  method: 'GET',
-                  url: '/editar/api/orgao',
-                  data: { urlOrgao: ctrl.servico().orgao() },
-                  deserialize: function (data) {
-                    return data;
-                  }
-              }).then(function(orgao) {
-                  callback({id: ctrl.servico().orgao(), text: orgao});
-              }, erro);
+            m.request({
+              method: 'GET',
+              url: '/editar/api/orgao',
+              data: {
+                urlOrgao: ctrl.servico().orgao()
+              },
+              deserialize: function (data) {
+                return data;
+              }
+            }).then(function (orgao) {
+              callback({
+                id: ctrl.servico().orgao(),
+                text: orgao
+              });
+            }, erro);
 
           }
         })
