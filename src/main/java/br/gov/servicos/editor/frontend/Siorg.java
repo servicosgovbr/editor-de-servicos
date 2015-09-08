@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.frontend;
 
-import com.github.slugify.Slugify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

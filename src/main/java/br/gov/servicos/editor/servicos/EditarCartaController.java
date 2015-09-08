@@ -45,7 +45,7 @@ class EditarCartaController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/servico/v3/novo", method = GET, produces = "application/xml")
-    String editarNovo()  {
+    String editarNovo() {
         return "<servico/>";
     }
 }
