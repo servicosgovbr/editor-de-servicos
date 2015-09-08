@@ -63,7 +63,7 @@ public class Orgaos implements InitializingBean {
                 .filter(new FiltroDeOrgaos(termo))
                 .map(u -> new Orgao().withNome(String.format("%s (%s)", u.getNome(), u.getSigla()))
                         .withId(u.getCodigoUnidade()))
-                .sorted((l, r) -> l.getId().compareTo(r.getId()))
+                .sorted((l, r) -> l.getNome().compareTo(r.getNome()))
                 .collect(toList());
     }
 
