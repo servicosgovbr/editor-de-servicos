@@ -10,11 +10,13 @@ module.exports = {
     var novo = args.novo;
     var servico = ctrl.servico();
 
-    var componenteNome = novo ? m('input[type=text]', {
+    var componenteNome = novo ? m('div.input-container', {
+      class: servico.nome.erro()
+    }, m('input[type=text]', {
       onchange: m.withAttr('value', servico.nome),
       value: servico.nome(),
       autofocus: 'autofocus'
-    }) : m('span', servico.nome());
+    })) : m('span', servico.nome());
 
     return m('fieldset#nome', [
       m('h2', 'dados básicos'),

@@ -20,6 +20,9 @@ module.exports = {
         alertify.success('Rascunho salvo com sucesso!');
         m.redraw();
         return resp;
+      }, this), _.bind(function () {
+        this.salvando(false);
+        m.redraw();
       }, this));
     };
 

@@ -16,13 +16,17 @@ module.exports = {
     this.servico = carregarServico(m.route.param('id'), this.cabecalho);
 
     this.salvar = function () {
-      return salvarServico(this.servico, this.cabecalho.metadados)
-        .then(_.bind(this.cabecalho.limparErro, this.cabecalho))
-        .then(function () {
-          modificado(false);
-        }).then(function () {
-          m.route('/editar/servico/' + slugify(this.servico().nome()));
-        }.bind(this));
+      if (validacoes.valida(this.servico().nome)) {
+        return salvarServico(this.servico, this.cabecalho.metadados)
+          .then(_.bind(this.cabecalho.limparErro, this.cabecalho))
+          .then(function () {
+            modificado(false);
+          }).then(function () {
+            m.route('/editar/servico/' + slugify(this.servico().nome()));
+          }.bind(this));
+      } else {
+        return m.deferred().reject(this.servico().nome.erro()).promise;
+      }
     };
 
     this.publicar = function () {
