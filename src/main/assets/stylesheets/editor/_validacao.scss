@@ -28,6 +28,7 @@
 
   &:before {
     content: $mensagem;
+    text-transform: none;
     position: absolute;
     left: 102%;
     top: $top1;
@@ -68,6 +69,7 @@
   
   &:before {
     content: $mensagem;
+    text-transform: none;
     position: absolute;
     right: 7%;
     top: -46px;
