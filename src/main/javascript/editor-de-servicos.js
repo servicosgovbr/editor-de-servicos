@@ -22,7 +22,11 @@ module.exports = {
           .then(function () {
             modificado(false);
           }).then(function () {
-            m.route('/editar/servico/' + slugify(this.servico().nome()));
+            var oldId = m.route.param('id');
+            var newId = slugify(this.servico().nome());
+            if (!_.isEqual(oldId, newId)) {
+              m.route('/editar/servico/' + newId);
+            }
           }.bind(this));
       } else {
         return m.deferred().reject(this.servico().nome.erro()).promise;
