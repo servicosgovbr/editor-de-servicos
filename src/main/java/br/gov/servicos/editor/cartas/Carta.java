@@ -1,7 +1,5 @@
 package br.gov.servicos.editor.cartas;
 
-import br.gov.servicos.editor.servicos.Metadados;
-import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
@@ -13,13 +11,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,13 +21,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
-import java.util.Optional;
 
-import static java.lang.String.format;
 import static javax.xml.bind.JAXB.unmarshal;
 import static javax.xml.bind.annotation.XmlAccessType.NONE;
 import static lombok.AccessLevel.PRIVATE;
@@ -42,101 +33,30 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-@CacheConfig(cacheNames = "metadados", keyGenerator = "geradorDeChavesParaCacheDeCommitsRecentes")
-public class Carta {
+public class Carta extends ConteudoVersionado<Carta.Servico> {
 
     @Getter
     String id;
 
-    RepositorioGit repositorio;
-    LeitorDeArquivos leitorDeArquivos;
-    EscritorDeArquivos escritorDeArquivos;
-
     private Carta(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
+        super(repositorio, leitorDeArquivos, escritorDeArquivos);
         this.id = id;
-        this.repositorio = repositorio;
-        this.leitorDeArquivos = leitorDeArquivos;
-        this.escritorDeArquivos = escritorDeArquivos;
     }
 
-    public Path getCaminhoAbsoluto() {
-        return repositorio.getCaminhoAbsoluto().resolve(Paths.get("cartas-servico", "v3", "servicos", id + ".xml")).toAbsolutePath();
-    }
-
-    public String getBranchRef() {
-        return R_HEADS + id;
-    }
-
-    public Path getCaminhoRelativo() {
-        return repositorio.getCaminhoAbsoluto().relativize(getCaminhoAbsoluto());
-    }
-
-    @Cacheable
-    public Metadados getMetadados() {
-        Optional<Revisao> master = repositorio.getRevisaoMaisRecenteDoArquivo(getCaminhoRelativo());
-        Optional<Revisao> branch = repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
-
-        return new Metadados()
-                .withId(id)
-                .withPublicado(master.orElse(null))
-                .withEditado(branch.orElse(null))
-                .withServico(getConteudo());
-    }
-
-    public String getConteudoRaw() throws FileNotFoundException {
-        return repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
-                () -> leitorDeArquivos.ler(getCaminhoAbsoluto().toFile())
-        ).orElseThrow(
-                () -> new FileNotFoundException("Não foi possível encontrar o serviço referente ao arquivo '" + getId() + "'")
-        );
+    @Override
+    public Path getCaminho() {
+        return Paths.get("cartas-servico", "v3", "servicos", id + ".xml");
     }
 
     public Servico getConteudo() {
         File arquivo = getCaminhoAbsoluto().toFile();
         try {
-            return repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
+            return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
                     () -> unmarshal(arquivo, Servico.class));
         } catch (Exception e) {
-            return repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER,
+            return getRepositorio().comRepositorioAbertoNoBranch(R_HEADS + MASTER,
                     () -> unmarshal(arquivo, Servico.class));
         }
-    }
-
-    @CacheEvict
-    public void salvar(User usuario, String conteudo) {
-        repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
-            repositorio.pull();
-
-            try {
-                escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
-
-                repositorio.add(getCaminhoRelativo());
-
-                String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
-                repositorio.commit(getCaminhoRelativo(), mensagem, usuario);
-
-            } finally {
-                repositorio.push(getBranchRef());
-            }
-
-            return null;
-        });
-    }
-
-    @CacheEvict
-    public void remover(User usuario) {
-        repositorio.comRepositorioAbertoNoBranch(this.getBranchRef(), () -> {
-            repositorio.pull();
-
-            try {
-                repositorio.remove(getCaminhoRelativo());
-                repositorio.commit(getCaminhoRelativo(), "Remove '" + id + "'", usuario);
-            } finally {
-                repositorio.push(getBranchRef());
-            }
-
-            return null;
-        });
     }
 
     @Component
@@ -192,6 +112,8 @@ public class Carta {
     @XmlAccessorType(NONE)
     @XmlType(name = "Servico", propOrder = {"nome", "orgao"})
     public static class Servico {
+        String tipo = "servico";
+
         @XmlElement(required = true)
         String nome;
 
