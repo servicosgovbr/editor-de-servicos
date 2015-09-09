@@ -78,6 +78,9 @@ module.exports = {
             m.endComputation();
           });
         }
+        if (!ctrl.options.initSelection) {
+          el.select2('val', ctrl.prop());
+        }
       }
     }));
   }
