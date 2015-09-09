@@ -20,10 +20,11 @@ module.exports = {
       }
 
       if (!_.isEmpty(_.trim(this.filtro()))) {
-        var f = new RegExp(_.trim(_.deburr(this.filtro())), 'i');
-        servicos = this.servicos().filter(function (i) {
-          return f.test(i.id);
-        });
+        servicos = new Fuse(servicos, {
+          keys: ['conteudo.nome']
+        }).search(this.filtro());
+
+        return servicos;
       }
 
       return _.sortBy(servicos, 'id');
