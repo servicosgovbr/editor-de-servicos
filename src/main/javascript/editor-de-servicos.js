@@ -35,9 +35,14 @@ module.exports = {
 
     this.publicar = function () {
       this.servico(limparModelo(this.servico()));
+      var servico = this.servico();
       if (validacoes.valida(this.servico())) {
           return this.salvar().then(function() {
-              window.console.log('publica');
+              m.request({
+                  method: 'GET',
+                  url: '',
+                  data: { id: servico.id }
+              });
           });
       } else {
         return false;
