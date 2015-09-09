@@ -1,11 +1,14 @@
 package br.gov.servicos.editor.frontend;
 
+import br.gov.servicos.editor.cartas.ListaDeConteudo;
 import br.gov.servicos.editor.servicos.Orgao;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,12 +27,14 @@ class ApiController {
     VCGE vcge;
     Orgaos orgaos;
     Siorg siorg;
+    ListaDeConteudo listaDeConteudo;
 
     @Autowired
-    public ApiController(VCGE vcge, Orgaos orgaos, Siorg siorg) {
+    public ApiController(VCGE vcge, Orgaos orgaos, Siorg siorg, ListaDeConteudo listaDeConteudo) {
         this.vcge = vcge;
         this.orgaos = orgaos;
         this.siorg = siorg;
+        this.listaDeConteudo = listaDeConteudo;
     }
 
     @RequestMapping("/ping")
@@ -54,6 +59,19 @@ class ApiController {
     @ResponseBody
     String orgao(@RequestParam("urlOrgao") String urlOrgao) throws IOException {
         return siorg.nomeDoOrgao(urlOrgao).orElse("");
+    }
+
+    @RequestMapping("/existe-id-servico/{id}")
+    @ResponseBody
+    boolean existeIdServico(@PathVariable("id") String id) {
+        return listaDeConteudo.existeIdServico(id);
+    }
+
+    @Data
+    @FieldDefaults(level = PRIVATE, makeFinal = true)
+    static class Ping {
+        String login;
+        Long horario;
     }
 
 }

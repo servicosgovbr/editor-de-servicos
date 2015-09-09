@@ -74,9 +74,23 @@ public class ListaDeConteudo {
 
     public Iterable<Metadados<?>> listar() throws FileNotFoundException, java.text.ParseException {
         return Stream.concat(
-                listar("cartas-servico/v3/servicos", "xml", formatterCarta).map(Carta::getMetadados),
-                listar("conteudo/orgaos", "md", formatterOrgao).map(PaginaDeOrgao::getMetadados)
+                listarServicos(),
+                listarOrgaos()
         ).collect(toList());
+    }
+
+    @SneakyThrows
+    public boolean existeIdServico(String id) {
+        return !listarServicos()
+                .noneMatch(m -> m.getId().equals(id));
+    }
+
+    private Stream<Metadados<PaginaDeOrgao.Orgao>> listarOrgaos() throws FileNotFoundException {
+        return listar("conteudo/orgaos", "md", formatterOrgao).map(PaginaDeOrgao::getMetadados);
+    }
+
+    private Stream<Metadados<Carta.Servico>> listarServicos() throws FileNotFoundException {
+        return listar("cartas-servico/v3/servicos", "xml", formatterCarta).map(Carta::getMetadados);
     }
 
     private <T extends ConteudoVersionado> Stream<T> listar(String caminho, String ext, Formatter<T> formatter) throws FileNotFoundException {
