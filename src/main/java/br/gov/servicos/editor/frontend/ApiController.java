@@ -2,7 +2,6 @@ package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
 import br.gov.servicos.editor.servicos.Orgao;
-import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,13 +64,6 @@ class ApiController {
     @ResponseBody
     boolean existeIdServico(@PathVariable("id") String id) {
         return listaDeConteudo.existeIdServico(id);
-    }
-
-    @Data
-    @FieldDefaults(level = PRIVATE, makeFinal = true)
-    static class Ping {
-        String login;
-        Long horario;
     }
 
 }
