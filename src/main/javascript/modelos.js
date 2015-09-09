@@ -7,7 +7,6 @@ var textoCurto = v.maximo(150);
 var textoLongo = v.maximo(500);
 
 var validaIdServico = function (id) {
-  window.console.log('validando id serviço com o servidor: ' + id);
   return existeIdServico(id) ? 'erro-nome-servico-existente' : undefined;
 };
 
