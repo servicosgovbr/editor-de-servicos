@@ -45,6 +45,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("silvia.belarmino@planejamento.gov.br").password(hash).roles(ADMIN).and()
                 .withUser("everson.aguiar@planejamento.gov.br").password(hash).roles(ADMIN).and()
                 .withUser("cvillela@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
+                .withUser("bleite@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                 .withUser("oliviaj@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                 .withUser("srosa@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
                 .withUser("jkirchne@thoughtworks.com").password(hash).roles(PUBLICADOR).and()
