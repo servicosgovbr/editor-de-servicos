@@ -36,9 +36,10 @@ module.exports = {
           }),
 
           m('.input-container', [
-            m('input.inline[type=text]', {
-              value: legislacao,
+            m.component(require('componentes/editor-markdown'), {
+              rows: 3,
               config: focus(ctrl),
+              value: legislacao,
               onchange: function (e) {
                 ctrl.servico().legislacoes()[i] = e.target.value;
               }

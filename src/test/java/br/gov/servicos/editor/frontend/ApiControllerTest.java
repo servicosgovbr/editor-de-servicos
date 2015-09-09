@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
+import br.gov.servicos.editor.cartas.ListaDeConteudo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,11 +30,14 @@ public class ApiControllerTest {
     @Mock
     Siorg siorg;
 
+    @Mock
+    ListaDeConteudo listaDeConteudo;
+
     ApiController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ApiController(vcge, orgaos, siorg);
+        controller = new ApiController(vcge, orgaos, siorg, listaDeConteudo);
     }
 
     @Test

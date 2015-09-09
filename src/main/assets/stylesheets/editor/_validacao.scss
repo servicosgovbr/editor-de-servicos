@@ -133,6 +133,10 @@ div.input-container {
     @include validacao-erro-input('Deve haver no mínimo três', 127px);
   }
 
+  &.erro-nome-servico-existente {
+    @include validacao-erro-input('Esse nome de serviço já está em uso', 127px);
+  }
+
   &.selecione-opcao {
     @include validacao-erro-input('Selecione ao menos uma opção', 159px);
   }

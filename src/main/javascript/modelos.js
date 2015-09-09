@@ -1,9 +1,14 @@
 'use strict';
 
 var v = require('validacoes');
+var existeIdServico = require('existeIdServico');
 
 var textoCurto = v.maximo(150);
 var textoLongo = v.maximo(500);
+
+var validaIdServico = function (id) {
+  return existeIdServico(id) ? 'erro-nome-servico-existente' : undefined;
+};
 
 var id = (function () {
   var counters = {};
@@ -127,7 +132,10 @@ var TempoTotalEstimado = function (config) {
 var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
-  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto);
+
+  var validaIdJaExistente = _.trim(data.nome) ? _.noop : validaIdServico;
+
+  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto, validaIdJaExistente);
   this.sigla = v.prop(data.sigla || '', v.maximo(15));
   this.nomesPopulares = v.prop(data.nomesPopulares || [], v.cada(textoCurto));
   this.descricao = v.prop(data.descricao || '', v.obrigatorio, textoLongo);
