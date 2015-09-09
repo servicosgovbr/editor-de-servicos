@@ -103,13 +103,13 @@ module.exports = {
               m('td.center', s.publicado ? [
                 moment(s.publicado.horario).fromNow(),
                 ', por ',
-                s.publicado.autor
+                s.publicado.autor.split('@')[0]
               ] : '—'),
 
               m('td.center', s.editado ? [
                 moment(s.editado.horario).fromNow(),
                 ', por ',
-                s.editado.autor
+                s.editado.autor.split('@')[0]
               ] : '—'),
 
               m('td.right', [
