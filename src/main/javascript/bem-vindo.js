@@ -19,15 +19,15 @@ module.exports = {
         });
       }
 
-      if (!_.isEmpty(_.trim(this.filtro()))) {
-        servicos = new Fuse(servicos, {
-          keys: ['conteudo.nome']
-        }).search(this.filtro());
-
-        return servicos;
+      if (_.isEmpty(_.trim(this.filtro()))) {
+        return _.sortBy(servicos, 'id');
       }
 
-      return _.sortBy(servicos, 'id');
+      servicos = new Fuse(servicos, {
+        keys: ['conteudo.nome']
+      }).search(this.filtro());
+
+      return servicos;
     };
 
     this.listarConteudos = _.debounce(function () {
