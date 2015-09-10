@@ -7,7 +7,7 @@ var textoCurto = v.maximo(150);
 var textoLongo = v.maximo(500);
 
 var validaIdServico = function (id) {
-  return idUnico(id) ? 'erro-nome-servico-existente' : undefined;
+  return idUnico(id) ? undefined : 'erro-nome-servico-existente';
 };
 
 var id = (function () {

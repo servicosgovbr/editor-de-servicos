@@ -7,5 +7,5 @@ module.exports = function (unsafeId) {
     type: 'GET',
     url: '/editar/api/existe-id-servico/' + slugify(unsafeId),
     async: false
-  }).responseText === 'true';
+  }).responseText !== 'true';
 };

@@ -76,8 +76,7 @@ public class ListaDeConteudo {
 
     @SneakyThrows
     public boolean isIdUnico(String id) {
-        return !listarServicos()
-                .noneMatch(m -> m.getId().equals(id));
+        return listarServicos().noneMatch(m -> m.getId().equals(id));
     }
 
     public Collection<Metadados<?>> listar() throws FileNotFoundException {
