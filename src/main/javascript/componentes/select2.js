@@ -4,6 +4,7 @@ var language = {
   errorLoading: function () {
     return 'Erro ao carregar os resultados. Por favor, tente novamente';
   },
+
   inputTooLong: function (args) {
     var overChars = args.input.length - args.maximum;
 

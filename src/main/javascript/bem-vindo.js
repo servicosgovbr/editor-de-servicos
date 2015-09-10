@@ -9,6 +9,7 @@ module.exports = {
     this.filtrarPublicados = m.prop();
 
     this.servicos = m.prop([]);
+    this.orgao = m.prop('');
 
     this.servicosFiltrados = function () {
       var servicos = this.servicos();
@@ -65,9 +66,65 @@ module.exports = {
             m('input[type=search][placeholder="Filtrar por..."]', {
               oninput: m.withAttr('value', ctrl.filtro)
             }),
-            m('button#novo', m('a', {
-              href: '/editar/servico/novo'
-            }, 'Novo Serviço')),
+
+            m('button#novo',
+              m('a', {
+                href: '/editar/servico/novo'
+              }, [
+                m('i.fa.fa-file-o'),
+                m.trust('&nbsp; Novo Serviço')
+              ])
+            ),
+
+            m('div#orgaos',
+              m.component(require('componentes/select2'), {
+                ajax: {
+                  url: '/editar/api/orgaos',
+                  dataType: 'json',
+                  delay: 250,
+                  data: function (params) {
+                    return {
+                      q: params.term
+                    };
+                  },
+                  processResults: function (data, page) {
+                    var result = _.map(data, function (o) {
+                      return {
+                        id: o.id,
+                        text: o.nome
+                      };
+                    });
+                    return {
+                      results: result
+                    };
+                  },
+                  cache: true
+                },
+                prop: ctrl.orgao,
+                placeholder: 'Filtrar por órgão...',
+                width: '100%',
+                allowClear: true,
+                minimumResultsForSearch: 1,
+                minimumInputLength: 3,
+                initSelection: function (element, callback) {
+                  m.request({
+                    method: 'GET',
+                    url: '/editar/api/orgao',
+                    data: {
+                      urlOrgao: ctrl.orgao()
+                    },
+                    deserialize: function (data) {
+                      return data;
+                    }
+                  }).then(function (orgao) {
+                    callback({
+                      id: ctrl.orgao(),
+                      text: orgao
+                    });
+                  }, erro);
+                }
+              })
+            )
           ]),
 
           m('label', [

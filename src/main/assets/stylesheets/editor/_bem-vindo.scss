@@ -7,11 +7,22 @@
 
   .busca {
     @include span-columns(12);
+
     input[type=search] {
-      @include span-columns(9);
+      @include span-columns(8);
     }
+
     button#novo {
-      @include span-columns(2);
+      @include span-columns(3);
+    }
+
+    div#orgaos {
+      @include span-columns(8);
+
+      .select2-message-container {
+        width: 100%;
+        margin-bottom: 14px;
+      }
     }
   }
 
