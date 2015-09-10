@@ -80,7 +80,7 @@ public class ListaDeConteudo {
     }
 
     @SneakyThrows
-    public boolean existeIdServico(String id) {
+    public boolean isIdUnico(String id) {
         return !listarServicos()
                 .noneMatch(m -> m.getId().equals(id));
     }

@@ -1,13 +1,13 @@
 'use strict';
 
 var v = require('validacoes');
-var existeIdServico = require('existeIdServico');
+var idUnico = require('utils/id-unico');
 
 var textoCurto = v.maximo(150);
 var textoLongo = v.maximo(500);
 
 var validaIdServico = function (id) {
-  return existeIdServico(id) ? 'erro-nome-servico-existente' : undefined;
+  return idUnico(id) ? 'erro-nome-servico-existente' : undefined;
 };
 
 var id = (function () {

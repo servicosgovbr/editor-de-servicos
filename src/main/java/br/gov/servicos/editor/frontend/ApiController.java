@@ -62,8 +62,8 @@ class ApiController {
 
     @RequestMapping("/existe-id-servico/{id}")
     @ResponseBody
-    boolean existeIdServico(@PathVariable("id") String id) {
-        return listaDeConteudo.existeIdServico(id);
+    boolean isIdUnico(@PathVariable("id") String id) {
+        return listaDeConteudo.isIdUnico(id);
     }
 
 }
