@@ -110,13 +110,12 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
-    public void publicar(User usuario) {
+    public void publicar() {
         repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
             repositorio.merge(getBranchRef());
             repositorio.push(R_HEADS + MASTER);
             return null;
         });
-
     }
 
     @CacheEvict

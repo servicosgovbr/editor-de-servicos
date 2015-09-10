@@ -7,7 +7,6 @@ import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -182,11 +181,10 @@ public class CartaTest {
 
     @Test
     public void publicaConteudo() {
-       User usuario = new User("Fulano de Tal", "", emptyList());
        given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/master"), captor.capture()))
                .willReturn(null);
 
-       carta.publicar(usuario);
+       carta.publicar();
 
        captor.getValue().get();
 

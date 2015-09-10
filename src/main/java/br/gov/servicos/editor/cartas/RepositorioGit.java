@@ -13,9 +13,7 @@ import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RefSpec;
@@ -46,11 +44,10 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
+import static net.logstash.logback.marker.Markers.appendArray;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
-import static org.eclipse.jgit.api.MergeResult.MergeStatus.CONFLICTING;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
-import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Slf4j
 @Service
@@ -304,14 +301,18 @@ public class RepositorioGit {
         MergeResult result = git.merge().include(ref).call();
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
-                .and(append("git.branch", git.getRepository().getBranch()));
+                .and(append("git.branch", git.getRepository().getBranch()))
+                .and(append("merge.status", result.getMergeStatus().toString()))
+                .and(append("merge.base", result.getBase().getName()))
+                .and(append("merge.new-head", result.getNewHead().getName()))
+                .and(appendArray("merge.commits", Stream.of(result.getMergedCommits()).map(AnyObjectId::getName).toArray()))
+                .and(appendArray("merge.conflicts", result.getCheckoutConflicts().toArray()));
 
-        log.info(marker, "git merge to {}", git.getRepository().getBranch());
+        log.info(marker, "git merge {}", git.getRepository().getBranch());
 
-        if (CONFLICTING.equals(result.getMergeStatus())) {
-            throw new IllegalStateException("Não foi possível completar o git merge");
+        if (!result.getMergeStatus().isSuccessful()) {
+            throw new IllegalStateException("Não foi possível completar o git merge: " + result.getMergeStatus());
         }
-
     }
 
     @SneakyThrows
