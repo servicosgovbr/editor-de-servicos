@@ -324,14 +324,14 @@ public class RepositorioGit {
     }
 
     public Collection<Ref> branches() {
-        return comRepositorioAberto(g -> {
+        return comRepositorioAbertoParaLeitura(g -> {
             try {
                 log.info("listar todos os branches");
                 return g.branchList().call();
             } catch (GitAPIException e) {
                 log.error("listar branches falhou", e);
             }
-            return Collections.emptyList();
+            return Collections.<Ref>emptyList();
         });
     }
 }
