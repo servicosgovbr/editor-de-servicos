@@ -22,6 +22,11 @@ describe('referencia >', function () {
         expect(referencia.descricoesDeCanaisDePrestacao[tipo.id]).toBeDefined();
       });
     });
+  });
 
+  describe('tipos de páginas >', function () {
+    it('devem ter sido definidos', function () {
+      expect(referencia.tiposDePagina).not.toBeUndefined();
+    });
   });
 });

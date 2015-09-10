@@ -17,7 +17,11 @@ class IndexController {
         return new RedirectView("/editar/");
     }
 
-    @RequestMapping({"/editar", "/editar/servico/**"})
+    @RequestMapping({
+            "/editar",
+            "/editar/servico/**",
+            "/editar/orgao/**",
+            "/editar/pagina/**" })
     ModelAndView index() {
         return new ModelAndView("index");
     }

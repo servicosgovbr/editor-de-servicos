@@ -150,12 +150,20 @@ var Servico = function (config) {
   this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1));
 };
 
+var Pagina = function (config) {
+  var data = (config || {});
+  this.id = id('pagina');
+  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto);
+  this.conteudo = v.prop(data.conteudo || '', textoLongo);
+};
+
 module.exports = {
   id: id,
   Cabecalho: Cabecalho,
   Caso: Caso,
   CanaisDePrestacao: CanaisDePrestacao,
   CanalDePrestacao: CanalDePrestacao,
+  Pagina: Pagina,
   Documentos: Documentos,
   Custo: Custo,
   Documento: Documento,

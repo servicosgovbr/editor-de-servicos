@@ -87,4 +87,14 @@ module.exports = {
     });
   }, erro)),
 
+  tiposDePagina: [
+    'Área de Conhecimento',
+    'Página Especial',
+    'Órgão',
+  ].map(function (t) {
+        return {
+          id: slugify(t),
+          text: t
+        };
+      }),
 };
