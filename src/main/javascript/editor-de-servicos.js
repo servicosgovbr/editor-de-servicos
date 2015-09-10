@@ -5,7 +5,7 @@ var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
 var validacoes = require('validacoes');
-//var limparModelo = require('limpar-modelo');
+var limparModelo = require('limpar-modelo');
 
 var modificado = m.prop(false);
 
@@ -34,7 +34,7 @@ module.exports = {
     };
 
     this.publicar = function () {
-      //this.servico(limparModelo(this.servico()));
+      this.servico(limparModelo(this.servico()));
       var id = this.servico().id;
       if (validacoes.valida(this.servico())) {
           return this.salvar().then(function() {
