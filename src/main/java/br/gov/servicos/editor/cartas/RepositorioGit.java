@@ -8,7 +8,6 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.marker.LogstashMarker;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -29,14 +28,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.utils.Unchecked.Consumer.uncheckedConsumer;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
@@ -46,7 +47,6 @@ import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
-import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -317,21 +317,30 @@ public class RepositorioGit {
     public void remove(Path caminho) {
         git.rm().addFilepattern(caminho.toString()).call();
 
-        LogstashMarker marker = append("git.state", git.getRepository().getRepositoryState().toString())
+        Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("git.branch", git.getRepository().getBranch()));
 
         log.debug(marker, "git rm {}", caminho);
     }
 
-    public Collection<Ref> branches() {
-        return comRepositorioAbertoParaLeitura(g -> {
+    public Stream<String> branches() {
+        return comRepositorioAbertoParaLeitura(git -> {
+            LogstashMarker marker = append("git.state", git.getRepository().getRepositoryState().toString());
+
             try {
-                log.info("listar todos os branches");
-                return g.branchList().call();
-            } catch (GitAPIException e) {
-                log.error("listar branches falhou", e);
+                marker = marker.and(append("git.branch", git.getRepository().getBranch()));
+
+                List<Ref> branches = git.branchList().call();
+                log.info(marker, "git branch list: {} branches", branches.size());
+
+                return branches.stream()
+                        .map(Ref::getName)
+                        .map(n -> n.replaceAll(R_HEADS, ""));
+
+            } catch (IOException | GitAPIException e) {
+                log.error(marker, "Erro ao listar branches", e);
+                return Stream.empty();
             }
-            return Collections.<Ref>emptyList();
         });
     }
 }

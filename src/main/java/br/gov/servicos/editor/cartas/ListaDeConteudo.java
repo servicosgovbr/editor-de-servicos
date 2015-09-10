@@ -5,8 +5,6 @@ import com.google.common.cache.Cache;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jgit.lib.Constants;
-import org.eclipse.jgit.lib.Ref;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -17,18 +15,15 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.Locale.getDefault;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static lombok.AccessLevel.PRIVATE;
 import static org.eclipse.jgit.lib.Constants.MASTER;
-import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @Component
@@ -102,9 +97,7 @@ public class ListaDeConteudo {
     }
 
     private Stream<Metadados<Carta.Servico>> listarServicosDeBranches() {
-        return repositorioGit.branches().stream()
-                .map(Ref::getName)
-                .map(n -> n.replaceAll(R_HEADS, ""))
+        return repositorioGit.branches()
                 .filter(n -> !n.equals(MASTER))
                 .map(uncheckedFunction(n -> formatterCarta.parse(n, getDefault())))
                 .map(Carta::getMetadados);
