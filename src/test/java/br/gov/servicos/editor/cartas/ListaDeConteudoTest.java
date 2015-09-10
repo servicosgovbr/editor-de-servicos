@@ -78,7 +78,7 @@ public class ListaDeConteudoTest {
     public void deveListarDiretorioDeCartas() throws Exception {
         Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
 
-        given(repositorioGit.branches()).willReturn(Stream.empty());
+        given(repositorioGit.branches()).will(i -> Stream.empty());
         given(paginaDeOrgao.getMetadados()).willReturn(new Metadados<>());
         given(carta.getMetadados()).willReturn(m1);
 
@@ -103,7 +103,7 @@ public class ListaDeConteudoTest {
         Metadados<PaginaDeOrgao.Orgao> m2 = new Metadados<PaginaDeOrgao.Orgao>().withId("outro-id-qualquer");
 
         given(importador.isImportadoComSucesso()).willReturn(true);
-        given(repositorioGit.branches()).willReturn(Stream.empty());
+        given(repositorioGit.branches()).will(i -> Stream.empty());
         given(carta.getMetadados()).willReturn(m1);
         given(paginaDeOrgao.getMetadados()).willReturn(m2);
 
