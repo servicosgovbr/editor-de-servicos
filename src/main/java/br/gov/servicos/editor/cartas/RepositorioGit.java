@@ -339,7 +339,7 @@ public class RepositorioGit {
 
             } catch (IOException | GitAPIException e) {
                 log.error(marker, "Erro ao listar branches", e);
-                return Stream.empty();
+                return Stream.<String>empty();
             }
         });
     }

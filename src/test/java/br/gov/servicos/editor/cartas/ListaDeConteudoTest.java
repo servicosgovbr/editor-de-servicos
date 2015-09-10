@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static java.util.Locale.getDefault;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.verify;
 @SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
 @RunWith(MockitoJUnitRunner.class)
 public class ListaDeConteudoTest {
+
     @Mock
     RepositorioGit repositorioGit;
 
@@ -76,9 +78,9 @@ public class ListaDeConteudoTest {
     public void deveListarDiretorioDeCartas() throws Exception {
         Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
 
+        given(repositorioGit.branches()).willReturn(Stream.empty());
         given(paginaDeOrgao.getMetadados()).willReturn(new Metadados<>());
         given(carta.getMetadados()).willReturn(m1);
-
 
         Collection<Metadados<?>> metadados = listaDeConteudo.listar();
 
@@ -101,7 +103,7 @@ public class ListaDeConteudoTest {
         Metadados<PaginaDeOrgao.Orgao> m2 = new Metadados<PaginaDeOrgao.Orgao>().withId("outro-id-qualquer");
 
         given(importador.isImportadoComSucesso()).willReturn(true);
-
+        given(repositorioGit.branches()).willReturn(Stream.empty());
         given(carta.getMetadados()).willReturn(m1);
         given(paginaDeOrgao.getMetadados()).willReturn(m2);
 
