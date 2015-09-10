@@ -28,7 +28,7 @@ describe('editor', function () {
   });
 
   it('deve salvar um servico', function () {
-    xhr('GET', '/editar/api/existe-id-servico/ola-mundo').respondWith('false');
+    xhr('GET', '/editar/api/id-unico/ola-mundo').respondWith('true');
     xhr('GET', '/editar/api/servico/v3/ola-mundo').respondWith('<servico/>');
     var response = xhr('POST', '/editar/v3/servico/ola-mundo').respondWith('<servico/>');
 
