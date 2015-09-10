@@ -5,6 +5,8 @@ import com.google.common.cache.Cache;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.Ref;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -21,7 +25,10 @@ import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static lombok.AccessLevel.PRIVATE;
+import static org.eclipse.jgit.lib.Constants.MASTER;
+import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @Slf4j
 @Component
@@ -72,17 +79,17 @@ public class ListaDeConteudo {
         }
     }
 
-    public Iterable<Metadados<?>> listar() throws FileNotFoundException, java.text.ParseException {
-        return Stream.concat(
-                listarServicos(),
-                listarOrgaos()
-        ).collect(toList());
-    }
-
     @SneakyThrows
     public boolean existeIdServico(String id) {
         return !listarServicos()
                 .noneMatch(m -> m.getId().equals(id));
+    }
+
+    public Collection<Metadados<?>> listar() throws FileNotFoundException {
+        return Stream.concat(
+                listarServicos(),
+                listarOrgaos()
+        ).collect(toSet());
     }
 
     private Stream<Metadados<PaginaDeOrgao.Orgao>> listarOrgaos() throws FileNotFoundException {
@@ -90,7 +97,17 @@ public class ListaDeConteudo {
     }
 
     private Stream<Metadados<Carta.Servico>> listarServicos() throws FileNotFoundException {
-        return listar("cartas-servico/v3/servicos", "xml", formatterCarta).map(Carta::getMetadados);
+        return Stream.concat(listar("cartas-servico/v3/servicos", "xml", formatterCarta)
+                .map(Carta::getMetadados), listarServicosDeBranches());
+    }
+
+    private Stream<Metadados<Carta.Servico>> listarServicosDeBranches() {
+        return repositorioGit.branches().stream()
+                .map(Ref::getName)
+                .map(n -> n.replaceAll(R_HEADS, ""))
+                .filter(n -> !n.equals(MASTER))
+                .map(uncheckedFunction(n -> formatterCarta.parse(n, getDefault())))
+                .map(Carta::getMetadados);
     }
 
     private <T extends ConteudoVersionado> Stream<T> listar(String caminho, String ext, Formatter<T> formatter) throws FileNotFoundException {

@@ -16,10 +16,11 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static java.util.Locale.getDefault;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -74,11 +75,14 @@ public class ListaDeConteudoTest {
     @Test
     public void deveListarDiretorioDeCartas() throws Exception {
         Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
+
+        given(paginaDeOrgao.getMetadados()).willReturn(new Metadados<>());
         given(carta.getMetadados()).willReturn(m1);
 
-        Iterable<Metadados<?>> metadados = listaDeConteudo.listar();
 
-        assertThat(metadados.iterator().next(), is(m1));
+        Collection<Metadados<?>> metadados = listaDeConteudo.listar();
+
+        assertThat(metadados, hasItem(m1));
     }
 
     @Test(expected = FileNotFoundException.class)
