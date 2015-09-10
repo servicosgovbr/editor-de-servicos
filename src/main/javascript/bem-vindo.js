@@ -20,6 +20,12 @@ module.exports = {
         });
       }
 
+      if (!!this.orgao()) {
+        servicos = this.servicos().filter(_.bind(function (s) {
+          return this.orgao() === (s.conteudo && s.conteudo.orgao && s.conteudo.orgao.id);
+        }, this));
+      }
+
       if (_.isEmpty(_.trim(this.filtro()))) {
         return _.sortBy(servicos, 'id');
       }

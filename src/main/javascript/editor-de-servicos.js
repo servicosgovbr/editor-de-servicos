@@ -37,12 +37,12 @@ module.exports = {
       this.servico(limparModelo(this.servico()));
       var id = this.servico().id;
       if (validacoes.valida(this.servico())) {
-          return this.salvar().then(function() {
-              m.request({
-                  method: 'PUT',
-                  url: '/editar/api/servico/' + id
-              });
+        return this.salvar().then(function () {
+          m.request({
+            method: 'PUT',
+            url: '/editar/api/servico/' + id
           });
+        });
       } else {
         return false;
       }

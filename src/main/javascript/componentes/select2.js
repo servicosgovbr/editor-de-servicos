@@ -69,7 +69,7 @@ module.exports = {
           }, ctrl.options));
 
           select2.on('change', function (e) {
-            if (!el.val() || ctrl.prop() === el.val()) {
+            if (!ctrl.options.allowClear && (!el.val() || ctrl.prop() === el.val())) {
               e.stopPropagation();
               return false;
             }
