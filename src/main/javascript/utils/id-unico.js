@@ -5,7 +5,7 @@ var slugify = require('slugify');
 module.exports = function (unsafeId) {
   return jQuery.ajax({
     type: 'GET',
-    url: '/editar/api/existe-id-servico/' + slugify(unsafeId),
+    url: '/editar/api/id-unico/' + slugify(unsafeId),
     async: false
-  }).responseText !== 'true';
+  }).responseText === 'true';
 };

@@ -60,7 +60,7 @@ class ApiController {
         return siorg.nomeDoOrgao(urlOrgao).orElse("");
     }
 
-    @RequestMapping("/existe-id-servico/{id}")
+    @RequestMapping("/id-unico/{id}")
     @ResponseBody
     boolean isIdUnico(@PathVariable("id") String id) {
         return listaDeConteudo.isIdUnico(id);
