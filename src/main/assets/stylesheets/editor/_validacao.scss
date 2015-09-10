@@ -130,11 +130,11 @@ div.input-container {
   }
 
   &.erro-min-3 {
-    @include validacao-erro-input('Deve haver no mínimo três', 127px);
+    @include validacao-erro-input('Deve haver no mínimo três itens', 127px);
   }
 
   &.erro-nome-servico-existente {
-    @include validacao-erro-input('Esse nome de serviço já está em uso', 127px);
+    @include validacao-erro-input('Já existe um serviço com este nome', 127px);
   }
 
   &.selecione-opcao {
@@ -154,7 +154,7 @@ h3.input-container {
   position: relative;
 
   &.erro-min-3 {
-    @include validacao-erro-inline('Deve haver no mínimo três', -3px, 5px);
+    @include validacao-erro-inline('Deve haver no mínimo três itens', -3px, 5px);
   }
   
   &.erro-min-1 {
