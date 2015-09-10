@@ -9,6 +9,7 @@
       "XMLSerializer",
       "DOMParser",
       "jQuery",
+      "Fuse",
       "describe",
       "it",
       "spyOn",
