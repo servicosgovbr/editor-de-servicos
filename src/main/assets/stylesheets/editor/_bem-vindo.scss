@@ -35,6 +35,39 @@
         text-align: right;
         padding-right: 20px;
       }
+
+      .remover, .visualizar, .publicar {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        margin: 8px;
+        padding: 4px;
+        text-align: center;
+        border-radius: 4px;
+
+        &:hover {
+          color: $branco;
+        }
+      }
+
+      .remover {
+        color: $vermelho;
+        &:hover {
+          background-color: $vermelho;
+        }
+      }
+
+      .visualizar {
+        &:hover {
+          background-color: $azul-regular;
+        }
+      }
+
+      .publicar {
+        &:hover {
+          background-color: $verde;
+        }
+      }
     }
 
     tr:nth-child(even) {

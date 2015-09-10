@@ -38,6 +38,8 @@ module.exports = {
         .then(this.servicos, erro);
     }.bind(this), 500);
 
+    this.publicarConteudo = _.noop;
+
     this.excluirConteudo = function (id) {
       m.request({
         method: 'DELETE',
@@ -113,16 +115,22 @@ module.exports = {
               ] : '—'),
 
               m('td.right', [
-                m('a', {
-                  href: '/editar/servico/' + slugify(s.id)
-                }, m('button', [
-                  m('span.fa.fa-pencil')
-                ])),
-                  m('button', {
+
+                s.temAlteracoesNaoPublicadas ? m('button.publicar', {
+                  onclick: _.bind(ctrl.publicarConteudo, ctrl, s.id),
+                  title: 'Publicar alterações deste conteúdo'
+                }, m('i.fa.fa-paper-plane')) : null,
+
+                m('a.visualizar', {
+                  href: '/editar/visualizar/' + slugify(s.id),
+                  title: 'Visualizar este conteúdo'
+                }, m('i.fa.fa-eye')),
+
+                m('button.remover', {
+                  title: 'Remover este conteúdo',
                   onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id)
-                }, [
-                  m('span.fa.fa-trash-o')
-                ])
+                }, m('i.fa.fa-trash-o')),
+
               ])
             ]);
           })))
