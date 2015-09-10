@@ -13,7 +13,7 @@ module.exports = {
             m('h3', [
                 'Tipo de Página: ',
                 m.component(require('componentes/select2'), {
-                    prop: ctrl.pagina.tipo,
+                    prop: ctrl.pagina().tipo,
                     data: referencia.tiposDePagina
                 })
             ])
