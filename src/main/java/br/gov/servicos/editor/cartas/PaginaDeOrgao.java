@@ -109,6 +109,7 @@ public class PaginaDeOrgao extends ConteudoVersionado<PaginaDeOrgao.Orgao> {
     public static class Orgao {
         String tipo = "orgao";
         String nome;
+        String conteudo;
     }
 
 }
