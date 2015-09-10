@@ -8,6 +8,7 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.marker.LogstashMarker;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +48,7 @@ import static net.logstash.logback.marker.Markers.append;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Slf4j
 @Service
@@ -149,7 +152,7 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
-    private void checkoutMaster() {
+    public void checkoutMaster() {
         Ref result = git.checkout()
                 .setName(R_HEADS + MASTER)
                 .call();
@@ -290,6 +293,22 @@ public class RepositorioGit {
         } catch (GitAPIException e) {
             log.error(append("push.branch", branch), "git push falhou", e);
         }
+    }
+
+    @SneakyThrows
+    public void merge(String branch) {
+        Repository repo = git.getRepository();
+        Ref ref = repo.getRef(branch);
+        MergeResult result = git.merge().include(ref).call();
+        Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
+                .and(append("git.branch", git.getRepository().getBranch()));
+
+        log.info(marker, "git merge to {}", git.getRepository().getBranch());
+
+        if (!isEmpty(result.getCheckoutConflicts())) {
+            throw new IllegalStateException("Não foi possível completar o git merge");
+        }
+
     }
 
     @SneakyThrows

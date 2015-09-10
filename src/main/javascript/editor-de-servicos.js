@@ -35,7 +35,7 @@ module.exports = {
 
     this.publicar = function () {
       this.servico(limparModelo(this.servico()));
-      var id = this.servico().id;
+      var id = slugify(this.servico().nome());
       if (validacoes.valida(this.servico())) {
         return this.salvar().then(function () {
           m.request({

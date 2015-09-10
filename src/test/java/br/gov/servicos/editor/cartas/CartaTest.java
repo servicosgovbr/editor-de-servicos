@@ -178,4 +178,19 @@ public class CartaTest {
         verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", usuario);
         verify(repositorio).push("refs/heads/um-id-qualquer");
     }
+
+    @Test
+    public void publicaConteudo() {
+       User usuario = new User("Fulano de Tal", "", emptyList());
+       given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/master"), captor.capture()))
+               .willReturn(null);
+
+       carta.publicar(usuario);
+
+       captor.getValue().get();
+
+       verify(repositorio).checkoutMaster();
+       verify(repositorio).merge("refs/heads/um-id-qualquer");
+       verify(repositorio).push("refs/heads/master");
+    }
 }

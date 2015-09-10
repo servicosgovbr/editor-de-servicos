@@ -19,6 +19,7 @@ import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
+import static org.eclipse.jgit.lib.Constants.MASTER;
 import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @FieldDefaults(level = PRIVATE, makeFinal = true)
@@ -107,6 +108,16 @@ public abstract class ConteudoVersionado<T> {
 
             return null;
         });
+    }
+
+    public void publicar(User usuario) {
+        repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
+            repositorio.checkoutMaster();
+            repositorio.merge(getBranchRef());
+            repositorio.push(R_HEADS + MASTER);
+            return null;
+        });
+
     }
 
     @CacheEvict
