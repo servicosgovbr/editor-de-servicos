@@ -112,7 +112,6 @@ public abstract class ConteudoVersionado<T> {
 
     public void publicar(User usuario) {
         repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
-            repositorio.checkoutMaster();
             repositorio.merge(getBranchRef());
             repositorio.push(R_HEADS + MASTER);
             return null;

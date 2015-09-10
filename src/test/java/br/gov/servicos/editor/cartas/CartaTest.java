@@ -7,6 +7,7 @@ import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import com.github.slugify.Slugify;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -189,7 +190,6 @@ public class CartaTest {
 
        captor.getValue().get();
 
-       verify(repositorio).checkoutMaster();
        verify(repositorio).merge("refs/heads/um-id-qualquer");
        verify(repositorio).push("refs/heads/master");
     }

@@ -47,6 +47,7 @@ import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
+import static org.eclipse.jgit.api.MergeResult.MergeStatus.CONFLICTING;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -153,7 +154,7 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
-    public void checkoutMaster() {
+    private void checkoutMaster() {
         Ref result = git.checkout()
                 .setName(R_HEADS + MASTER)
                 .call();
@@ -307,7 +308,7 @@ public class RepositorioGit {
 
         log.info(marker, "git merge to {}", git.getRepository().getBranch());
 
-        if (!isEmpty(result.getCheckoutConflicts())) {
+        if (CONFLICTING.equals(result.getMergeStatus())) {
             throw new IllegalStateException("Não foi possível completar o git merge");
         }
 
