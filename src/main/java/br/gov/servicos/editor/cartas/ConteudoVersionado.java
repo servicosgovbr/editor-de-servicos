@@ -76,19 +76,13 @@ public abstract class ConteudoVersionado<T> {
     @CacheEvict
     public void salvar(User usuario, String conteudo) {
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
+            String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
+
             repositorio.pull();
-
-            try {
-                escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
-
-                repositorio.add(getCaminhoRelativo());
-
-                String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
-                repositorio.commit(getCaminhoRelativo(), mensagem, usuario);
-
-            } finally {
-                repositorio.push(getBranchRef());
-            }
+            escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
+            repositorio.add(getCaminhoRelativo());
+            repositorio.commit(getCaminhoRelativo(), mensagem, usuario);
+            repositorio.push(getBranchRef());
 
             return null;
         });
@@ -99,12 +93,9 @@ public abstract class ConteudoVersionado<T> {
         repositorio.comRepositorioAbertoNoBranch(this.getBranchRef(), () -> {
             repositorio.pull();
 
-            try {
-                repositorio.remove(getCaminhoRelativo());
-                repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", usuario);
-            } finally {
-                repositorio.push(getBranchRef());
-            }
+            repositorio.remove(getCaminhoRelativo());
+            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", usuario);
+            repositorio.push(getBranchRef());
 
             return null;
         });
@@ -112,8 +103,11 @@ public abstract class ConteudoVersionado<T> {
 
     public void publicar() {
         repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
+            repositorio.pull();
+
             repositorio.merge(getBranchRef());
             repositorio.push(R_HEADS + MASTER);
+
             return null;
         });
     }
