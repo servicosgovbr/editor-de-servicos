@@ -181,14 +181,14 @@ public class CartaTest {
 
     @Test
     public void publicaConteudo() {
-       given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/master"), captor.capture()))
-               .willReturn(null);
+        given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/master"), captor.capture()))
+                .willReturn(null);
 
-       carta.publicar();
+        carta.publicar();
 
-       captor.getValue().get();
+        captor.getValue().get();
 
-       verify(repositorio).merge("refs/heads/um-id-qualquer");
-       verify(repositorio).push("refs/heads/master");
+        verify(repositorio).merge("refs/heads/um-id-qualquer");
+        verify(repositorio).push("refs/heads/master");
     }
 }
