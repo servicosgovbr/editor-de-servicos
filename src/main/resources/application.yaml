@@ -18,6 +18,7 @@ management:
 flags:
   git.push: false
   esquentar.cache: true
+  importar: true
 
 eds:
   cartas:

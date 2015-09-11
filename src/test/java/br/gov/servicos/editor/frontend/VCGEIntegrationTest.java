@@ -15,8 +15,8 @@ import static org.junit.Assert.assertThat;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Main.class)
-@IntegrationTest("flags.esquentar.cache=false")
-public class VCGETest {
+@IntegrationTest({"flags.importar=false", "flags.esquentar.cache=false"})
+public class VCGEIntegrationTest {
 
     @Autowired
     VCGE vcge;

@@ -23,22 +23,31 @@ class Importador {
 
     String repositorioCartas;
     File repositorioCartasLocal;
+    boolean deveImportar;
 
     @NonFinal
     @Getter
     boolean importadoComSucesso;
 
     @Autowired
-    Importador(@Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
-               File repositorioCartasLocal) {
-
+    Importador(
+            @Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
+            @Value("${flags.importar}") boolean deveImportar,
+            File repositorioCartasLocal
+    ) {
         this.repositorioCartas = urlRepositorioCartas;
+        this.deveImportar = deveImportar;
         this.repositorioCartasLocal = repositorioCartasLocal;
     }
 
     @PostConstruct
     @SneakyThrows
     void importaRepositorioDeCartas() {
+        if(!deveImportar) {
+            log.info("Importação do repositório de cartas desabilitada (FLAGS_IMPORTAR=false)");
+            return;
+        }
+
         log.info("Importando repositório de cartas {} para {}", repositorioCartas, repositorioCartasLocal);
         Git.cloneRepository()
                 .setURI(repositorioCartas)
