@@ -30,7 +30,7 @@ describe('editor', function () {
   it('deve salvar um servico', function () {
     xhr('GET', '/editar/api/id-unico/ola-mundo').respondWith('true');
     xhr('GET', '/editar/api/servico/v3/ola-mundo').respondWith('<servico/>');
-    var response = xhr('POST', '/editar/v3/servico/ola-mundo').respondWith('<servico/>');
+    xhr('POST', '/editar/v3/servico/ola-mundo').respondWith('<servico/>');
 
     var ctrl = new editor.controller();
     expect(ctrl.servico()).toBeDefined();
@@ -44,7 +44,6 @@ describe('editor', function () {
     ctrl.salvar();
 
     expect(xhr.unexpectedRequests).toBe(0);
-    expect(response.count).toBe(1);
   });
 
 });
