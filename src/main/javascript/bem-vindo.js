@@ -185,7 +185,8 @@ module.exports = {
                 }, m('i.fa.fa-paper-plane')) : null,
 
                 m('a.visualizar', {
-                  href: '/editar/visualizar/' + slugify(s.id),
+                  href: (s.temAlteracoesNaoPublicadas ? '/editar/visualizar/' : '/servico/') + slugify(s.id),
+                  target: '_blank',
                   title: 'Visualizar este conteúdo'
                 }, m('i.fa.fa-eye')),
 
