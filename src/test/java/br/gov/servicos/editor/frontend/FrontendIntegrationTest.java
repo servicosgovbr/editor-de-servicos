@@ -17,7 +17,6 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Main.class)
-@WebAppConfiguration
 @WebIntegrationTest(randomPort = true)
 public class FrontendIntegrationTest {
 
