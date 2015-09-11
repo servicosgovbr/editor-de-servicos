@@ -75,6 +75,8 @@ module.exports = {
       m('span.cabecalho-cor'),
       m('#wrapper', [
         m.component(require('cabecalho/cabecalho'), {
+          metadados: true,
+          logout: true,
           salvar: _.bind(ctrl.salvar, ctrl),
           publicar: _.bind(ctrl.publicar, ctrl),
           cabecalho: ctrl.cabecalho

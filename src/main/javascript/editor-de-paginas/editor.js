@@ -20,7 +20,6 @@ module.exports = {
     };
 
     return m('#conteudo', {
-
       config: function (element, isInitialized) {
         if (isInitialized) {
           return;
@@ -37,19 +36,22 @@ module.exports = {
         });
       }
     }, [
-
-            m('span.cabecalho-cor'),
-            m('#wrapper', [
-                m.component(require('../cabecalho/cabecalho'), {
+      m('span.cabecalho-cor'),
+      m('#wrapper', [
+        m.component(require('../cabecalho/cabecalho'), {
+          metadados: true,
+          logout: true,
           salvar: _.bind(ctrl.salvar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
-                m('#servico', m('.scroll', [
-                    m.component(require('editor-de-paginas/componentes/tipo-de-pagina'), binding),
-                    m.component(require('editor-de-paginas/componentes/nome'), binding),
-                    m.component(require('editor-de-paginas/componentes/conteudo'), binding)
-                ]))
-            ])
-        ]);
+        m('#servico',
+          m('.scroll', [
+            m.component(require('editor-de-paginas/componentes/tipo-de-pagina'), binding),
+            m.component(require('editor-de-paginas/componentes/nome'), binding),
+            m.component(require('editor-de-paginas/componentes/conteudo'), binding)
+          ])
+        )
+      ])
+    ]);
   }
 };

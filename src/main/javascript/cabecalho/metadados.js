@@ -36,16 +36,14 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    if (m.route().indexOf('/editar/servico/') >= 0) {
-
-      return m('#metadados', [
+    return m('#metadados', [
 
       m.component(require('componentes/status-conexao')),
 
       m('button#salvar', {
-          onclick: _.bind(ctrl.salvar, ctrl),
-          disabled: ctrl.salvando() ? 'disabled' : ''
-        }, ctrl.salvando() ? [
+        onclick: _.bind(ctrl.salvar, ctrl),
+        disabled: ctrl.salvando() ? 'disabled' : ''
+      }, ctrl.salvando() ? [
           m('i.fa.fa-spin.fa-spinner'),
           m.trust('&nbsp; Salvando...')
         ] : [
@@ -59,15 +57,12 @@ module.exports = {
         ]),
 
         m('button#publicar', {
-          onclick: _.bind(ctrl.publicar, ctrl)
-        }, [
+        onclick: _.bind(ctrl.publicar, ctrl)
+      }, [
           m('i.fa.fa-tv'),
           m.trust('&nbsp; Publicar')
         ]),
       ]);
-    }
-
-    return m('#metadados');
   }
 
 };
