@@ -37,6 +37,7 @@ module.exports = {
 
   view: function (ctrl) {
     if (m.route().indexOf('/editar/servico/') >= 0) {
+
       return m('#metadados', [
 
       m.component(require('componentes/status-conexao')),

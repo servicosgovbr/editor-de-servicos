@@ -92,9 +92,9 @@ module.exports = {
     'Página Especial',
     'Órgão',
   ].map(function (t) {
-        return {
-          id: slugify(t),
-          text: t
-        };
-      }),
+    return {
+      id: slugify(t),
+      text: t
+    };
+  }),
 };

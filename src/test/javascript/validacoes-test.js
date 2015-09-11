@@ -101,7 +101,9 @@ describe('validação >', function () {
     var servico;
 
     beforeEach(function () {
-      servico = new modelos.Servico({nome: 'oi'});
+      servico = new modelos.Servico({
+        nome: 'oi'
+      });
     });
 
     shouldBePresent('nome', function () {

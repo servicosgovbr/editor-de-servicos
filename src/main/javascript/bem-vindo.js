@@ -63,7 +63,7 @@ module.exports = {
     return m('#conteudo', [
       m('span.cabecalho-cor'),
       m('#wrapper', [
-        m.component(require('componentes/cabecalho')),
+        m.component(require('cabecalho/cabecalho')),
 
         m('#bem-vindo', [
           m('h2', 'Bem-vindo!'),

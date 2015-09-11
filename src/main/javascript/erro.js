@@ -5,7 +5,7 @@ module.exports = {
     return m('#conteudo', [
       m('span.cabecalho-cor'),
       m('#wrapper', [
-        m.component(require('componentes/cabecalho')),
+        m.component(require('cabecalho/cabecalho')),
 
         m('#erro', [
           m('h2', ['Ocorreu um erro ', m('i.fa.fa-bomb.fa-lg')]),
