@@ -1,30 +1,15 @@
 'use strict';
 
+var id = require('utils/id');
 var v = require('../validacoes');
 var idUnico = require('utils/id-unico');
 
 var textoCurto = v.maximo(150);
 var textoLongo = v.maximo(500);
 
-var validaIdServico = function (id) {
-  return idUnico(id) ? undefined : 'erro-nome-servico-existente';
+var validaIdServico = function (unsafeId) {
+  return idUnico(unsafeId) ? undefined : 'erro-nome-servico-existente';
 };
-
-var id = (function () {
-  var counters = {};
-  var gerador = function (base) {
-    if (!counters[base]) {
-      counters[base] = 0;
-    }
-    return base + '-' + counters[base]++;
-  };
-
-  gerador.reset = function () {
-    counters = {};
-  };
-
-  return gerador;
-})();
 
 var Caso = function (parentId, config) {
   var data = (config || {});
