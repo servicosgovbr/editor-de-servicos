@@ -51,7 +51,7 @@ module.exports = {
         onclick: ctrl.adicionar.bind(ctrl)
       }, [
         m('i.fa.fa-plus'),
-        ' Adicionar lei, decreto ou portaria '
+        ' Adicionar demais normativos '
       ])
     ]);
   }
