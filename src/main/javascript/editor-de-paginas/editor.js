@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('modelos');
+var CabecalhoModel = require('cabecalho/modelo');
 var carregarPagina = require('editor-de-paginas/carregar');
 
 var modificado = m.prop(false);
@@ -8,7 +8,7 @@ var modificado = m.prop(false);
 module.exports = {
 
   controller: function () {
-    this.cabecalho = new modelos.Cabecalho();
+    this.cabecalho = new CabecalhoModel();
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
     this.salvar = function () {};

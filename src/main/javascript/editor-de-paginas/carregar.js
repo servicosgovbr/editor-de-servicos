@@ -1,7 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
-var modelos = require('modelos');
+var modelos = require('./modelos');
 var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 

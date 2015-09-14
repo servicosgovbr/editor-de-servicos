@@ -1,9 +1,9 @@
 'use strict';
 
-var Caso = require('etapas/caso');
-var Casos = require('etapas/casos');
-var ListaDeDocumentos = require('etapas/lista-de-documentos');
-var modelos = require('modelos');
+var Caso = require('servico/etapas/caso');
+var Casos = require('servico/etapas/casos');
+var ListaDeDocumentos = require('servico/etapas/lista-de-documentos');
+var modelos = require('../modelos');
 
 module.exports = {
   view: function (ctrl, args) {

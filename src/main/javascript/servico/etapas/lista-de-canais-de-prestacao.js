@@ -1,7 +1,7 @@
 'use strict';
 
 var referencia = require('referencia');
-var modelos = require('modelos');
+var modelos = require('../modelos');
 
 module.exports = {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('modelos');
+var modelos = require('servico/modelos');
 var limparModelo = require('limpar-modelo');
 var Solicitante = modelos.Solicitante;
 var Etapa = modelos.Etapa;

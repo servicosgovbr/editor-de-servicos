@@ -1,6 +1,6 @@
 'use strict';
 
-var v = require('validacoes');
+var v = require('../validacoes');
 var idUnico = require('utils/id-unico');
 
 var textoCurto = v.maximo(150);
@@ -25,21 +25,6 @@ var id = (function () {
 
   return gerador;
 })();
-
-var Cabecalho = function () {
-  this.metadados = m.prop({});
-  this.erro = m.prop(null);
-
-  this.limparErro = function () {
-    this.erro(null);
-  };
-
-  this.tentarNovamente = function (fn) {
-    this.erro({
-      tentarNovamente: fn
-    });
-  };
-};
 
 var Caso = function (parentId, config) {
   var data = (config || {});
@@ -150,21 +135,11 @@ var Servico = function (config) {
   this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1));
 };
 
-var Pagina = function (config) {
-  var data = (config || {});
-  this.id = id('pagina');
-  this.tipo = v.prop(data.tipo || '', v.obrigatorio);
-  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto);
-  this.conteudo = v.prop(data.conteudo || '', textoLongo);
-};
-
 module.exports = {
   id: id,
-  Cabecalho: Cabecalho,
   Caso: Caso,
   CanaisDePrestacao: CanaisDePrestacao,
   CanalDePrestacao: CanalDePrestacao,
-  Pagina: Pagina,
   Documentos: Documentos,
   Custo: Custo,
   Documento: Documento,

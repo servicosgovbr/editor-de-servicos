@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('modelos');
+var modelos = require('../modelos');
 
 module.exports = {
 
@@ -29,7 +29,7 @@ module.exports = {
         return m('span', {
           key: etapa.id
         }, [
-          m.component(require('etapas/etapa'), {
+          m.component(require('./etapa'), {
             etapa: etapa,
             gratuidade: ctrl.servico().gratuidade,
             indice: i,

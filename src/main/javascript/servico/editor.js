@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('modelos');
+var CabecalhoModel = require('cabecalho/modelo');
 var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
@@ -12,7 +12,7 @@ var modificado = m.prop(false);
 module.exports = {
 
   controller: function () {
-    this.cabecalho = new modelos.Cabecalho();
+    this.cabecalho = new CabecalhoModel();
     this.servico = carregarServico(m.route.param('id'), this.cabecalho);
 
     this.salvar = function () {
@@ -84,10 +84,10 @@ module.exports = {
         m.component(require('componentes/menu-lateral'), binding),
 
         m('#servico', m('.scroll', [
-          m.component(require('componentes/dados-basicos'), binding),
-          m.component(require('componentes/solicitantes'), binding),
-          m.component(require('componentes/etapas'), binding),
-          m.component(require('componentes/outras-informacoes'), binding),
+          m.component(require('servico/dados-basicos/dados-basicos'), binding),
+          m.component(require('servico/solicitantes'), binding),
+          m.component(require('servico/etapas/etapas'), binding),
+          m.component(require('servico/outras-informacoes/outras-informacoes'), binding),
         ]))
       ])
     ]);

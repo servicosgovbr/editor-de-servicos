@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('modelos');
+var modelos = require('servico/modelos');
 var validacoes = require('validacoes');
 
 function quote(str) {

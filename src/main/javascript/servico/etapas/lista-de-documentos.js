@@ -1,7 +1,7 @@
 'use strict';
 
 var focus = require('focus');
-var modelos = require('modelos');
+var modelos = require('../modelos');
 
 module.exports = {
 

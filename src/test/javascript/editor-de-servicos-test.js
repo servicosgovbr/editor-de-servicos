@@ -1,7 +1,7 @@
 'use strict';
 
 var xhr = require('lib/mithril-fake-xhr')(window);
-var editor = require('editor-de-servicos');
+var editor = require('servico/editor');
 
 describe('editor', function () {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('modelos');
+var modelos = require('./modelos');
 
 module.exports = {
 
@@ -25,13 +25,14 @@ module.exports = {
   view: function (ctrl) {
     return m('fieldset#solicitantes', [
       m('h2', 'solicitantes'),
+
       m('h3', [
         'Quem pode utilizar este serviço?',
         m.component(require('tooltips').solicitantes)
       ]),
 
       ctrl.servico().solicitantes().map(function (s, i) {
-        return m.component(require('componentes/solicitante'), {
+        return m.component(require('servico/solicitante'), {
           solicitante: s,
           index: i,
           showDelete: ctrl.servico().solicitantes().length > 1,
@@ -45,6 +46,9 @@ module.exports = {
         m('i.fa.fa-plus'),
         ' Adicionar solicitante '
       ])
+
     ]);
+
   }
+
 };

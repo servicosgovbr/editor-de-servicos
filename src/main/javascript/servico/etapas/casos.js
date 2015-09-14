@@ -1,7 +1,7 @@
 'use strict';
 
-var modelos = require('modelos');
-var Caso = require('etapas/caso');
+var modelos = require('../modelos');
+var Caso = require('servico/etapas/caso');
 
 module.exports = function (componente) {
 
