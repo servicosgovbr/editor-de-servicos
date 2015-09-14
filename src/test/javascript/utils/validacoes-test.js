@@ -1,7 +1,7 @@
 'use strict';
 
+var validacoes = require('utils/validacoes');
 var modelos = require('servico/modelos');
-var validacoes = require('validacoes');
 
 function quote(str) {
   str = _.trim(str);

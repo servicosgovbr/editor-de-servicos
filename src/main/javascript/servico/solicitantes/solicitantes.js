@@ -1,6 +1,6 @@
 'use strict';
 
-var modelos = require('./modelos');
+var SolicitanteModel = require('servico/solicitantes/solicitante-model');
 
 module.exports = {
 
@@ -9,7 +9,7 @@ module.exports = {
 
     this.adicionar = function () {
       var solicitantes = this.servico().solicitantes();
-      solicitantes.push(new modelos.Solicitante());
+      solicitantes.push(new SolicitanteModel());
 
       this.servico().solicitantes(solicitantes);
       this.adicionado = true;
@@ -32,7 +32,7 @@ module.exports = {
       ]),
 
       ctrl.servico().solicitantes().map(function (s, i) {
-        return m.component(require('servico/solicitante'), {
+        return m.component(require('servico/solicitantes/solicitante'), {
           solicitante: s,
           index: i,
           showDelete: ctrl.servico().solicitantes().length > 1,
@@ -48,7 +48,6 @@ module.exports = {
       ])
 
     ]);
-
   }
 
 };

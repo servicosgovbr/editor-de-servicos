@@ -1,9 +1,6 @@
 'use strict';
 
-var v = require('../validacoes');
-
-var textoCurto = v.maximo(150);
-var textoLongo = v.maximo(500);
+var v = require('utils/validacoes');
 
 var id = (function () {
   var counters = {};
@@ -25,8 +22,8 @@ var Pagina = function (config) {
   var data = (config || {});
   this.id = id('pagina');
   this.tipo = v.prop(data.tipo || '', v.obrigatorio);
-  this.nome = v.prop(data.nome || '', v.obrigatorio, textoCurto);
-  this.conteudo = v.prop(data.conteudo || '', textoLongo);
+  this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto);
+  this.conteudo = v.prop(data.conteudo || '', v.textoLongo);
 };
 
 

@@ -4,7 +4,7 @@ var CabecalhoModel = require('cabecalho/modelo');
 var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
-var validacoes = require('validacoes');
+var validacoes = require('utils/validacoes');
 var limparModelo = require('limpar-modelo');
 
 var modificado = m.prop(false);
@@ -85,7 +85,7 @@ module.exports = {
 
         m('#servico', m('.scroll', [
           m.component(require('servico/dados-basicos/dados-basicos'), binding),
-          m.component(require('servico/solicitantes'), binding),
+          m.component(require('servico/solicitantes/solicitantes'), binding),
           m.component(require('servico/etapas/etapas'), binding),
           m.component(require('servico/outras-informacoes/outras-informacoes'), binding),
         ]))

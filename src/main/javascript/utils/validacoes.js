@@ -104,5 +104,7 @@ module.exports = {
   obrigatorio: obrigatorio,
   maximo: maximo,
   minimo: minimo,
-  numerico: numerico
+  numerico: numerico,
+  textoCurto: maximo(150),
+  textoLongo: maximo(500)
 };
