@@ -18,4 +18,11 @@ public class UncheckedTest {
         }).get();
     }
 
+    @Test(expected = Exception.class)
+    public void retornaVersaoSemExcecoesDeConsumer() throws Exception {
+        Unchecked.Consumer.<Integer>uncheckedConsumer((x) -> {
+            throw new Exception("");
+        }).accept(1);
+    }
+
 }

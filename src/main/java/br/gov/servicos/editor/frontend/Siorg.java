@@ -78,15 +78,7 @@ public class Siorg {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Unidade {
-        String codigoUnidade;
-        String codigoUnidadePai;
-        String codigoOrgaoEntidade;
-        String codigoTipoUnidade;
         String nome;
         String sigla;
-        String codigoEsfera;
-        String codigoPoder;
-        String codigoNaturezaJuridica;
-        String codigoSubNaturezaJuridica;
     }
 }
