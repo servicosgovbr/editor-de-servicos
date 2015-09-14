@@ -77,17 +77,7 @@ public class Orgaos implements InitializingBean {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class EstruturaOrganizacional {
-        Servico servico;
         List<Unidade> unidades;
-    }
-
-    @Data
-    @Wither
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Servico {
-        long codigoErro;
-        String mensagem;
     }
 
     @Data
@@ -96,15 +86,8 @@ public class Orgaos implements InitializingBean {
     @AllArgsConstructor
     public static class Unidade {
         String codigoUnidade;
-        String codigoUnidadePai;
-        String codigoOrgaoEntidade;
-        String codigoTipoUnidade;
         String nome;
         String sigla;
-        String codigoEsfera;
-        String codigoPoder;
-        String codigoNaturezaJuridica;
-        String codigoSubNaturezaJuridica;
     }
 
     @FieldDefaults(level = PRIVATE, makeFinal = true)
