@@ -1,6 +1,7 @@
 'use strict';
 
 var modelos = require('servico/modelos');
+var Solicitante = require('servico/solicitantes/solicitante-model');
 
 var isBlank = _.flow(_.trim, _.isEmpty);
 
@@ -16,7 +17,7 @@ var limparSolicitante = function (solicitante) {
   if (allBlank(solicitante.tipo(), solicitante.requisitos())) {
     return;
   }
-  return new modelos.Solicitante({
+  return new Solicitante({
     tipo: _.trim(solicitante.tipo()),
     requisitos: _.trim(solicitante.requisitos())
   });

@@ -2,6 +2,7 @@
 
 var validacoes = require('utils/validacoes');
 var modelos = require('servico/modelos');
+var Solicitante = require('servico/solicitantes/solicitante-model');
 
 function quote(str) {
   str = _.trim(str);
@@ -195,7 +196,7 @@ describe('validação >', function () {
     var solicitante;
 
     beforeEach(function () {
-      solicitante = new modelos.Solicitante();
+      solicitante = new Solicitante();
     });
 
     shouldBePresent('tipo de solicitante', function () {

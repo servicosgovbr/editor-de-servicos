@@ -1,6 +1,7 @@
 'use strict';
 
 var modelos = require('servico/modelos');
+var Solicitante = require('servico/solicitantes/solicitante-model');
 
 var str = function () {
   return '';
@@ -22,7 +23,7 @@ var item = function (i, n) {
 
 var solicitantes = function (i, n) {
   var t = jQuery(n);
-  return new modelos.Solicitante({
+  return new Solicitante({
     tipo: t.find('tipo').text(),
     requisitos: t.find('requisitos').text(),
   });

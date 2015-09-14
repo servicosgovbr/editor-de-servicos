@@ -77,13 +77,6 @@ var Etapa = function (config) {
   this.canaisDePrestacao = m.prop(data.canaisDePrestacao || new CanaisDePrestacao());
 };
 
-var Solicitante = function (config) {
-  var data = (config || {});
-  this.id = id('solicitante');
-  this.tipo = v.prop(data.tipo || '', v.obrigatorio, v.textoCurto);
-  this.requisitos = v.prop(data.requisitos || '', v.textoLongo);
-};
-
 var TempoTotalEstimado = function (config) {
   var data = (config || {});
   this.id = id('tempo-total-estimado');
@@ -127,7 +120,6 @@ module.exports = {
   Documento: Documento,
   Custos: Custos,
   Etapa: Etapa,
-  Solicitante: Solicitante,
   Servico: Servico,
   TempoTotalEstimado: TempoTotalEstimado
 };
