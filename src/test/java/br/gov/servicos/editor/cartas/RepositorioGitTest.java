@@ -32,13 +32,13 @@ import static org.junit.Assert.assertThat;
 
 public class RepositorioGitTest {
 
-    static File origin;
+    static File github;
 
     static {
         try {
-            origin = createTempDirectory("RepositorioGitTest-origin").toFile();
-            origin.deleteOnExit();
-            System.out.println("origin = " + origin);
+            github = createTempDirectory("RepositorioGitTest-github").toFile();
+            github.deleteOnExit();
+            System.out.println("github = " + github);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public class RepositorioGitTest {
         Git.cloneRepository()
                 .setURI("https://github.com/servicosgovbr/cartas-de-servico.git")
                 .setBare(true)
-                .setDirectory(origin)
+                .setDirectory(github)
                 .setProgressMonitor(new TextProgressMonitor())
                 .call();
     }
@@ -63,7 +63,7 @@ public class RepositorioGitTest {
         clone.deleteOnExit();
 
         Git.cloneRepository()
-                .setURI(origin.getAbsolutePath())
+                .setURI(github.getAbsolutePath())
                 .setDirectory(clone)
                 .setProgressMonitor(new TextProgressMonitor())
                 .call();
@@ -74,17 +74,9 @@ public class RepositorioGitTest {
     }
 
     @Test
-    public void caminhoAbsoluto() throws Exception {
+    public void caminhosERevisoes() throws Exception {
         assertThat(repo.getCaminhoAbsoluto(), is(clone.toPath()));
-    }
-
-    @Test
-    public void revisaoMaisRecenteDeArquivo() throws Exception {
         assertThat(repo.getRevisaoMaisRecenteDoArquivo(Paths.get("README.md")), is(not(empty())));
-    }
-
-    @Test
-    public void revisaoMaisRecenteDeBranch() throws Exception {
         assertThat(repo.getRevisaoMaisRecenteDoBranch("master"), is(not(empty())));
     }
 
@@ -102,11 +94,11 @@ public class RepositorioGitTest {
     }
 
     private void garanteQueAlteracaoFoiPublicada() throws IOException {
-        try (Git git = Git.open(origin)) {
-            Ref foo = git.getRepository().getRef("foo");
-            assertThat(foo, is(notNullValue()));
+        try (Git git = Git.open(github)) {
+            Ref master = git.getRepository().getRef(MASTER);
+            assertThat(master, is(notNullValue()));
 
-            RevCommit commit = new RevWalk(git.getRepository()).parseCommit(foo.getObjectId());
+            RevCommit commit = new RevWalk(git.getRepository()).parseCommit(master.getObjectId());
             assertThat(commit.getAuthorIdent().getName(), is("fulano"));
             assertThat(commit.getAuthorIdent().getEmailAddress(), is("servicos@planejamento.gov.br"));
             assertThat(commit.getFullMessage(), is("Alteração de teste"));
@@ -127,11 +119,11 @@ public class RepositorioGitTest {
     }
 
     private void salvaAlteracaoUsandoOutroClone() throws IOException, GitAPIException {
-        File outroClone = createTempDirectory("RepositorioGitTest-origin").toFile();
+        File outroClone = createTempDirectory("RepositorioGitTest-outro").toFile();
         outroClone.deleteOnExit();
 
         try (Git git = Git.cloneRepository()
-                .setURI(origin.getAbsolutePath())
+                .setURI(github.getAbsolutePath())
                 .setDirectory(outroClone)
                 .setProgressMonitor(new TextProgressMonitor())
                 .setCloneAllBranches(true)
@@ -147,7 +139,7 @@ public class RepositorioGitTest {
     }
 
     private void garanteQueAlteracaoFoiParaGithub() throws IOException {
-        try (Git git = Git.open(origin)) {
+        try (Git git = Git.open(github)) {
             Ref foo = git.getRepository().getRef("foo");
             assertThat(foo, is(notNullValue()));
 
