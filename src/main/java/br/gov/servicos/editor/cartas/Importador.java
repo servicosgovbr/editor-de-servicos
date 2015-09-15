@@ -53,6 +53,7 @@ class Importador {
                 .setURI(repositorioCartas)
                 .setDirectory(repositorioCartasLocal)
                 .setProgressMonitor(new LogstashProgressMonitor(log))
+                .setCloneAllBranches(true)
                 .call();
         importadoComSucesso = true;
     }
