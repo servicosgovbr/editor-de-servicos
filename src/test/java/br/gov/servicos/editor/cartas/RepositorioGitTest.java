@@ -5,6 +5,7 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.RefSpec;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,7 +22,11 @@ import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
+import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
+import static org.eclipse.jgit.lib.Constants.DEFAULT_REMOTE_NAME;
+import static org.eclipse.jgit.lib.Constants.R_REMOTES;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -45,7 +50,7 @@ public class RepositorioGitTest {
     @BeforeClass
     public static void setUpOrigin() throws Exception {
         Git.cloneRepository()
-                .setURI("https://github.com/servicosgovbr/cartas-de-servico.git")
+                .setURI("/Users/cvillela/src/servicos.gov.br/cartas-de-servico")
                 .setBare(true)
                 .setDirectory(origin)
                 .setProgressMonitor(new TextProgressMonitor())
@@ -97,14 +102,43 @@ public class RepositorioGitTest {
             return null;
         }));
 
-        try (Git originGit = Git.open(origin)) {
-            Ref foo = originGit.getRepository().getRef("foo");
+        try (Git git = Git.open(origin)) {
+            Ref foo = git.getRepository().getRef("foo");
             assertThat(foo, is(notNullValue()));
 
-            RevCommit commit = new RevWalk(originGit.getRepository()).parseCommit(foo.getObjectId());
+            RevCommit commit = new RevWalk(git.getRepository()).parseCommit(foo.getObjectId());
             assertThat(commit.getAuthorIdent().getName(), is("fulano"));
             assertThat(commit.getAuthorIdent().getEmailAddress(), is("servicos@planejamento.gov.br"));
             assertThat(commit.getFullMessage(), is("Alteração de teste"));
         }
+
+        File outroClone = createTempDirectory("RepositorioGitTest-origin").toFile();
+        outroClone.deleteOnExit();
+
+        try (Git git = Git.cloneRepository()
+                .setURI(origin.getAbsolutePath())
+                .setDirectory(outroClone)
+                .setProgressMonitor(new TextProgressMonitor())
+                .setCloneAllBranches(true)
+                .call()) {
+
+            git.checkout().setName("foo").setCreateBranch(true).setUpstreamMode(TRACK).setStartPoint(R_REMOTES + DEFAULT_REMOTE_NAME + "/foo").call();
+            assertThat(Files.readAllLines(outroClone.toPath().resolve("README.md")).get(0), is("# Teste"));
+
+            Files.write(outroClone.toPath().resolve("README.md"), singletonList("# Teste 2"), WRITE);
+            git.commit().setAll(true).setMessage("Commit de outro clone").call();
+            git.push().setRefSpecs(new RefSpec("foo:foo")).setProgressMonitor(new TextProgressMonitor()).call();
+        }
+
+        repo.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
+            Path relativo = Paths.get("README.md");
+            Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
+
+            repo.pull();
+
+            assertThat(Files.readAllLines(absoluto).get(0), is("# Teste 2"));
+
+            return null;
+        }));
     }
 }
