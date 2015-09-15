@@ -327,7 +327,7 @@ public class RepositorioGit {
                 .and(append("merge.base", result.getBase().getName()))
                 .and(append("merge.new-head", result.getNewHead().getName()))
                 .and(appendArray("merge.commits", Stream.of(result.getMergedCommits()).map(AnyObjectId::getName).toArray()))
-                .and(appendArray("merge.conflicts", result.getCheckoutConflicts().toArray()));
+                .and(appendArray("merge.conflicts", result.getCheckoutConflicts() == null ? null : result.getCheckoutConflicts().toArray()));
 
         log.info(marker, "git merge {}", git.getRepository().getBranch());
 

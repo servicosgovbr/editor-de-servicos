@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.cartas;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -25,8 +26,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
-import static org.eclipse.jgit.lib.Constants.DEFAULT_REMOTE_NAME;
-import static org.eclipse.jgit.lib.Constants.R_REMOTES;
+import static org.eclipse.jgit.lib.Constants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -89,19 +89,19 @@ public class RepositorioGitTest {
     }
 
     @Test
-    public void pushAposCommit() throws Exception {
-        repo.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
-            Path relativo = Paths.get("README.md");
-            Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
+    public void fluxoDePublicacao() throws Exception {
+        salvaAlteracao();
+        garanteQueAlteracaoFoiParaGithub();
 
-            Files.write(absoluto, asList("# Teste", "\n", absoluto.toString()), WRITE);
-            repo.commit(relativo, "Alteração de teste", new User("fulano", "123", emptyList()));
+        salvaAlteracaoUsandoOutroClone();
+        garanteQueAlteracaoFoiRecebida();
 
-            repo.push("foo");
+        salvaAlteracao();
+        publicaAlteracao();
+        garanteQueAlteracaoFoiPublicada();
+    }
 
-            return null;
-        }));
-
+    private void garanteQueAlteracaoFoiPublicada() throws IOException {
         try (Git git = Git.open(origin)) {
             Ref foo = git.getRepository().getRef("foo");
             assertThat(foo, is(notNullValue()));
@@ -111,7 +111,22 @@ public class RepositorioGitTest {
             assertThat(commit.getAuthorIdent().getEmailAddress(), is("servicos@planejamento.gov.br"));
             assertThat(commit.getFullMessage(), is("Alteração de teste"));
         }
+    }
 
+    private void garanteQueAlteracaoFoiRecebida() throws IOException {
+        repo.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
+            Path relativo = Paths.get("README.md");
+            Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
+
+            repo.pull();
+
+            assertThat(Files.readAllLines(absoluto).get(0), is("# Teste 2"));
+
+            return null;
+        }));
+    }
+
+    private void salvaAlteracaoUsandoOutroClone() throws IOException, GitAPIException {
         File outroClone = createTempDirectory("RepositorioGitTest-origin").toFile();
         outroClone.deleteOnExit();
 
@@ -129,16 +144,42 @@ public class RepositorioGitTest {
             git.commit().setAll(true).setMessage("Commit de outro clone").call();
             git.push().setRefSpecs(new RefSpec("foo:foo")).setProgressMonitor(new TextProgressMonitor()).call();
         }
+    }
 
+    private void garanteQueAlteracaoFoiParaGithub() throws IOException {
+        try (Git git = Git.open(origin)) {
+            Ref foo = git.getRepository().getRef("foo");
+            assertThat(foo, is(notNullValue()));
+
+            RevCommit commit = new RevWalk(git.getRepository()).parseCommit(foo.getObjectId());
+            assertThat(commit.getAuthorIdent().getName(), is("fulano"));
+            assertThat(commit.getAuthorIdent().getEmailAddress(), is("servicos@planejamento.gov.br"));
+            assertThat(commit.getFullMessage(), is("Alteração de teste"));
+        }
+    }
+
+    private void salvaAlteracao() throws IOException {
         repo.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
             Path relativo = Paths.get("README.md");
             Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
 
-            repo.pull();
+            Files.write(absoluto, asList("# Teste", "\n", absoluto.toString()), WRITE);
+            repo.commit(relativo, "Alteração de teste", new User("fulano", "123", emptyList()));
 
-            assertThat(Files.readAllLines(absoluto).get(0), is("# Teste 2"));
+            repo.push("foo");
 
             return null;
         }));
+    }
+
+    private void publicaAlteracao() {
+        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
+            repo.pull();
+
+            repo.merge(R_HEADS + "foo");
+            repo.push(R_HEADS + MASTER);
+
+            return null;
+        });
     }
 }
