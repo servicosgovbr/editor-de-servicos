@@ -1,6 +1,6 @@
 'use strict';
 
-var CabecalhoModel = require('cabecalho/modelo');
+var CabecalhoModel = require('cabecalho/cabecalho-model');
 var carregarPagina = require('editor-de-paginas/carregar');
 
 var modificado = m.prop(false);

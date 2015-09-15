@@ -1,6 +1,6 @@
 'use strict';
 
-var CabecalhoModel = require('cabecalho/modelo');
+var CabecalhoModel = require('cabecalho/cabecalho-model');
 var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
