@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
@@ -63,7 +64,7 @@ public class Orgaos implements InitializingBean {
                 .filter(new FiltroDeOrgaos(termo))
                 .map(u -> new Orgao().withNome(String.format("%s (%s)", u.getNome().trim(), u.getSigla().trim()))
                         .withId(u.getCodigoUnidade()))
-                .sorted((l, r) -> l.getNome().compareTo(r.getNome()))
+                .sorted(comparing(Orgao::getNome))
                 .collect(toList());
 
         log.info(append("orgaos.termo", termo).and(append("orgaos.resultados", busca.size())),
