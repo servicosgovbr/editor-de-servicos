@@ -13,10 +13,7 @@ import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
-import org.eclipse.jgit.lib.AnyObjectId;
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RefSpec;
@@ -49,8 +46,8 @@ import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
 import static net.logstash.logback.marker.Markers.appendArray;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
-import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE;
+import static org.eclipse.jgit.lib.ConfigConstants.*;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 
@@ -183,42 +180,44 @@ public class RepositorioGit {
                     .setListMode(REMOTE)
                     .call();
 
-            Ref result;
-            if (remoteBranches.contains(repository.getRef(DEFAULT_REMOTE_NAME + "/" + novoBranch))) {
-                result = git.checkout()
-                        .setName(novoBranch)
-                        .setStartPoint(DEFAULT_REMOTE_NAME + "/" + novoBranch)
-                        .setUpstreamMode(TRACK)
-                        .setCreateBranch(true)
-                        .call();
-                marker = marker.and(append("checkout.start.point", DEFAULT_REMOTE_NAME + "/" + novoBranch));
-
-            } else {
-                result = git.checkout()
-                        .setName(novoBranch)
-                        .setStartPoint(R_HEADS + MASTER)
-                        .setUpstreamMode(NOTRACK)
-                        .setCreateBranch(true)
-                        .call();
-                marker = marker.and(append("checkout.start.point", R_HEADS + MASTER));
+            if (!remoteBranches.contains(repository.getRef(DEFAULT_REMOTE_NAME + "/" + novoBranch))) {
+                createAndPush(novoBranch);
             }
 
-            marker = marker.and(append("checkout.result", result.getName()))
-                    .and(append("checkout.branch.existed", false));
+            StoredConfig config = git.getRepository().getConfig();
+            config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_REMOTE, DEFAULT_REMOTE_NAME);
+            config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
+            config.save();
 
-            log.info(marker, "git checkout {}", novoBranch);
-
-        } else {
-            Ref result = git.checkout()
-                    .setName(novoBranch)
-                    .setCreateBranch(false)
-                    .call();
-
-            marker = marker.and(append("checkout.result", result.getName()))
-                    .and(append("checkout.branch.existed", true));
-
-            log.info(marker, "git checkout {}", novoBranch);
+            marker = marker.and(append("checkout.branch.created", true));
         }
+
+        Ref result = git.checkout()
+                .setName(novoBranch)
+                .setCreateBranch(false)
+                .call();
+
+        marker = marker.and(append("checkout.result", result.getName()));
+
+        log.info(marker, "git checkout {}", novoBranch);
+    }
+
+    private void createAndPush(String novoBranch) throws GitAPIException, IOException {
+        Ref result = git.branchCreate()
+                .setName(novoBranch)
+                .setStartPoint(R_HEADS + MASTER)
+                .setUpstreamMode(NOTRACK)
+                .call();
+
+        LogstashMarker marker = append("git.branch", git.getRepository().getBranch())
+                .and(append("git.state", git.getRepository().getRepositoryState().toString()))
+                .and(append("branch.name", novoBranch))
+                .and(append("branch.start", R_HEADS + MASTER))
+                .and(append("branch.result", result.getName()));
+
+        log.info(marker, "git branch {}", novoBranch);
+
+        push(novoBranch);
     }
 
     @SneakyThrows
