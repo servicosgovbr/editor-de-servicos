@@ -50,7 +50,7 @@ public class RepositorioGitTest {
     @BeforeClass
     public static void setUpOrigin() throws Exception {
         Git.cloneRepository()
-                .setURI("/Users/cvillela/src/servicos.gov.br/cartas-de-servico")
+                .setURI("https://github.com/servicosgovbr/cartas-de-servico.git")
                 .setBare(true)
                 .setDirectory(origin)
                 .setProgressMonitor(new TextProgressMonitor())
