@@ -8,6 +8,7 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.marker.LogstashMarker;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -173,14 +174,23 @@ public class RepositorioGit {
                 .and(append("checkout.to", novoBranch));
 
         if (git.getRepository().getRefDatabase().getRef(branch) == null) {
-            Ref result = git.checkout()
-                    .setName(novoBranch)
-                    .setStartPoint(R_HEADS + MASTER)
-                    .setUpstreamMode(TRACK)
-                    .setCreateBranch(true)
-                    .call();
-
-
+            Ref result = null;
+            List<Ref> remoteBranchs = git.branchList().setListMode(ListBranchCommand.ListMode.REMOTE).call();
+            if (remoteBranchs.contains(git.getRepository().getRef(DEFAULT_REMOTE_NAME + "/" + novoBranch))) {
+                result = git.checkout()
+                        .setName(novoBranch)
+                        .setStartPoint(DEFAULT_REMOTE_NAME + "/" + novoBranch)
+                        .setUpstreamMode(TRACK)
+                        .setCreateBranch(true)
+                        .call();
+            } else {
+                result = git.checkout()
+                        .setName(novoBranch)
+                        .setStartPoint(R_HEADS + MASTER)
+                        .setUpstreamMode(TRACK)
+                        .setCreateBranch(true)
+                        .call();
+            }
             Marker marker = info.and(append("checkout.result", result.getName()))
                     .and(append("checkout.branch.created", false));
 
