@@ -26,7 +26,7 @@
     <b:bean id="oauth2AuthenticationProcessingFilter" class="org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter">
         <b:constructor-arg value="/googleLogin"/>
         <b:property name="restTemplate" ref="googleRestTemplate"/>
-        <b:property name="tokenServices" ref="tokenServices"/>
+        <b:property name="tokenServices" ref="googleTokenServices"/>
     </b:bean>
 
     <sec:authentication-manager alias="alternateAuthenticationManager">

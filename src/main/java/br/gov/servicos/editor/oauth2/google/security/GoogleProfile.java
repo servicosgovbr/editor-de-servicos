@@ -1,11 +1,14 @@
 package br.gov.servicos.editor.oauth2.google.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.Wither;
 
 @Getter
+@Wither
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GoogleProfile {
     String id;

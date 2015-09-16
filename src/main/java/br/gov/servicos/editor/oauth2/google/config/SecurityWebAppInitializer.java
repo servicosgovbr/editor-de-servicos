@@ -1,7 +1,5 @@
 package br.gov.servicos.editor.oauth2.google.config;
 
-import br.gov.servicos.editor.oauth2.google.security.GoogleAccessTokenConverter;
-import br.gov.servicos.editor.oauth2.google.security.GoogleTokenServices;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -90,21 +88,6 @@ public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationIni
         details.setClientAuthenticationScheme(form);
 
         return details;
-    }
-
-    /**
-     * These token classes are mostly a clone of the Spring classes but have the structure modified so that the response
-     * from Google can be handled.
-     */
-    @Bean
-    GoogleTokenServices tokenServices() {
-        GoogleTokenServices services = new GoogleTokenServices();
-        services.setCheckTokenEndpointUrl("https://www.googleapis.com/oauth2/v1/tokeninfo");
-        services.setClientId(clientId);
-        services.setClientSecret(clientSecret);
-        services.setAccessTokenConverter(new GoogleAccessTokenConverter());
-
-        return services;
     }
 
 }

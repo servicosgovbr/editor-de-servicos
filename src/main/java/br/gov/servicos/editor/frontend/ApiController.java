@@ -1,11 +1,10 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
+import br.gov.servicos.editor.oauth2.google.api.GoogleProfiles;
 import br.gov.servicos.editor.servicos.Orgao;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,23 +22,25 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/editar/api")
 class ApiController {
 
-    VCGE vcge;
     Orgaos orgaos;
     Siorg siorg;
+    VCGE vcge;
+    GoogleProfiles profiles;
     ListaDeConteudo listaDeConteudo;
 
     @Autowired
-    public ApiController(VCGE vcge, Orgaos orgaos, Siorg siorg, ListaDeConteudo listaDeConteudo) {
-        this.vcge = vcge;
+    public ApiController(Orgaos orgaos, Siorg siorg, VCGE vcge, GoogleProfiles profiles, ListaDeConteudo listaDeConteudo) {
         this.orgaos = orgaos;
         this.siorg = siorg;
+        this.vcge = vcge;
+        this.profiles = profiles;
         this.listaDeConteudo = listaDeConteudo;
     }
 
     @RequestMapping("/ping")
     @ResponseBody
-    Ping ping(@AuthenticationPrincipal User user) {
-        return new Ping(user.getUsername(), new Date().getTime());
+    Ping ping() {
+        return new Ping(profiles.get(), new Date().getTime());
     }
 
     @RequestMapping("/vcge")

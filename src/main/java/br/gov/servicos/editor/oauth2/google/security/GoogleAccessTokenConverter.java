@@ -19,29 +19,22 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
+@Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class GoogleAccessTokenConverter extends DefaultAccessTokenConverter {
 
     UserAuthenticationConverter userTokenConverter;
 
     public GoogleAccessTokenConverter() {
-        setUserTokenConverter(new DefaultUserAuthenticationConverter());
-    }
-
-    /**
-     * Converter for the part of the data in the token representing a user.
-     *
-     * @param userTokenConverter the userTokenConverter to set
-     */
-    public final void setUserTokenConverter(UserAuthenticationConverter userTokenConverter) {
-        this.userTokenConverter = userTokenConverter;
-        super.setUserTokenConverter(userTokenConverter);
+        userTokenConverter = new DefaultUserAuthenticationConverter();
+        setUserTokenConverter(userTokenConverter);
     }
 
     public OAuth2Authentication extractAuthentication(Map<String, ?> map) {

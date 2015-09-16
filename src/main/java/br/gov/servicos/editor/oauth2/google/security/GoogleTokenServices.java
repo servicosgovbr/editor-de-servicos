@@ -12,29 +12,28 @@
  *******************************************************************************/
 package br.gov.servicos.editor.oauth2.google.security;
 
-import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static java.lang.String.format;
@@ -45,37 +44,25 @@ import static org.springframework.security.crypto.codec.Base64.encode;
  * Copied from Spring Security OAuth2 to support the custom format for a Google Token which is different from what Spring supports
  */
 @Slf4j
+@Component
 @FieldDefaults(level = PRIVATE)
 public class GoogleTokenServices extends RemoteTokenServices {
 
-    RestOperations restTemplate;
+    String checkTokenEndpointUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo";
 
-    @Setter
-    String checkTokenEndpointUrl;
-
-    @Setter
+    @Value("${google.client.id}")
     String clientId;
 
-    @Setter
+    @Value("${google.client.secret}")
     String clientSecret;
 
-    AccessTokenConverter tokenConverter = new GoogleAccessTokenConverter();
+    RestOperations restTemplate;
+    AccessTokenConverter tokenConverter;
 
-    public GoogleTokenServices() {
-        restTemplate = new RestTemplate();
-        ((RestTemplate) restTemplate).setErrorHandler(new DefaultResponseErrorHandler() {
-            @Override
-            // Ignore 400
-            public void handleError(ClientHttpResponse response) throws IOException {
-                if (response.getRawStatusCode() != 400) {
-                    super.handleError(response);
-                }
-            }
-        });
-    }
-
-    public void setAccessTokenConverter(AccessTokenConverter accessTokenConverter) {
+    @Autowired
+    public GoogleTokenServices(GoogleAccessTokenConverter accessTokenConverter, RestTemplate restTemplate) {
         this.tokenConverter = accessTokenConverter;
+        this.restTemplate = restTemplate;
     }
 
     @Override

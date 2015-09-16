@@ -1,6 +1,8 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
+import br.gov.servicos.editor.oauth2.google.api.GoogleProfiles;
+import br.gov.servicos.editor.oauth2.google.security.GoogleProfile;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import static java.util.Optional.of;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,18 +36,24 @@ public class ApiControllerTest {
     @Mock
     ListaDeConteudo listaDeConteudo;
 
+    @Mock
+    GoogleProfiles googleProfiles;
+
     ApiController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ApiController(vcge, orgaos, siorg, listaDeConteudo);
+        controller = new ApiController(orgaos, siorg, vcge, googleProfiles, listaDeConteudo);
     }
 
     @Test
-    public void pingDeveRetornarLoginEHorario() throws Exception {
-        Ping ping = controller.ping(USUARIO);
+    public void pingDeveRetornarProfileEHorario() throws Exception {
+        GoogleProfile profile = new GoogleProfile().withEmail("foo@example.com");
 
-        assertThat(ping.getLogin(), is("Fulano de Tal"));
+        given(googleProfiles.get()).willReturn(profile);
+        Ping ping = controller.ping();
+
+        assertThat(ping.getProfile(), is(profile));
         assertThat(System.currentTimeMillis() - ping.getHorario(), is(lessThan(1000L)));
     }
 

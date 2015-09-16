@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
+import br.gov.servicos.editor.oauth2.google.security.GoogleProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +11,6 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class Ping {
-    String login;
+    GoogleProfile profile;
     Long horario;
 }
