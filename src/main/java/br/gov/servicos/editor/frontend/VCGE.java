@@ -3,6 +3,7 @@ package br.gov.servicos.editor.frontend;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -19,7 +20,7 @@ public class VCGE {
     RestTemplate rest;
 
     @Autowired
-    public VCGE(RestTemplate rest) {
+    public VCGE(@Qualifier("restTemplate") RestTemplate rest) {
         this.rest = rest;
     }
 

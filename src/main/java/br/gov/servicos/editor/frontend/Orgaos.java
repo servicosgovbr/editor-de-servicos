@@ -14,6 +14,7 @@ import lombok.experimental.Wither;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,7 @@ public class Orgaos implements InitializingBean {
     EstruturaOrganizacional estruturaOrganizacional;
 
     @Autowired
-    public Orgaos(RestTemplate rest, ObjectMapper mapper, Slugify slugify) {
+    public Orgaos(@Qualifier("restTemplate") RestTemplate rest, ObjectMapper mapper, Slugify slugify) {
         this.rest = rest;
         this.slugify = slugify;
         this.reader = mapper.reader(EstruturaOrganizacional.class);
