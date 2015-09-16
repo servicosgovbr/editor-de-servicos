@@ -28,7 +28,7 @@ import static java.util.Optional.empty;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class RepositorioGitTest {
 
@@ -91,6 +91,18 @@ public class RepositorioGitTest {
         salvaAlteracao();
         publicaAlteracao();
         garanteQueAlteracaoFoiPublicada();
+    }
+
+    @Test
+    public void moveBranch() throws Exception {
+        repo.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
+            repo.moveBranchPara("baz-bar");
+            return null;
+        }));
+
+        assertTrue(repo.branches().noneMatch(n -> n.equals("foo-bar")));
+        assertTrue(repo.branches().anyMatch(n -> n.equals("baz-bar")));
+
     }
 
     private void garanteQueAlteracaoFoiPublicada() throws IOException {

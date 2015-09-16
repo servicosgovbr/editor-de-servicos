@@ -362,4 +362,9 @@ public class RepositorioGit {
             }
         });
     }
+
+    @SneakyThrows
+    public void moveBranchPara(String novoBranch) {
+        Ref result = git.branchRename().setNewName(novoBranch).call();
+    }
 }
