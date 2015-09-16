@@ -1,7 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
-var modelos = require('./modelos');
+var ModeloPagina = require('pagina/modelo');
 var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 
@@ -25,7 +25,7 @@ var config = function (id, metadados) {
 
 var importar = function (cabecalho, json) {
   cabecalho.limparErro();
-  return new modelos.Pagina(json);
+  return new ModeloPagina(json);
 };
 
 var carregar = function (id, cabecalho) {

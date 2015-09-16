@@ -7,7 +7,7 @@ module.exports = function (m) {
     '/editar': require('bem-vindo'),
     '/editar/erro': require('erro'),
     '/editar/servico/:id': require('servico/editor'),
-    '/editar/orgao/:id': require('editor-de-paginas/editor'),
-    '/editar/pagina/:id': require('editor-de-paginas/editor')
+    '/editar/orgao/:id': require('pagina/editor'),
+    '/editar/pagina/:id': require('pagina/editor')
   });
 };

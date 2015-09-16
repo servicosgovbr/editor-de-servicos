@@ -1,6 +1,7 @@
 'use strict';
 
 var referencia = require('referencia');
+var tooltips = require('tooltips');
 
 module.exports = {
 
@@ -18,7 +19,8 @@ module.exports = {
     return m('fieldset#tipoDePagina', [
             m('h3', [
                 'Tipo de Página: ',
-                componenteTipo
+                componenteTipo,
+                args.novo ? m.component(tooltips.tipoPagina) : ''
             ])
         ]);
   }

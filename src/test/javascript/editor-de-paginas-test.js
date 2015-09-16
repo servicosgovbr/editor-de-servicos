@@ -1,7 +1,7 @@
 'use strict';
 
 var xhr = require('lib/mithril-fake-xhr')(window);
-var editor = require('editor-de-paginas/editor');
+var editor = require('pagina/editor');
 
 describe('editor', function () {
 
