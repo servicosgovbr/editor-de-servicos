@@ -12,6 +12,7 @@
  *******************************************************************************/
 package br.gov.servicos.editor.oauth2.google.security;
 
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
@@ -21,14 +22,13 @@ import org.springframework.security.oauth2.provider.token.UserAuthenticationConv
 
 import java.util.*;
 
+import static lombok.AccessLevel.PRIVATE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-/**
- * Copied the DefaultAccessTokenConverter and modified for Google token details.
- */
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class GoogleAccessTokenConverter extends DefaultAccessTokenConverter {
 
-    private UserAuthenticationConverter userTokenConverter;
+    UserAuthenticationConverter userTokenConverter;
 
     public GoogleAccessTokenConverter() {
         setUserTokenConverter(new DefaultUserAuthenticationConverter());
