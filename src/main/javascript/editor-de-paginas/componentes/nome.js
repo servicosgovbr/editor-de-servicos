@@ -9,8 +9,7 @@ module.exports = {
     var componenteNome = args.nome ?
       m.component(require('orgao/select-orgao'), {
         orgao: pagina.nome
-      })
-      : m('span', pagina.nome());
+      }) : pagina.nome();
 
     return m('fieldset#nome', [
       m('h3', [
