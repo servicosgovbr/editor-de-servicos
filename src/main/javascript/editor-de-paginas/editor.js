@@ -13,6 +13,7 @@ module.exports = {
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
     this.salvar = _.bind(function () {
+      window.console.log(this.pagina().nome());
       return salvarOrgao(this.pagina());
     }, this);
   },

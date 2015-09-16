@@ -27,7 +27,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class EditarOrgaoController {
     @ResponseBody
     @RequestMapping(value = "/editar/api/orgao/{id}", method = GET, produces = "application/json")
-    String editar(
+    public String editar(
             @PathVariable("id") PaginaDeOrgao pagina,
             HttpServletResponse response
     ) throws FileNotFoundException {
