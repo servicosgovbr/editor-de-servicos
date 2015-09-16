@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.paginas;
+package br.gov.servicos.editor.paginas.orgao;
 
 
 import br.gov.servicos.editor.cartas.PaginaDeOrgao;
@@ -24,10 +24,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class EditarPaginaController {
+public class EditarOrgaoController {
     @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/{id}", method = GET, produces = "application/json")
-    String editar(
+    @RequestMapping(value = "/editar/api/orgao/{id}", method = GET, produces = "application/json")
+    public String editar(
             @PathVariable("id") PaginaDeOrgao pagina,
             HttpServletResponse response
     ) throws FileNotFoundException {

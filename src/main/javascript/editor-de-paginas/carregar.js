@@ -9,7 +9,7 @@ var config = function (id, metadados) {
   return {
     method: 'GET',
 
-    url: '/editar/api/pagina/' + slugify(id),
+    url: '/editar/api/orgao/' + slugify(id),
 
     config: function (xhr) {
       xhr.setRequestHeader('Accept', 'application/json');

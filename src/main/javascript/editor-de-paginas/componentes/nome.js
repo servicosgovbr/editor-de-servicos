@@ -3,27 +3,20 @@
 var tooltips = require('editor-de-paginas/tooltips');
 
 module.exports = {
-
-  controller: function (args) {
-    this.pagina = args.pagina;
-  },
-
   view: function (ctrl, args) {
-    var pagina = ctrl.pagina();
+    var pagina = args.pagina();
+
+    var componenteNome = args.nome ?
+      m.component(require('orgao/select-orgao'), {
+        orgao: pagina.nome
+      }) : pagina.nome();
 
     return m('fieldset#nome', [
-            m('h3', [
-                'Nome da Página',
-                m.component(tooltips.nome)
-            ]),
-            m('div.input-container', {
-        class: pagina.nome.erro()
-      }, [
-                m('input[type=text]', {
-          onchange: m.withAttr('value', pagina.nome),
-          value: pagina.nome()
-        })
-            ])
-        ]);
+      m('h3', [
+          'Nome da Página',
+          m.component(tooltips.nome)
+      ]),
+      m('.input-container', componenteNome)
+    ]);
   }
 };

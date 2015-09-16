@@ -21,7 +21,8 @@ module.exports = {
           rows: 10,
           onchange: m.withAttr('value', pagina.conteudo),
           value: ctrl.pagina().conteudo(),
-          erro: ctrl.pagina().conteudo.erro()
+          erro: ctrl.pagina().conteudo.erro(),
+          maximo: args.maximo
         })
             ])
         ]);

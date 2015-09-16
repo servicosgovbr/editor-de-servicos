@@ -3,13 +3,14 @@
 module.exports = {
 
   controller: function (args) {
+    var maximo = args.maximo || 500;
     this.config = _.extend(args || {}, {
       onkeyup: m.withAttr('value', function (txt) {
-        this.caracteres(500 - txt.length);
+        this.caracteres(maximo - txt.length);
       }.bind(this))
 
     });
-    this.caracteres = m.prop(_.isString(this.config.value) ? 500 - this.config.value.length : 500);
+    this.caracteres = m.prop(_.isString(this.config.value) ? maximo - this.config.value.length : maximo);
   },
 
   view: function (ctrl, args) {

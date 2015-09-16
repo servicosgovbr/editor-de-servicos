@@ -113,6 +113,10 @@ div.input-container {
     @include validacao-erro-input('Campo não pode ultrapassar 500 caracteres', 127px);
   }
 
+  &.erro-max-1500 {
+    @include validacao-erro-input('Campo não pode ultrapassar 1500 caracteres', 127px);
+  }
+
   &.erro-max-150 {
     @include validacao-erro-input('Campo não pode ultrapassar 150 caracteres', 127px);
   }

@@ -2,6 +2,7 @@
 
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var carregarPagina = require('editor-de-paginas/carregar');
+var salvarOrgao = require('editor-de-paginas/salvar');
 
 var modificado = m.prop(false);
 
@@ -11,12 +12,16 @@ module.exports = {
     this.cabecalho = new CabecalhoModel();
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
-    this.salvar = function () {};
+    this.salvar = _.bind(function () {
+      window.console.log(this.pagina().nome());
+      return salvarOrgao(this.pagina());
+    }, this);
   },
 
   view: function (ctrl) {
     var binding = {
-      pagina: ctrl.pagina
+      pagina: ctrl.pagina,
+      novo: m.route.param('id') === 'novo'
     };
 
     return m('#conteudo', {
@@ -48,7 +53,9 @@ module.exports = {
           m('.scroll', [
             m.component(require('editor-de-paginas/componentes/tipo-de-pagina'), binding),
             m.component(require('editor-de-paginas/componentes/nome'), binding),
-            m.component(require('editor-de-paginas/componentes/conteudo'), binding)
+            m.component(require('editor-de-paginas/componentes/conteudo'), _.assign(binding, {
+              maximo: 1500
+            }))
           ])
         )
       ])

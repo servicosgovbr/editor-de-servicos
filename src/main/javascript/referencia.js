@@ -3,6 +3,19 @@
 var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
 
+var tiposDePaginaList = [
+  'Área de Conhecimento',
+  'Página Especial',
+  'Órgão',
+].map(function (t) {
+  return {
+    id: slugify(t),
+    text: t
+  };
+});
+
+var tiposDePaginaMap = _.indexBy(tiposDePaginaList, 'id');
+
 module.exports = {
 
   segmentosDaSociedade: [
@@ -87,14 +100,9 @@ module.exports = {
     });
   }, erro)),
 
-  tiposDePagina: [
-    'Área de Conhecimento',
-    'Página Especial',
-    'Órgão',
-  ].map(function (t) {
-    return {
-      id: slugify(t),
-      text: t
-    };
-  }),
+  tiposDePagina: tiposDePaginaList,
+
+  tipoDePagina: function (id) {
+    return tiposDePaginaMap[id].text;
+  }
 };

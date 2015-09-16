@@ -24,8 +24,7 @@ class EditarCartaController {
     @RequestMapping(value = "/editar/api/servico/v3/{id}", method = GET, produces = "application/xml")
     String editar(
             @PathVariable("id") Carta carta,
-            HttpServletResponse response
-    ) throws FileNotFoundException {
+            HttpServletResponse response) throws FileNotFoundException {
         Metadados<Carta.Servico> metadados = carta.getMetadados();
 
         ofNullable(metadados.getPublicado()).ifPresent(r -> {
