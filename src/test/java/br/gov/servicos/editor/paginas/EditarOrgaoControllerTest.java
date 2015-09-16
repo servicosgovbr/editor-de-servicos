@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.paginas;
 
 import br.gov.servicos.editor.cartas.PaginaDeOrgao;
+import br.gov.servicos.editor.paginas.orgao.EditarOrgaoController;
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Revisao;
 import org.junit.Before;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EditarPaginaControllerTest {
+public class EditarOrgaoControllerTest {
 
     static final Date HORARIO = new Date();
 
@@ -35,11 +36,11 @@ public class EditarPaginaControllerTest {
     @Mock
     PaginaDeOrgao pagina;
 
-    EditarPaginaController controller;
+    EditarOrgaoController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new EditarPaginaController();
+        controller = new EditarOrgaoController();
     }
 
     @Test
