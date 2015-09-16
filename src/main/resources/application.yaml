@@ -32,6 +32,5 @@ google:
   access.token.uri: 'https://accounts.google.com/o/oauth2/token'
   user.authorization.uri: 'https://accounts.google.com/o/oauth2/auth'
   authorization.code: 'authorization_code'
-  preestablished.redirect.url: 'http://localhost:8090/googleLogin'
   user.info.uri: 'https://www.googleapis.com/oauth2/v2/userinfo?access_token={token}'
   token.info.uri: 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={token}'

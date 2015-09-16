@@ -81,7 +81,6 @@ public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationIni
         details.setUserAuthorizationUri(userAuthorizationUri);
         details.setTokenName(authorizationCode);
         details.setScope(asList(authScope.split(",")));
-        details.setPreEstablishedRedirectUri(preestablishedRedirectUrl);
 
         details.setUseCurrentUri(false);
         details.setAuthenticationScheme(query);
