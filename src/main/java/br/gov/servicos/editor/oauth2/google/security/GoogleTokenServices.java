@@ -20,8 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -38,6 +36,8 @@ import java.util.Map;
 
 import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.security.crypto.codec.Base64.encode;
 
 /**
@@ -48,13 +48,14 @@ import static org.springframework.security.crypto.codec.Base64.encode;
 @FieldDefaults(level = PRIVATE)
 public class GoogleTokenServices extends RemoteTokenServices {
 
-    String checkTokenEndpointUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo";
-
     @Value("${google.client.id}")
     String clientId;
 
     @Value("${google.client.secret}")
     String clientSecret;
+
+    @Value("${google.token.info.uri}")
+    String tokenInfoUri;
 
     RestOperations restTemplate;
     AccessTokenConverter tokenConverter;
@@ -86,8 +87,12 @@ public class GoogleTokenServices extends RemoteTokenServices {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", authorizationHeader(clientId, clientSecret));
+        headers.setContentType(APPLICATION_FORM_URLENCODED);
 
-        return postForMap(checkTokenEndpointUrl + "?access_token=" + accessToken, formData, headers);
+        ParameterizedTypeReference<Map<String, Object>> map = new ParameterizedTypeReference<Map<String, Object>>() {
+        };
+
+        return restTemplate.exchange(tokenInfoUri, POST, new HttpEntity<>(formData, headers), map, accessToken).getBody();
     }
 
     private void transformNonStandardValuesToStandardValues(Map<String, Object> map) {
@@ -100,13 +105,4 @@ public class GoogleTokenServices extends RemoteTokenServices {
         return "Basic " + new String(encode(format("%s:%s", clientId, clientSecret).getBytes("UTF-8")));
     }
 
-    private Map<String, Object> postForMap(String path, MultiValueMap<String, String> formData, HttpHeaders headers) {
-        if (headers.getContentType() == null) {
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        }
-
-        ParameterizedTypeReference<Map<String, Object>> map = new ParameterizedTypeReference<Map<String, Object>>() {
-        };
-        return restTemplate.exchange(path, HttpMethod.POST, new HttpEntity<>(formData, headers), map).getBody();
-    }
 }
