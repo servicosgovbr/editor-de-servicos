@@ -50,9 +50,6 @@ public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationIni
     @Value("${google.auth.scope}")
     String authScope;
 
-    @Value("${google.preestablished.redirect.url}")
-    String preestablishedRedirectUrl;
-
     /**
      * This authentication entry point is used for all the unauthenticated or unauthorised sessions to be directed to the
      * /googleLogin URL which is then intercepted by the oAuth2AuthenticationProcessingFilter to trigger authentication from
@@ -75,6 +72,7 @@ public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationIni
         AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
 
         details.setId("google-oauth-client");
+
         details.setClientId(clientId);
         details.setClientSecret(clientSecret);
         details.setAccessTokenUri(accessTokenUri);
@@ -82,7 +80,7 @@ public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationIni
         details.setTokenName(authorizationCode);
         details.setScope(asList(authScope.split(",")));
 
-        details.setUseCurrentUri(false);
+        details.setUseCurrentUri(true);
         details.setAuthenticationScheme(query);
         details.setClientAuthenticationScheme(form);
 
