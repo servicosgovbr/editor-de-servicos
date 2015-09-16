@@ -20,7 +20,8 @@ module.exports = {
 
   view: function (ctrl) {
     var binding = {
-      pagina: ctrl.pagina
+      pagina: ctrl.pagina,
+      novo: m.route.param('id') === 'novo'
     };
 
     return m('#conteudo', {

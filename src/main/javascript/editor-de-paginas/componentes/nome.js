@@ -6,16 +6,18 @@ module.exports = {
   view: function (ctrl, args) {
     var pagina = args.pagina();
 
+    var componenteNome = args.nome ?
+      m.component(require('orgao/select-orgao'), {
+        orgao: pagina.nome
+      })
+      : m('span', pagina.nome());
+
     return m('fieldset#nome', [
       m('h3', [
           'Nome da Página',
           m.component(tooltips.nome)
       ]),
-      m('.input-container', [
-        m.component(require('orgao/select-orgao'), {
-          orgao: pagina.nome
-        })
-      ])
+      m('.input-container', componenteNome)
     ]);
   }
 };
