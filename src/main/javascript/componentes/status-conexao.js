@@ -1,7 +1,7 @@
 'use strict';
 
 var httpOk = function (resp) {
-  if (resp.login) {
+  if (resp.profile.id) {
     this.attr('class', '')
       .attr('title', 'Conexão estabelecida')
       .html('');

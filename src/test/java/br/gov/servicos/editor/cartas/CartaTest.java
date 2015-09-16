@@ -13,7 +13,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +22,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static java.util.Collections.emptyList;
+import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.core.Is.is;
@@ -158,12 +157,10 @@ public class CartaTest {
 
     @Test
     public void salvaConteudoNoBranch() throws Exception {
-        User usuario = new User("Fulano de Tal", "", emptyList());
-
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
                 .willReturn(null);
 
-        carta.salvar(usuario, "<servico/>");
+        carta.salvar(GOOGLE_PROFILE, "<servico/>");
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
@@ -175,7 +172,7 @@ public class CartaTest {
         Path caminho = Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml");
 
         verify(repositorio).add(caminho);
-        verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", usuario);
+        verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", GOOGLE_PROFILE);
         verify(repositorio).push("refs/heads/um-id-qualquer");
     }
 

@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.cartas;
 
+import br.gov.servicos.editor.oauth2.google.security.UserProfile;
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
@@ -9,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.User;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -74,14 +74,14 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @CacheEvict
-    public void salvar(User usuario, String conteudo) {
+    public void salvar(UserProfile profile, String conteudo) {
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
             String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
 
             repositorio.pull();
             escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
             repositorio.add(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), mensagem, usuario);
+            repositorio.commit(getCaminhoRelativo(), mensagem, profile);
             repositorio.push(getBranchRef());
 
             return null;
@@ -89,12 +89,12 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @CacheEvict
-    public void remover(User usuario) {
+    public void remover(UserProfile profile) {
         repositorio.comRepositorioAbertoNoBranch(this.getBranchRef(), () -> {
             repositorio.pull();
 
             repositorio.remove(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", usuario);
+            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
             repositorio.push(getBranchRef());
 
             return null;

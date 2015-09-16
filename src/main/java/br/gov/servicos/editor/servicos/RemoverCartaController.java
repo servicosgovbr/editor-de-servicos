@@ -1,11 +1,11 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
+import br.gov.servicos.editor.oauth2.google.api.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +19,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class RemoverCartaController {
 
+    UserProfiles userProfiles;
+
+    @Autowired
+    public RemoverCartaController(UserProfiles userProfiles) {
+        this.userProfiles = userProfiles;
+    }
+
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/editar/api/servico/{id}", method = DELETE)
-    void remover(
-            @PathVariable("id") Carta carta,
-            @AuthenticationPrincipal User usuario
-    ) {
-        carta.remover(usuario);
+    void remover(@PathVariable("id") Carta carta) {
+        carta.remover(userProfiles.get());
     }
 
 }

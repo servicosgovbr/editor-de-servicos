@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.cartas;
 
+import br.gov.servicos.editor.utils.TestData;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -10,7 +11,6 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.security.core.userdetails.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,6 @@ import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
@@ -156,7 +155,7 @@ public class RepositorioGitTest {
             Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
 
             Files.write(absoluto, asList("# Teste", "\n", absoluto.toString()), WRITE);
-            repo.commit(relativo, "Alteração de teste", new User("fulano", "123", emptyList()));
+            repo.commit(relativo, "Alteração de teste", TestData.GOOGLE_PROFILE);
 
             repo.push("foo");
 

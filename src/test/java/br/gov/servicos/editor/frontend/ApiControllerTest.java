@@ -1,16 +1,14 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
-import br.gov.servicos.editor.oauth2.google.api.GoogleProfiles;
-import br.gov.servicos.editor.oauth2.google.security.GoogleProfile;
+import br.gov.servicos.editor.oauth2.google.api.UserProfiles;
+import br.gov.servicos.editor.oauth2.google.security.UserProfile;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.User;
 
-import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
@@ -21,8 +19,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApiControllerTest {
-
-    public static final User USUARIO = new User("Fulano de Tal", "", emptyList());
 
     @Mock
     VCGE vcge;
@@ -37,20 +33,20 @@ public class ApiControllerTest {
     ListaDeConteudo listaDeConteudo;
 
     @Mock
-    GoogleProfiles googleProfiles;
+    UserProfiles userProfiles;
 
     ApiController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ApiController(orgaos, siorg, vcge, googleProfiles, listaDeConteudo);
+        controller = new ApiController(orgaos, siorg, vcge, userProfiles, listaDeConteudo);
     }
 
     @Test
     public void pingDeveRetornarProfileEHorario() throws Exception {
-        GoogleProfile profile = new GoogleProfile().withEmail("foo@example.com");
+        UserProfile profile = new UserProfile().withEmail("foo@example.com");
 
-        given(googleProfiles.get()).willReturn(profile);
+        given(userProfiles.get()).willReturn(profile);
         Ping ping = controller.ping();
 
         assertThat(ping.getProfile(), is(profile));

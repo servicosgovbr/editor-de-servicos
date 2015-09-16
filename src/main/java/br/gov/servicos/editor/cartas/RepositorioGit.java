@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.cartas;
 
+import br.gov.servicos.editor.oauth2.google.security.UserProfile;
 import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.LogstashProgressMonitor;
 import lombok.SneakyThrows;
@@ -24,7 +25,6 @@ import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -229,8 +229,8 @@ public class RepositorioGit {
     }
 
     @SneakyThrows
-    public void commit(Path caminho, String mensagem, User usuario) {
-        PersonIdent ident = new PersonIdent(usuario.getUsername(), "servicos@planejamento.gov.br");
+    public void commit(Path caminho, String mensagem, UserProfile profile) {
+        PersonIdent ident = new PersonIdent(profile.getName(), profile.getEmail());
         try {
             RevCommit result = git.commit()
                     .setMessage(mensagem)

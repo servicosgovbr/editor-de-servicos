@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
-import br.gov.servicos.editor.oauth2.google.api.GoogleProfiles;
+import br.gov.servicos.editor.oauth2.google.api.UserProfiles;
 import br.gov.servicos.editor.servicos.Orgao;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ class ApiController {
     Orgaos orgaos;
     Siorg siorg;
     VCGE vcge;
-    GoogleProfiles profiles;
+    UserProfiles profiles;
     ListaDeConteudo listaDeConteudo;
 
     @Autowired
-    public ApiController(Orgaos orgaos, Siorg siorg, VCGE vcge, GoogleProfiles profiles, ListaDeConteudo listaDeConteudo) {
+    public ApiController(Orgaos orgaos, Siorg siorg, VCGE vcge, UserProfiles profiles, ListaDeConteudo listaDeConteudo) {
         this.orgaos = orgaos;
         this.siorg = siorg;
         this.vcge = vcge;

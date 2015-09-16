@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.servicos;
 
 import br.gov.servicos.editor.cartas.Carta;
+import br.gov.servicos.editor.oauth2.google.api.UserProfiles;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,11 +9,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.function.Supplier;
 
-import static java.util.Collections.emptyList;
+import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -21,22 +22,25 @@ public class RemoverCartaControllerTest {
     @Mock
     Carta carta;
 
+    @Mock
+    UserProfiles userProfiles;
+
     @Captor
     ArgumentCaptor<Supplier<Void>> captor;
 
     RemoverCartaController controller;
 
-    public static final User USUARIO = new User("Fulano de Tal", "", emptyList());
-
     @Before
     public void setUp() throws Exception {
-        controller = new RemoverCartaController();
+        controller = new RemoverCartaController(userProfiles);
     }
 
     @Test
     public void removeCartaExistente() throws Exception {
-        controller.remover(carta, USUARIO);
+        given(userProfiles.get()).willReturn(GOOGLE_PROFILE);
 
-        verify(carta).remover(USUARIO);
+        controller.remover(carta);
+
+        verify(carta).remover(GOOGLE_PROFILE);
     }
 }

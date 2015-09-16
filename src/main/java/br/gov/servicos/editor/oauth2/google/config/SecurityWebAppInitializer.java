@@ -38,10 +38,10 @@ public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationIni
     @Value("${google.client.secret}")
     String clientSecret;
 
-    @Value("${google.accessTokenUri}")
+    @Value("${google.access.token.uri}")
     String accessTokenUri;
 
-    @Value("${google.userAuthorizationUri}")
+    @Value("${google.user.authorization.uri}")
     String userAuthorizationUri;
 
     @Value("${google.authorization.code}")

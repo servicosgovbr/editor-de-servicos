@@ -10,7 +10,7 @@ import lombok.experimental.Wither;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GoogleProfile {
+public class UserProfile {
     String id;
 
     String email;
