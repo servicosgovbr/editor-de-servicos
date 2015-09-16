@@ -2,11 +2,10 @@ package br.gov.servicos.editor.paginas.orgao;
 
 
 import br.gov.servicos.editor.cartas.PaginaDeOrgao;
+import br.gov.servicos.editor.oauth2.google.api.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,19 +22,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SalvarOrgaoController {
 
     FormatadorConteudoOrgao formatador;
+    UserProfiles userProfiles;
 
     @Autowired
-    public SalvarOrgaoController(FormatadorConteudoOrgao formatador) {
+    public SalvarOrgaoController(FormatadorConteudoOrgao formatador, UserProfiles userProfiles) {
         this.formatador = formatador;
+        this.userProfiles = userProfiles;
     }
 
     @ResponseBody
     @RequestMapping(value = "/editar/orgao/{id}", method = POST)
     RedirectView editar(@PathVariable("id") PaginaDeOrgao pagina,
-                        @RequestBody PaginaDeOrgao.Orgao orgao,
-                        @AuthenticationPrincipal User usuario) {
+                        @RequestBody PaginaDeOrgao.Orgao orgao) {
 
-        pagina.salvar(usuario, formatador.formatar(orgao));
+        pagina.salvar(userProfiles.get(), formatador.formatar(orgao));
 
         return new RedirectView("/editar/api/orgao/" + pagina.getId());
     }
