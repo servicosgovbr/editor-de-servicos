@@ -95,15 +95,38 @@ public class RepositorioGitTest {
 
     @Test
     public void moveBranch() throws Exception {
+        User usuario = new User("Fulano de Tal", "", emptyList());
+
         repo.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
+            Path origem = Paths.get("README.md");
+            Path destino = Paths.get("baz-bar.md");
             repo.moveBranchPara("baz-bar");
+            Files.move(repo.getCaminhoAbsoluto().resolve(origem), repo.getCaminhoAbsoluto().resolve(destino));
+            repo.remove(origem);
+            repo.add(destino);
+            repo.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", usuario);
+            repo.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", usuario);
+            repo.push("baz-bar");
             return null;
         }));
 
         assertTrue(repo.branches().noneMatch(n -> n.equals("foo-bar")));
         assertTrue(repo.branches().anyMatch(n -> n.equals("baz-bar")));
 
+        repo.comRepositorioAbertoNoBranch("baz-bar", uncheckedSupplier(() -> {
+            Path antigo = repo.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
+            Path novo = repo.getCaminhoAbsoluto().resolve(Paths.get("baz-bar.md"));
+
+            repo.pull();
+
+            assertTrue(Files.notExists(antigo));
+            assertTrue(Files.exists(novo));
+            return null;
+        }));
+
     }
+
+
 
     private void garanteQueAlteracaoFoiPublicada() throws IOException {
         try (Git git = Git.open(github)) {
