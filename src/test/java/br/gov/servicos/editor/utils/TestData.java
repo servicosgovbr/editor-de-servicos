@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.utils;
 
-import br.gov.servicos.editor.oauth2.google.security.UserProfile;
+import br.gov.servicos.editor.oauth2.UserProfile;
 
 public class TestData {
 

@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.oauth2.google.security;
+package br.gov.servicos.editor.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

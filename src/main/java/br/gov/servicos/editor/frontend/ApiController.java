@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.cartas.ListaDeConteudo;
-import br.gov.servicos.editor.oauth2.google.api.UserProfiles;
+import br.gov.servicos.editor.oauth2.UserProfiles;
 import br.gov.servicos.editor.servicos.Orgao;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;

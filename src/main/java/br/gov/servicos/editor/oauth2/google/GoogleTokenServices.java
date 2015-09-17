@@ -10,7 +10,7 @@
  * subcomponents is subject to the terms and conditions of the
  * subcomponent's license, as noted in the LICENSE file.
  *******************************************************************************/
-package br.gov.servicos.editor.oauth2.google.security;
+package br.gov.servicos.editor.oauth2.google;
 
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;

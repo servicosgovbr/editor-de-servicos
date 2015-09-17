@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.cartas;
 
-import br.gov.servicos.editor.oauth2.google.security.UserProfile;
+import br.gov.servicos.editor.oauth2.UserProfile;
 import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
