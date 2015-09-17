@@ -103,6 +103,12 @@ module.exports = {
   tiposDePagina: tiposDePaginaList,
 
   tipoDePagina: function (id) {
-    return tiposDePaginaMap[id].text;
+    var tipo = tiposDePaginaMap[id];
+
+    if (!tipo) {
+      throw new Error('Tipo de página não encontrado para id: ' + id);
+    }
+
+    return tipo.text;
   }
 };

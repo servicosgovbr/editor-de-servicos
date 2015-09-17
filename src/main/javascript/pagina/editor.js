@@ -4,7 +4,13 @@ var CabecalhoModel = require('cabecalho/cabecalho-model');
 var carregarPagina = require('pagina/carregar');
 var salvarOrgao = require('pagina/salvar');
 
-var modificado = m.prop(false);
+function safeGet(obj, propName) {
+  var value = _.property(propName)(obj);
+  if (!value) {
+    throw new Error(propName + ' não foi informado: ' + value);
+  }
+  return value;
+}
 
 module.exports = {
 
@@ -12,12 +18,25 @@ module.exports = {
     this.cabecalho = new CabecalhoModel();
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
+    this.modificado = m.prop(false);
+
     this.salvar = _.bind(function () {
       return salvarOrgao(this.pagina());
     }, this);
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var tipo = safeGet(args, 'tipo');
+    var componenteNome = safeGet(args, 'componenteNome');
+    var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
+    var tooltips = {
+      tipo: safeGet(args, 'tooltips.tipo'),
+      nome: safeGet(args, 'tooltips.nome'),
+      conteudo: safeGet(args, 'tooltips.conteudo')
+    };
+
+    ctrl.pagina().tipo(tipo);
+
     var binding = {
       pagina: ctrl.pagina,
       novo: m.route.param('id') === 'novo'
@@ -30,11 +49,11 @@ module.exports = {
         }
 
         jQuery(element).on('change', function () {
-          modificado(true);
+          ctrl.modificado(true);
         });
 
         jQuery(window).bind('beforeunload', function () {
-          if (modificado()) {
+          if (ctrl.modificado()) {
             return 'Suas últimas alterações ainda não foram salvas.';
           }
         });
@@ -50,10 +69,16 @@ module.exports = {
         }),
         m('#servico',
           m('.scroll', [
-            m.component(require('pagina/componentes/tipo-de-pagina'), binding),
-            m.component(require('pagina/componentes/nome'), binding),
+            m.component(require('pagina/componentes/tipo-de-pagina'), _.assign(binding, {
+              tooltipTipo: tooltips.tipo
+            })),
+            m.component(require('pagina/componentes/nome'), _.assign(binding, {
+              componente: componenteNome,
+              tooltipNome: tooltips.nome
+            })),
             m.component(require('pagina/componentes/conteudo'), _.assign(binding, {
-              maximo: 1500
+              maximo: tamanhoConteudo,
+              tooltipConteudo: tooltips.conteudo
             }))
           ])
         )

@@ -1,7 +1,5 @@
 'use strict';
 
-var tooltips = require('tooltips');
-
 module.exports = {
 
   controller: function (args) {
@@ -14,7 +12,7 @@ module.exports = {
     return m('fieldset#conteudo-pagina', [
       m('h3', [
         'Conteúdo da Página',
-        m.component(tooltips.conteudoOrgao)
+        m.component(args.tooltipConteudo)
       ]),
       m('.input-container', [
         m.component(require('componentes/editor-markdown'), {

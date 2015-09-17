@@ -20,31 +20,24 @@ module.exports = {
           };
         },
         processResults: function (data, page) {
-
           var result = _.map(data, function (o) {
             return {
               id: o.id,
               text: o.nome
             };
           });
-
           return {
             results: result
           };
-
         },
         cache: true
-
       },
-
       prop: args.orgao,
       width: '100%',
       minimumResultsForSearch: 1,
       minimumInputLength: 3,
       initSelection: function (element, callback) {
-
         m.request({
-
           method: 'GET',
           url: '/editar/api/orgao',
           data: {
@@ -53,7 +46,6 @@ module.exports = {
           deserialize: function (data) {
             return data;
           }
-
         }).then(function (orgao) {
           callback({
             id: args.orgao(),
@@ -62,9 +54,6 @@ module.exports = {
         }, erro);
 
       }
-
     });
-
   }
-
 };
