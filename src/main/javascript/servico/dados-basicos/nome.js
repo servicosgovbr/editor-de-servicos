@@ -1,5 +1,7 @@
 'use strict';
 
+var slugify = require('slugify');
+
 module.exports = {
 
   controller: function (args) {
@@ -16,7 +18,29 @@ module.exports = {
       onchange: m.withAttr('value', servico.nome),
       value: servico.nome(),
       autofocus: 'autofocus'
-    })) : m('span', servico.nome());
+    })) : m('div', [
+            m('span', servico.nome()),
+            m('button.remove', {
+                onclick: function () {
+                    alertify.prompt('Novo nome do serviço:',
+                        function (e, str) {
+                            if (e) {
+                                var idAtual = slugify(servico.nome());
+                                var novoId = slugify(str);
+                                m.request({
+                                    method: 'PATCH',
+                                    url: '/editar/api/servico/' + idAtual + '/' + novoId
+                                }).then(function() {
+                                    servico.nome(str);
+                                });
+                            }
+
+                        },
+                        servico.nome()
+                    );
+                }
+            })
+        ]);
 
     return m('fieldset#nome', [
       m('h2', 'dados básicos'),
