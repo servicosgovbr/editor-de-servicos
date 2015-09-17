@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
+import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.core.Is.is;
@@ -160,7 +160,7 @@ public class CartaTest {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/um-id-qualquer"), captor.capture()))
                 .willReturn(null);
 
-        carta.salvar(GOOGLE_PROFILE, "<servico/>");
+        carta.salvar(PROFILE, "<servico/>");
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
@@ -172,7 +172,7 @@ public class CartaTest {
         Path caminho = Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml");
 
         verify(repositorio).add(caminho);
-        verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", GOOGLE_PROFILE);
+        verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", PROFILE);
         verify(repositorio).push("refs/heads/um-id-qualquer");
     }
 

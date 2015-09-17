@@ -12,10 +12,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.Supplier;
 
-import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
+import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RenomearCartaControllerTest {
@@ -38,10 +37,10 @@ public class RenomearCartaControllerTest {
 
     @Test
     public void removeCartaExistente() throws Exception {
-        given(userProfiles.get()).willReturn(GOOGLE_PROFILE);
+        given(userProfiles.get()).willReturn(PROFILE);
 
         controller.renomear(carta, "novo-id");
 
-        verify(carta).renomear(GOOGLE_PROFILE, "novo-id");
+        verify(carta).renomear(PROFILE, "novo-id");
     }
 }

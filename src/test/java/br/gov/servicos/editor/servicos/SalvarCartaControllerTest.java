@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
 
-import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
+import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -40,7 +40,7 @@ public class SalvarCartaControllerTest {
 
     @Test
     public void deveReformatarAntesDeSalvar() throws Exception {
-        given(userProfiles.get()).willReturn(GOOGLE_PROFILE);
+        given(userProfiles.get()).willReturn(PROFILE);
 
         controller.salvar(carta, DOM);
 
@@ -49,12 +49,12 @@ public class SalvarCartaControllerTest {
 
     @Test
     public void deveDelegarSalvamentoParaCarta() throws Exception {
-        given(userProfiles.get()).willReturn(GOOGLE_PROFILE);
+        given(userProfiles.get()).willReturn(PROFILE);
         given(reformatadorXml.formata(DOM)).willReturn("<servico/>");
 
         controller.salvar(carta, DOM);
 
-        verify(carta).salvar(GOOGLE_PROFILE, "<servico/>");
+        verify(carta).salvar(PROFILE, "<servico/>");
     }
 
     @Test

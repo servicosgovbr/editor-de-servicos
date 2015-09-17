@@ -12,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.Supplier;
 
-import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
+import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -37,10 +37,10 @@ public class RemoverCartaControllerTest {
 
     @Test
     public void removeCartaExistente() throws Exception {
-        given(userProfiles.get()).willReturn(GOOGLE_PROFILE);
+        given(userProfiles.get()).willReturn(PROFILE);
 
         controller.remover(carta);
 
-        verify(carta).remover(GOOGLE_PROFILE);
+        verify(carta).remover(PROFILE);
     }
 }

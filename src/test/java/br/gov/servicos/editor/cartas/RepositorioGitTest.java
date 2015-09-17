@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
+import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.StandardOpenOption.WRITE;
@@ -107,8 +107,8 @@ public class RepositorioGitTest {
             Files.move(repo.getCaminhoAbsoluto().resolve(origem), repo.getCaminhoAbsoluto().resolve(destino));
             repo.remove(origem);
             repo.add(destino);
-            repo.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", GOOGLE_PROFILE);
-            repo.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", GOOGLE_PROFILE);
+            repo.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", PROFILE);
+            repo.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", PROFILE);
             repo.push("baz-bar");
             return null;
         }));
@@ -193,7 +193,7 @@ public class RepositorioGitTest {
             Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
 
             Files.write(absoluto, asList("# Teste", "\n", absoluto.toString()), WRITE);
-            repo.commit(relativo, "Alteração de teste", GOOGLE_PROFILE);
+            repo.commit(relativo, "Alteração de teste", PROFILE);
 
             repo.push("foo");
 
