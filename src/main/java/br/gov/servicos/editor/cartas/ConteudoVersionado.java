@@ -6,16 +6,21 @@ import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
+import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -114,7 +119,24 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @CacheEvict
-    public void renomear(String novoBranch) {
+    public void renomear(UserProfile profile, String novoNome) {
+        repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
+            try {
+                String mensagem = format("Renomeia '%s' para '%s'", getId(), novoNome);
+                Path novoCaminho = getCaminhoRelativo().resolveSibling(novoNome + ".xml");
+                repositorio.moveBranchPara(novoNome);
+                Files.move(getCaminhoRelativo(), novoCaminho);
+                repositorio.remove(getCaminhoRelativo());
+                repositorio.add(novoCaminho);
+                repositorio.commit(getCaminhoRelativo(), mensagem, profile);
+                repositorio.commit(novoCaminho, mensagem, profile);
+                repositorio.push(novoNome);
+                return null;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
     }
 
     @CacheEvict
