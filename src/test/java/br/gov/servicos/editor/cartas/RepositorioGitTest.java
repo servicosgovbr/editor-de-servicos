@@ -94,7 +94,12 @@ public class RepositorioGitTest {
     }
 
     @Test
-    public void moveBranch() throws Exception {
+    public void fluxoDeMoverBranch() throws Exception {
+        moveBranch();
+        garanteQueBranchFoiMovida();
+    }
+
+    private void moveBranch() throws IOException {
         User usuario = new User("Fulano de Tal", "", emptyList());
 
         repo.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
@@ -109,7 +114,9 @@ public class RepositorioGitTest {
             repo.push("baz-bar");
             return null;
         }));
+    }
 
+    private void garanteQueBranchFoiMovida() {
         assertTrue(repo.branches().noneMatch(n -> n.equals("foo-bar")));
         assertTrue(repo.branches().anyMatch(n -> n.equals("baz-bar")));
 
@@ -123,9 +130,7 @@ public class RepositorioGitTest {
             assertTrue(Files.exists(novo));
             return null;
         }));
-
     }
-
 
 
     private void garanteQueAlteracaoFoiPublicada() throws IOException {
