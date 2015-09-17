@@ -111,7 +111,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         http.addFilterAfter(oauth2ClientContextFilter, ExceptionTranslationFilter.class);
         http.addFilterBefore(oauth2ClientAuthenticationProcessingFilter, FilterSecurityInterceptor.class);
 
-        http.logout().logoutUrl("/editar/logout");
+        http.logout().logoutUrl("/editar/logout").logoutSuccessUrl("/editar/");
         http.anonymous().disable();
         http.csrf().disable();
 
