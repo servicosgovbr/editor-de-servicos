@@ -114,6 +114,11 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @CacheEvict
+    public void renomear(String novoBranch) {
+
+    }
+
+    @CacheEvict
     public String getConteudoRaw() throws FileNotFoundException {
         return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
             repositorio.pull();
