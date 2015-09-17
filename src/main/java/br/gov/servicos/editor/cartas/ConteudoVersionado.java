@@ -115,7 +115,6 @@ public abstract class ConteudoVersionado<T> {
 
     @CacheEvict
     public void renomear(String novoBranch) {
-
     }
 
     @CacheEvict

@@ -365,9 +365,15 @@ public class RepositorioGit {
 
     @SneakyThrows
     public void moveBranchPara(String novoBranch) {
+        String antigo = git.getRepository().getBranch();
+
         git.branchRename().setNewName(novoBranch).call();
-        LogstashMarker marker = append("git.state", git.getRepository().getRepositoryState().toString());
-        log.info(marker, "git branch -m {} ",git.getRepository().getBranch() + " " + novoBranch);
+
+        Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
+                .and(append("branch.rename.old", antigo))
+                .and(append("branch.rename.new", git.getRepository().getBranch()));
+
+        log.info(marker, "git branch move {}", novoBranch);
     }
 
 }

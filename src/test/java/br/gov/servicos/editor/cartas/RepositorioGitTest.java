@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.cartas;
 
-import br.gov.servicos.editor.utils.TestData;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -18,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static br.gov.servicos.editor.utils.TestData.GOOGLE_PROFILE;
 import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.StandardOpenOption.WRITE;
@@ -27,7 +27,8 @@ import static java.util.Optional.empty;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class RepositorioGitTest {
 
@@ -99,8 +100,6 @@ public class RepositorioGitTest {
     }
 
     private void moveBranch() throws IOException {
-        User usuario = new User("Fulano de Tal", "", emptyList());
-
         repo.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
             Path origem = Paths.get("README.md");
             Path destino = Paths.get("baz-bar.md");
@@ -108,8 +107,8 @@ public class RepositorioGitTest {
             Files.move(repo.getCaminhoAbsoluto().resolve(origem), repo.getCaminhoAbsoluto().resolve(destino));
             repo.remove(origem);
             repo.add(destino);
-            repo.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", usuario);
-            repo.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", usuario);
+            repo.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", GOOGLE_PROFILE);
+            repo.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", GOOGLE_PROFILE);
             repo.push("baz-bar");
             return null;
         }));
@@ -130,7 +129,6 @@ public class RepositorioGitTest {
             return null;
         }));
     }
-
 
     private void garanteQueAlteracaoFoiPublicada() throws IOException {
         try (Git git = Git.open(github)) {
@@ -195,7 +193,7 @@ public class RepositorioGitTest {
             Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
 
             Files.write(absoluto, asList("# Teste", "\n", absoluto.toString()), WRITE);
-            repo.commit(relativo, "Alteração de teste", TestData.GOOGLE_PROFILE);
+            repo.commit(relativo, "Alteração de teste", GOOGLE_PROFILE);
 
             repo.push("foo");
 
