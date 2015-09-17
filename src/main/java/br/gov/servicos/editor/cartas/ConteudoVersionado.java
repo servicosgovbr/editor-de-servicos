@@ -101,6 +101,7 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
+    @CacheEvict
     public void publicar() {
         repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
             repositorio.pull();
