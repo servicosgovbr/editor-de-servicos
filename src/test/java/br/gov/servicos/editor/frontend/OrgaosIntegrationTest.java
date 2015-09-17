@@ -17,7 +17,11 @@ import static org.junit.Assert.assertThat;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Main.class)
-@IntegrationTest({"flags.importar=false", "flags.esquentar.cache=false"})
+@IntegrationTest({
+        "flags.importar=false",
+        "flags.esquentar.cache=false",
+        "server.port:0"
+})
 public class OrgaosIntegrationTest {
 
     @Autowired

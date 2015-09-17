@@ -113,11 +113,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         http.anonymous().disable();
         http.csrf().disable();
 
-        http.authorizeRequests()
-                .antMatchers("/editar/info").permitAll()
-                .antMatchers("/editar/health").permitAll()
-                .antMatchers("/editar/assets/**").permitAll()
-                .antMatchers("/editar/fonts/**").permitAll()
-                .anyRequest().fullyAuthenticated();
+        http.authorizeRequests().anyRequest().fullyAuthenticated();
     }
 }

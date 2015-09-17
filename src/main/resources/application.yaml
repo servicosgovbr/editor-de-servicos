@@ -5,6 +5,13 @@ spring:
   thymeleaf:
     cache: false
 
+security:
+  ignored:
+    - '/editar/info'
+    - '/editar/health'
+    - '/editar/assets/**'
+    - '/editar/fonts/**'
+
 endpoints:
   health:
     sensitive: false
