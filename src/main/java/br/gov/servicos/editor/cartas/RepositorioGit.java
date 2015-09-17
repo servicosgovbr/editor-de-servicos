@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.List;
@@ -367,6 +366,8 @@ public class RepositorioGit {
     @SneakyThrows
     public void moveBranchPara(String novoBranch) {
         git.branchRename().setNewName(novoBranch).call();
+        LogstashMarker marker = append("git.state", git.getRepository().getRepositoryState().toString());
+        log.info(marker, "git branch -m {} ",git.getRepository().getBranch() + " " + novoBranch);
     }
 
 }
