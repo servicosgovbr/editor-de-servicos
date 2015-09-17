@@ -35,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 import static java.lang.String.format;
+import static java.nio.charset.Charset.defaultCharset;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
@@ -102,7 +103,7 @@ public class GoogleTokenServices extends RemoteTokenServices {
 
     @SneakyThrows
     private String authorizationHeader(String clientId, String clientSecret) {
-        return "Basic " + new String(encode(format("%s:%s", clientId, clientSecret).getBytes("UTF-8")));
+        return "Basic " + new String(encode(format("%s:%s", clientId, clientSecret).getBytes(defaultCharset())), defaultCharset());
     }
 
 }

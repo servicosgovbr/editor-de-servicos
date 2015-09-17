@@ -36,6 +36,8 @@ import static org.springframework.security.oauth2.common.AuthenticationScheme.qu
 @EnableWebSecurity
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
+    public static final String LOGIN_URL = "/editar/login";
+
     @Resource
     @Qualifier("accessTokenRequest")
     AccessTokenRequest accessTokenRequest;
@@ -96,7 +98,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
             OAuth2RestTemplate restTemplate,
             GoogleTokenServices tokenServices
     ) {
-        OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter("/googleLogin");
+        OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(LOGIN_URL);
         filter.setRestTemplate(restTemplate);
         filter.setTokenServices(tokenServices);
         return filter;
@@ -104,7 +106,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/googleLogin"));
+        http.httpBasic().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL));
 
         http.addFilterAfter(oauth2ClientContextFilter, ExceptionTranslationFilter.class);
         http.addFilterBefore(oauth2ClientAuthenticationProcessingFilter, FilterSecurityInterceptor.class);
