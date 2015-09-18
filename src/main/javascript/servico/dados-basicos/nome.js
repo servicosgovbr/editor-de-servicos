@@ -25,6 +25,8 @@ module.exports = {
           float: 'right'
         },
         onclick: function () {
+          alertify.labels.cancel = 'Cancelar';
+          alertify.labels.ok = 'Renomear';
           alertify.prompt('Novo nome do serviço:',
             function (e, str) {
               if (e) {
