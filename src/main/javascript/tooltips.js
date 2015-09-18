@@ -33,8 +33,8 @@ module.exports = {
   tipoPagina: t('Selecione o tipo de página que será criada ou editada.'),
   escolhaOrgao: t('Selecione o órgão que será editado através da lista de órgãos oficiais do governo.'),
   conteudoOrgao: t('Descreva as responsabilidades do órgão, assim como os meios de entrar contato com o mesmo.'),
-  nomeEspecial: t('Este é o nome da página especial que está sendo criada. Seja breve e objetivo.'),
-  conteudoEspecial: t('Descreva o conteúdo desta página especial. Você pode incluir links, listas, etc.'),
-  escolhaAreaInteresse: t('Este é o nome da Área de Interesse que está sendo criada'),
-  conteudoAreaInteresse: t('Descreva o que é esta área de interesse e porque importa para o cidadão.'),
+  nomePaginaEspecial: t('Este é o nome da página especial que está sendo criada. Seja breve e objetivo.'),
+  conteudoPaginaEspecial: t('Descreva o conteúdo desta página especial. Você pode incluir links, listas, etc.'),
+  escolhaAreaInteresse: t('Selecione a Área de Interesse que está sendo criada ou editada.'),
+  conteudoAreaInteresse: t('Descreva o que é esta Área de Interesse e porque importa para o cidadão.'),
 };
