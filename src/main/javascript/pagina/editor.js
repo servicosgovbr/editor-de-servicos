@@ -1,16 +1,9 @@
 'use strict';
 
+var safeGet = require('utils/code-checks').safeGet;
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var carregarPagina = require('pagina/carregar');
 var salvarOrgao = require('pagina/salvar');
-
-function safeGet(obj, propName) {
-  var value = _.property(propName)(obj);
-  if (!value) {
-    throw new Error(propName + ' não foi informado: ' + value);
-  }
-  return value;
-}
 
 module.exports = {
 

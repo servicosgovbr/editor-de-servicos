@@ -44,7 +44,8 @@ module.exports = {
             servico.nome()
           );
         }
-      }, m('i.fa.fa-pencil'), m.trust('&nbsp; Alterar nome'))
+      }, [m('i.fa.fa-pencil'),
+                'Alterar nome'])
         ]);
 
     return m('fieldset#nome', [
