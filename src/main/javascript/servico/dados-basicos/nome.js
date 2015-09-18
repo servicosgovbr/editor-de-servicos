@@ -20,27 +20,29 @@ module.exports = {
       autofocus: 'autofocus'
     })) : m('div', [
             m('span', servico.nome()),
-            m('button.adicionar', {
-                onclick: function () {
-                    alertify.prompt('Novo nome do serviço:',
-                        function (e, str) {
-                            if (e) {
-                                var idAtual = slugify(servico.nome());
-                                var novoId = slugify(str);
-                                m.request({
-                                    method: 'PATCH',
-                                    url: '/editar/api/servico/' + idAtual + '/' + novoId
-                                }).then(function() {
-                                    servico.nome(str);
-                                });
-                            }
+            m('button.renomear', {
+        style: {
+          float: 'right'
+        },
+        onclick: function () {
+          alertify.prompt('Novo nome do serviço:',
+            function (e, str) {
+              if (e) {
+                var idAtual = slugify(servico.nome());
+                var novoId = slugify(str);
+                m.request({
+                  method: 'PATCH',
+                  url: '/editar/api/servico/' + idAtual + '/' + novoId
+                }).then(function () {
+                  servico.nome(str);
+                });
+              }
 
-                        },
-                        servico.nome()
-                    );
-                }
-            }, [m('i.fa.fa-plus'),
-                'Alterar nome'])
+            },
+            servico.nome()
+          );
+        }
+      }, m('i.fa.fa-pencil'), m.trust('&nbsp; Alterar nome'))
         ]);
 
     return m('fieldset#nome', [
