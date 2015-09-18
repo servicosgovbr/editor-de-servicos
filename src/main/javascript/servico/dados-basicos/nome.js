@@ -20,7 +20,7 @@ module.exports = {
       autofocus: 'autofocus'
     })) : m('div', [
             m('span', servico.nome()),
-            m('button.remove', {
+            m('button.adicionar', {
                 onclick: function () {
                     alertify.prompt('Novo nome do serviço:',
                         function (e, str) {
@@ -39,7 +39,8 @@ module.exports = {
                         servico.nome()
                     );
                 }
-            })
+            }, [m('i.fa.fa-plus'),
+                'Alterar nome'])
         ]);
 
     return m('fieldset#nome', [
