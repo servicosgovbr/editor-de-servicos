@@ -121,11 +121,12 @@ public abstract class ConteudoVersionado<T> {
             String mensagem = format("Renomeia '%s' para '%s'", getId(), novoNome);
             Path novoCaminho = getCaminhoRelativo().resolveSibling(novoNome + ".xml");
             repositorio.moveBranchPara(novoNome);
-            Files.move(getCaminhoRelativo(), novoCaminho);
+            Files.move(getCaminhoAbsoluto(), getCaminhoAbsoluto().resolveSibling(novoNome + ".xml"));
             repositorio.remove(getCaminhoRelativo());
             repositorio.add(novoCaminho);
             repositorio.commit(getCaminhoRelativo(), mensagem, profile);
             repositorio.commit(novoCaminho, mensagem, profile);
+            repositorio.pushSomenteLocal(getId());
             repositorio.push(novoNome);
             return null;
         }));

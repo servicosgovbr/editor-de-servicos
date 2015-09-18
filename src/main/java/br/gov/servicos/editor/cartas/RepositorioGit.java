@@ -286,6 +286,14 @@ public class RepositorioGit {
     }
 
     public void push(String branch) {
+        pushBranch(branch, branch);
+    }
+
+    public void pushSomenteLocal(String branch) {
+        pushBranch("", branch);
+    }
+
+    private void pushBranch(String branchRemoto, String branchLocal) {
         if (!fazerPush) {
             log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
             return;
@@ -294,7 +302,7 @@ public class RepositorioGit {
         try {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(new RefSpec(branch + ":" + branch))
+                    .setRefSpecs(new RefSpec(branchRemoto + ":" + branchLocal))
                     .setProgressMonitor(new LogstashProgressMonitor(log))
                     .call()
                     .forEach(uncheckedConsumer(result -> {
@@ -303,11 +311,11 @@ public class RepositorioGit {
                                 .and(append("git.branch", git.getRepository().getBranch()))
                                 .and(append("git.state", git.getRepository().getRepositoryState().toString()));
 
-                        log.info(marker, "git push em {}", branch);
+                        log.info(marker, "git push em {}", branchLocal);
                     }));
 
         } catch (GitAPIException e) {
-            log.error(append("push.branch", branch), "git push falhou", e);
+            log.error(append("push.branch", branchLocal), "git push falhou", e);
         }
     }
 
@@ -368,6 +376,11 @@ public class RepositorioGit {
         String antigo = git.getRepository().getBranch();
 
         git.branchRename().setNewName(novoBranch).call();
+
+        StoredConfig config = git.getRepository().getConfig();
+        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_REMOTE, DEFAULT_REMOTE_NAME);
+        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
+        config.save();
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("branch.rename.old", antigo))
