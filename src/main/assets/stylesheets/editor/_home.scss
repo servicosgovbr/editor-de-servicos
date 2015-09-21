@@ -9,21 +9,17 @@
     @include span-columns(12);
 
     input[type=search] {
-      @include span-columns(8);
+      @include span-columns(7);
     }
 
-    button#novo {
-      @include span-columns(3);
+    button.novo {
+      @include span-columns(2);
     }
 
-    div#orgaos {
-      @include span-columns(8);
-
-      .select2-message-container {
-        width: 100%;
-        margin-bottom: 14px;
-      }
+    .select2-message-container {
+      @include span-columns(12);
     }
+
   }
 
   table {

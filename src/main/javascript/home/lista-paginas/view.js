@@ -1,10 +1,12 @@
 'use strict';
 
-var safeGet = require('utils/code-checks').safeGet;
+//var safeGet = require('utils/code-checks').safeGet;
 
 module.exports = function (ctrl, args) {
 
-  var paginas = safeGet(args, 'paginas');
+  var filtro = args.filtro;
+
+  var paginas = ctrl.paginasFiltradas(filtro);
 
   var iconesDeTipo = {
     servico: 'fa-file-text-o',

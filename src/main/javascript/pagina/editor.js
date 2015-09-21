@@ -7,15 +7,21 @@ var salvarOrgao = require('pagina/salvar');
 
 module.exports = {
 
-  controller: function () {
-    this.cabecalho = new CabecalhoModel();
-    this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
+  controller: function (args) {
+    var tipo = safeGet(args, 'tipo');
 
     this.modificado = m.prop(false);
+    this.cabecalho = new CabecalhoModel();
+
+    this.pagina = carregarPagina({
+      tipo: tipo,
+      id: m.route.param('id')
+    } , this.cabecalho);
 
     this.salvar = _.bind(function () {
-      return salvarOrgao(this.pagina());
+      return salvarOrgao(tipo, this.pagina());
     }, this);
+
   },
 
   view: function (ctrl, args) {
