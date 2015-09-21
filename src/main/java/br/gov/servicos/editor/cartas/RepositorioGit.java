@@ -170,6 +170,7 @@ public class RepositorioGit {
     private void checkout(String branch) {
         Repository repository = git.getRepository();
         String novoBranch = branch.replaceAll("^" + R_HEADS, "");
+        String branchRemoto = DEFAULT_REMOTE_NAME + "/" + novoBranch;
 
         LogstashMarker marker = append("git.branch", repository.getBranch())
                 .and(append("git.state", repository.getRepositoryState().toString()))
@@ -181,28 +182,11 @@ public class RepositorioGit {
                     .setListMode(REMOTE)
                     .call();
 
-            if (!remoteBranches.contains(repository.getRef(DEFAULT_REMOTE_NAME + "/" + novoBranch))) {
-                Ref result = git.branchCreate()
-                        .setName(novoBranch)
-                        .setStartPoint(R_HEADS + MASTER)
-                        .setUpstreamMode(NOTRACK)
-                        .call();
-
-                Marker info = append("git.branch", git.getRepository().getBranch())
-                        .and(append("git.state", git.getRepository().getRepositoryState().toString()))
-                        .and(append("branch.name", novoBranch))
-                        .and(append("branch.start", R_HEADS + MASTER))
-                        .and(append("branch.result", result.getName()));
-
-                log.info(info, "git branch {}", novoBranch);
-
-                push(novoBranch);
+            if (remoteBranches.contains(repository.getRef(branchRemoto))) {
+                checkoutNovoBranch(novoBranch, branchRemoto);
             } else {
-                Ref result = git.branchCreate()
-                        .setName(novoBranch)
-                        .setStartPoint(DEFAULT_REMOTE_NAME + "/" + novoBranch)
-                        .setUpstreamMode(NOTRACK)
-                        .call();
+                checkoutNovoBranch(novoBranch, R_HEADS + MASTER);
+                push(novoBranch);
             }
 
             StoredConfig config = git.getRepository().getConfig();
@@ -215,12 +199,27 @@ public class RepositorioGit {
 
         Ref result = git.checkout()
                 .setName(novoBranch)
-                .setCreateBranch(false)
                 .call();
 
         marker = marker.and(append("checkout.result", result.getName()));
 
         log.info(marker, "git checkout {}", novoBranch);
+    }
+
+    private void checkoutNovoBranch(String novoBranch, String pontoDeInicio) throws GitAPIException, IOException {
+        Ref result = git.branchCreate()
+                .setName(novoBranch)
+                .setStartPoint(pontoDeInicio)
+                .setUpstreamMode(NOTRACK)
+                .call();
+
+        Marker info = append("git.branch", git.getRepository().getBranch())
+                .and(append("git.state", git.getRepository().getRepositoryState().toString()))
+                .and(append("branch.name", novoBranch))
+                .and(append("branch.start", R_HEADS + MASTER))
+                .and(append("branch.result", result.getName()));
+
+        log.info(info, "git branch {}", novoBranch);
     }
 
     @SneakyThrows
