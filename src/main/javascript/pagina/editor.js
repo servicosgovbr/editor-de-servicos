@@ -16,7 +16,7 @@ module.exports = {
     this.pagina = carregarPagina({
       tipo: tipo,
       id: m.route.param('id')
-    } , this.cabecalho);
+    }, this.cabecalho);
 
     this.salvar = _.bind(function () {
       return salvarOrgao(tipo, this.pagina());

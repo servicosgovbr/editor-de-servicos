@@ -18,9 +18,9 @@ module.exports = function (args) {
       filtroFn = _.flow(_.property('temAlteracoesNaoPublicadas'));
     }
     if (filtro.orgao) {
-    filtroFn = _.flow(function (pg) {
-      return filtro.orgao === _.property('conteudo.orgao.id')(pg);
-    });
+      filtroFn = _.flow(function (pg) {
+        return filtro.orgao === _.property('conteudo.orgao.id')(pg);
+      });
     }
 
     paginas = _.filter(paginas, filtroFn);
