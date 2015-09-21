@@ -176,17 +176,18 @@ public class RepositorioGit {
                 .and(append("checkout.to", novoBranch));
 
         if (repository.getRef(novoBranch) == null) {
-            Ref result = git.branchCreate()
-                    .setName(novoBranch)
-                    .setStartPoint(R_HEADS + MASTER)
-                    .setUpstreamMode(NOTRACK)
-                    .call();
 
             List<Ref> remoteBranches = git.branchList()
                     .setListMode(REMOTE)
                     .call();
 
             if (!remoteBranches.contains(repository.getRef(DEFAULT_REMOTE_NAME + "/" + novoBranch))) {
+                Ref result = git.branchCreate()
+                        .setName(novoBranch)
+                        .setStartPoint(R_HEADS + MASTER)
+                        .setUpstreamMode(NOTRACK)
+                        .call();
+
                 Marker info = append("git.branch", git.getRepository().getBranch())
                         .and(append("git.state", git.getRepository().getRepositoryState().toString()))
                         .and(append("branch.name", novoBranch))
@@ -196,6 +197,12 @@ public class RepositorioGit {
                 log.info(info, "git branch {}", novoBranch);
 
                 push(novoBranch);
+            } else {
+                Ref result = git.branchCreate()
+                        .setName(novoBranch)
+                        .setStartPoint(DEFAULT_REMOTE_NAME + "/" + novoBranch)
+                        .setUpstreamMode(NOTRACK)
+                        .call();
             }
 
             StoredConfig config = git.getRepository().getConfig();
