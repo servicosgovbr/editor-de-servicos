@@ -39,9 +39,11 @@ public abstract class ConteudoVersionado<T> {
     RepositorioGit repositorio;
 
     LeitorDeArquivos leitorDeArquivos;
+
     EscritorDeArquivos escritorDeArquivos;
 
     Slugify slugify;
+
     ReformatadorXml reformatadorXml;
 
     public ConteudoVersionado(RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
@@ -60,6 +62,10 @@ public abstract class ConteudoVersionado<T> {
 
     protected String getBranchRef() {
         return R_HEADS + getId();
+    }
+
+    private String getBranchMasterRef() {
+        return R_HEADS + MASTER;
     }
 
     Path getCaminhoAbsoluto() {
@@ -110,11 +116,11 @@ public abstract class ConteudoVersionado<T> {
 
     @CacheEvict
     public void publicar() {
-        repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
             repositorio.pull();
 
             repositorio.merge(getBranchRef());
-            repositorio.push(R_HEADS + MASTER);
+            repositorio.push(getBranchMasterRef());
 
             return null;
         });
@@ -123,39 +129,21 @@ public abstract class ConteudoVersionado<T> {
     @CacheEvict
     public void renomear(UserProfile profile, String novoNome) {
         String novoId = slugify.slugify(novoNome);
-        String mensagem = format("Renomeia '%s' para '%s'", getId(), novoId);
-
 
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), uncheckedSupplier(() -> {
-            repositorio.pull();
-            String conteudo = renomearNomeArquivo(novoNome);
-            salvarConteudo(profile, getBranchRef(),conteudo);
+            alterarConteudo(profile, novoNome, getBranchRef());
             if (!getId().equals(novoId)) {
-                Path novoCaminho = getCaminhoRelativo().resolveSibling(novoId + ".xml");
                 repositorio.moveBranchPara(novoId);
-                Files.move(getCaminhoAbsoluto(), getCaminhoAbsoluto().resolveSibling(novoId + ".xml"));
-                repositorio.remove(getCaminhoRelativo());
-                repositorio.add(novoCaminho);
-                repositorio.commit(getCaminhoRelativo(), mensagem, profile);
-                repositorio.commit(novoCaminho, mensagem, profile);
+                renomearConteudo(profile, novoId, novoId);
                 repositorio.deleteRemoteBranch(getId());
-                repositorio.push(novoId);
             }
             return null;
         }));
 
-        repositorio.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
-            repositorio.pull();
-            String conteudo = renomearNomeArquivo(novoNome);
-            salvarConteudo(profile, R_HEADS + MASTER, conteudo);
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), uncheckedSupplier(() -> {
+            alterarConteudo(profile, novoNome, getBranchMasterRef());
             if (!getId().equals(novoId)) {
-                Path novoCaminho = getCaminhoRelativo().resolveSibling(novoId + ".xml");
-                Files.move(getCaminhoAbsoluto(), getCaminhoAbsoluto().resolveSibling(novoId + ".xml"));
-                repositorio.remove(getCaminhoRelativo());
-                repositorio.add(novoCaminho);
-                repositorio.commit(getCaminhoRelativo(), mensagem, profile);
-                repositorio.commit(novoCaminho, mensagem, profile);
-                repositorio.push(R_HEADS + MASTER);
+                renomearConteudo(profile, novoId, getBranchMasterRef());
             }
             return null;
         }));
@@ -172,7 +160,7 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @SneakyThrows
-    private String renomearNomeArquivo(String novoNome) {
+    private String mudarNomeConteudo(String novoNome) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(getCaminhoAbsoluto().toFile());
@@ -190,4 +178,24 @@ public abstract class ConteudoVersionado<T> {
         repositorio.commit(getCaminhoRelativo(), mensagem, profile);
         repositorio.push(branch);
     }
+
+
+    @SneakyThrows
+    private void renomearConteudo(UserProfile profile, String nomeNovoArquivo, String branch) {
+        String mensagem = format("Renomeia '%s' para '%s'", getId(), nomeNovoArquivo);
+        Path novoCaminho = getCaminhoRelativo().resolveSibling(nomeNovoArquivo + ".xml");
+        Files.move(getCaminhoAbsoluto(), getCaminhoAbsoluto().resolveSibling(nomeNovoArquivo + ".xml"));
+        repositorio.remove(getCaminhoRelativo());
+        repositorio.commit(getCaminhoRelativo(), mensagem, profile);
+        repositorio.add(novoCaminho);
+        repositorio.commit(novoCaminho, mensagem, profile);
+        repositorio.push(branch);
+    }
+
+    private void alterarConteudo(UserProfile profile, String novoNome, String branch) {
+        repositorio.pull();
+        String conteudo = mudarNomeConteudo(novoNome);
+        salvarConteudo(profile, branch,conteudo);
+    }
+
 }
