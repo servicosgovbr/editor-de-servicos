@@ -1,7 +1,7 @@
 'use strict';
 
 var Tooltips = require('tooltips');
-var EditorBase = require('pagina/editor-base');
+var EditorBase = require('componentes/editor-base');
 
 module.exports = {
 
@@ -18,6 +18,14 @@ module.exports = {
   view: function (ctrl, args) {
 
     return m.component(EditorBase, {
+
+      cabecalhoConfig: {
+        metadados: false,
+        logout: true,
+        salvar: _.noop,
+        cabecalho: args.cabecalho
+      },
+
       componentes: [
         m.component(require('pagina/componentes/tipo-de-pagina'), {
           tipo: ctrl.tipo,
@@ -30,5 +38,4 @@ module.exports = {
       ]
     });
   }
-
 };

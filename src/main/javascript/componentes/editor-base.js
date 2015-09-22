@@ -2,17 +2,15 @@
 
 module.exports = {
   view: function (ctrl, args) {
+    var conteudoConfig = args.config;
+    var cabecalhoConfig = args.cabecalhoConfig;
+
     return m('#conteudo', {
-      config: args.config
+      config: conteudoConfig
     }, [
       m('span.cabecalho-cor'),
       m('#wrapper', [
-        m.component(require('../cabecalho/cabecalho'), {
-          metadados: false,
-          logout: true,
-          salvar: _.noop,
-          cabecalho: args.cabecalho
-        }),
+        m.component(require('../cabecalho/cabecalho'), cabecalhoConfig),
         m('#servico',
           m('.scroll', args.componentes)
         )
