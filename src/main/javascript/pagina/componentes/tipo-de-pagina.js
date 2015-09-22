@@ -7,9 +7,10 @@ module.exports = {
     var tooltipTipo = args.tooltipTipo;
 
     var componenteTipo = args.novo ? m.component(require('componentes/select2'), {
-      prop: args.pagina().tipo,
+      prop: args.tipo,
+      change: args.change,
       data: referencia.tiposDePagina
-    }) : referencia.tipoDePagina(args.pagina().tipo());
+    }) : referencia.tipoDePagina(args.tipo());
 
     return m('fieldset#tipoDePagina', [
       m('h3', [

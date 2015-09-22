@@ -5,7 +5,9 @@ module.exports = {
     var pagina = args.pagina();
     var tooltipNome = args.tooltipNome;
 
-    var componenteNome = args.novo ? args.componente : pagina.nome();
+    var componenteNome = args.novo ? m.component(args.componente, {
+      prop : args.nome
+    }) : pagina.nome();
 
     return m('fieldset#nome', [
       m('h3', [

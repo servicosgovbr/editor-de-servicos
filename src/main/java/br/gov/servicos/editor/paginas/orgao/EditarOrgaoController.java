@@ -50,6 +50,12 @@ public class EditarOrgaoController {
         return converterParaJson(orgao);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/editar/api/orgao/novo", method = GET, produces = "application/json")
+    PaginaDeOrgao.Orgao editarNovo() {
+        return new PaginaDeOrgao.Orgao();
+    }
+
     @SneakyThrows
     private String converterParaJson(PaginaDeOrgao.Orgao pagina) throws FileNotFoundException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();

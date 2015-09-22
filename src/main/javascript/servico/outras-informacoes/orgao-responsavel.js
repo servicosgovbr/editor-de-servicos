@@ -16,7 +16,7 @@ module.exports = {
 
       m('.input-container', [
         m.component(require('orgao/select-orgao'), {
-          orgao: ctrl.servico().orgao
+          prop: ctrl.servico().orgao
         })
       ])
     ]);

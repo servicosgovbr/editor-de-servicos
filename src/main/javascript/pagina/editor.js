@@ -38,6 +38,7 @@ module.exports = {
 
     var binding = {
       pagina: ctrl.pagina,
+      nome: ctrl.pagina().nome,
       novo: m.route.param('id') === 'novo'
     };
 
@@ -68,9 +69,10 @@ module.exports = {
         }),
         m('#servico',
           m('.scroll', [
-            m.component(require('pagina/componentes/tipo-de-pagina'), _.assign(binding, {
+            m.component(require('pagina/componentes/tipo-de-pagina'), {
+              tipo: ctrl.pagina().tipo,
               tooltipTipo: tooltips.tipo
-            })),
+            }),
             m.component(require('pagina/componentes/nome'), _.assign(binding, {
               componente: componenteNome,
               tooltipNome: tooltips.nome

@@ -27,7 +27,9 @@ var config = function (args, metadados) {
     deserialize: function (str) {
       return JSON.parse(str);
     },
+
   };
+
 };
 
 var importar = function (cabecalho, json) {

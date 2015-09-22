@@ -1,13 +1,12 @@
 'use strict';
 
+var safeGet = require('utils/code-checks').safeGet;
 var erro = require('utils/erro-ajax');
 
 module.exports = {
 
   view: function (ctrl, args) {
-    if (!args.orgao) {
-      throw new Error('Necessário informar propriedade orgao');
-    }
+    var orgao = safeGet(args, 'prop');
 
     return m.component(require('componentes/select2'), {
       ajax: {
@@ -37,7 +36,7 @@ module.exports = {
 
       },
 
-      prop: args.orgao,
+      prop: orgao,
       width: '100%',
       minimumResultsForSearch: 1,
       minimumInputLength: 3,
@@ -48,16 +47,16 @@ module.exports = {
           method: 'GET',
           url: '/editar/api/orgao',
           data: {
-            urlOrgao: args.orgao()
+            urlOrgao: orgao()
           },
           deserialize: function (data) {
             return data;
           }
 
-        }).then(function (orgao) {
+        }).then(function (orgaoNome) {
           callback({
-            id: args.orgao(),
-            text: orgao
+            id: orgao(),
+            text: orgaoNome
           });
         }, erro);
 

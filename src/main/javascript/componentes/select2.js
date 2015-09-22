@@ -77,6 +77,10 @@ module.exports = {
             m.startComputation();
             ctrl.prop(el.val());
             m.endComputation();
+
+            if (_.isFunction(ctrl.options.change)) {
+              ctrl.options.change(el.val());
+            }
           });
         }
         if (!ctrl.options.initSelection) {

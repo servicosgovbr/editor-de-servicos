@@ -24,22 +24,30 @@ module.exports = {
           m('h2', 'Bem-vindo!'),
 
           m('div.busca', [
-            m('input[type=search][placeholder="Filtrar por..."]', {
-              oninput: m.withAttr('value', ctrl.filtro)
-            }),
 
-            m('button#novo',
-              m('a', {
-                href: '/editar/servico/novo'
-              }, [
-                m('i.fa.fa-file-o'),
-                m.trust('&nbsp; Novo Serviço')
-              ])
-            ),
+              m('input[type=search][placeholder="Filtrar por..."]', {
+                oninput: m.withAttr('value', ctrl.filtro)
+              }),
+
+              m('button.novo',
+                m('a', {
+                  href: '/editar/pagina/nova'
+                }, [
+                  m.trust('Nova página')
+                ])
+              ),
+
+              m('button.novo',
+                m('a', {
+                  href: '/editar/servico/novo'
+                }, [
+                  m.trust('Novo Serviço')
+                ])
+              ),
 
             m('div#orgaos',
               m.component(require('orgao/select-orgao'), {
-                orgao: ctrl.orgao
+                prop: ctrl.orgao
               })
             )
           ]),
