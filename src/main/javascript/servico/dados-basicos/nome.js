@@ -36,6 +36,7 @@ module.exports = {
                   url: '/editar/api/servico/' + idAtual + '/' + str
                 }).then(function () {
                   servico.nome(str);
+                  m.route('/editar/servico/' + slugify(str));
                 });
               }
 
