@@ -5,12 +5,19 @@ import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import br.gov.servicos.editor.utils.ReformatadorXml;
+import com.github.slugify.Slugify;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.w3c.dom.Document;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.dom.DOMSource;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,10 +41,15 @@ public abstract class ConteudoVersionado<T> {
     LeitorDeArquivos leitorDeArquivos;
     EscritorDeArquivos escritorDeArquivos;
 
-    public ConteudoVersionado(RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
+    Slugify slugify;
+    ReformatadorXml reformatadorXml;
+
+    public ConteudoVersionado(RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
         this.repositorio = repositorio;
         this.leitorDeArquivos = leitorDeArquivos;
         this.escritorDeArquivos = escritorDeArquivos;
+        this.slugify = slugify;
+        this.reformatadorXml = reformatadorXml;
     }
 
     public abstract String getId();
@@ -78,14 +90,7 @@ public abstract class ConteudoVersionado<T> {
     @CacheEvict
     public void salvar(UserProfile profile, String conteudo) {
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
-            String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
-
-            repositorio.pull();
-            escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
-            repositorio.add(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), mensagem, profile);
-            repositorio.push(getBranchRef());
-
+            salvarConteudo(profile, conteudo);
             return null;
         });
     }
@@ -118,16 +123,22 @@ public abstract class ConteudoVersionado<T> {
     @CacheEvict
     public void renomear(UserProfile profile, String novoNome) {
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), uncheckedSupplier(() -> {
-            String mensagem = format("Renomeia '%s' para '%s'", getId(), novoNome);
-            Path novoCaminho = getCaminhoRelativo().resolveSibling(novoNome + ".xml");
-            repositorio.moveBranchPara(novoNome);
-            Files.move(getCaminhoAbsoluto(), getCaminhoAbsoluto().resolveSibling(novoNome + ".xml"));
-            repositorio.remove(getCaminhoRelativo());
-            repositorio.add(novoCaminho);
-            repositorio.commit(getCaminhoRelativo(), mensagem, profile);
-            repositorio.commit(novoCaminho, mensagem, profile);
-            repositorio.pushSomenteLocal(getId());
-            repositorio.push(novoNome);
+            repositorio.pull();
+            String novoId = slugify.slugify(novoNome);
+            String mensagem = format("Renomeia '%s' para '%s'", getId(), novoId);
+            String conteudo = renomearNomeArquivo(novoNome);
+            salvarConteudo(profile, conteudo);
+            if (!getId().equals(novoId)) {
+                Path novoCaminho = getCaminhoRelativo().resolveSibling(novoId + ".xml");
+                repositorio.moveBranchPara(novoId);
+                Files.move(getCaminhoAbsoluto(), getCaminhoAbsoluto().resolveSibling(novoId + ".xml"));
+                repositorio.remove(getCaminhoRelativo());
+                repositorio.add(novoCaminho);
+                repositorio.commit(getCaminhoRelativo(), mensagem, profile);
+                repositorio.commit(novoCaminho, mensagem, profile);
+                repositorio.deleteRemoteBranch(getId());
+                repositorio.push(novoId);
+            }
             return null;
         }));
     }
@@ -140,5 +151,25 @@ public abstract class ConteudoVersionado<T> {
         }).orElseThrow(
                 () -> new FileNotFoundException("Não foi possível encontrar o serviço referente ao arquivo '" + getId() + "'")
         );
+    }
+
+    @SneakyThrows
+    private String renomearNomeArquivo(String novoNome) {
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(getCaminhoAbsoluto().toFile());
+        doc.getElementsByTagName("nome").item(0).setTextContent(novoNome);
+        return reformatadorXml.formata(new DOMSource(doc));
+    }
+
+
+    private void salvarConteudo(UserProfile profile, String conteudo) {
+        String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
+
+        repositorio.pull();
+        escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
+        repositorio.add(getCaminhoRelativo());
+        repositorio.commit(getCaminhoRelativo(), mensagem, profile);
+        repositorio.push(getBranchRef());
     }
 }

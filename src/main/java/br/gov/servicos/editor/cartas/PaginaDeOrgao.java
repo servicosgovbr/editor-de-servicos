@@ -2,6 +2,7 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,8 +36,8 @@ public class PaginaDeOrgao extends ConteudoVersionado<PaginaDeOrgao.Orgao> {
     @Getter
     String id;
 
-    private PaginaDeOrgao(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
-        super(repositorio, leitorDeArquivos, escritorDeArquivos);
+    private PaginaDeOrgao(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+        super(repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         this.id = id;
     }
 
@@ -94,10 +95,13 @@ public class PaginaDeOrgao extends ConteudoVersionado<PaginaDeOrgao.Orgao> {
         @Autowired
         EscritorDeArquivos escritorDeArquivos;
 
+        @Autowired
+        ReformatadorXml reformatadorXml;
+
         @Bean // necessário para @Cacheable
         @Scope("prototype")
         public PaginaDeOrgao paginaDeOrgao(String texto) {
-            return new PaginaDeOrgao(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos);
+            return new PaginaDeOrgao(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         }
     }
 

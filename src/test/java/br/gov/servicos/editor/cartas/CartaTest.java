@@ -4,6 +4,7 @@ import br.gov.servicos.editor.servicos.Metadados;
 import br.gov.servicos.editor.servicos.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
@@ -55,12 +56,15 @@ public class CartaTest {
     @Mock
     EscritorDeArquivos escritorDeArquivos;
 
+    @Mock
+    ReformatadorXml reformatadorXml;
+
     @Captor
     ArgumentCaptor<Supplier<Optional<String>>> captor;
 
     @Before
     public void setUp() throws Exception {
-        carta = new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos)
+        carta = new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos, reformatadorXml)
                 .carta("um-id-qualquer");
     }
 

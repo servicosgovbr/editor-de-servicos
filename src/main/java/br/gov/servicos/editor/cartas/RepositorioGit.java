@@ -295,11 +295,11 @@ public class RepositorioGit {
         pushBranch(branch, branch);
     }
 
-    public void pushSomenteLocal(String branch) {
-        pushBranch("", branch);
+    public void deleteRemoteBranch(String branch) {
+        pushBranch("", R_HEADS + branch);
     }
 
-    private void pushBranch(String branchRemoto, String branchLocal) {
+    private void pushBranch(String branchLocal, String branchRemoto) {
         if (!fazerPush) {
             log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
             return;
@@ -308,7 +308,7 @@ public class RepositorioGit {
         try {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(new RefSpec(branchRemoto + ":" + branchLocal))
+                    .setRefSpecs(new RefSpec(branchLocal + ":" + branchRemoto))
                     .setProgressMonitor(new LogstashProgressMonitor(log))
                     .call()
                     .forEach(uncheckedConsumer(result -> {
@@ -317,11 +317,11 @@ public class RepositorioGit {
                                 .and(append("git.branch", git.getRepository().getBranch()))
                                 .and(append("git.state", git.getRepository().getRepositoryState().toString()));
 
-                        log.info(marker, "git push em {}", branchLocal);
+                        log.info(marker, "git push em {}", branchRemoto);
                     }));
 
         } catch (GitAPIException e) {
-            log.error(append("push.branch", branchLocal), "git push falhou", e);
+            log.error(append("push.branch", branchRemoto), "git push falhou", e);
         }
     }
 

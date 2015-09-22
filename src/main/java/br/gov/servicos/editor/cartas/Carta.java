@@ -2,6 +2,7 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,8 +39,8 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
     @Getter
     String id;
 
-    private Carta(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos) {
-        super(repositorio, leitorDeArquivos, escritorDeArquivos);
+    private Carta(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+        super(repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         this.id = id;
     }
 
@@ -97,10 +98,13 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
         @Autowired
         EscritorDeArquivos escritorDeArquivos;
 
+        @Autowired
+        ReformatadorXml reformatadorXml;
+
         @Bean // necessário para @Cacheable
         @Scope("prototype")
         public Carta carta(String texto) {
-            return new Carta(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos);
+            return new Carta(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         }
     }
 

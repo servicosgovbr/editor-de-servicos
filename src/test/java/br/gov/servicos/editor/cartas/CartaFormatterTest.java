@@ -2,6 +2,7 @@ package br.gov.servicos.editor.cartas;
 
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
+import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +30,12 @@ public class CartaFormatterTest {
     @Mock
     RepositorioGit repositorio;
 
+    @Mock
+    ReformatadorXml reformatadorXml;
+
     @Before
     public void setUp() throws Exception {
-        formatter = new Carta.Formatter(new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos));
+        formatter = new Carta.Formatter(new Carta.Factory(new Slugify(), repositorio, leitorDeArquivos, escritorDeArquivos, reformatadorXml));
     }
 
     @Test

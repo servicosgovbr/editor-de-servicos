@@ -31,10 +31,9 @@ module.exports = {
             function (e, str) {
               if (e) {
                 var idAtual = slugify(servico.nome());
-                var novoId = slugify(str);
                 m.request({
                   method: 'PATCH',
-                  url: '/editar/api/servico/' + idAtual + '/' + novoId
+                  url: '/editar/api/servico/' + idAtual + '/' + str
                 }).then(function () {
                   servico.nome(str);
                 });
