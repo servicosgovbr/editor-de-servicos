@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.servicos.Orgao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.github.slugify.Slugify;

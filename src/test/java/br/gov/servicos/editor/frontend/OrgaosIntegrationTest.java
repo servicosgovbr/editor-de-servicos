@@ -1,7 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.Main;
-import br.gov.servicos.editor.servicos.Orgao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

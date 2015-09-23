@@ -4,7 +4,7 @@ var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
 
 var tiposDePaginaList = [
-  'Área de Conhecimento',
+  'Área de Interesse',
   'Página Especial',
   'Órgão',
 ].map(function (t) {

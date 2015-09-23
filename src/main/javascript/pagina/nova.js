@@ -10,7 +10,7 @@ module.exports = {
 
     this.atualizarRota = function () {
       if (this.tipo()) {
-        m.route('/editar/orgao/novo');
+        m.route('/editar/' + this.tipo() + '/novo');
       }
     };
   },

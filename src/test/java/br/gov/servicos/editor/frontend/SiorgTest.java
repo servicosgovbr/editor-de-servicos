@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.frontend;
 
-import com.github.slugify.Slugify;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

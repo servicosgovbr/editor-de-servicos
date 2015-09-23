@@ -1,8 +1,8 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.cartas.ListaDeConteudo;
-import br.gov.servicos.editor.oauth2.UserProfiles;
+import br.gov.servicos.editor.conteudo.ListaDeConteudo;
 import br.gov.servicos.editor.oauth2.UserProfile;
+import br.gov.servicos.editor.oauth2.UserProfiles;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
