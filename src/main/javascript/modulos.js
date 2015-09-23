@@ -8,6 +8,6 @@ module.exports = function (m) {
     '/editar/erro': require('erro'),
     '/editar/servico/:id': require('servico/editor'),
     '/editar/orgao/:id': require('orgao/editor'),
-    '/editar/pagina/nova' : require('pagina/nova')
+    '/editar/pagina/nova': require('pagina/nova')
   });
 };

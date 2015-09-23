@@ -26,21 +26,21 @@ module.exports = {
           m('div.busca', [
 
               m('input[type=search][placeholder="Filtrar por..."]', {
-                oninput: m.withAttr('value', ctrl.filtro)
-              }),
+              oninput: m.withAttr('value', ctrl.filtro)
+            }),
 
               m('button.novo',
-                m('a', {
-                  href: '/editar/pagina/nova'
-                }, [
+              m('a', {
+                href: '/editar/pagina/nova'
+              }, [
                   m.trust('Nova página')
                 ])
               ),
 
               m('button.novo',
-                m('a', {
-                  href: '/editar/servico/novo'
-                }, [
+              m('a', {
+                href: '/editar/servico/novo'
+              }, [
                   m.trust('Novo Serviço')
                 ])
               ),
