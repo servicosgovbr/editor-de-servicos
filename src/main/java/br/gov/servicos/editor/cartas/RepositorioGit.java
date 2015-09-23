@@ -189,10 +189,7 @@ public class RepositorioGit {
                 push(novoBranch);
             }
 
-            StoredConfig config = git.getRepository().getConfig();
-            config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_REMOTE, DEFAULT_REMOTE_NAME);
-            config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
-            config.save();
+            criarTrackComBranchRemoto(novoBranch);
 
             marker = marker.and(append("checkout.branch.created", true));
         }
@@ -383,16 +380,20 @@ public class RepositorioGit {
 
         git.branchRename().setNewName(novoBranch).call();
 
-        StoredConfig config = git.getRepository().getConfig();
-        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_REMOTE, DEFAULT_REMOTE_NAME);
-        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
-        config.save();
+        criarTrackComBranchRemoto(novoBranch);
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("branch.rename.old", antigo))
                 .and(append("branch.rename.new", git.getRepository().getBranch()));
 
         log.info(marker, "git branch move {}", novoBranch);
+    }
+
+    private void criarTrackComBranchRemoto(String novoBranch) throws IOException {
+        StoredConfig config = git.getRepository().getConfig();
+        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_REMOTE, DEFAULT_REMOTE_NAME);
+        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
+        config.save();
     }
 
 }
