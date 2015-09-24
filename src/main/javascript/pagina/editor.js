@@ -29,6 +29,7 @@ module.exports = {
 
   view: function (ctrl, args) {
     var tipo = safeGet(args, 'tipo');
+    var tituloNome = safeGet(args, 'tituloNome');
     var componenteNome = safeGet(args, 'componenteNome');
     var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
     var tooltips = {
@@ -73,6 +74,7 @@ module.exports = {
           tooltipTipo: tooltips.tipo
         }),
         m.component(require('pagina/componentes/nome'), _.assign(binding, {
+          titulo: tituloNome,
           componente: componenteNome,
           tooltipNome: tooltips.nome
         })),

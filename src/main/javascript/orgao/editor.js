@@ -9,9 +9,8 @@ module.exports = {
 
     return m.component(EditorPagina, {
       tipo: 'orgao',
-
+      tituloNome: 'Selecione o Órgão',
       componenteNome: require('orgao/select-orgao'),
-
       tamanhoConteudo: 1500,
 
       tooltips: {

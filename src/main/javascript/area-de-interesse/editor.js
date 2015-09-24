@@ -10,6 +10,8 @@ module.exports = {
 
       tipo: 'area-de-interesse',
 
+      tituloNome: 'Selecione a Área de Interesse',
+
       componenteNome: require('area-de-interesse/componentes/select'),
 
       tamanhoConteudo: 1500,

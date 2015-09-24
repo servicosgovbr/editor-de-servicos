@@ -53,10 +53,12 @@ var language = {
 module.exports = {
   controller: function (args) {
     this.prop = args.prop;
-    this.options = _.omit(args, 'prop');
+
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var options = _.omit(args, 'prop');
+
     return m('.clear.select2-message-container', m('select', {
       config: function (element, isInitialized) {
         var el = jQuery(element);
@@ -66,10 +68,10 @@ module.exports = {
             language: language,
             placeholder: 'Selecione...',
             minimumResultsForSearch: Infinity
-          }, ctrl.options));
+          }, options));
 
           select2.on('change', function (e) {
-            if (!ctrl.options.allowClear && (!el.val() || ctrl.prop() === el.val())) {
+            if (!options.allowClear && (!el.val() || ctrl.prop() === el.val())) {
               e.stopPropagation();
               return false;
             }
@@ -78,12 +80,12 @@ module.exports = {
             ctrl.prop(el.val());
             m.endComputation();
 
-            if (_.isFunction(ctrl.options.change)) {
-              ctrl.options.change(el.val());
+            if (_.isFunction(options.change)) {
+              options.change(el.val());
             }
           });
         }
-        if (!ctrl.options.initSelection) {
+        if (!options.initSelection) {
           el.select2('val', ctrl.prop());
         }
       }

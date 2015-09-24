@@ -11,7 +11,7 @@ module.exports = {
 
     return m('fieldset#nome', [
       m('h3', [
-          'Órgão',
+          args.titulo,
           args.novo
           ? m.component(tooltipNome)
           : ''
