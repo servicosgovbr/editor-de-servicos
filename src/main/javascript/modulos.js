@@ -9,6 +9,7 @@ module.exports = function (m) {
     '/editar/servico/:id': require('servico/editor'),
     '/editar/orgao/:id': require('orgao/editor'),
     '/editar/area-de-interesse/:id': require('area-de-interesse/editor'),
+    '/editar/pagina-especial/:id': require('especial/editor'),
     '/editar/pagina/nova': require('pagina/nova')
   });
 };

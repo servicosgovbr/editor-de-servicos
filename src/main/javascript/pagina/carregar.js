@@ -37,9 +37,7 @@ var importar = function (cabecalho, json) {
   return new ModeloPagina(json);
 };
 
-var carregar = function (args, cabecalho) {
+module.exports = function (args, cabecalho) {
   return m.request(config(args, cabecalho.metadados))
     .then(_.bind(importar, this, cabecalho), erro);
 };
-
-module.exports = carregar;

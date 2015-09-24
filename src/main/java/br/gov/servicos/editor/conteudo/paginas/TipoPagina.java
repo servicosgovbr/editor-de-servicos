@@ -7,7 +7,7 @@ import java.util.Arrays;
 public enum TipoPagina {
     ORGAO("orgao", "orgaos"),
     AREA_INTERESSE("area-de-interesse", "areas-de-interesse"),
-    ESPECIAL("especial", "paginas-especiais");
+    ESPECIAL("pagina-especial", "paginas-especiais");
 
     @Getter
     private String nome;

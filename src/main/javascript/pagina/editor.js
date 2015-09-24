@@ -24,7 +24,6 @@ module.exports = {
     this.salvar = _.bind(function () {
       return salvarOrgao(tipo, this.pagina());
     }, this);
-
   },
 
   view: function (ctrl, args) {
@@ -39,6 +38,7 @@ module.exports = {
     };
 
     ctrl.pagina().tipo(tipo);
+    ctrl.pagina().tamanhoConteudo(tamanhoConteudo);
 
     var binding = {
       pagina: ctrl.pagina,

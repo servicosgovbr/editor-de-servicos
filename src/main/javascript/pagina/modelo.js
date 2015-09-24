@@ -9,4 +9,10 @@ module.exports = function (config) {
   this.tipo = v.prop(data.tipo || '', v.obrigatorio);
   this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto);
   this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(1500));
+
+  this.tamanhoConteudo = _.bind(function (tamanho) {
+    var backup = this.conteudo();
+    this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(tamanho));
+    this.conteudo(backup);
+  }, this);
 };
