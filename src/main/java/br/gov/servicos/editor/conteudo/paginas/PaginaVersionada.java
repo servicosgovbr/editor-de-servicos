@@ -6,15 +6,10 @@ import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -36,14 +31,17 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
     @Getter
     String id;
 
-    private PaginaVersionada(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+    String tipo;
+
+    PaginaVersionada(String id, String tipo, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
         super(repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         this.id = id;
+        this.tipo = tipo;
     }
 
     @Override
     public Path getCaminho() {
-        return Paths.get("conteudo", "orgaos", id + ".md");
+        return Paths.get("conteudo", pastaTipo(), id + ".md");
     }
 
     public Pagina getConteudo() {
@@ -60,10 +58,10 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
     @Component
     @FieldDefaults(level = PRIVATE, makeFinal = true)
     public static class Formatter implements org.springframework.format.Formatter<PaginaVersionada> {
-        Factory factory;
+        PaginaVersionadaFactory factory;
 
         @Autowired
-        public Formatter(Factory factory) {
+        public Formatter(PaginaVersionadaFactory factory) {
             this.factory = factory;
         }
 
@@ -79,30 +77,8 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
 
     }
 
-    @Configuration
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Factory {
-        @Autowired
-        Slugify slugify;
-
-        @Autowired
-        RepositorioGit repositorio;
-
-        @Autowired
-        LeitorDeArquivos leitorDeArquivos;
-
-        @Autowired
-        EscritorDeArquivos escritorDeArquivos;
-
-        @Autowired
-        ReformatadorXml reformatadorXml;
-
-        @Bean // necessário para @Cacheable
-        @Scope("prototype")
-        public PaginaVersionada paginaDeOrgao(String texto) {
-            return new PaginaVersionada(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
-        }
+    private String pastaTipo() {
+        return TipoPagina.fromNome(this.tipo).getNomePasta();
     }
 
 }

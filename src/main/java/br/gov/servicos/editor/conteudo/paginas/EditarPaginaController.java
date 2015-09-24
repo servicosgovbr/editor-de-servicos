@@ -24,13 +24,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class EditarPaginaController {
+
     @ResponseBody
-    @RequestMapping(value = "/editar/api/orgao/{id}", method = GET, produces = "application/json")
+    @RequestMapping(value = "/editar/api/{tipo}/{id}", method = GET, produces = "application/json")
     public String editar(
-            @PathVariable("id") PaginaVersionada pagina,
-            HttpServletResponse response
-    ) throws FileNotFoundException {
-        Metadados<Pagina> metadados = pagina.getMetadados();
+            @PathVariable("tipo") String tipo,
+            @PathVariable("id") PaginaVersionada paginaVersionada,
+            HttpServletResponse response) throws FileNotFoundException {
+        return editar(paginaVersionada, response);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/editar/api/{tipo}/novo", method = GET, produces = "application/json")
+    Pagina editarNovo(@PathVariable("tipo") String tipo) {
+        return new Pagina().withTipo(TipoPagina.fromNome(tipo));
+    }
+
+    private String editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException {
+        Metadados<Pagina> metadados = paginaVersionada.getMetadados();
 
         ofNullable(metadados.getPublicado()).ifPresent(r -> {
             response.setHeader("X-Git-Commit-Publicado", r.getHash());
@@ -44,15 +55,9 @@ public class EditarPaginaController {
             response.setDateHeader("X-Git-Horario-Editado", r.getHorario().getTime());
         });
 
-        Pagina orgao = carregarConteudoPagina(pagina);
+        Pagina pagina = carregarConteudoPagina(paginaVersionada);
 
-        return converterParaJson(orgao);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/editar/api/orgao/novo", method = GET, produces = "application/json")
-    Pagina editarNovo() {
-        return new Pagina();
+        return converterParaJson(pagina);
     }
 
     @SneakyThrows

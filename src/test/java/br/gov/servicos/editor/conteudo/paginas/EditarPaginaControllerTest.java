@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.ORGAO;
 import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -29,7 +30,7 @@ public class EditarPaginaControllerTest {
     static final Metadados<Pagina> METADADOS = new Metadados<Pagina>()
             .withEditado(REVISAO)
             .withPublicado(REVISAO)
-            .withConteudo(new Pagina().withNome("Ministerio").withTipo("orgao"));
+            .withConteudo(new Pagina().withNome("Ministerio").withTipo(ORGAO));
 
     @Mock
     PaginaVersionada pagina;
@@ -51,7 +52,7 @@ public class EditarPaginaControllerTest {
         given(pagina.getConteudoRaw())
                 .willReturn("Ministério\n--\n\nConteúdo");
 
-        controller.editar(pagina, response);
+        controller.editar("orgao", pagina, response);
 
         assertThat(response.getHeader("X-Git-Commit-Publicado"), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
         assertThat(response.getHeader("X-Git-Autor-Publicado"), is("Fulano de Tal"));
@@ -70,7 +71,7 @@ public class EditarPaginaControllerTest {
         given(pagina.getConteudoRaw())
                 .willReturn("Ministério\n--\n\nConteúdo");
 
-        String conteudo = controller.editar(pagina, new MockHttpServletResponse());
+        String conteudo = controller.editar("orgao", pagina, new MockHttpServletResponse());
         assertThat(conteudo, is("{\n  \"tipo\" : \"orgao\",\n  \"nome\" : \"Ministerio\",\n  \"conteudo\" : \"Conteúdo\"\n}"));
     }
 
@@ -78,10 +79,9 @@ public class EditarPaginaControllerTest {
     public void retorna404QuandoArquivoNaoEncontrado() throws Exception {
         given(pagina.getMetadados())
                 .willReturn(METADADOS);
-
         given(pagina.getConteudoRaw())
                 .willThrow(new FileNotFoundException());
-
-        controller.editar(pagina, new MockHttpServletResponse());
+        controller.editar("orgao", pagina, new MockHttpServletResponse());
     }
+
 }
