@@ -34,23 +34,7 @@ public class PaginaVersionadaFactory {
 
     @Bean // necessário para @Cacheable
     @Scope("prototype")
-    public PaginaVersionada paginaDeOrgao(String texto) {
-        return pagina(texto, "orgao");
-    }
-
-    @Bean // necessário para @Cacheable
-    @Scope("prototype")
-    public PaginaVersionada paginaAreaDeInteresse(String texto) {
-        return pagina(texto, "area-de-interesse");
-    }
-
-    @Bean // necessário para @Cacheable
-    @Scope("prototype")
-    public PaginaVersionada paginaEspecial(String texto) {
-        return pagina(texto, "especial");
-    }
-
-    private PaginaVersionada pagina(String texto, String tipo) {
+    public PaginaVersionada pagina(String texto, TipoPagina tipo) {
         return new PaginaVersionada(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
     }
 

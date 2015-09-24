@@ -31,9 +31,9 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
     @Getter
     String id;
 
-    String tipo;
+    TipoPagina tipo;
 
-    PaginaVersionada(String id, String tipo, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+    PaginaVersionada(String id, TipoPagina tipo, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
         super(repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         this.id = id;
         this.tipo = tipo;
@@ -41,7 +41,7 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
 
     @Override
     public Path getCaminho() {
-        return Paths.get("conteudo", pastaTipo(), id + ".md");
+        return Paths.get("conteudo", tipo.getNomePasta(), id + ".md");
     }
 
     public Pagina getConteudo() {
@@ -53,32 +53,6 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
             return getRepositorio().comRepositorioAbertoNoBranch(R_HEADS + MASTER,
                     uncheckedSupplier(() -> new Pagina().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
         }
-    }
-
-    @Component
-    @FieldDefaults(level = PRIVATE, makeFinal = true)
-    public static class Formatter implements org.springframework.format.Formatter<PaginaVersionada> {
-        PaginaVersionadaFactory factory;
-
-        @Autowired
-        public Formatter(PaginaVersionadaFactory factory) {
-            this.factory = factory;
-        }
-
-        @Override
-        public PaginaVersionada parse(String text, Locale locale) {
-            return factory.paginaDeOrgao(text);
-        }
-
-        @Override
-        public String print(PaginaVersionada object, Locale locale) {
-            return object.getId();
-        }
-
-    }
-
-    private String pastaTipo() {
-        return TipoPagina.fromNome(this.tipo).getNomePasta();
     }
 
 }

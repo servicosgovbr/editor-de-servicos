@@ -16,7 +16,7 @@ var config = function (args, metadados) {
 
     method: 'GET',
 
-    url: '/editar/api/' + tipo + '/' + id,
+    url: '/editar/api/pagina/' + tipo + '/' + id,
 
     config: function (xhr) {
       xhr.setRequestHeader('Accept', 'application/json');

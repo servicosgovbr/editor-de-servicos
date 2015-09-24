@@ -12,11 +12,14 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.ORGAO;
 import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EditarPaginaControllerTest {
@@ -35,11 +38,17 @@ public class EditarPaginaControllerTest {
     @Mock
     PaginaVersionada pagina;
 
+    @Mock
+            PaginaVersionadaFactory factory;
+
     EditarPaginaController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new EditarPaginaController();
+        given(factory.pagina(anyString(), any()))
+                .willReturn(pagina);
+
+        controller = new EditarPaginaController(factory);
     }
 
     @Test
@@ -52,7 +61,7 @@ public class EditarPaginaControllerTest {
         given(pagina.getConteudoRaw())
                 .willReturn("Ministério\n--\n\nConteúdo");
 
-        controller.editar("orgao", pagina, response);
+        controller.editar("orgao", "ministerio-conteudo", response);
 
         assertThat(response.getHeader("X-Git-Commit-Publicado"), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
         assertThat(response.getHeader("X-Git-Autor-Publicado"), is("Fulano de Tal"));
@@ -71,7 +80,7 @@ public class EditarPaginaControllerTest {
         given(pagina.getConteudoRaw())
                 .willReturn("Ministério\n--\n\nConteúdo");
 
-        String conteudo = controller.editar("orgao", pagina, new MockHttpServletResponse());
+        String conteudo = controller.editar("orgao", "ministerio-conteudo", new MockHttpServletResponse());
         assertThat(conteudo, is("{\n  \"tipo\" : \"orgao\",\n  \"nome\" : \"Ministerio\",\n  \"conteudo\" : \"Conteúdo\"\n}"));
     }
 
@@ -81,7 +90,7 @@ public class EditarPaginaControllerTest {
                 .willReturn(METADADOS);
         given(pagina.getConteudoRaw())
                 .willThrow(new FileNotFoundException());
-        controller.editar("orgao", pagina, new MockHttpServletResponse());
+        controller.editar("orgao", "", new MockHttpServletResponse());
     }
 
 }

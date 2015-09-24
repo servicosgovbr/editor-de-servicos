@@ -16,7 +16,7 @@ function postarPagina(args) {
 
   return m.request({
     method: 'POST',
-    url: '/editar/' + tipo + '/' + id,
+    url: '/editar/pagina/' + tipo + '/' + id,
     data: pagina,
     background: true
   });

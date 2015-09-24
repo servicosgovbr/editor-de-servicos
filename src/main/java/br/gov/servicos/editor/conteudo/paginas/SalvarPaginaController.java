@@ -21,22 +21,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SalvarPaginaController {
 
     FormatadorConteudoPagina formatador;
+    private PaginaVersionadaFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
-    public SalvarPaginaController(FormatadorConteudoPagina formatador, UserProfiles userProfiles) {
+    public SalvarPaginaController(FormatadorConteudoPagina formatador, PaginaVersionadaFactory factory, UserProfiles userProfiles) {
         this.formatador = formatador;
+        this.factory = factory;
         this.userProfiles = userProfiles;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/orgao/{id}", method = POST)
-    RedirectView editar(@PathVariable("id") PaginaVersionada pagina,
-                        @RequestBody Pagina orgao) {
-
-        pagina.salvar(userProfiles.get(), formatador.formatar(orgao));
-
-        return new RedirectView("/editar/api/orgao/" + pagina.getId());
+    @RequestMapping(value = "/editar/pagina/{tipo}/{id}", method = POST)
+    RedirectView editar(@PathVariable("tipo") String tipo,
+                        @PathVariable("id") String id,
+                        @RequestBody Pagina pagina) {
+        PaginaVersionada paginaVersionada = factory.pagina(id, TipoPagina.fromNome(tipo));
+        paginaVersionada.salvar(userProfiles.get(), formatador.formatar(pagina));
+        return new RedirectView("/editar/api/pagina/" + tipo + "/" + paginaVersionada.getId());
     }
 
 }

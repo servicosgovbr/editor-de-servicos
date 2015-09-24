@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,17 +26,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class EditarPaginaController {
 
-    @ResponseBody
-    @RequestMapping(value = "/editar/api/{tipo}/{id}", method = GET, produces = "application/json")
-    public String editar(
-            @PathVariable("tipo") String tipo,
-            @PathVariable("id") PaginaVersionada paginaVersionada,
-            HttpServletResponse response) throws FileNotFoundException {
-        return editar(paginaVersionada, response);
+    private PaginaVersionadaFactory factory;
+
+    @Autowired
+    public EditarPaginaController(PaginaVersionadaFactory factory) {
+        this.factory = factory;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/{tipo}/novo", method = GET, produces = "application/json")
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = GET, produces = "application/json")
+    public String editar(
+            @PathVariable("tipo") String tipo,
+            @PathVariable("id") String id,
+            HttpServletResponse response) throws FileNotFoundException {
+        return editar(factory.pagina(id, TipoPagina.fromNome(tipo)), response);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/novo", method = GET, produces = "application/json")
     Pagina editarNovo(@PathVariable("tipo") String tipo) {
         return new Pagina().withTipo(TipoPagina.fromNome(tipo));
     }

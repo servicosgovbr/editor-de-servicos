@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo;
 import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
+import br.gov.servicos.editor.conteudo.paginas.PaginaVersionadaFactory;
 import com.google.common.cache.Cache;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
@@ -27,6 +28,8 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -41,7 +44,7 @@ public class ListaDeConteudoTest {
     Formatter<Carta> formatterCarta;
 
     @Mock
-    Formatter<PaginaVersionada> formatterOrgao;
+    PaginaVersionadaFactory factory;
 
     @Mock
     Importador importador;
@@ -59,7 +62,9 @@ public class ListaDeConteudoTest {
 
     @Before
     public void setUp() throws Exception {
-        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatterCarta, formatterOrgao, cacheManager, true);
+
+
+        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatterCarta, factory, cacheManager, true);
 
         Path dir = Files.createTempDirectory("listar-cartas-controller");
         Path servicos = dir.resolve("cartas-servico/v3/servicos");
@@ -73,7 +78,8 @@ public class ListaDeConteudoTest {
 
         given(repositorioGit.getCaminhoAbsoluto()).willReturn(dir);
         given(formatterCarta.parse("id-qualquer", getDefault())).willReturn(carta);
-        given(formatterOrgao.parse("outro-id-qualquer", getDefault())).willReturn(paginaVersionada);
+        given(factory.pagina("outro-id-qualquer", any()))
+                .willReturn(paginaVersionada);
     }
 
     @Test

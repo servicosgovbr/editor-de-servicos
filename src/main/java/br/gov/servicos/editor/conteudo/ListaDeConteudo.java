@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo;
 import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
+import br.gov.servicos.editor.conteudo.paginas.PaginaVersionadaFactory;
 import com.google.common.cache.Cache;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.ORGAO;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toSet;
@@ -36,7 +38,7 @@ public class ListaDeConteudo {
     Importador importador;
     RepositorioGit repositorioGit;
     Formatter<Carta> formatterCarta;
-    Formatter<PaginaVersionada> formatterOrgao;
+    PaginaVersionadaFactory paginaVersionadaFactory;
     CacheManager cacheManager;
     boolean esquentarCache;
 
@@ -45,14 +47,14 @@ public class ListaDeConteudo {
             Importador importador,
             RepositorioGit repositorioGit,
             Formatter<Carta> formatterCarta,
-            Formatter<PaginaVersionada> formatterOrgao,
+            PaginaVersionadaFactory paginaVersionadaFactory,
             CacheManager cacheManager,
             @Value("${flags.esquentar.cache}") boolean esquentarCache
     ) {
         this.importador = importador;
         this.repositorioGit = repositorioGit;
         this.formatterCarta = formatterCarta;
-        this.formatterOrgao = formatterOrgao;
+        this.paginaVersionadaFactory = paginaVersionadaFactory;
         this.cacheManager = cacheManager;
         this.esquentarCache = esquentarCache;
     }
@@ -88,7 +90,7 @@ public class ListaDeConteudo {
                 .map(Carta::getMetadados);
 
         Stream<Metadados<Pagina>> orgaos = concat(listar("conteudo/orgaos", "md"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
-                .map(uncheckedFunction(id -> formatterOrgao.parse(id, getDefault())))
+                .map(uncheckedFunction(id -> paginaVersionadaFactory.pagina(id, ORGAO)))
                 .map(PaginaVersionada::getMetadados);
 
         return concat(servicos, orgaos).collect(toSet());
