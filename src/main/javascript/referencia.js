@@ -7,6 +7,7 @@ var tiposDePaginaList = [
   'Área de Interesse',
   'Página Especial',
   'Órgão',
+  'Serviço'
 ].map(function (t) {
   return {
     id: slugify(t),

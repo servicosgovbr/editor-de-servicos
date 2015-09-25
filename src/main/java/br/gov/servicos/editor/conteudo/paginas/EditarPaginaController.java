@@ -45,7 +45,7 @@ public class EditarPaginaController {
     @ResponseBody
     @RequestMapping(value = "/editar/api/pagina/{tipo}/novo", method = GET, produces = "application/json")
     Pagina editarNovo(@PathVariable("tipo") String tipo) {
-        return new Pagina().withTipo(TipoPagina.fromNome(tipo));
+        return new Pagina().withTipo(TipoPagina.fromNome(tipo).getNome());
     }
 
     private String editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException {
@@ -74,13 +74,17 @@ public class EditarPaginaController {
         return ow.writeValueAsString(pagina);
     }
 
-    private Pagina carregarConteudoPagina(PaginaVersionada pagina) throws FileNotFoundException {
-        String[] linhas = pagina.getConteudoRaw().split("\n");
+    private Pagina carregarConteudoPagina(PaginaVersionada paginaVersionada) throws FileNotFoundException {
+        String[] linhas = paginaVersionada.getConteudoRaw().split("\n");
         int posicaoCabecalhoConteudo = linhas.length > 2 ? 3 : linhas.length;
 
-        Pagina orgao = pagina.getMetadados().getConteudo();
-        orgao.setConteudo(String.join("\n", Arrays.copyOfRange(linhas, posicaoCabecalhoConteudo, linhas.length)));
+        Pagina pagina = paginaVersionada
+                .getMetadados()
+                .getConteudo()
+                .withTipo(paginaVersionada.getTipo().getNome());
 
-        return orgao;
+        pagina.setConteudo(String.join("\n", Arrays.copyOfRange(linhas, posicaoCabecalhoConteudo, linhas.length)));
+
+        return pagina;
     }
 }

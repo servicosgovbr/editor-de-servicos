@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 public class Pagina {
-    TipoPagina tipo;
+    String tipo;
     String nome;
     String conteudo;
 }

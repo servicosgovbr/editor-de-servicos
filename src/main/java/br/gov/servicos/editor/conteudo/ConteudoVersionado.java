@@ -193,7 +193,7 @@ public abstract class ConteudoVersionado<T> {
     private void alterarConteudo(UserProfile profile, String novoNome, String branch) {
         repositorio.pull();
         String conteudo = mudarNomeConteudo(novoNome);
-        salvarConteudo(profile, branch,conteudo);
+        salvarConteudo(profile, branch, conteudo);
     }
 
 }

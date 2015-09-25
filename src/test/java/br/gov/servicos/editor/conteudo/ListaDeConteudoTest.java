@@ -30,6 +30,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -69,16 +70,22 @@ public class ListaDeConteudoTest {
         Path dir = Files.createTempDirectory("listar-cartas-controller");
         Path servicos = dir.resolve("cartas-servico/v3/servicos");
         Path orgaos = dir.resolve("conteudo/orgaos");
+        Path areasInteresse = dir.resolve("conteudo/areas-de-interesse");
+        Path paginasEspeciais = dir.resolve("conteudo/paginas-especiais");
 
         assertTrue(servicos.toFile().mkdirs());
         assertTrue(orgaos.toFile().mkdirs());
+        assertTrue(areasInteresse.toFile().mkdirs());
+        assertTrue(paginasEspeciais.toFile().mkdirs());
 
         Files.createFile(servicos.resolve("id-qualquer.xml"));
         Files.createFile(orgaos.resolve("outro-id-qualquer.md"));
+        Files.createFile(areasInteresse.resolve("area.md"));
+        Files.createFile(paginasEspeciais.resolve("pg-especial.md"));
 
         given(repositorioGit.getCaminhoAbsoluto()).willReturn(dir);
         given(formatterCarta.parse("id-qualquer", getDefault())).willReturn(carta);
-        given(factory.pagina("outro-id-qualquer", any()))
+        given(factory.pagina(anyString(), any()))
                 .willReturn(paginaVersionada);
     }
 

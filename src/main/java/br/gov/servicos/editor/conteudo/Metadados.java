@@ -15,9 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Metadados<T> implements Serializable {
-
     String id;
-
     Revisao publicado;
     Revisao editado;
 

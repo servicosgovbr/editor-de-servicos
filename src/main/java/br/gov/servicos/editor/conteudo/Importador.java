@@ -43,7 +43,7 @@ class Importador {
     @PostConstruct
     @SneakyThrows
     void importaRepositorioDeCartas() {
-        if(!deveImportar) {
+        if (!deveImportar) {
             log.info("Importação do repositório de cartas desabilitada (FLAGS_IMPORTAR=false)");
             return;
         }

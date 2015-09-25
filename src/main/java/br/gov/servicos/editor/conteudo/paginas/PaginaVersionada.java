@@ -9,14 +9,11 @@ import com.github.slugify.Slugify;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
 
 import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static com.google.common.io.Files.readFirstLine;
@@ -31,6 +28,7 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
     @Getter
     String id;
 
+    @Getter
     TipoPagina tipo;
 
     PaginaVersionada(String id, TipoPagina tipo, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
@@ -48,10 +46,14 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
         File arquivo = getCaminhoAbsoluto().toFile();
         try {
             return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
-                    uncheckedSupplier(() -> new Pagina().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
+                    uncheckedSupplier(() -> new Pagina()
+                            .withNome(readFirstLine(arquivo, Charset.defaultCharset()))
+                            .withTipo(tipo.getNome())));
         } catch (Exception e) {
             return getRepositorio().comRepositorioAbertoNoBranch(R_HEADS + MASTER,
-                    uncheckedSupplier(() -> new Pagina().withNome(readFirstLine(arquivo, Charset.defaultCharset()))));
+                    uncheckedSupplier(() -> new Pagina()
+                            .withNome(readFirstLine(arquivo, Charset.defaultCharset()))
+                            .withTipo(tipo.getNome())));
         }
     }
 

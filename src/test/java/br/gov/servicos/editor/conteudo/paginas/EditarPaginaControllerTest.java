@@ -33,13 +33,13 @@ public class EditarPaginaControllerTest {
     static final Metadados<Pagina> METADADOS = new Metadados<Pagina>()
             .withEditado(REVISAO)
             .withPublicado(REVISAO)
-            .withConteudo(new Pagina().withNome("Ministerio").withTipo(ORGAO));
+            .withConteudo(new Pagina().withNome("Ministerio").withTipo(ORGAO.getNome()));
 
     @Mock
     PaginaVersionada pagina;
 
     @Mock
-            PaginaVersionadaFactory factory;
+    PaginaVersionadaFactory factory;
 
     EditarPaginaController controller;
 
@@ -48,12 +48,17 @@ public class EditarPaginaControllerTest {
         given(factory.pagina(anyString(), any()))
                 .willReturn(pagina);
 
+        given(pagina.getTipo())
+                .willReturn(ORGAO);
+
+
         controller = new EditarPaginaController(factory);
     }
 
     @Test
     public void adicionaHeadersDosMetadados() throws Exception {
         MockHttpServletResponse response = new MockHttpServletResponse();
+
 
         given(pagina.getMetadados())
                 .willReturn(METADADOS);

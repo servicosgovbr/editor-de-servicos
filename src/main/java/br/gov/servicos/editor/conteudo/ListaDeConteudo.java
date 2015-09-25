@@ -4,6 +4,7 @@ import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
 import br.gov.servicos.editor.conteudo.paginas.PaginaVersionadaFactory;
+import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import com.google.common.cache.Cache;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +23,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.ORGAO;
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toSet;
@@ -89,11 +90,17 @@ public class ListaDeConteudo {
                 .map(uncheckedFunction(id -> formatterCarta.parse(id, getDefault())))
                 .map(Carta::getMetadados);
 
-        Stream<Metadados<Pagina>> orgaos = concat(listar("conteudo/orgaos", "md"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
-                .map(uncheckedFunction(id -> paginaVersionadaFactory.pagina(id, ORGAO)))
-                .map(PaginaVersionada::getMetadados);
+        Stream<Metadados<Pagina>> orgaos = listarMetadados(ORGAO);
+        Stream<Metadados<Pagina>> areasInteresse = listarMetadados(AREA_INTERESSE);
+        Stream<Metadados<Pagina>> paginasEspeciais = listarMetadados(ESPECIAL);
 
-        return concat(servicos, orgaos).collect(toSet());
+        return concat(concat(concat(servicos, orgaos), areasInteresse), paginasEspeciais).collect(toSet());
+    }
+
+    private Stream<Metadados<Pagina>> listarMetadados(TipoPagina tipo) throws FileNotFoundException {
+        return concat(listar("conteudo/" + tipo.getNomePasta(), "md"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
+                .map(uncheckedFunction(id -> paginaVersionadaFactory.pagina(id, tipo)))
+                .map(PaginaVersionada::getMetadados);
     }
 
     private Stream<String> listar(String caminho, String ext) throws FileNotFoundException {

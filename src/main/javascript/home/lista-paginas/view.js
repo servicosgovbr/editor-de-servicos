@@ -1,6 +1,6 @@
 'use strict';
 
-//var safeGet = require('utils/code-checks').safeGet;
+var referencia = require('referencia');
 
 module.exports = function (ctrl, args) {
 
@@ -16,6 +16,7 @@ module.exports = function (ctrl, args) {
   return m('table', [
      m('tr', [
        m('th[width="40%"]', 'Nome'),
+       m('th.center', 'Tipo'),
        m('th.center', 'Publicação'),
        m('th.center', 'Edição'),
        m('th.right', '')
@@ -33,7 +34,7 @@ module.exports = function (ctrl, args) {
          m.trust(' &nbsp; '),
          s.conteudo.nome
        ])),
-
+       m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
        m('td.center', s.publicado ? [
          moment(s.publicado.horario).fromNow(),
          ', por ',
