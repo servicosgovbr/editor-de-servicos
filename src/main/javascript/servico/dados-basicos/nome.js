@@ -1,11 +1,22 @@
 'use strict';
 
 var slugify = require('slugify');
+var idUnico = require('utils/id-unico');
 
 module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
+
+    this.validar = function(nome) {
+        var idAtual = slugify(this.servico().nome());
+        if (!nome) {
+            return 'erro-campo-obrigatorio';
+        }
+        if (idAtual !== slugify(nome) && !idUnico(nome)) {
+            return 'erro-nome-servico-existente';
+        }
+    };
   },
 
   view: function (ctrl, args) {
@@ -28,16 +39,19 @@ module.exports = {
           alertify.labels.cancel = 'Cancelar';
           alertify.labels.ok = 'Renomear';
           alertify.prompt('Novo nome do serviço:',
-            function (e, str) {
-              if (e) {
-                var idAtual = slugify(servico.nome());
-                m.request({
-                  method: 'PATCH',
-                  url: '/editar/api/servico/' + idAtual + '/' + str
-                }).then(function () {
-                  servico.nome(str);
-                  m.route('/editar/servico/' + slugify(str));
-                });
+            function (e, novoNome) {
+              if (e && servico.nome() !== novoNome) {
+                if (!ctrl.validar(novoNome)) {
+                    var idAtual = slugify(servico.nome());
+                    m.request({
+                        method: 'PATCH',
+                        url: '/editar/api/servico/' + idAtual + '/' + novoNome
+                    }).then(function () {
+                        servico.nome(novoNome);
+                        m.route('/editar/servico/' + slugify(novoNome));
+                    });
+                }
+
               }
 
             },
