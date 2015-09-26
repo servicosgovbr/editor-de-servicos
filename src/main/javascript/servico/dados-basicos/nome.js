@@ -8,14 +8,14 @@ module.exports = {
   controller: function (args) {
     this.servico = args.servico;
 
-    this.validar = function(nome) {
-        var idAtual = slugify(this.servico().nome());
-        if (!nome) {
-            return 'erro-campo-obrigatorio';
-        }
-        if (idAtual !== slugify(nome) && !idUnico(nome)) {
-            return 'erro-nome-servico-existente';
-        }
+    this.validar = function (nome) {
+      var idAtual = slugify(this.servico().nome());
+      if (!nome) {
+        return 'erro-campo-obrigatorio';
+      }
+      if (idAtual !== slugify(nome) && !idUnico(nome)) {
+        return 'erro-nome-servico-existente';
+      }
     };
   },
 
@@ -42,14 +42,14 @@ module.exports = {
             function (e, novoNome) {
               if (e && servico.nome() !== novoNome) {
                 if (!ctrl.validar(novoNome)) {
-                    var idAtual = slugify(servico.nome());
-                    m.request({
-                        method: 'PATCH',
-                        url: '/editar/api/servico/' + idAtual + '/' + novoNome
-                    }).then(function () {
-                        servico.nome(novoNome);
-                        m.route('/editar/servico/' + slugify(novoNome));
-                    });
+                  var idAtual = slugify(servico.nome());
+                  m.request({
+                    method: 'PATCH',
+                    url: '/editar/api/servico/' + idAtual + '/' + novoNome
+                  }).then(function () {
+                    servico.nome(novoNome);
+                    m.route('/editar/servico/' + slugify(novoNome));
+                  });
                 }
 
               }
