@@ -11,11 +11,24 @@ module.exports = {
     this.validar = function (nome) {
       var idAtual = slugify(this.servico().nome());
       if (!nome) {
-        return 'erro-campo-obrigatorio';
+        return 'Campo obrigatório';
       }
       if (idAtual !== slugify(nome) && !idUnico(nome)) {
-        return 'erro-nome-servico-existente';
+        return 'Já existe um serviço com este nome';
       }
+    };
+
+    this.renomearServico = function(novoNome) {
+        var servico = this.servico();
+        var idAtual = slugify(servico.nome());
+        m.request({
+            method: 'PATCH',
+            url: '/editar/api/servico/' + idAtual + '/' + novoNome
+        }).then(function () {
+            servico.nome(novoNome);
+            m.route('/editar/servico/' + slugify(novoNome));
+            alertify.success('Serviço renomeado com sucesso!');
+        });
     };
   },
 
@@ -36,27 +49,28 @@ module.exports = {
           float: 'right'
         },
         onclick: function () {
-          alertify.labels.cancel = 'Cancelar';
-          alertify.labels.ok = 'Renomear';
-          alertify.prompt('Novo nome do serviço:',
-            function (e, novoNome) {
-              if (e && servico.nome() !== novoNome) {
-                if (!ctrl.validar(novoNome)) {
-                  var idAtual = slugify(servico.nome());
-                  m.request({
-                    method: 'PATCH',
-                    url: '/editar/api/servico/' + idAtual + '/' + novoNome
-                  }).then(function () {
-                    servico.nome(novoNome);
-                    m.route('/editar/servico/' + slugify(novoNome));
-                  });
-                }
+          var renomear = function() {
+              alertify.labels.cancel = 'Cancelar';
+              alertify.labels.ok = 'Renomear';
+              alertify.prompt('Novo nome do serviço:',
+                  function (e, novoNome) {
+                      if (e && servico.nome() !== novoNome) {
+                          var validacao = ctrl.validar(novoNome);
+                          if (!validacao) {
+                              ctrl.renomearServico(novoNome);
+                          } else {
+                              alertify.labels.ok = 'Ok';
+                              alertify.alert(validacao, function() {
+                                  renomear();
+                              });
+                          }
 
-              }
-
-            },
-            servico.nome()
-          );
+                      }
+                  },
+                  servico.nome()
+              );
+            };
+          renomear();
         }
       }, [m('i.fa.fa-pencil'),
                 'Alterar nome'])
