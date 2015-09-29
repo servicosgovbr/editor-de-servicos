@@ -1,26 +1,27 @@
-package br.gov.servicos.editor.config;
+package br.gov.servicos.editor.fixtures;
 
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
 import java.io.File;
+import java.nio.file.Files;
 
-import static java.nio.file.Files.createTempDirectory;
 import static lombok.AccessLevel.PRIVATE;
 
-@Profile("!teste")
+@Profile("teste")
 @Configuration
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class  RepositorioCartasConfig {
+public class RepositorioConfigTeste {
 
     File local;
 
     @SneakyThrows
-    RepositorioCartasConfig() {
-        local = createTempDirectory("editor-de-servicos").toFile();
+    RepositorioConfigTeste() {
+        local = Files.createTempDirectory("editor-de-servicos-FUNCIONA").toFile();
         local.deleteOnExit();
     }
 

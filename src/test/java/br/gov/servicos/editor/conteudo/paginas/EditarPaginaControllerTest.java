@@ -12,7 +12,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.ORGAO;
 import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.is;

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
+import static java.lang.String.*;
 import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -54,13 +55,13 @@ public class EditarPaginaController {
         ofNullable(metadados.getPublicado()).ifPresent(r -> {
             response.setHeader("X-Git-Commit-Publicado", r.getHash());
             response.setHeader("X-Git-Autor-Publicado", r.getAutor());
-            response.setDateHeader("X-Git-Horario-Publicado", r.getHorario().getTime());
+            response.setHeader("X-Git-Horario-Publicado", valueOf(r.getHorario().getTime()));
         });
 
         ofNullable(metadados.getEditado()).ifPresent(r -> {
             response.setHeader("X-Git-Commit-Editado", r.getHash());
             response.setHeader("X-Git-Autor-Editado", r.getAutor());
-            response.setDateHeader("X-Git-Horario-Editado", r.getHorario().getTime());
+            response.setHeader("X-Git-Horario-Editado", valueOf(r.getHorario().getTime()));
         });
 
         Pagina pagina = carregarConteudoPagina(paginaVersionada);
@@ -83,7 +84,7 @@ public class EditarPaginaController {
                 .getConteudo()
                 .withTipo(paginaVersionada.getTipo().getNome());
 
-        pagina.setConteudo(String.join("\n", Arrays.copyOfRange(linhas, posicaoCabecalhoConteudo, linhas.length)));
+        pagina.setConteudo(join("\n", Arrays.copyOfRange(linhas, posicaoCabecalhoConteudo, linhas.length)));
 
         return pagina;
     }
