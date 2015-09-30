@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo;
+package br.gov.servicos.editor.git;
 
 import br.gov.servicos.editor.utils.LogstashProgressMonitor;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Slf4j
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class Importador {
+public class Importador {
 
     String repositorioCartas;
     File repositorioCartasLocal;
@@ -30,14 +29,10 @@ class Importador {
     boolean importadoComSucesso;
 
     @Autowired
-    Importador(
-            @Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
-            @Value("${flags.importar}") boolean deveImportar,
-            File repositorioCartasLocal
-    ) {
-        this.repositorioCartas = urlRepositorioCartas;
-        this.deveImportar = deveImportar;
-        this.repositorioCartasLocal = repositorioCartasLocal;
+    Importador(RepositorioConfig config) {
+        this.repositorioCartas = config.urlRepositorioCartas;
+        this.deveImportar = config.deveImportar;
+        this.repositorioCartasLocal = config.repositorioLocal;
     }
 
     @PostConstruct

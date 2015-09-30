@@ -2,6 +2,7 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.Main;
 import br.gov.servicos.editor.fixtures.MockMvcFactory;
+import br.gov.servicos.editor.fixtures.RepositorioConfigTeste;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "flags.esquentar.cache=false",
         "server.port:0",
         "users.editor=teste@gmail.com"
-
 })
 @ActiveProfiles("teste")
 public class PublicarCartaControllerIntegrationTest {

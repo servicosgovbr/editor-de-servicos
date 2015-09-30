@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo;
 
+import br.gov.servicos.editor.git.Metadados;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

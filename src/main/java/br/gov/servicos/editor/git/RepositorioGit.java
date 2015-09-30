@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo;
+package br.gov.servicos.editor.git;
 
 import br.gov.servicos.editor.oauth2.UserProfile;
 import br.gov.servicos.editor.utils.LogstashProgressMonitor;
@@ -62,9 +62,9 @@ public class RepositorioGit {
     Git git; // disponível enquanto o repositório estiver aberto
 
     @Autowired
-    public RepositorioGit(File repositorioCartasLocal, @Value("${flags.git.push}") boolean fazerPush) {
-        this.raiz = repositorioCartasLocal;
-        this.fazerPush = fazerPush;
+    public RepositorioGit(RepositorioConfig config) {
+        this.raiz = config.repositorioLocal;
+        this.fazerPush = config.fazerPush;
     }
 
     public Path getCaminhoAbsoluto() {

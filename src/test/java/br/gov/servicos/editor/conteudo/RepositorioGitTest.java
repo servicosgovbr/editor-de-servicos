@@ -1,8 +1,10 @@
 package br.gov.servicos.editor.conteudo;
 
+
+import br.gov.servicos.editor.git.RepositorioConfig;
+import br.gov.servicos.editor.git.RepositorioGit;
 import lombok.SneakyThrows;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
@@ -74,7 +76,7 @@ public class RepositorioGitTest {
 
         System.out.println("clone = " + clone);
 
-        this.repo = new RepositorioGit(clone, true);
+        this.repo = new RepositorioGit(new RepositorioConfig("", false, true, clone));
     }
 
     @Test

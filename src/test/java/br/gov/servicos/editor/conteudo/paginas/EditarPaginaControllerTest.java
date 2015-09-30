@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
-import br.gov.servicos.editor.conteudo.Metadados;
-import br.gov.servicos.editor.conteudo.Revisao;
+import br.gov.servicos.editor.git.Metadados;
+import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

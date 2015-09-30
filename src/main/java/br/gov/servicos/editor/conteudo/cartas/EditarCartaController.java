@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.conteudo.Metadados;
+import br.gov.servicos.editor.git.Metadados;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

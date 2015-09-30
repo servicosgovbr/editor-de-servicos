@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo;
+package br.gov.servicos.editor.git;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

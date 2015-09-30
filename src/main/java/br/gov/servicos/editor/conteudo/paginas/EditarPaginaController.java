@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
 
-import br.gov.servicos.editor.conteudo.Metadados;
+import br.gov.servicos.editor.git.Metadados;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;

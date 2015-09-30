@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
-import br.gov.servicos.editor.conteudo.RepositorioGit;
+import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;

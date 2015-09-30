@@ -7,7 +7,6 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 public class MockMvcFactory {
-
     public static MockMvc comSpringSecurity(WebApplicationContext context) {
         return MockMvcBuilders
                 .webAppContextSetup(context)
