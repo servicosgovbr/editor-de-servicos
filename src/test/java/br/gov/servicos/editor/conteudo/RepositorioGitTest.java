@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo;
 
+import lombok.SneakyThrows;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -112,7 +113,12 @@ public class RepositorioGitTest {
             return null;
         }));
 
-        verificaSeBranchExisteLocalERemoto();
+        try (Git git = Git.open(clone)) {
+            List<Ref> branchesList = git.branchList().setListMode(ALL).call();
+            branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", "")).forEach(System.out::println);
+            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
+            assertTrue(branches.noneMatch(n -> n.equals("foo")));
+        }
     }
 
     @Test
@@ -138,6 +144,7 @@ public class RepositorioGitTest {
         }));
     }
 
+    @SneakyThrows
     private void verificaSeBranchExisteLocalERemoto() throws GitAPIException {
         try (Git git = Git.open(clone)) {
             List<Ref> branchesList = git.branchList().setListMode(ALL).call();
