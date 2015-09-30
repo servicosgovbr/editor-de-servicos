@@ -101,15 +101,23 @@ public abstract class ConteudoVersionado<T> {
 
     @CacheEvict
     public void remover(UserProfile profile) {
-        repositorio.comRepositorioAbertoNoBranch(this.getBranchRef(), () -> {
+        repositorio.comRepositorioAbertoNoBranch(this.getBranchMasterRef(), () -> {
             repositorio.pull();
 
-            repositorio.remove(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
-            repositorio.push(getBranchRef());
+            repositorio.deleteLocalBranch(this.getBranchRef());
+            repositorio.deleteRemoteBranch(this.getBranchRef());
 
+            if (isPublicado()) {
+                repositorio.remove(getCaminhoRelativo());
+                repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+                repositorio.push(getBranchMasterRef());
+            }
             return null;
         });
+    }
+
+    private boolean isPublicado() {
+        return Files.exists(getCaminhoAbsoluto());
     }
 
     @CacheEvict
