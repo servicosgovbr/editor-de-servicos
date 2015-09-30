@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.conteudo;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
@@ -25,10 +28,10 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
+import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class RepositorioGitTest {
 
@@ -97,6 +100,51 @@ public class RepositorioGitTest {
     public void fluxoDeMoverBranch() throws Exception {
         moveBranch();
         garanteQueBranchFoiMovida();
+    }
+
+    @Test
+    public void fluxoDeRemoverServicoNaoPublicado() throws Exception {
+        salvaAlteracao(); //cria branch foo
+        garanteQueAlteracaoFoiParaGithub();
+        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
+            repo.deleteLocalBranch("foo"); //git branch -D foo
+            repo.deleteRemoteBranch("foo"); //git push :foo
+            return null;
+        }));
+
+        verificaSeBranchExisteLocalERemoto();
+    }
+
+    @Test
+    public void fluxoDeRemoverServicoPublicado() throws Exception {
+        salvaAlteracao(); //cria branch foo
+        garanteQueAlteracaoFoiParaGithub();
+        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
+            Path arquivo = Paths.get("README.md");
+            repo.deleteLocalBranch("foo"); //git branch -D foo
+            repo.deleteRemoteBranch("foo"); //git push :foo
+            repo.remove(arquivo);
+            repo.commit(arquivo, "Apagou", PROFILE);
+            repo.push("master");
+            return null;
+        }));
+
+        verificaSeBranchExisteLocalERemoto();
+
+        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
+            Path arquivo = repo.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
+            assertFalse(Files.exists(arquivo));
+            return null;
+        }));
+    }
+
+    private void verificaSeBranchExisteLocalERemoto() throws GitAPIException {
+        try (Git git = Git.open(clone)) {
+            List<Ref> branchesList = git.branchList().setListMode(ALL).call();
+            branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", "")).forEach(System.out::println);
+            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
+            assertTrue(branches.noneMatch(n -> n.equals("foo")));
+        }
     }
 
     private void moveBranch() throws IOException {

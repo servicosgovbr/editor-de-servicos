@@ -291,10 +291,6 @@ public class RepositorioGit {
         pushBranch(branch, branch);
     }
 
-    public void deleteRemoteBranch(String branch) {
-        pushBranch("", R_HEADS + branch);
-    }
-
     private void pushBranch(String branchLocal, String branchRemoto) {
         if (!fazerPush) {
             log.info("Envio de alterações ao Github desligado (FLAGS_GIT_PUSH=false)");
@@ -340,6 +336,18 @@ public class RepositorioGit {
         if (!result.getMergeStatus().isSuccessful()) {
             throw new IllegalStateException("Não foi possível completar o git merge: " + result.getMergeStatus());
         }
+    }
+
+    @SneakyThrows
+    public void deleteLocalBranch(String branch) {
+        git.branchDelete().setForce(true).setBranchNames(branch).call();
+        Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
+                .and(append("branch.delete", branch));
+        log.info(marker, "git branch delete {}", branch);
+    }
+
+    public void deleteRemoteBranch(String branch) {
+        pushBranch("", R_HEADS + branch);
     }
 
     @SneakyThrows
