@@ -12,10 +12,10 @@ module.exports = {
     this.validar = function (nome) {
       var idAtual = slugify(this.servico().nome());
       if (!nome) {
-        return 'Campo obrigatório';
+        return 'Este campo é obrigatório.';
       }
       if (idAtual !== slugify(nome) && !idUnico(nome)) {
-        return 'Já existe um serviço com este nome';
+        return 'O nome preenchido já está sendo utilizado em outro serviço.';
       }
     };
 
