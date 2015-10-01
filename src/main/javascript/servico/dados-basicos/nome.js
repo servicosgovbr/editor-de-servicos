@@ -76,8 +76,7 @@ module.exports = {
           };
           renomear();
         }
-      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner')] :
-                [m('i.fa.fa-pencil'),
+      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner')] : [m('i.fa.fa-pencil'),
                 'Alterar nome'])
         ]);
 
