@@ -62,7 +62,7 @@ module.exports = function (ctrl, args) {
 
          m('button.remover', {
           title: 'Remover este conteúdo',
-          onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id)
+          onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id, s.conteudo.tipo)
         }, m('i.fa.fa-trash-o')),
        ])
      ]);

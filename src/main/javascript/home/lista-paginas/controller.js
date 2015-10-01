@@ -2,6 +2,7 @@
 
 var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
+var referencia = require('referencia');
 
 module.exports = function (args) {
 
@@ -44,11 +45,14 @@ module.exports = function (args) {
       .then(paginasProp, erro);
   }.bind(this), 500);
 
-  this.excluirConteudo = function (id) {
+  this.excluirConteudo = function (id, tipo) {
     m.request({
-      method: 'DELETE',
-      url: '/editar/api/servico/' + slugify(id),
-    }).then(this.listarConteudos, erro);
+        method: 'DELETE',
+        url: '/editar/api/servico/' + slugify(id),
+      }).then(this.listarConteudos, erro)
+      .then(function () {
+        alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!');
+      });
   };
 
   this.listarConteudos();
