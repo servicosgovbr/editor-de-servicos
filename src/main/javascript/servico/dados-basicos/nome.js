@@ -7,6 +7,7 @@ module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
+    this.renomeando = m.prop(false);
 
     this.validar = function (nome) {
       var idAtual = slugify(this.servico().nome());
@@ -19,16 +20,19 @@ module.exports = {
     };
 
     this.renomearServico = function (novoNome) {
+      this.renomeando(true);
+      m.redraw();
       var servico = this.servico();
       var idAtual = slugify(servico.nome());
       m.request({
         method: 'PATCH',
         url: '/editar/api/servico/' + idAtual + '/' + novoNome
-      }).then(function () {
+      }).then(_.bind(function () {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));
         alertify.success('Serviço renomeado com sucesso!');
-      });
+        this.renomeando(false);
+      }, this));
     };
   },
 
@@ -72,7 +76,8 @@ module.exports = {
           };
           renomear();
         }
-      }, [m('i.fa.fa-pencil'),
+      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner')] :
+                [m('i.fa.fa-pencil'),
                 'Alterar nome'])
         ]);
 
