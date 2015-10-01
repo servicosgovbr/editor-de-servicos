@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.oauth2.UserProfiles;
+import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import org.junit.Before;
 import org.junit.Test;

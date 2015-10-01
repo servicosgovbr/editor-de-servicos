@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.oauth2.UserProfile;
+import br.gov.servicos.editor.security.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;

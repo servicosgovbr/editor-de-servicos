@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.oauth2.UserProfiles;
+import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,6 @@ public class SalvarCartaController {
             @PathVariable("id") Carta carta,
             @RequestBody DOMSource servico
     ) throws Exception {
-
         String conteudo = reformatadorXml.formata(servico);
 
         carta.salvar(userProfiles.get(), conteudo);

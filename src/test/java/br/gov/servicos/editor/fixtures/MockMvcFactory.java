@@ -13,5 +13,4 @@ public class MockMvcFactory {
                 .apply(springSecurity())
                 .build();
     }
-
 }

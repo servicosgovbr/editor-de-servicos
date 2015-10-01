@@ -1,11 +1,14 @@
-package br.gov.servicos.editor.oauth2;
+package br.gov.servicos.editor.security.oauth2;
 
+import br.gov.servicos.editor.security.UserProfile;
+import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +17,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Slf4j
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class UserProfiles {
+@Profile("!teste")
+public class OAuth2UserProfiles implements UserProfiles {
 
     @Value("${google.user.info.uri}")
     String urlTemplate;
@@ -23,7 +27,7 @@ public class UserProfiles {
     Cache cache;
 
     @Autowired
-    public UserProfiles(
+    public OAuth2UserProfiles(
             @Value("${google.user.info.uri}") String urlTemplate,
             OAuth2RestOperations restTemplate,
             CacheManager cacheManager
@@ -33,6 +37,7 @@ public class UserProfiles {
         this.cache = cacheManager.getCache("google-profiles");
     }
 
+    @Override
     public UserProfile get() {
         String token = restTemplate.getAccessToken().toString();
 
@@ -46,4 +51,5 @@ public class UserProfiles {
 
         return profile;
     }
+
 }

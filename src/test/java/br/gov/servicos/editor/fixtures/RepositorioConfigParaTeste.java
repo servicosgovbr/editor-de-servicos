@@ -24,13 +24,13 @@ import static lombok.AccessLevel.PRIVATE;
 @Configuration
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @Profile("teste")
-public class RepositorioConfigTeste extends ExternalResource {
+public class RepositorioConfigParaTeste extends ExternalResource {
 
     private TemporaryFolder origin = new TemporaryFolder();
     private TemporaryFolder whereToClone = new TemporaryFolder();
 
     @SneakyThrows
-    public RepositorioConfigTeste() {
+    public RepositorioConfigParaTeste() {
         origin.create();
         whereToClone.create();
         criaRepoComEstrutura();
@@ -55,4 +55,5 @@ public class RepositorioConfigTeste extends ExternalResource {
                 true,
                 whereToClone.getRoot());
     }
+
 }

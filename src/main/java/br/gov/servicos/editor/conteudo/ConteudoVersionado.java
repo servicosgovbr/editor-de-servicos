@@ -3,7 +3,7 @@ package br.gov.servicos.editor.conteudo;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.git.Revisao;
-import br.gov.servicos.editor.oauth2.UserProfile;
+import br.gov.servicos.editor.security.UserProfile;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
@@ -187,6 +187,7 @@ public abstract class ConteudoVersionado<T> {
 
         repositorio.pull();
         escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
+
         repositorio.add(getCaminhoRelativo());
         repositorio.commit(getCaminhoRelativo(), mensagem, profile);
         repositorio.push(branch);

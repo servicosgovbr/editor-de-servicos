@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.git;
 
-import br.gov.servicos.editor.oauth2.UserProfile;
+import br.gov.servicos.editor.security.UserProfile;
 import br.gov.servicos.editor.utils.LogstashProgressMonitor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +23,6 @@ import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -321,6 +320,7 @@ public class RepositorioGit {
     public void merge(String branch) {
         Repository repo = git.getRepository();
         Ref ref = repo.getRef(branch);
+
         MergeResult result = git.merge().include(ref).call();
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
@@ -330,7 +330,6 @@ public class RepositorioGit {
                 .and(append("merge.new-head", result.getNewHead().getName()))
                 .and(appendArray("merge.commits", Stream.of(result.getMergedCommits()).map(AnyObjectId::getName).toArray()))
                 .and(appendArray("merge.conflicts", result.getCheckoutConflicts() == null ? null : result.getCheckoutConflicts().toArray()));
-
         log.info(marker, "git merge {}", git.getRepository().getBranch());
 
         if (!result.getMergeStatus().isSuccessful()) {

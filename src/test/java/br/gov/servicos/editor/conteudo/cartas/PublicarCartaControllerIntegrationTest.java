@@ -2,7 +2,6 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.Main;
 import br.gov.servicos.editor.fixtures.MockMvcFactory;
-import br.gov.servicos.editor.fixtures.RepositorioConfigTeste;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

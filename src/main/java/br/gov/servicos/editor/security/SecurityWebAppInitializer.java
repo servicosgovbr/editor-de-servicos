@@ -1,6 +1,6 @@
-package br.gov.servicos.editor.config;
+package br.gov.servicos.editor.security;
 
-import br.gov.servicos.editor.oauth2.google.GoogleTokenServices;
+import br.gov.servicos.editor.security.oauth2.google.GoogleTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

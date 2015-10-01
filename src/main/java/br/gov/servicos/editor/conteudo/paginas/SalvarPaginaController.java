@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
 
-import br.gov.servicos.editor.oauth2.UserProfiles;
+import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

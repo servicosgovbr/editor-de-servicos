@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.oauth2;
+package br.gov.servicos.editor.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
