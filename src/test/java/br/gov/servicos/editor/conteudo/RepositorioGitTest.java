@@ -109,7 +109,7 @@ public class RepositorioGitTest {
         garanteQueAlteracaoFoiParaGithub();
         repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
             repo.deleteLocalBranch("foo"); //git branch -D foo
-            repo.deleteRemoteBranch("foo"); //git push :foo
+            repo.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
             return null;
         }));
 
@@ -128,7 +128,7 @@ public class RepositorioGitTest {
         repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
             Path arquivo = Paths.get("README.md");
             repo.deleteLocalBranch("foo"); //git branch -D foo
-            repo.deleteRemoteBranch("foo"); //git push :foo
+            repo.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
             repo.remove(arquivo);
             repo.commit(arquivo, "Apagou", PROFILE);
             repo.push("master");
