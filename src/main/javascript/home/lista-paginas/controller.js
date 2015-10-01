@@ -46,16 +46,24 @@ module.exports = function (args) {
   }.bind(this), 500);
 
   this.excluirConteudo = function (id, tipo, s) {
-    s.excluindo = m.prop(true);
-    m.redraw();
-    m.request({
-        method: 'DELETE',
-        url: '/editar/api/servico/' + slugify(id),
-      }).then(this.listarConteudos, erro)
-      .then(function () {
-        alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!');
-        s.excluindo(false);
-      });
+    alertify.labels.cancel = 'Cancelar';
+    alertify.labels.ok = 'Remover';
+    alertify.confirm('Você tem certeza que deseja remover o(a) ' + referencia.tipoDePagina(tipo) + '?', function (result) {
+      if (result) {
+        s.excluindo = m.prop(true);
+        m.redraw();
+        m.request({
+            method: 'DELETE',
+            url: '/editar/api/servico/' + slugify(id),
+          }).then(this.listarConteudos, erro)
+          .then(function () {
+            alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!');
+            s.excluindo(false);
+          });
+      }
+    }.bind(this));
+
+
   };
 
   this.listarConteudos();
