@@ -59,10 +59,10 @@ module.exports = function (ctrl, args) {
           target: '_blank',
           title: 'Visualizar este conteúdo'
         }, m('i.fa.fa-eye')),
-
-         m('button.remover', {
+           s.excluindo && s.excluindo() ? m('i.fa.fa-spin.fa-spinner') :
+             m('button.remover', {
           title: 'Remover este conteúdo',
-          onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id, s.conteudo.tipo)
+          onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id, s.conteudo.tipo, s)
         }, m('i.fa.fa-trash-o')),
        ])
      ]);

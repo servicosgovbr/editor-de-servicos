@@ -45,13 +45,16 @@ module.exports = function (args) {
       .then(paginasProp, erro);
   }.bind(this), 500);
 
-  this.excluirConteudo = function (id, tipo) {
+  this.excluirConteudo = function (id, tipo, s) {
+    s.excluindo = m.prop(true);
+    m.redraw();
     m.request({
         method: 'DELETE',
         url: '/editar/api/servico/' + slugify(id),
       }).then(this.listarConteudos, erro)
       .then(function () {
         alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!');
+        s.excluindo(false);
       });
   };
 
