@@ -137,19 +137,23 @@ public abstract class ConteudoVersionado<T> {
         String novoId = slugify.slugify(novoNome);
 
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), uncheckedSupplier(() -> {
+            repositorio.pull();
             alterarConteudo(profile, novoNome, getBranchRef());
             if (!getId().equals(novoId)) {
                 repositorio.moveBranchPara(novoId);
                 renomearConteudo(profile, novoId, novoId);
-                repositorio.deleteRemoteBranch(getId());
+                repositorio.deleteRemoteBranch(getBranchRef());
             }
             return null;
         }));
 
         repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), uncheckedSupplier(() -> {
-            alterarConteudo(profile, novoNome, getBranchMasterRef());
-            if (!getId().equals(novoId)) {
-                renomearConteudo(profile, novoId, getBranchMasterRef());
+            repositorio.pull();
+            if (isPublicado()) {
+                alterarConteudo(profile, novoNome, getBranchMasterRef());
+                if (!getId().equals(novoId)) {
+                    renomearConteudo(profile, novoId, getBranchMasterRef());
+                }
             }
             return null;
         }));
@@ -199,7 +203,6 @@ public abstract class ConteudoVersionado<T> {
     }
 
     private void alterarConteudo(UserProfile profile, String novoNome, String branch) {
-        repositorio.pull();
         String conteudo = mudarNomeConteudo(novoNome);
         salvarConteudo(profile, branch, conteudo);
     }

@@ -347,7 +347,7 @@ public class RepositorioGit {
     }
 
     public void deleteRemoteBranch(String branch) {
-        pushBranch("", R_HEADS + branch);
+        pushBranch("", branch);
     }
 
     @SneakyThrows
