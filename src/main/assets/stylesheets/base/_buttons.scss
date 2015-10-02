@@ -29,6 +29,27 @@ button {
     @include clearfix;
   }
 
+  &.renomear {
+    background-color: $cinza-medio;
+    border-bottom: 2px solid #cccccc;
+    border-right: 2px solid #cccccc;
+    border-top: 3px solid $cinza-medio; 
+    margin-top: 20px;
+    margin-right: 50px;
+    margin-top: -5px;
+ 
+    &:hover {
+      background-color: #cccccc;
+      border-top-color: #cccccc;
+    }
+
+    &:focus {
+     background-color: #cccccc;
+    border-top-color: #cccccc; 
+    }
+  }
+
+
   &.adicionar-caso {
     background-color: $cinza-medio;
     border-bottom: 2px solid #cccccc;
