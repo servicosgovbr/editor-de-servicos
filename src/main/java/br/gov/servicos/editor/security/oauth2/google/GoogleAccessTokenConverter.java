@@ -13,6 +13,8 @@
 package br.gov.servicos.editor.security.oauth2.google;
 
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
@@ -34,8 +36,16 @@ public class GoogleAccessTokenConverter extends DefaultAccessTokenConverter {
     UserAuthenticationConverter userTokenConverter;
 
     public GoogleAccessTokenConverter() {
-        userTokenConverter = new DefaultUserAuthenticationConverter();
-        setUserTokenConverter(userTokenConverter);
+        DefaultUserAuthenticationConverter defaultConverter = new DefaultUserAuthenticationConverter();
+        defaultConverter.setUserDetailsService(username ->
+                        new User(username, "N/A", asList(
+                                new SimpleGrantedAuthority("ADMIN"),
+                                new SimpleGrantedAuthority("USER"))
+                        )
+        );
+
+        setUserTokenConverter(defaultConverter);
+        userTokenConverter = defaultConverter;
     }
 
     @Override
@@ -45,15 +55,8 @@ public class GoogleAccessTokenConverter extends DefaultAccessTokenConverter {
         parameters.put(CLIENT_ID, clientId);
 
         return new OAuth2Authentication(
-                new OAuth2Request(parameters,
-                        clientId,
-                        null,
-                        true,
-                        scopesFrom(map),
-                        resourceIdsFrom(map),
-                        null,
-                        null,
-                        null),
+                new OAuth2Request(parameters, clientId, null, true,
+                        scopesFrom(map), resourceIdsFrom(map), null, null, null),
                 userTokenConverter.extractAuthentication(map));
     }
 

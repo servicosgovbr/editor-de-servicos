@@ -106,15 +106,25 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL));
+        http
+                .httpBasic()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL))
 
-        http.addFilterAfter(oauth2ClientContextFilter, ExceptionTranslationFilter.class);
-        http.addFilterBefore(oauth2ClientAuthenticationProcessingFilter, FilterSecurityInterceptor.class);
+                .and()
+                .addFilterBefore(oauth2ClientAuthenticationProcessingFilter, FilterSecurityInterceptor.class)
+                .addFilterAfter(oauth2ClientContextFilter, ExceptionTranslationFilter.class)
 
-        http.logout().logoutUrl("/editar/logout").logoutSuccessUrl("/editar/");
-        http.anonymous().disable();
-        http.csrf().disable();
+                .logout()
+                .logoutUrl("/editar/logout")
+                .logoutSuccessUrl("/editar/")
 
-        http.authorizeRequests().anyRequest().fullyAuthenticated();
+                .and()
+                .anonymous().disable()
+                .csrf().disable()
+
+                .authorizeRequests()
+                .antMatchers("/editar/servico/**").hasAuthority("ADMIN")
+                .antMatchers("/**").hasAuthority("USER")
+        ;
     }
 }
