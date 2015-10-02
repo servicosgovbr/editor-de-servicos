@@ -63,6 +63,13 @@
 	text-shadow: none;
 }
 
+.alertify-log-error {
+	font-family: $openSansBold;
+	font-size: 14px;
+	background: $vermelho;
+	text-shadow: none;
+}
+
 .alertify-log {
 	position: initial;
 	height: 40px;
