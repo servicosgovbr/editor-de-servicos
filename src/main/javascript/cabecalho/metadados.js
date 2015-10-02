@@ -26,6 +26,10 @@ module.exports = {
       }, this));
     };
 
+    this.visualizar = function () {
+      m.route('/editar/servico/visualizar');
+    };
+
     this.publicar = function () {
       if (!config.publicar()) {
         alertify.error('Serviço ainda contém erros.');
@@ -51,7 +55,9 @@ module.exports = {
           m.trust('&nbsp; Salvar')
         ]),
 
-        m('button#visualizar', [
+        m('button#visualizar', {
+        onclick: _.bind(ctrl.visualizar, ctrl),
+      }, [
           m('i.fa.fa-eye'),
           m.trust('&nbsp; Visualizar')
         ]),
