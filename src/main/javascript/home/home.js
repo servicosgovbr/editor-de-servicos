@@ -44,38 +44,28 @@ module.exports = {
                   m.trust('Gerenciar permissões')
                 ])
               ),
-
-            // m('div#orgaos',
-            //   m.component(require('orgao/select-orgao'), {
-            //     prop: ctrl.orgao
-            //   })
-            // )
           ]),
 
           m('label', [
             m('input[type=checkbox]', {
-              onchange: m.withAttr('checked', ctrl.filtrarPublicados)
             }),
             'Áreas de interesse'
           ]),
 
           m('label', [
             m('input[type=checkbox]', {
-              onchange: m.withAttr('checked', ctrl.filtrarPublicados)
             }),
             'Órgãos'
           ]),
 
           m('label', [
             m('input[type=checkbox]', {
-              onchange: m.withAttr('checked', ctrl.filtrarPublicados)
             }),
             'Páginas especiais'
           ]),
 
           m('label', [
             m('input[type=checkbox]', {
-              onchange: m.withAttr('checked', ctrl.filtrarPublicados)
             }),
             'Serviços'
           ]),
