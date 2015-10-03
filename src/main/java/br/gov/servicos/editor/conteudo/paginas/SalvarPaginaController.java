@@ -32,7 +32,7 @@ public class SalvarPaginaController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/pagina/{tipo}/{id}", method = POST)
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = POST)
     RedirectView editar(@PathVariable("tipo") String tipo,
                         @PathVariable("id") String id,
                         @RequestBody Pagina pagina) {
