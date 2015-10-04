@@ -47,26 +47,22 @@ module.exports = {
           ]),
 
           m('label', [
-            m('input[type=checkbox]', {
-            }),
+            m('input[type=checkbox]', {}),
             'Áreas de interesse'
           ]),
 
           m('label', [
-            m('input[type=checkbox]', {
-            }),
+            m('input[type=checkbox]', {}),
             'Órgãos'
           ]),
 
           m('label', [
-            m('input[type=checkbox]', {
-            }),
+            m('input[type=checkbox]', {}),
             'Páginas especiais'
           ]),
 
           m('label', [
-            m('input[type=checkbox]', {
-            }),
+            m('input[type=checkbox]', {}),
             'Serviços'
           ]),
 
