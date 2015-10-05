@@ -2,6 +2,7 @@
 
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var carregarServico = require('xml/carregar');
+var limparModelo = require('limpar-modelo');
 
 module.exports = {
 
@@ -11,7 +12,8 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    var servico = ctrl.servico();
+    var servico = limparModelo(ctrl.servico());
+
     return m('#conteudo', [m('span.cabecalho-cor'),
                 m('#wrapper', [
                 m.component(require('cabecalho/cabecalho'), {
@@ -19,7 +21,8 @@ module.exports = {
           logout: true,
           cabecalho: ctrl.cabecalho
         }),
-                m('#servico', m('.scroll', [m('a', servico.nome())]))
+                m('#servico', m('.scroll', [m('h2', servico.nome() + (servico.sigla() ? '|' + servico.sigla() + '|' : ''))],
+          m.component(require('servico/visualizar/ancoras'), servico)))
             ])]);
   }
 };
