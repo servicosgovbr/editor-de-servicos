@@ -24,6 +24,7 @@ module.exports = {
                 m('#servico', m('.scroll', [m('.row', m('h2', servico.nome() + (servico.sigla() ? '|' + servico.sigla() + '|' : ''))),
                       m('.row', m.component(require('servico/visualizar/ancoras'), servico)),
                       m('.row', m.component(require('servico/visualizar/descricao'), servico)),
+                      m('.row', m.component(require('servico/visualizar/solicitantes'), servico))
                     ]))])
             ]);
   }
