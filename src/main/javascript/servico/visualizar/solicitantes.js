@@ -14,14 +14,11 @@ module.exports = {
         return m('#servico-solicitantes', [
                 m('h3.subtitulo-servico', 'Quem pode utilizar este serviço?'),
                 ctrl.servico.solicitantes().map(function (s) {
-                return m('.solicitantes markdown margem-solicitantes', [
+              return m('.solicitantes markdown margem-solicitantes', [
                         m('h4', m.trust(s.tipo()),
-                      m.trust(ctrl.converter.makeHtml(s.requisitos()))
-                      ]);
-                })
-
-
-              ]);
+                    m.trust(ctrl.converter.makeHtml(s.requisitos()))
+                    ]);
+              })]);
         }
       }
     };
