@@ -47,6 +47,12 @@ module.exports = {
         return false;
       }
     };
+
+    this.visualizar = function () {
+      var id = slugify(this.servico().nome());
+      m.route('/editar/servico/visualizar/' + id);
+      return true;
+    };
   },
 
   view: function (ctrl) {
@@ -79,6 +85,7 @@ module.exports = {
           logout: true,
           salvar: _.bind(ctrl.salvar, ctrl),
           publicar: _.bind(ctrl.publicar, ctrl),
+          visualizar: _.bind(ctrl.visualizar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
         m.component(require('componentes/menu-lateral'), binding),

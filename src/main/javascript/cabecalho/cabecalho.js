@@ -12,6 +12,7 @@ module.exports = {
 
     this.salvar = config.salvar;
     this.publicar = config.publicar;
+    this.visualizar = config.visualizar;
     this.cabecalho = config.cabecalho;
   },
 
@@ -23,7 +24,8 @@ module.exports = {
       }
       return m.component(require('cabecalho/metadados'), {
         salvar: _.bind(ctrl.salvar, ctrl),
-        publicar: _.bind(ctrl.publicar, ctrl)
+        publicar: _.bind(ctrl.publicar, ctrl),
+        visualizar: _.bind(ctrl.visualizar, ctrl)
       });
     }
 

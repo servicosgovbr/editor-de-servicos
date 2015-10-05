@@ -5,7 +5,8 @@ module.exports = {
   controller: function (args) {
     var config = _.merge({
       salvar: _.noop,
-      publicar: _.noop
+      publicar: _.noop,
+      visualizar: _.noop
     }, args);
 
     alertify.set({
@@ -26,16 +27,16 @@ module.exports = {
       }, this));
     };
 
-    this.visualizar = function () {
-      m.route('/editar/servico/visualizar');
-    };
-
     this.publicar = function () {
       if (!config.publicar()) {
         alertify.error('Serviço ainda contém erros.');
       } else {
         alertify.success('Serviço está pronto!');
       }
+    };
+
+    this.visualizar = function () {
+      config.visualizar();
     };
   },
 
