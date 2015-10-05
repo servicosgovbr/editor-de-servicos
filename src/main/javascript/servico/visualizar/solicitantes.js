@@ -19,8 +19,6 @@ module.exports = {
                         m.trust(ctrl.converter.makeHtml(s.requisitos()))
                     ]);
         })
-
-
             ]);
     }
   }
