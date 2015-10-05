@@ -4,22 +4,19 @@ module.exports = {
 
   controller: function (args) {
     this.servico = args;
-    this.converter = new window.showdown.Converter();
+
+    this.temSolicitante = function () {
+      return !_.isEmpty(this.servico.solicitantes());
+    };
   },
 
   view: function (ctrl) {
-    if (_.isEmpty(ctrl.servico.solicitantes())) {
-      return m('');
-    } else {
+    if (ctrl.temSolicitante()) {
       return m('#servico-solicitantes', [
-                m('h3.subtitulo-servico', 'Quem pode utilizar este serviço?'),
-                ctrl.servico.solicitantes().map(function (s) {
-          return m('.solicitantes markdown margem-solicitantes', [
-                        m('h4', m.trust(s.tipo())),
-                        m.trust(ctrl.converter.makeHtml(s.requisitos()))
-                    ]);
-        })
-            ]);
+            m('h3.subtitulo-servico', 'Quem pode utilizar este serviço?'),
+            m.component(require('servico/visualizar/solicitante'), ctrl.servico.solicitantes())
+        ]);
     }
+    return m.component(require('servico/visualizar/view-vazia'));
   }
 };
