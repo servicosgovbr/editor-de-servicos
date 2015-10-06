@@ -13,6 +13,7 @@ module.exports = {
 
     return m('#outras-informacoes', [
       m.component(require('servico/outras-informacoes/orgao-responsavel'), binding),
+      m.component(require('servico/outras-informacoes/contato-orgao'), binding),
       m.component(require('servico/outras-informacoes/segmentos-da-sociedade'), binding),
       m.component(require('servico/outras-informacoes/areas-de-interesse'), binding),
       m.component(require('servico/outras-informacoes/palavras-chave'), binding),
