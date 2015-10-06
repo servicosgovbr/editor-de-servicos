@@ -37,5 +37,5 @@ module.exports = {
   conteudoPaginaEspecial: t('Descreva o conteúdo desta página especial. Você pode incluir links, listas, etc.'),
   escolhaAreaInteresse: t('Selecione a Área de Interesse que está sendo criada ou editada.'),
   conteudoAreaInteresse: t('Descreva o que é esta Área de Interesse e porque importa para o cidadão.'),
-  contatoOrgao: t('Indique o contato do órgão que presta o serviço, para que o cidadão tire dúvidas.')
+  contatoOrgao: t('Indique o contato do órgão que trata deste serviço para que o cidadão tire dúvidas.')
 };
