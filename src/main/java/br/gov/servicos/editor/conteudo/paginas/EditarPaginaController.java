@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
-import static java.lang.String.*;
+import static java.lang.String.join;
+import static java.lang.String.valueOf;
 import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;

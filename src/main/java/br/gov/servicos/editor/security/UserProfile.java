@@ -38,4 +38,6 @@ public class UserProfile {
     String locale;
 
     String hd;
+
+    Permissao permissao;
 }

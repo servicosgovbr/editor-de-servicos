@@ -12,8 +12,9 @@
  *******************************************************************************/
 package br.gov.servicos.editor.security.oauth2.google;
 
+import br.gov.servicos.editor.security.GerenciadorPermissoes;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
@@ -35,14 +36,14 @@ public class GoogleAccessTokenConverter extends DefaultAccessTokenConverter {
 
     UserAuthenticationConverter userTokenConverter;
 
-    public GoogleAccessTokenConverter() {
+    @Autowired
+    public GoogleAccessTokenConverter(GerenciadorPermissoes gerenciadorPermissoes) {
         DefaultUserAuthenticationConverter defaultConverter = new DefaultUserAuthenticationConverter();
-        defaultConverter.setUserDetailsService(username ->
-                        new User(username, "N/A", asList(
-                                new SimpleGrantedAuthority("ADMIN"),
-                                new SimpleGrantedAuthority("USER"))
-                        )
-        );
+        defaultConverter.setUserDetailsService(
+                username -> new User(
+                        username,
+                        "N/A",
+                        gerenciadorPermissoes.authorities(username)));
 
         setUserTokenConverter(defaultConverter);
         userTokenConverter = defaultConverter;

@@ -26,7 +26,9 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 
 import javax.annotation.Resource;
 
+import static br.gov.servicos.editor.security.Permissao.ADMIN;
 import static java.util.Arrays.asList;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.oauth2.common.AuthenticationScheme.form;
 import static org.springframework.security.oauth2.common.AuthenticationScheme.query;
 
@@ -123,8 +125,13 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
 
                 .authorizeRequests()
-                .antMatchers("/editar/servico/**").hasAuthority("ADMIN")
-                .antMatchers("/**").hasAuthority("USER")
+                .antMatchers(DELETE, "/editar/**").hasAuthority(ADMIN.name())
+                .antMatchers(PATCH, "/editar/**").hasAuthority(ADMIN.name())
+                .antMatchers(PUT, "/editar/**").hasAuthority(ADMIN.name())
+
+                .anyRequest().fullyAuthenticated()
+
         ;
     }
+
 }

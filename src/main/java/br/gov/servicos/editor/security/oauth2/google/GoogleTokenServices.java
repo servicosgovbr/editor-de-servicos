@@ -98,7 +98,7 @@ public class GoogleTokenServices extends RemoteTokenServices {
 
     private void transformNonStandardValuesToStandardValues(Map<String, Object> map) {
         map.put("client_id", map.get("issued_to")); // Google sends 'client_id' as 'issued_to'
-        map.put("user_name", map.get("user_id")); // Google sends 'user_name' as 'user_id'
+        map.put("user_name", map.get("email"));
     }
 
     @SneakyThrows

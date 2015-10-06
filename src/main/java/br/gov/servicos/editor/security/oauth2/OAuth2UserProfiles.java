@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.security.oauth2;
 
+import br.gov.servicos.editor.security.GerenciadorPermissoes;
 import br.gov.servicos.editor.security.UserProfile;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
@@ -11,6 +12,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -24,32 +27,41 @@ public class OAuth2UserProfiles implements UserProfiles {
     String urlTemplate;
 
     OAuth2RestOperations restTemplate;
+    private GerenciadorPermissoes gerenciadorPermissoes;
     Cache cache;
 
     @Autowired
     public OAuth2UserProfiles(
             @Value("${google.user.info.uri}") String urlTemplate,
             OAuth2RestOperations restTemplate,
+            GerenciadorPermissoes gerenciadorPermissoes,
             CacheManager cacheManager
     ) {
         this.urlTemplate = urlTemplate;
         this.restTemplate = restTemplate;
+        this.gerenciadorPermissoes = gerenciadorPermissoes;
         this.cache = cacheManager.getCache("google-profiles");
     }
 
     @Override
     public UserProfile get() {
-        String token = restTemplate.getAccessToken().toString();
+        return Optional.ofNullable(recuperaUsuario())
+                .orElseGet(() -> buscaUsuario());
+    }
 
-        UserProfile profile = cache.get(token, UserProfile.class);
-        if (profile != null) {
-            return profile;
-        }
+    private UserProfile recuperaUsuario() {
+        return cache.get(token(), UserProfile.class);
+    }
 
-        profile = restTemplate.getForEntity(urlTemplate, UserProfile.class, token).getBody();
-        cache.put(token, profile);
-
+    private UserProfile buscaUsuario() {
+        UserProfile profile = restTemplate.getForEntity(urlTemplate, UserProfile.class, token()).getBody();
+        cache.put(token(), profile
+          .withPermissao(gerenciadorPermissoes.permissao(profile.getEmail())));
         return profile;
+    }
+
+    private String token() {
+        return restTemplate.getAccessToken().toString();
     }
 
 }

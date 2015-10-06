@@ -36,9 +36,7 @@ public class SalvarCartaController {
             @RequestBody DOMSource servico
     ) throws Exception {
         String conteudo = reformatadorXml.formata(servico);
-
         carta.salvar(userProfiles.get(), conteudo);
-
         return new RedirectView("/editar/api/servico/v3/" + carta.getId());
     }
 
