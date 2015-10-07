@@ -74,13 +74,24 @@ module.exports = {
       return m.component(require('servico/visualizar/view-vazia'));
     };
 
+    var canaisDePrestacao = function (etapa) {
+      if (!_.isEmpty(etapa.canaisDePrestacao())) {
+        return m('.subtitulo-etapa', [
+                m('p.titulo-documento', 'Canais de prestação'),
+                m('p.info-etapa', 'Canais de prestação padrão'),
+            ]);
+      }
+      return m.component(require('servico/visualizar/view-vazia'));
+    };
+
     return m('', ctrl.etapas.map(function (etapa, index) {
       return m('.etapas', [
                 m('p.circle', index + 1),
                 m('h4.etapa', etapa.titulo() ? etapa.titulo() : 'acesse o serviço'),
                 m('.etapa markdown', m.trust(ctrl.converter.makeHtml(etapa.descricao()))),
                 documentos(etapa),
-                custos(etapa)
+                custos(etapa),
+                canaisDePrestacao(etapa)
             ]);
     }));
 
