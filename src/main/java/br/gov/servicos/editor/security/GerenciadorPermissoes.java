@@ -26,6 +26,9 @@ public class GerenciadorPermissoes {
         this.permissoes.put("srosa@thoughtworks.com", ADMIN);
         this.permissoes.put("bleite@thoughtworks.com", ADMIN);
         this.permissoes.put("gfreita@thoughtworks.com", ADMIN);
+
+        this.permissoes.put("almeidafab@gmail.com", ADMIN);
+        this.permissoes.put("formiga.mauricio@gmail.com", ADMIN);
     }
 
     public Permissao permissao(String email) {
