@@ -27,7 +27,7 @@ module.exports = {
       });
     };
 
-    if (!_.isEmpty(ctrl.documentos)) {
+    if (!_.isEmpty(ctrl.documentos.casoPadrao().campos()) || !_.isEmpty(ctrl.documentos.outrosCasos())) {
       return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Documentação'),
                 m('p.info-etapa', 'Documentação necessária'),

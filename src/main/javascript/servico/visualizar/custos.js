@@ -31,7 +31,7 @@ module.exports = {
       });
     };
 
-    if (!_.isEmpty(ctrl.custos)) {
+    if (!_.isEmpty(ctrl.custos.casoPadrao().campos()) || !_.isEmpty(ctrl.custos.outrosCasos())) {
       return m('.subtitulo-etapa', [
                     m('p.titulo-documento', 'Custos'),
                     m('p.info-etapa', 'Custos padrão'),

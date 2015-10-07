@@ -43,7 +43,7 @@ module.exports = {
       });
     };
 
-    if (!_.isEmpty(ctrl.canaisDePrestacao)) {
+    if (!_.isEmpty(ctrl.canaisDePrestacao.casoPadrao().campos()) || !_.isEmpty(ctrl.canaisDePrestacao.outrosCasos())) {
       return m('.subtitulo-etapa', [
                     m('p.titulo-documento', 'Canais de prestação'),
                     m('p.info-etapa', 'Canais de prestação padrão'),
