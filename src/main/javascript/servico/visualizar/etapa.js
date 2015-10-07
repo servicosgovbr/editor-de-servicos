@@ -47,12 +47,28 @@ module.exports = {
       }));
     };
 
+    var outrosCustos = function (casos) {
+      return casos.map(function (caso) {
+        return m('ul.caso-descricao', [
+                  m('.info-etapa', caso.descricao()),
+                  caso.campos().map(function (campo) {
+            return m('li', [
+                          m('span', campo.descricao()),
+                          m('span', !_.isEmpty(campo.moeda()) ? campo.moeda() : 'R$'),
+                          m('span', campo.valor())
+                      ]);
+          })
+              ]);
+      });
+    };
+
     var custos = function (etapa) {
       if (!_.isEmpty(etapa.custos())) {
         return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Custos'),
                 m('p.info-etapa', 'Custos padrão'),
-                custoPadrao(etapa.custos().casoPadrao())
+                custoPadrao(etapa.custos().casoPadrao()),
+                outrosCustos(etapa.custos().outrosCasos())
             ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
