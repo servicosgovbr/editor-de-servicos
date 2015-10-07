@@ -16,7 +16,7 @@ module.exports = {
 
     var outrosCasos = function (casos) {
       return casos.map(function (caso) {
-        return m('ul', [
+        return m('ul.caso-descricao', [
                 m('.info-etapa', caso.descricao()),
                 caso.campos().map(function (c) {
             return m('li', m('span', c.descricao()));
