@@ -37,11 +37,22 @@ module.exports = {
       return m.component(require('servico/visualizar/view-vazia'));
     };
 
+    var custoPadrao = function (cp) {
+      return m('ul', cp.campos().map(function (campo) {
+        return m('li', [
+                      m('span', campo.descricao()),
+                      m('span', !_.isEmpty(campo.moeda()) ? campo.moeda() : 'R$'),
+                      m('span', campo.valor())
+                    ]);
+      }));
+    };
+
     var custos = function (etapa) {
       if (!_.isEmpty(etapa.custos())) {
         return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Custos'),
                 m('p.info-etapa', 'Custos padrão'),
+                custoPadrao(etapa.custos().casoPadrao())
             ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
