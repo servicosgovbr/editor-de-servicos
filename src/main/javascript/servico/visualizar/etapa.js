@@ -1,10 +1,13 @@
 'use strict';
 
+var referencia = require('referencia');
+
 module.exports = {
 
   controller: function (args) {
     this.etapas = args;
     this.converter = new window.showdown.Converter();
+    this.tipos = referencia.tiposDeCanalDePrestacaoVisualizar;
   },
 
   view: function (ctrl) {
@@ -74,11 +77,26 @@ module.exports = {
       return m.component(require('servico/visualizar/view-vazia'));
     };
 
+    var canalPadrao = function (cp) {
+      return m('ul', cp.campos().map(function (campo) {
+        window.console.log(campo.tipo(), ctrl.tipos, ctrl.tipos[campo.tipo()]);
+        return m('li', [
+                  m('span', ctrl.tipos[campo.tipo()].text + ': '),
+                  ctrl.tipos[campo.tipo()].destacado ?
+                      m('a', {
+            href: campo.descricao()
+          }, ctrl.tipos[campo.tipo()].descricaoLink) :
+                      m('', m.trust(ctrl.converter.makeHtml(campo.descricao())))
+              ]);
+      }));
+    };
+
     var canaisDePrestacao = function (etapa) {
       if (!_.isEmpty(etapa.canaisDePrestacao())) {
         return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Canais de prestação'),
                 m('p.info-etapa', 'Canais de prestação padrão'),
+                canalPadrao(etapa.canaisDePrestacao().casoPadrao())
             ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
