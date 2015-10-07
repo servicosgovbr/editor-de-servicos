@@ -118,9 +118,11 @@ module.exports = function (servico) {
     solicitantes(servico.solicitantes()),
     tempoTotalEstimado(servico.tempoTotalEstimado()),
     m('etapas', servico.etapas().map(etapa)),
-    m('orgao', {
-      id: servico.orgao()
-    }),
+    m('orgao',
+      {id: servico.orgao().nome()},
+      m('contato', servico.orgao().contato())
+    ),
+    m('orgao-contato', servico.orgaoContato),
     m('segmentos-da-sociedade', servico.segmentosDaSociedade().map(item)),
     m('areas-de-interesse', servico.areasDeInteresse().map(item)),
     m('palavras-chave', servico.palavrasChave().map(item)),

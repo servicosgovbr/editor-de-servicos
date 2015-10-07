@@ -89,6 +89,14 @@ var TempoTotalEstimado = function (config) {
   this.entreTipoMaximo = v.prop(data.entreTipoMaximo || '', v.se(this.tipo, 'entre', v.obrigatorio));
 };
 
+var Orgao = function (config) {
+  var data = (config || {});
+
+  this.id = id('orgao');
+  this.nome = v.prop(data.nome || '', v.obrigatorio);
+  this.contato = v.prop(data.contato || '', v.textoLongo);
+};
+
 var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
@@ -103,7 +111,8 @@ var Servico = function (config) {
   this.solicitantes = v.prop(data.solicitantes || [], v.minimo(1));
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new TempoTotalEstimado());
   this.etapas = v.prop(data.etapas || [], v.minimo(1));
-  this.orgao = m.prop(data.orgao || '');
+  this.orgao = m.prop(data.orgao || new Orgao(data));
+
   this.segmentosDaSociedade = v.prop(data.segmentosDaSociedade || [], v.minimo(1));
   this.areasDeInteresse = v.prop(data.areasDeInteresse || [], v.minimo(1));
   this.palavrasChave = v.prop(data.palavrasChave || [], v.cada(v.textoCurto), v.minimo(3));
@@ -121,5 +130,6 @@ module.exports = {
   Custos: Custos,
   Etapa: Etapa,
   Servico: Servico,
+  Orgao: Orgao,
   TempoTotalEstimado: TempoTotalEstimado
 };

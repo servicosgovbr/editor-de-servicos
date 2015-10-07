@@ -12,7 +12,7 @@ var CanalDePrestacao = modelos.CanalDePrestacao;
 var Caso = modelos.Caso;
 var TempoTotalEstimado = modelos.TempoTotalEstimado;
 
-describe('deve limpar >', function () {
+describe('deve limpar > servico >', function () {
 
   var servico;
 
@@ -71,6 +71,26 @@ describe('deve limpar >', function () {
     });
   });
 
+  describe('órgão >', function () {
+    beforeEach(function () {
+      servico = new modelos.Servico({
+        orgao: new modelos.Orgao({
+          nome: '   ',
+          contato: '  X         '
+        })
+      });
+    });
+
+    it('nome', function () {
+      expect(limparModelo(servico).orgao().nome()).toBe('');
+    });
+
+    it('contato', function () {
+      expect(limparModelo(servico).orgao().contato()).toBe('X');
+    });
+
+  });
+
   describe('etapas >', function () {
     beforeEach(function () {
       servico = new modelos.Servico({
@@ -100,6 +120,8 @@ describe('deve limpar >', function () {
     });
 
     describe('documentos >', function () {
+
+
       beforeEach(function () {
         servico = new modelos.Servico({
           etapas: [

@@ -158,6 +158,26 @@ describe('validação >', function () {
       expect(servico.palavrasChave.erro()).toEqual(['erro-max-150', undefined, undefined]);
     });
 
+    it('órgão deve ser criado junto com servico', function () {
+      expect(servico.orgao).toBeDefined();
+    });
+
+    describe('orgao >', function () {
+      var orgao;
+      beforeEach(function () {
+        orgao = new modelos.Orgao();
+      });
+
+      shouldBePresent('nome', function () {
+        return orgao.nome;
+      });
+
+      shouldNotExceed('contato', function () {
+        return orgao.contato;
+      }, 500);
+
+    });
+
   });
 
   describe('tempo total estimado', function () {

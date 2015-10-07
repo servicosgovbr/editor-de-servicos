@@ -133,6 +133,13 @@ var etapas = function (i, e) {
   });
 };
 
+var orgao = function(x) {
+  return new modelos.Orgao({
+    nome: x.attr('id'),
+    contato: x.find('contato').text()
+  });
+};
+
 var servico = function (x) {
   return new modelos.Servico({
     nome: x.find('> nome').text(),
@@ -143,7 +150,7 @@ var servico = function (x) {
     tempoTotalEstimado: x.find('> tempo-total-estimado').map(tempoTotalEstimado).get(0),
     solicitantes: um(x.find('> solicitantes > solicitante').map(solicitantes).get(), solicitantes),
     etapas: um(x.find('etapas > etapa', x).map(etapas).get(), etapas),
-    orgao: x.find('servico > orgao').attr('id'),
+    orgao: orgao(x.find('servico > orgao')),
     segmentosDaSociedade: x.find('servico > segmentos-da-sociedade > item').map(item).get(),
     areasDeInteresse: x.find('servico > areas-de-interesse > item').map(item).get(),
     palavrasChave: tres(x.find('servico > palavras-chave > item').map(item).get(), str),
