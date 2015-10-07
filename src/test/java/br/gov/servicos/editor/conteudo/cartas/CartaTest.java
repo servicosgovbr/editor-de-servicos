@@ -81,7 +81,7 @@ public class CartaTest {
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
         assertThat(carta.getCaminhoAbsoluto(),
-                is(Paths.get("/um/caminho/qualquer/cartas-servico/v3/servicos/um-id-qualquer.xml")));
+                is(Paths.get("/um/caminho/qualquer/conteudo/servicos/um-id-qualquer.xml")));
     }
 
     @Test
@@ -90,12 +90,12 @@ public class CartaTest {
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
         assertThat(carta.getCaminhoRelativo(),
-                is(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")));
+                is(Paths.get("conteudo/servicos/um-id-qualquer.xml")));
     }
 
     @Test
     public void buscaMetadadosDoUltimoCommitQuandoExisteBranch() throws Exception {
-        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
+        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("conteudo/servicos/um-id-qualquer.xml")))
                 .willReturn(Optional.empty());
 
         given(repositorio.getCaminhoAbsoluto())
@@ -115,7 +115,7 @@ public class CartaTest {
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml")))
+        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get("conteudo/servicos/um-id-qualquer.xml")))
                 .willReturn(of(REVISAO));
 
         assertThat(carta.getMetadados(), is(METADADOS.withPublicado(REVISAO).withEditado(null)));
@@ -131,7 +131,7 @@ public class CartaTest {
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        given(leitorDeArquivos.ler(new File("/um/caminho/qualquer/cartas-servico/v3/servicos/um-id-qualquer.xml")))
+        given(leitorDeArquivos.ler(new File("/um/caminho/qualquer/conteudo/servicos/um-id-qualquer.xml")))
                 .willReturn(of("<servico/>"));
 
         assertThat(captor.getValue().get().get(), is("<servico/>"));
@@ -147,7 +147,7 @@ public class CartaTest {
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        given(leitorDeArquivos.ler(new File("/um/caminho/qualquer/cartas-servico/v3/servicos/um-id-qualquer.xml")))
+        given(leitorDeArquivos.ler(new File("/um/caminho/qualquer/conteudo/servicos/um-id-qualquer.xml")))
                 .willReturn(Optional.empty());
 
         assertThat(captor.getValue().get().isPresent(), is(false));
@@ -174,7 +174,7 @@ public class CartaTest {
 
         verify(repositorio).pull();
 
-        Path caminho = Paths.get("cartas-servico/v3/servicos/um-id-qualquer.xml");
+        Path caminho = Paths.get("conteudo/servicos/um-id-qualquer.xml");
 
         verify(repositorio).add(caminho);
         verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", PROFILE);
