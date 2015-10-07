@@ -10,13 +10,22 @@ module.exports = {
   view: function (ctrl) {
     var documentos = function (etapa) {
       if (!_.isEmpty(etapa.documentos())) {
-        window.console.log(etapa.documentos());
         return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Documentação'),
                 m('p.info-etapa', 'Documentação necessária'),
                 m('ul', etapa.documentos().casoPadrao().campos().map(function (campo) {
             return m('li', m('span', campo.descricao()));
-          }))]);
+          })),
+                etapa.documentos().outrosCasos().map(function (caso) {
+            return m('ul', [
+                                m('.info-etapa', caso.descricao()),
+                                caso.campos().map(function (c) {
+                return m('li',
+                  m('span', c.descricao()));
+              })
+                                ]);
+          })
+        ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
     };
