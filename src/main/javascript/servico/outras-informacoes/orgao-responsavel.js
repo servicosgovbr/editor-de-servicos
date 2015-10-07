@@ -24,7 +24,7 @@ module.exports = {
 
       m('fieldset#contato-orgao', [
         m('h3.opcional', [
-          'Contato com o órgão responsável',
+          'Contato do serviço',
           m.component(require('tooltips').contatoOrgao)
         ]),
 
