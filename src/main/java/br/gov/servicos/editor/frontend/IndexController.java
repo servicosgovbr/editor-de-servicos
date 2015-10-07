@@ -21,7 +21,8 @@ class IndexController {
             "/editar",
             "/editar/servico/**",
             "/editar/orgao/**",
-            "/editar/pagina/**"})
+            "/editar/pagina/**",
+            "/editar/visualizar/**"})
     ModelAndView index() {
         return new ModelAndView("index");
     }

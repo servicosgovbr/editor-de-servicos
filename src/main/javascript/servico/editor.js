@@ -50,7 +50,7 @@ module.exports = {
 
     this.visualizar = function () {
       var id = slugify(this.servico().nome());
-      m.route('/editar/servico/visualizar/' + id);
+      m.route('/editar/visualizar/servico/' + id);
       return true;
     };
   },

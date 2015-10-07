@@ -55,7 +55,7 @@ module.exports = function (ctrl, args) {
         }, m('i.fa.fa-paper-plane')) : null,
 
          m('a.visualizar', {
-          href: (s.temAlteracoesNaoPublicadas ? '/editar/visualizar/' : '/servico/') + s.id,
+          href: '/editar/visualizar/servico/' + s.id,
           target: '_blank',
           title: 'Visualizar este conteúdo'
         }, m('i.fa.fa-eye')),
