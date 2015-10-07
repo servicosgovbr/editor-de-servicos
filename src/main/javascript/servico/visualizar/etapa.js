@@ -79,7 +79,6 @@ module.exports = {
 
     var canalPadrao = function (cp) {
       return m('ul', cp.campos().map(function (campo) {
-        window.console.log(campo.tipo(), ctrl.tipos, ctrl.tipos[campo.tipo()]);
         return m('li', [
                   m('span', ctrl.tipos[campo.tipo()].text + ': '),
                   ctrl.tipos[campo.tipo()].destacado ?
@@ -91,12 +90,31 @@ module.exports = {
       }));
     };
 
+    var outrosCanais = function (casos) {
+      return casos.map(function (caso) {
+        return m('ul', [
+                m('.info-etapa', caso.descricao()),
+                caso.campos().map(function (campo) {
+            return m('li', [
+                        m('span', ctrl.tipos[campo.tipo()].text + ': '),
+                        ctrl.tipos[campo.tipo()].destacado ?
+                            m('a', {
+                href: campo.descricao()
+              }, ctrl.tipos[campo.tipo()].descricaoLink) :
+                            m('', m.trust(ctrl.converter.makeHtml(campo.descricao())))
+                    ]);
+          })
+            ]);
+      });
+    };
+
     var canaisDePrestacao = function (etapa) {
       if (!_.isEmpty(etapa.canaisDePrestacao())) {
         return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Canais de prestação'),
                 m('p.info-etapa', 'Canais de prestação padrão'),
-                canalPadrao(etapa.canaisDePrestacao().casoPadrao())
+                canalPadrao(etapa.canaisDePrestacao().casoPadrao()),
+                outrosCanais(etapa.canaisDePrestacao().outrosCasos())
             ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
@@ -109,7 +127,7 @@ module.exports = {
                 m('.etapa markdown', m.trust(ctrl.converter.makeHtml(etapa.descricao()))),
                 documentos(etapa),
                 custos(etapa),
-                canaisDePrestacao(etapa)
+                canaisDePrestacao(etapa),
             ]);
     }));
 
