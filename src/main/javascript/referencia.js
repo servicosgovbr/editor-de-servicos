@@ -142,7 +142,7 @@ module.exports = {
       text: 'Web',
       destacado: true,
       descricaoLink: 'Simule esta etapa do serviço'
-    },
+    }
   },
 
   descricoesDeCanaisDePrestacao: {
