@@ -37,12 +37,23 @@ module.exports = {
       return m.component(require('servico/visualizar/view-vazia'));
     };
 
+    var custos = function (etapa) {
+      if (!_.isEmpty(etapa.custos())) {
+        return m('.subtitulo-etapa', [
+                m('p.titulo-documento', 'Custos'),
+                m('p.info-etapa', 'Custos padrão'),
+            ]);
+      }
+      return m.component(require('servico/visualizar/view-vazia'));
+    };
+
     return m('', ctrl.etapas.map(function (etapa, index) {
       return m('.etapas', [
                 m('p.circle', index + 1),
                 m('h4.etapa', etapa.titulo() ? etapa.titulo() : 'acesse o serviço'),
                 m('.etapa markdown', m.trust(ctrl.converter.makeHtml(etapa.descricao()))),
-                documentos(etapa)
+                documentos(etapa),
+                custos(etapa)
             ]);
     }));
 
