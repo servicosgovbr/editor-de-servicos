@@ -133,7 +133,7 @@ var etapas = function (i, e) {
   });
 };
 
-var orgao = function(x) {
+var orgao = function (x) {
   return new modelos.Orgao({
     nome: x.attr('id'),
     contato: x.find('contato').text()

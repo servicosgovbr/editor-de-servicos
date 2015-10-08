@@ -36,6 +36,6 @@ module.exports = {
           erro: ctrl.servico().orgao().contato.erro()
         })
       ])
-    ])  ;
+    ]);
   }
 };
