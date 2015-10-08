@@ -22,7 +22,7 @@ public class EstruturaRepositorio {
     }
 
     public static Path cartas() {
-        return Paths.get("conteudo", "servicos");
+        return Paths.get("cartas-servico", "v3", "servicos");
     }
 
     public static List<Path> estrutura() {

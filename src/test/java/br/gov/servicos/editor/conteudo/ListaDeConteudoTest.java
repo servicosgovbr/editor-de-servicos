@@ -71,7 +71,7 @@ public class ListaDeConteudoTest {
         listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatterCarta, factory, cacheManager, true);
 
         Path dir = Files.createTempDirectory("listar-cartas-controller");
-        Path servicos = dir.resolve("conteudo/servicos");
+        Path servicos = dir.resolve("cartas-servico/v3/servicos");
         Path orgaos = dir.resolve("conteudo/orgaos");
         Path areasInteresse = dir.resolve("conteudo/areas-de-interesse");
         Path paginasEspeciais = dir.resolve("conteudo/paginas-especiais");

@@ -48,7 +48,7 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
 
     @Override
     public Path getCaminho() {
-        return Paths.get("conteudo", "servicos", id + ".xml");
+        return Paths.get("cartas-servico", "v3", "servicos", id + ".xml");
     }
 
     public Servico getConteudo() {

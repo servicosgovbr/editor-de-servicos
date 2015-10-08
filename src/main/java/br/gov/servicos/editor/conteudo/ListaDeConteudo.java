@@ -89,7 +89,7 @@ public class ListaDeConteudo {
     }
 
     public Set<Metadados<?>> listar() throws FileNotFoundException {
-        Stream<Metadados<Carta.Servico>> servicos = concat(listar("conteudo/servicos", "xml"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
+        Stream<Metadados<Carta.Servico>> servicos = concat(listar("cartas-servico/v3/servicos", "xml"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
                 .map(uncheckedFunction(id -> formatterCarta.parse(id, getDefault())))
                 .map(Carta::getMetadados);
 
