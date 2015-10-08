@@ -9,8 +9,8 @@ module.exports = {
     this.tipos = referencia.tiposDeCanalDePrestacaoVisualizar;
     this.converter = new window.showdown.Converter();
 
-    this.temCanalDePrestacao = function() {
-        return !_.isEmpty(this.canaisDePrestacao.casoPadrao().campos()) || !_.isEmpty(this.canaisDePrestacao.outrosCasos());
+    this.temCanalDePrestacao = function () {
+      return !_.isEmpty(this.canaisDePrestacao.casoPadrao().campos()) || !_.isEmpty(this.canaisDePrestacao.outrosCasos());
     };
   },
 
@@ -22,7 +22,7 @@ module.exports = {
           href: campo.descricao()
         }, ctrl.tipos[campo.tipo()].descricaoLink);
       }
-      return m('', m.trust(ctrl.converter.makeHtml(campo.descricao())));
+      return m.trust(ctrl.converter.makeHtml(campo.descricao()));
     };
 
     var camposView = function (campos) {
