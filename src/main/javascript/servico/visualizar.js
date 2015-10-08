@@ -28,6 +28,7 @@ module.exports = {
                       m('.row', m.component(require('servico/visualizar/etapas'), servico)),
                       m('.row', m.component(require('servico/visualizar/tempo'), servico)),
                       m('.row', m.component(require('servico/visualizar/legislacao'), servico)),
+                      m('.row', m.component(require('servico/visualizar/outras-info'), servico)),
                     ]))])
             ]);
   }
