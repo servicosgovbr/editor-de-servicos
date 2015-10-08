@@ -8,6 +8,10 @@ module.exports = {
     this.canaisDePrestacao = args;
     this.tipos = referencia.tiposDeCanalDePrestacaoVisualizar;
     this.converter = new window.showdown.Converter();
+
+    this.temCanalDePrestacao = function() {
+        return !_.isEmpty(this.canaisDePrestacao.casoPadrao().campos()) || !_.isEmpty(this.canaisDePrestacao.outrosCasos());
+    };
   },
 
   view: function (ctrl) {
@@ -43,7 +47,7 @@ module.exports = {
       });
     };
 
-    if (!_.isEmpty(ctrl.canaisDePrestacao.casoPadrao().campos()) || !_.isEmpty(ctrl.canaisDePrestacao.outrosCasos())) {
+    if (ctrl.temCanalDePrestacao()) {
       return m('.subtitulo-etapa', [
                     m('p.titulo-documento', 'Canais de prestação'),
                     m('p.info-etapa', 'Canais de prestação padrão'),

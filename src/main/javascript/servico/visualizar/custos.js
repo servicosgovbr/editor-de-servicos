@@ -4,6 +4,10 @@ module.exports = {
 
   controller: function (args) {
     this.custos = args;
+
+    this.temCusto = function() {
+        return !_.isEmpty(this.custos.casoPadrao().campos()) || !_.isEmpty(this.custos.outrosCasos());
+    };
   },
 
   view: function (ctrl) {
@@ -31,7 +35,7 @@ module.exports = {
       });
     };
 
-    if (!_.isEmpty(ctrl.custos.casoPadrao().campos()) || !_.isEmpty(ctrl.custos.outrosCasos())) {
+    if (ctrl.temCusto()) {
       return m('.subtitulo-etapa', [
                     m('p.titulo-documento', 'Custos'),
                     m('p.info-etapa', 'Custos padrão'),

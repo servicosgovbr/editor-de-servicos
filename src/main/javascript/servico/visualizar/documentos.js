@@ -4,6 +4,10 @@ module.exports = {
 
   controller: function (args) {
     this.documentos = args;
+
+    this.temDocumento = function() {
+        return !_.isEmpty(this.documentos.casoPadrao().campos()) || !_.isEmpty(this.documentos.outrosCasos());
+    };
   },
 
   view: function (ctrl) {
@@ -27,7 +31,7 @@ module.exports = {
       });
     };
 
-    if (!_.isEmpty(ctrl.documentos.casoPadrao().campos()) || !_.isEmpty(ctrl.documentos.outrosCasos())) {
+    if (ctrl.temDocumento()) {
       return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Documentação'),
                 m('p.info-etapa', 'Documentação necessária'),
