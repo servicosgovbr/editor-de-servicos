@@ -7,6 +7,7 @@ module.exports = {
   controller: function (args) {
     this.servico = args;
     this.unidades = referencia.unidadesDeTempoVisualizar;
+    this.converter = new window.showdown.Converter();
 
     this.temTempoEntre = function () {
       return (!_.isEmpty(this.servico.tempoTotalEstimado().entreMinimo()) || !_.isEmpty(this.servico.tempoTotalEstimado().entreMaximo()));
@@ -44,7 +45,7 @@ module.exports = {
                   m('span', 'Até '),
                   m('span', ctrl.servico.tempoTotalEstimado().ateMaximo()),
                   m('span', ' '),
-                  m('span', ctrl.servico.tempoTotalEstimado().ateTipoMaximo()),
+                  m('span', ctrl.unidades[ctrl.servico.tempoTotalEstimado().ateTipoMaximo()])
               ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
@@ -54,7 +55,10 @@ module.exports = {
       return m('#servico-tempo', [
               m('h3.subtitulo-servico', 'Quanto tempo leva?'),
               tempoEntreView(),
-                tempoAteView()
+              tempoAteView(),
+              m('br'),
+              m('h4', 'Informações adicionais ao tempo estimado'),
+              m.trust(ctrl.converter.makeHtml(ctrl.servico.tempoTotalEstimado().descricao()))
           ]);
     }
     return m.component(require('servico/visualizar/view-vazia'));
