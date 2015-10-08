@@ -5,8 +5,8 @@ module.exports = {
   controller: function (args) {
     this.documentos = args;
 
-    this.temDocumento = function() {
-        return !_.isEmpty(this.documentos.casoPadrao().campos()) || !_.isEmpty(this.documentos.outrosCasos());
+    this.temDocumento = function () {
+      return !_.isEmpty(this.documentos.casoPadrao().campos()) || !_.isEmpty(this.documentos.outrosCasos());
     };
   },
 
