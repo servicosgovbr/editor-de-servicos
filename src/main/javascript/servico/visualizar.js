@@ -25,7 +25,8 @@ module.exports = {
                       m('.row', m.component(require('servico/visualizar/ancoras'), servico)),
                       m('.row', m.component(require('servico/visualizar/descricao'), servico)),
                       m('.row', m.component(require('servico/visualizar/solicitantes'), servico)),
-                      m('.row', m.component(require('servico/visualizar/etapas'), servico))
+                      m('.row', m.component(require('servico/visualizar/etapas'), servico)),
+                      m('.row', m.component(require('servico/visualizar/tempo'), servico))
                     ]))])
             ]);
   }
