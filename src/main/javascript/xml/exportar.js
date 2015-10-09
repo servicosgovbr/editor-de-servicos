@@ -123,7 +123,6 @@ module.exports = function (servico) {
       },
       m('contato', servico.orgao().contato())
     ),
-    m('orgao-contato', servico.orgaoContato),
     m('segmentos-da-sociedade', servico.segmentosDaSociedade().map(item)),
     m('areas-de-interesse', servico.areasDeInteresse().map(item)),
     m('palavras-chave', servico.palavrasChave().map(item)),
