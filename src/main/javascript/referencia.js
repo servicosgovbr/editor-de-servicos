@@ -153,6 +153,16 @@ module.exports = {
     'meses': 'meses'
   },
 
+  orgaosFemininos: [
+      'comissao',
+      'defensoria',
+      'empresa',
+      'fundacao',
+      'receita',
+      'receital',
+      'secretaria'
+  ],
+
   descricoesDeCanaisDePrestacao: {
     'aplicativo-movel': 'Endereço na web para o download do aplicativo',
     'e-mail': 'Endereço de e-mail que deverá ser utilizado',
