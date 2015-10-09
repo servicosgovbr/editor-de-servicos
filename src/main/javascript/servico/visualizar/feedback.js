@@ -32,6 +32,10 @@ module.exports = {
             m('textarea#opiniao.row', {
           name: 'mensagem',
           rows: 5
+        }),
+        m('input[type=submit].acao', {
+          name: 'enviar',
+          value: 'ENVIAR'
         })
         ])
     ]);
