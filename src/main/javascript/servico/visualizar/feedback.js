@@ -11,9 +11,8 @@ module.exports = {
             m('label', {
           for: 'sim'
         }, 'Sim'),
-            m('input[type=radio].left', {
+            m('input[type=radio]#sim.left', {
           name: 'conteudoEncontrado',
-          id: 'sim',
           value: 'true',
           required: 'required'
         }),
@@ -21,9 +20,8 @@ module.exports = {
             m('label', {
           for: 'nao'
         }, 'Não'),
-            m('input[type=radio].left', {
+            m('input[type=radio]#nao.left', {
           name: 'conteudoEncontrado',
-          id: 'nao',
           value: 'false'
         })
         ]),
