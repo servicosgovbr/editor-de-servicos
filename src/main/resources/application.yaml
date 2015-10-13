@@ -23,7 +23,7 @@ management:
   context-path: /editar
 
 flags:
-  git.push: false
+  git.push: true
   esquentar.cache: true
   importar: true
 
