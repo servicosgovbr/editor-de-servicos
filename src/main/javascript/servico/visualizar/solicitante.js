@@ -10,7 +10,7 @@ module.exports = {
   view: function (ctrl) {
     return m('', ctrl.solicitantes.map(function (solicitante) {
       return m('.solicitantes markdown margem-solicitantes', [
-                m('h4', m.trust(solicitante.tipo())),
+                m('h4', m('p', m.trust(solicitante.tipo()))),
                 m.trust(ctrl.converter.makeHtml(solicitante.requisitos()))
             ]);
     }));
