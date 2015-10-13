@@ -85,7 +85,7 @@ public class EditarPaginaControllerTest {
                 .willReturn("Ministério\n--\n\nConteúdo");
 
         String conteudo = controller.editar("orgao", "ministerio-conteudo", new MockHttpServletResponse());
-        assertThat(conteudo, is("{\n  \"tipo\" : \"orgao\",\n  \"nome\" : \"Ministerio\",\n  \"conteudo\" : \"Conteúdo\"\n}"));
+        assertThat(conteudo, is("{\n  \"tipo\" : \"orgao\",\n  \"nome\" : \"Ministério\",\n  \"conteudo\" : \"Conteúdo\"\n}"));
     }
 
     @Test(expected = FileNotFoundException.class)
