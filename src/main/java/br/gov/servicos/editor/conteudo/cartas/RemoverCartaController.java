@@ -1,5 +1,7 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 
@@ -19,15 +22,18 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 class RemoverCartaController {
 
     UserProfiles userProfiles;
+    private ConteudoVersionadoFactory factory;
 
     @Autowired
-    public RemoverCartaController(UserProfiles userProfiles) {
+    public RemoverCartaController(UserProfiles userProfiles, ConteudoVersionadoFactory factory) {
         this.userProfiles = userProfiles;
+        this.factory = factory;
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/editar/api/servico/{id}", method = DELETE)
-    void remover(@PathVariable("id") Carta carta) {
+    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = DELETE)
+    void remover(@PathVariable("id") String id) {
+        ConteudoVersionado carta = factory.pagina(id, SERVICO);
         carta.remover(userProfiles.get());
     }
 

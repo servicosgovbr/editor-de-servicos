@@ -28,18 +28,9 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
     @Getter
     String id;
 
-    @Getter
-    TipoPagina tipo;
-
     PaginaVersionada(String id, TipoPagina tipo, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
-        super(repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
+        super(repositorio, tipo, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         this.id = id;
-        this.tipo = tipo;
-    }
-
-    @Override
-    public Path getCaminho() {
-        return Paths.get("conteudo", tipo.getNomePasta(), id + ".md");
     }
 
     public Pagina getConteudo() {
@@ -48,12 +39,12 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
             return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),
                     uncheckedSupplier(() -> new Pagina()
                             .withNome(readFirstLine(arquivo, Charset.defaultCharset()))
-                            .withTipo(tipo.getNome())));
+                            .withTipo(getTipo().getNome())));
         } catch (Exception e) {
             return getRepositorio().comRepositorioAbertoNoBranch(R_HEADS + MASTER,
                     uncheckedSupplier(() -> new Pagina()
                             .withNome(readFirstLine(arquivo, Charset.defaultCharset()))
-                            .withTipo(tipo.getNome())));
+                            .withTipo(getTipo().getNome())));
         }
     }
 

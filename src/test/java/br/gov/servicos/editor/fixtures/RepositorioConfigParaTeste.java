@@ -1,59 +1,59 @@
 package br.gov.servicos.editor.fixtures;
 
-import br.gov.servicos.editor.fixtures.given.EstruturaRepositorio;
 import br.gov.servicos.editor.git.RepositorioConfig;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TemporaryFolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @Configuration
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @Profile("teste")
-public class RepositorioConfigParaTeste extends ExternalResource {
-
-    private TemporaryFolder origin = new TemporaryFolder();
-    private TemporaryFolder whereToClone = new TemporaryFolder();
+public class RepositorioConfigParaTeste {
+    Path origin;
+    Path localCloneRepositorio;
 
     @SneakyThrows
     public RepositorioConfigParaTeste() {
-        origin.create();
-        whereToClone.create();
-        criaRepoComEstrutura();
-    }
+        origin = Files.createTempDirectory("editor-origin");
+        localCloneRepositorio = Files.createTempDirectory("editor-clone");
 
-    @Override
-    protected void after() {
-        origin.delete();
-        whereToClone.delete();
+        reset();
     }
 
     @SneakyThrows
-    private void criaRepoComEstrutura() {
-        EstruturaRepositorio.mkdirs(origin.getRoot().toPath());
-        Git.init().setDirectory(origin.getRoot()).call();
+    public void reset() {
+        FileUtils.deleteDirectory(origin.toFile());
+        FileUtils.deleteDirectory(localCloneRepositorio.toFile());
+
+        Files.createDirectories(origin);
+        Files.createDirectories(localCloneRepositorio);
+
+        Git.init().setBare(true).setDirectory(origin.toFile()).call();
+
+        origin.toFile().deleteOnExit();
+        localCloneRepositorio.toFile().deleteOnExit();
     }
 
     @Bean
     public RepositorioConfig testConfig() {
-        return new RepositorioConfig(origin.getRoot().getAbsolutePath(),
+        return new RepositorioConfig(origin.toString(),
                 true,
                 true,
-                whereToClone.getRoot());
+                localCloneRepositorio.toFile());
     }
 
 }

@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
 
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SalvarPaginaController {
 
     FormatadorConteudoPagina formatador;
-    private PaginaVersionadaFactory factory;
+    private ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
-    public SalvarPaginaController(FormatadorConteudoPagina formatador, PaginaVersionadaFactory factory, UserProfiles userProfiles) {
+    public SalvarPaginaController(FormatadorConteudoPagina formatador, ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
         this.formatador = formatador;
         this.factory = factory;
         this.userProfiles = userProfiles;
@@ -36,7 +37,7 @@ public class SalvarPaginaController {
     RedirectView editar(@PathVariable("tipo") String tipo,
                         @PathVariable("id") String id,
                         @RequestBody Pagina pagina) {
-        PaginaVersionada paginaVersionada = factory.pagina(id, TipoPagina.fromNome(tipo));
+        ConteudoVersionado paginaVersionada = factory.pagina(id, TipoPagina.fromNome(tipo));
         paginaVersionada.salvar(userProfiles.get(), formatador.formatar(pagina));
         return new RedirectView("/editar/api/pagina/" + tipo + "/" + paginaVersionada.getId());
     }

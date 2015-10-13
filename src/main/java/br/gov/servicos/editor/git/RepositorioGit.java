@@ -44,6 +44,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
 import static net.logstash.logback.marker.Markers.appendArray;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
+import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE;
 import static org.eclipse.jgit.lib.ConfigConstants.*;
 import static org.eclipse.jgit.lib.Constants.*;
@@ -62,7 +63,7 @@ public class RepositorioGit {
 
     @Autowired
     public RepositorioGit(RepositorioConfig config) {
-        this.raiz = config.repositorioLocal;
+        this.raiz = config.localRepositorioDeCartas;
         this.fazerPush = config.fazerPush;
     }
 
@@ -162,6 +163,18 @@ public class RepositorioGit {
                 .and(append("checkout.result", result.getName()));
 
         log.info(marker, "git checkout master");
+    }
+
+    @SneakyThrows
+    public boolean existeBranch(String id) {
+        return comRepositorioAberto(uncheckedFunction(git -> {
+            pull();
+
+            List<Ref> branchesList = git.branchList().setListMode(ALL).call();
+            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
+
+            return branches.anyMatch(s -> s.equals(id));
+        }));
     }
 
     @SneakyThrows
@@ -401,5 +414,6 @@ public class RepositorioGit {
         config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
         config.save();
     }
+
 
 }

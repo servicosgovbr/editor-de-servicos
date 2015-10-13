@@ -32,12 +32,12 @@ public class Importador {
     Importador(RepositorioConfig config) {
         this.repositorioCartas = config.urlRepositorioCartas;
         this.deveImportar = config.deveImportar;
-        this.repositorioCartasLocal = config.repositorioLocal;
+        this.repositorioCartasLocal = config.localRepositorioDeCartas;
     }
 
     @PostConstruct
     @SneakyThrows
-    void importaRepositorioDeCartas() {
+    public void importaRepositorioDeCartas() {
         if (!deveImportar) {
             log.info("Importação do repositório de cartas desabilitada (FLAGS_IMPORTAR=false)");
             return;

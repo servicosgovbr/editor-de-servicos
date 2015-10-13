@@ -1,15 +1,15 @@
 'use strict';
 
 var slugify = require('slugify');
-var importar = require('xml/importar-v3');
+var importar = require('xml/importar');
 var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 
-var config = function (versao, id, metadados) {
+var config = function (id, metadados) {
   return {
     method: 'GET',
 
-    url: '/editar/api/servico/' + slugify(versao) + '/' + slugify(id),
+    url: '/editar/api/pagina/servico/' + slugify(id),
 
     config: function (xhr) {
       xhr.setRequestHeader('Accept', 'application/xml');
@@ -23,14 +23,12 @@ var config = function (versao, id, metadados) {
   };
 };
 
-var carregarV3 = function (cabecalho, xml) {
+var carregar = function (cabecalho, xml) {
   cabecalho.limparErro();
   return importar(xml);
 };
 
-var carregar = function (id, cabecalho) {
-  return m.request(config('v3', id, cabecalho.metadados))
-    .then(_.bind(carregarV3, this, cabecalho), erro);
+module.exports = function (id, cabecalho) {
+  return m.request(config(id, cabecalho.metadados))
+    .then(_.bind(carregar, this, cabecalho), erro);
 };
-
-module.exports = carregar;

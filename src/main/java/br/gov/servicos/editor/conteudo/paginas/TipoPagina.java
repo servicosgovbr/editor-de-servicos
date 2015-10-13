@@ -1,23 +1,33 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
+import br.gov.servicos.editor.config.SlugifyConfig;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 public enum TipoPagina {
-    ORGAO("orgao", "orgaos"),
-    AREA_INTERESSE("area-de-interesse", "areas-de-interesse"),
-    ESPECIAL("pagina-especial", "paginas-especiais");
+    ORGAO("conteudo/orgaos","md"),
+    AREA_DE_INTERESSE("conteudo/areas-de-interesse","md"),
+    PAGINA_ESPECIAL("conteudo/paginas-especiais", "md"),
+    SERVICO("cartas-servico/v3/servicos", "xml");
 
     @Getter
     private String nome;
 
     @Getter
-    private String nomePasta;
+    private Path caminhoPasta;
 
-    TipoPagina(String nome, String nomePasta) {
-        this.nome = nome;
-        this.nomePasta = nomePasta;
+    @Getter
+    private String extensao;
+
+    TipoPagina(String caminhoPasta, String extensao) {
+        this.nome = SlugifyConfig.slugify(name());
+        this.caminhoPasta = Paths.get(caminhoPasta);
+        this.extensao = extensao;
     }
 
     @Override
@@ -32,4 +42,9 @@ public enum TipoPagina {
                 .findFirst()
                 .get();
     }
+
+    public String prefixo() {
+        return getNome() + "-";
+    }
+
 }

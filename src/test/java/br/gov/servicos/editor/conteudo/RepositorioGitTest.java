@@ -10,7 +10,6 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.transport.RefSpec;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,9 +27,7 @@ import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
-import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.TRACK;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.hamcrest.Matchers.*;
@@ -50,105 +47,132 @@ public class RepositorioGitTest {
         }
     }
 
-    File clone;
-    RepositorioGit repo;
+    File upstream;
+    File clone1;
+    File clone2;
+
+    RepositorioGit repo1;
+    RepositorioGit repo2;
 
     @BeforeClass
-    public static void setUpOrigin() throws Exception {
-        Git.cloneRepository()
-                .setURI("https://github.com/servicosgovbr/cartas-de-servico.git")
-                .setBare(true)
-                .setDirectory(github)
-                .setProgressMonitor(new TextProgressMonitor())
-                .call();
+    public static void setUpOrigin() {
+        cloneBare("https://github.com/servicosgovbr/cartas-de-servico.git", github);
     }
 
     @Before
-    public void setUp() throws Exception {
-        clone = createTempDirectory("RepositorioGitTest-clone").toFile();
-        clone.deleteOnExit();
+    public void setUp() {
+        upstream = tempFolder();
+        clone1 = tempFolder();
+        clone2 = tempFolder();
 
-        Git.cloneRepository()
-                .setURI(github.getAbsolutePath())
-                .setDirectory(clone)
-                .setProgressMonitor(new TextProgressMonitor())
-                .call();
+        cloneBare(github.toPath().toString(), upstream);
+        clone(upstream.toPath().toString(), clone1);
+        clone(upstream.toPath().toString(), clone2);
 
-        System.out.println("clone = " + clone);
+        System.out.println("test upstream" + upstream);
+        System.out.println("test clone1" + clone1);
+        System.out.println("test clone2" + clone2);
 
-        this.repo = new RepositorioGit(new RepositorioConfig("", false, true, clone));
+        this.repo1 = new RepositorioGit(new RepositorioConfig("", false, true, clone1));
+        this.repo2 = new RepositorioGit(new RepositorioConfig("", false, true, clone2));
     }
 
     @Test
     public void caminhosERevisoes() throws Exception {
-        assertThat(repo.getCaminhoAbsoluto(), is(clone.toPath()));
+        _caminhoRevisoes(repo1, clone1);
+        _caminhoRevisoes(repo2, clone2);
+    }
+
+    private void _caminhoRevisoes(RepositorioGit repo, File folder) {
+        assertThat(repo.getCaminhoAbsoluto(), is(folder.toPath()));
         assertThat(repo.getRevisaoMaisRecenteDoArquivo(Paths.get("README.md")), is(not(empty())));
         assertThat(repo.getRevisaoMaisRecenteDoBranch("master"), is(not(empty())));
     }
 
     @Test
     public void fluxoDePublicacao() throws Exception {
-        salvaAlteracao();
-        garanteQueAlteracaoFoiParaGithub();
+        salvaAlteracao(repo1, "# Teste");
+        garanteQueAlteracaoFoiPara(upstream, "foo");
 
-        salvaAlteracaoUsandoOutroClone();
-        garanteQueAlteracaoFoiRecebida();
+        salvaAlteracao(repo2, "# Teste 2");
+        garanteQueAlteracaoFoiRecebidaPor(repo1, "# Teste 2");
 
-        salvaAlteracao();
-        publicaAlteracao();
-        garanteQueAlteracaoFoiPublicada();
+        salvaAlteracao(repo1, "# Teste");
+        publicaAlteracao(repo1);
+        garanteQueAlteracaoFoiPublicada(upstream);
     }
 
     @Test
     public void fluxoDeMoverBranch() throws Exception {
-        moveBranch();
-        garanteQueBranchFoiMovida();
+        moveBranch(repo1);
+        garanteQueBranchFoiMovida(repo1);
     }
 
     @Test
     public void fluxoDeRemoverServicoNaoPublicado() throws Exception {
-        salvaAlteracao(); //cria branch foo
-        garanteQueAlteracaoFoiParaGithub();
-        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
-            repo.deleteLocalBranch("foo"); //git branch -D foo
-            repo.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
+        salvaAlteracao(repo1, "Teste");
+        garanteQueAlteracaoFoiPara(upstream, "foo");
+
+        repo1.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
+            repo1.deleteLocalBranch("foo"); //git branch -D foo
+            repo1.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
             return null;
         }));
 
-        try (Git git = Git.open(clone)) {
-            List<Ref> branchesList = git.branchList().setListMode(ALL).call();
-            branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", "")).forEach(System.out::println);
-            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
-            assertTrue(branches.noneMatch(n -> n.equals("foo")));
-        }
+        assertFalse(repo1.existeBranch("foo"));
     }
 
     @Test
     public void fluxoDeRemoverServicoPublicado() throws Exception {
-        salvaAlteracao(); //cria branch foo
-        garanteQueAlteracaoFoiParaGithub();
-        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
+        salvaAlteracao(repo1, "teste");
+        garanteQueAlteracaoFoiPara(upstream, "foo");
+
+        repo1.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
             Path arquivo = Paths.get("README.md");
-            repo.deleteLocalBranch("foo"); //git branch -D foo
-            repo.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
-            repo.remove(arquivo);
-            repo.commit(arquivo, "Apagou", PROFILE);
-            repo.push("master");
+            repo1.deleteLocalBranch("foo"); //git branch -D foo
+            repo1.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
+            repo1.remove(arquivo);
+            repo1.commit(arquivo, "Apagou", PROFILE);
+            repo1.push("master");
             return null;
         }));
 
-        verificaSeBranchExisteLocalERemoto();
+        verificaSeBranchExisteLocalERemoto(clone1);
 
-        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
-            Path arquivo = repo.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
+        repo1.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
+            Path arquivo = repo1.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
             assertFalse(Files.exists(arquivo));
             return null;
         }));
     }
 
+    @Test
+    public void existeBranchQuandoSalvaAlteracao() throws Exception {
+        salvaAlteracao(repo1, "Alteração");
+        assertTrue(repo1.existeBranch("foo"));
+    }
+
+    @Test
+    public void existeBranchQuandoApenasRemoto() throws Exception {
+        salvaAlteracao(repo2, "Alteração");
+        assertTrue(repo1.existeBranch("foo"));
+    }
+
+    @Test
+    public void existeBranchAposPublicar() throws Exception {
+        salvaAlteracao(repo1, "adfasdf");
+        publicaAlteracao(repo1);
+        assertTrue(repo1.existeBranch("foo"));
+    }
+
+    @Test
+    public void naoExisteBranch() throws Exception {
+        assertFalse(repo1.existeBranch("foo2"));
+    }
+
     @SneakyThrows
-    private void verificaSeBranchExisteLocalERemoto() throws GitAPIException {
-        try (Git git = Git.open(clone)) {
+    private void verificaSeBranchExisteLocalERemoto(File localRepo) throws GitAPIException {
+        try (Git git = Git.open(localRepo)) {
             List<Ref> branchesList = git.branchList().setListMode(ALL).call();
             branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", "")).forEach(System.out::println);
             Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
@@ -156,30 +180,30 @@ public class RepositorioGitTest {
         }
     }
 
-    private void moveBranch() throws IOException {
-        repo.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
+    private void moveBranch(RepositorioGit r) throws IOException {
+        r.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
             Path origem = Paths.get("README.md");
             Path destino = Paths.get("baz-bar.md");
-            repo.moveBranchPara("baz-bar");
-            Files.move(repo.getCaminhoAbsoluto().resolve(origem), repo.getCaminhoAbsoluto().resolve(destino));
-            repo.remove(origem);
-            repo.add(destino);
-            repo.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", PROFILE);
-            repo.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", PROFILE);
-            repo.push("baz-bar");
+            r.moveBranchPara("baz-bar");
+            Files.move(r.getCaminhoAbsoluto().resolve(origem), r.getCaminhoAbsoluto().resolve(destino));
+            r.remove(origem);
+            r.add(destino);
+            r.commit(origem, "Renomeia \"foo-bar\" para \"baz-bar\"", PROFILE);
+            r.commit(destino, "Renomeia \"foo-bar\" para \"baz-bar\"", PROFILE);
+            r.push("baz-bar");
             return null;
         }));
     }
 
-    private void garanteQueBranchFoiMovida() {
-        assertTrue(repo.branches().noneMatch(n -> n.equals("foo-bar")));
-        assertTrue(repo.branches().anyMatch(n -> n.equals("baz-bar")));
+    private void garanteQueBranchFoiMovida(RepositorioGit r) {
+        assertTrue(r.branches().noneMatch(n -> n.equals("foo-bar")));
+        assertTrue(r.branches().anyMatch(n -> n.equals("baz-bar")));
 
-        repo.comRepositorioAbertoNoBranch("baz-bar", uncheckedSupplier(() -> {
-            Path antigo = repo.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
-            Path novo = repo.getCaminhoAbsoluto().resolve(Paths.get("baz-bar.md"));
+        r.comRepositorioAbertoNoBranch("baz-bar", uncheckedSupplier(() -> {
+            Path antigo = r.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
+            Path novo = r.getCaminhoAbsoluto().resolve(Paths.get("baz-bar.md"));
 
-            repo.pull();
+            r.pull();
 
             assertTrue(Files.notExists(antigo));
             assertTrue(Files.exists(novo));
@@ -187,54 +211,26 @@ public class RepositorioGitTest {
         }));
     }
 
-    private void garanteQueAlteracaoFoiPublicada() throws IOException {
-        try (Git git = Git.open(github)) {
-            Ref master = git.getRepository().getRef(MASTER);
-            assertThat(master, is(notNullValue()));
-
-            RevCommit commit = new RevWalk(git.getRepository()).parseCommit(master.getObjectId());
-            assertThat(commit.getAuthorIdent().getName(), is("fulano"));
-            assertThat(commit.getAuthorIdent().getEmailAddress(), is("servicos@planejamento.gov.br"));
-            assertThat(commit.getFullMessage(), is("Alteração de teste"));
-        }
+    private void garanteQueAlteracaoFoiPublicada(File localRepo) throws IOException {
+        garanteQueAlteracaoFoiPara(localRepo, MASTER);
     }
 
-    private void garanteQueAlteracaoFoiRecebida() throws IOException {
-        repo.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
+    private void garanteQueAlteracaoFoiRecebidaPor(RepositorioGit r, String alteracao) throws IOException {
+        r.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
             Path relativo = Paths.get("README.md");
-            Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
+            Path absoluto = r.getCaminhoAbsoluto().resolve(relativo);
 
-            repo.pull();
+            r.pull();
 
-            assertThat(Files.readAllLines(absoluto).get(0), is("# Teste 2"));
+            assertThat(Files.readAllLines(absoluto).get(0), is(alteracao));
 
             return null;
         }));
     }
 
-    private void salvaAlteracaoUsandoOutroClone() throws IOException, GitAPIException {
-        File outroClone = createTempDirectory("RepositorioGitTest-outro").toFile();
-        outroClone.deleteOnExit();
-
-        try (Git git = Git.cloneRepository()
-                .setURI(github.getAbsolutePath())
-                .setDirectory(outroClone)
-                .setProgressMonitor(new TextProgressMonitor())
-                .setCloneAllBranches(true)
-                .call()) {
-
-            git.checkout().setName("foo").setCreateBranch(true).setUpstreamMode(TRACK).setStartPoint(R_REMOTES + DEFAULT_REMOTE_NAME + "/foo").call();
-            assertThat(Files.readAllLines(outroClone.toPath().resolve("README.md")).get(0), is("# Teste"));
-
-            Files.write(outroClone.toPath().resolve("README.md"), singletonList("# Teste 2"), WRITE);
-            git.commit().setAll(true).setMessage("Commit de outro clone").call();
-            git.push().setRefSpecs(new RefSpec("foo:foo")).setProgressMonitor(new TextProgressMonitor()).call();
-        }
-    }
-
-    private void garanteQueAlteracaoFoiParaGithub() throws IOException {
-        try (Git git = Git.open(github)) {
-            Ref foo = git.getRepository().getRef("foo");
+    private void garanteQueAlteracaoFoiPara(File localRepo, String branch) throws IOException {
+        try (Git git = Git.open(localRepo)) {
+            Ref foo = git.getRepository().getRef(branch);
             assertThat(foo, is(notNullValue()));
 
             RevCommit commit = new RevWalk(git.getRepository()).parseCommit(foo.getObjectId());
@@ -244,28 +240,55 @@ public class RepositorioGitTest {
         }
     }
 
-    private void salvaAlteracao() throws IOException {
-        repo.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
+    private void salvaAlteracao(RepositorioGit r, String alteracao) throws IOException {
+        r.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
+            r.pull();
+
             Path relativo = Paths.get("README.md");
-            Path absoluto = repo.getCaminhoAbsoluto().resolve(relativo);
+            Path absoluto = r.getCaminhoAbsoluto().resolve(relativo);
 
-            Files.write(absoluto, asList("# Teste", "\n", absoluto.toString()), WRITE);
-            repo.commit(relativo, "Alteração de teste", PROFILE);
+            Files.write(absoluto, asList(alteracao, "\n", absoluto.toString()), WRITE);
+            r.commit(relativo, "Alteração de teste", PROFILE);
 
-            repo.push("foo");
+            r.push("foo");
 
             return null;
         }));
     }
 
-    private void publicaAlteracao() {
-        repo.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
-            repo.pull();
-
-            repo.merge(R_HEADS + "foo");
-            repo.push(R_HEADS + MASTER);
-
+    private void publicaAlteracao(RepositorioGit r) {
+        r.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
+            r.pull();
+            r.merge(R_HEADS + "foo");
+            r.push(R_HEADS + MASTER);
             return null;
         });
     }
+
+    @SneakyThrows
+    private static void clone(String from, File to) {
+        Git.cloneRepository()
+                .setURI(from)
+                .setDirectory(to)
+                .setProgressMonitor(new TextProgressMonitor())
+                .call();
+    }
+
+    @SneakyThrows
+    private static void cloneBare(String from, File to) {
+        Git.cloneRepository()
+                .setURI(from)
+                .setDirectory(to)
+                .setBare(true)
+                .setProgressMonitor(new TextProgressMonitor())
+                .call();
+    }
+
+    @SneakyThrows
+    private File tempFolder() {
+        File t = createTempDirectory("test").toFile();
+        t.deleteOnExit();
+        return t;
+    }
+
 }

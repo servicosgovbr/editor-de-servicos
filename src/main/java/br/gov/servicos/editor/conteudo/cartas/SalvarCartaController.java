@@ -1,5 +1,8 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import lombok.experimental.FieldDefaults;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
 
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -23,21 +27,25 @@ public class SalvarCartaController {
 
     ReformatadorXml reformatadorXml;
     UserProfiles userProfiles;
+    ConteudoVersionadoFactory factory;
 
     @Autowired
-    public SalvarCartaController(ReformatadorXml reformatadorXml, UserProfiles userProfiles) {
+    public SalvarCartaController(ReformatadorXml reformatadorXml, UserProfiles userProfiles, ConteudoVersionadoFactory factory) {
         this.reformatadorXml = reformatadorXml;
         this.userProfiles = userProfiles;
+        this.factory = factory;
     }
 
-    @RequestMapping(value = "/editar/v3/servico/{id}", method = POST)
+    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = POST)
     RedirectView salvar(
-            @PathVariable("id") Carta carta,
+            @PathVariable("id") String id,
             @RequestBody DOMSource servico
     ) throws Exception {
+        ConteudoVersionado carta = factory.pagina(id, SERVICO);
+
         String conteudo = reformatadorXml.formata(servico);
         carta.salvar(userProfiles.get(), conteudo);
-        return new RedirectView("/editar/api/servico/v3/" + carta.getId());
+        return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
     }
 
 }

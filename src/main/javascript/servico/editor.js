@@ -40,7 +40,7 @@ module.exports = {
         return this.salvar().then(function () {
           m.request({
             method: 'PUT',
-            url: '/editar/api/servico/' + id
+            url: '/editar/api/pagina/servico/' + id
           });
         });
       } else {

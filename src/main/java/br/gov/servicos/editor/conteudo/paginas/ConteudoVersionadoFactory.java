@@ -1,5 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
@@ -15,7 +17,7 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaginaVersionadaFactory {
+public class ConteudoVersionadoFactory {
 
     @Autowired
     Slugify slugify;
@@ -34,7 +36,9 @@ public class PaginaVersionadaFactory {
 
     @Bean // necessário para @Cacheable
     @Scope("prototype")
-    public PaginaVersionada pagina(String texto, TipoPagina tipo) {
+    public ConteudoVersionado pagina(String texto, TipoPagina tipo) {
+        if (tipo == TipoPagina.SERVICO)
+            return new Carta(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         return new PaginaVersionada(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
     }
 

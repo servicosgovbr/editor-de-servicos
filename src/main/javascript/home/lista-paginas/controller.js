@@ -54,7 +54,7 @@ module.exports = function (args) {
         m.redraw();
         m.request({
             method: 'DELETE',
-            url: '/editar/api/servico/' + slugify(id),
+            url: '/editar/api/pagina/servico/' + slugify(id),
           }).then(this.listarConteudos, erro)
           .then(function () {
             alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!');

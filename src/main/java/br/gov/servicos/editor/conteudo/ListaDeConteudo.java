@@ -1,9 +1,6 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.cartas.Carta;
-import br.gov.servicos.editor.conteudo.paginas.Pagina;
-import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
-import br.gov.servicos.editor.conteudo.paginas.PaginaVersionadaFactory;
+import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
@@ -15,12 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
-import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -28,7 +25,6 @@ import java.util.stream.Stream;
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
-import static java.util.Locale.getDefault;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
 import static lombok.AccessLevel.PRIVATE;
@@ -41,8 +37,7 @@ public class ListaDeConteudo {
 
     Importador importador;
     RepositorioGit repositorioGit;
-    Formatter<Carta> formatterCarta;
-    PaginaVersionadaFactory paginaVersionadaFactory;
+    ConteudoVersionadoFactory conteudoVersionadoFactory;
     CacheManager cacheManager;
     boolean esquentarCache;
 
@@ -50,15 +45,13 @@ public class ListaDeConteudo {
     public ListaDeConteudo(
             Importador importador,
             RepositorioGit repositorioGit,
-            Formatter<Carta> formatterCarta,
-            PaginaVersionadaFactory paginaVersionadaFactory,
+            ConteudoVersionadoFactory conteudoVersionadoFactory,
             CacheManager cacheManager,
             @Value("${flags.esquentar.cache}") boolean esquentarCache
     ) {
         this.importador = importador;
         this.repositorioGit = repositorioGit;
-        this.formatterCarta = formatterCarta;
-        this.paginaVersionadaFactory = paginaVersionadaFactory;
+        this.conteudoVersionadoFactory = conteudoVersionadoFactory;
         this.cacheManager = cacheManager;
         this.esquentarCache = esquentarCache;
     }
@@ -88,25 +81,29 @@ public class ListaDeConteudo {
         return listar().stream().noneMatch(m -> m.getId().equals(id));
     }
 
-    public Set<Metadados<?>> listar() throws FileNotFoundException {
-        Stream<Metadados<Carta.Servico>> servicos = concat(listar("cartas-servico/v3/servicos", "xml"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
-                .map(uncheckedFunction(id -> formatterCarta.parse(id, getDefault())))
-                .map(Carta::getMetadados);
+    public Set<Metadados> listar() throws FileNotFoundException {
+        Stream<Metadados> orgaos = listarMetadados(ORGAO);
+        Stream<Metadados> areas = listarMetadados(AREA_DE_INTERESSE);
+        Stream<Metadados> paginas = listarMetadados(PAGINA_ESPECIAL);
+        Stream<Metadados> servicos = listarMetadados(SERVICO);
 
-        Stream<Metadados<Pagina>> orgaos = listarMetadados(ORGAO);
-        Stream<Metadados<Pagina>> areasInteresse = listarMetadados(AREA_INTERESSE);
-        Stream<Metadados<Pagina>> paginasEspeciais = listarMetadados(ESPECIAL);
-
-        return concat(concat(concat(servicos, orgaos), areasInteresse), paginasEspeciais).collect(toSet());
+        Stream<Metadados> todos = concat(orgaos, areas);
+        todos = concat(todos, paginas);
+        todos = concat(todos, servicos);
+        return todos.collect(toSet());
     }
 
-    private Stream<Metadados<Pagina>> listarMetadados(TipoPagina tipo) throws FileNotFoundException {
-        return concat(listar("conteudo/" + tipo.getNomePasta(), "md"), repositorioGit.branches().filter(n -> !n.equals(MASTER)))
-                .map(uncheckedFunction(id -> paginaVersionadaFactory.pagina(id, tipo)))
-                .map(PaginaVersionada::getMetadados);
+    private Stream<Metadados> listarMetadados(TipoPagina tipo) throws FileNotFoundException {
+        return concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
+                repositorioGit.branches()
+                        .filter(n -> !n.equals(MASTER))
+                        .filter(n -> n.startsWith(tipo.prefixo()))
+                        .map(n -> n.replaceFirst(tipo.prefixo(), "")))
+                .map(uncheckedFunction(id -> conteudoVersionadoFactory.pagina(id, tipo)))
+                .map(ConteudoVersionado::getMetadados);
     }
 
-    private Stream<String> listar(String caminho, String ext) throws FileNotFoundException {
+    private Stream<String> listar(Path caminho, String ext) throws FileNotFoundException {
         File dir = repositorioGit.getCaminhoAbsoluto().resolve(caminho).toFile();
         if (!dir.exists()) {
             throw new FileNotFoundException("Diretório " + dir + " não encontrado!");

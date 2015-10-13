@@ -26,7 +26,7 @@ module.exports = {
       var idAtual = slugify(servico.nome());
       m.request({
         method: 'PATCH',
-        url: '/editar/api/servico/' + idAtual + '/' + novoNome
+        url: '/editar/api/pagina/servico/' + idAtual + '/' + novoNome
       }).then(_.bind(function () {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));

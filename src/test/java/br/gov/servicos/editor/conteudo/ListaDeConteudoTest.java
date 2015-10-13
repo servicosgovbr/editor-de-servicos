@@ -3,15 +3,18 @@ package br.gov.servicos.editor.conteudo;
 import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
-import br.gov.servicos.editor.conteudo.paginas.PaginaVersionadaFactory;
+import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
+import com.github.slugify.Slugify;
 import com.google.common.cache.Cache;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.cache.CacheManager;
@@ -26,8 +29,9 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static java.util.Locale.getDefault;
-import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -45,10 +49,7 @@ public class ListaDeConteudoTest {
     RepositorioGit repositorioGit;
 
     @Mock
-    Formatter<Carta> formatterCarta;
-
-    @Mock
-    PaginaVersionadaFactory factory;
+    ConteudoVersionadoFactory factory;
 
     @Mock
     Importador importador;
@@ -66,15 +67,13 @@ public class ListaDeConteudoTest {
 
     @Before
     public void setUp() throws Exception {
-
-
-        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, formatterCarta, factory, cacheManager, true);
+        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, factory, cacheManager, true);
 
         Path dir = Files.createTempDirectory("listar-cartas-controller");
-        Path servicos = dir.resolve("cartas-servico/v3/servicos");
-        Path orgaos = dir.resolve("conteudo/orgaos");
-        Path areasInteresse = dir.resolve("conteudo/areas-de-interesse");
-        Path paginasEspeciais = dir.resolve("conteudo/paginas-especiais");
+        Path servicos = dir.resolve(SERVICO.getCaminhoPasta());
+        Path orgaos = dir.resolve(ORGAO.getCaminhoPasta());
+        Path areasInteresse = dir.resolve(AREA_DE_INTERESSE.getCaminhoPasta());
+        Path paginasEspeciais = dir.resolve(PAGINA_ESPECIAL.getCaminhoPasta());
 
         assertTrue(servicos.toFile().mkdirs());
         assertTrue(orgaos.toFile().mkdirs());
@@ -87,9 +86,11 @@ public class ListaDeConteudoTest {
         Files.createFile(paginasEspeciais.resolve("pg-especial.md"));
 
         given(repositorioGit.getCaminhoAbsoluto()).willReturn(dir);
-        given(formatterCarta.parse("id-qualquer", getDefault())).willReturn(carta);
-        given(factory.pagina(anyString(), any()))
+
+        given(factory.pagina(anyString(), Matchers.any(TipoPagina.class)))
                 .willReturn(paginaVersionada);
+
+        given(factory.pagina(anyString(), eq(SERVICO))).willReturn(carta);
     }
 
     @Test
@@ -100,7 +101,7 @@ public class ListaDeConteudoTest {
         given(paginaVersionada.getMetadados()).willReturn(new Metadados<>());
         given(carta.getMetadados()).willReturn(m1);
 
-        Collection<Metadados<?>> metadados = listaDeConteudo.listar();
+        Collection<Metadados> metadados = listaDeConteudo.listar();
 
         assertThat(metadados, hasItem(m1));
     }

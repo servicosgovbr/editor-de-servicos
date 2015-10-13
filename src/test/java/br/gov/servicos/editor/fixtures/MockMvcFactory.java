@@ -13,4 +13,10 @@ public class MockMvcFactory {
                 .apply(springSecurity())
                 .build();
     }
+
+    public static MockMvc semSprinSecurity(WebApplicationContext context) {
+        return MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
+    }
 }

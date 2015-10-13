@@ -21,7 +21,7 @@ public class RepositorioConfig {
     String urlRepositorioCartas;
     boolean deveImportar;
     boolean fazerPush;
-    File repositorioLocal;
+    public final File localRepositorioDeCartas;
 
     @Autowired
     public RepositorioConfig(@Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
@@ -34,13 +34,13 @@ public class RepositorioConfig {
     public RepositorioConfig(String urlRepositorioCartas,
                              boolean deveImportar,
                              boolean fazerPush,
-                             File repositorioLocal) {
+                             File localRepositorioDeCartas) {
 
         this.urlRepositorioCartas = urlRepositorioCartas;
         this.deveImportar = deveImportar;
         this.fazerPush = fazerPush;
-        this.repositorioLocal = repositorioLocal;
-        this.repositorioLocal.deleteOnExit();
+        this.localRepositorioDeCartas = localRepositorioDeCartas;
+        this.localRepositorioDeCartas.deleteOnExit();
     }
 
 }

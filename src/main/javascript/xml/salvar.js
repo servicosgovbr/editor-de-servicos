@@ -3,7 +3,7 @@
 var slugify = require('slugify');
 var limparModelo = require('limpar-modelo');
 var extrairMetadados = require('utils/extrair-metadados');
-var importarXml = require('xml/importar-v3');
+var importarXml = require('xml/importar');
 var exportarXml = require('xml/exportar');
 
 function postarServico(nome, xml, metadados) {
@@ -12,7 +12,7 @@ function postarServico(nome, xml, metadados) {
   return m.request({
 
     method: 'POST',
-    url: '/editar/v3/servico/' + id,
+    url: '/editar/api/pagina/servico/' + id,
     data: xml,
     background: true,
 

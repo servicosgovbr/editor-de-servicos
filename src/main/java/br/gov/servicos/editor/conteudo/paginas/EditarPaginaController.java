@@ -28,10 +28,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class EditarPaginaController {
 
-    private PaginaVersionadaFactory factory;
+    private ConteudoVersionadoFactory factory;
 
     @Autowired
-    public EditarPaginaController(PaginaVersionadaFactory factory) {
+    public EditarPaginaController(ConteudoVersionadoFactory factory) {
         this.factory = factory;
     }
 
@@ -41,7 +41,7 @@ public class EditarPaginaController {
             @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
             HttpServletResponse response) throws FileNotFoundException {
-        return editar(factory.pagina(id, TipoPagina.fromNome(tipo)), response);
+        return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
     }
 
     @ResponseBody

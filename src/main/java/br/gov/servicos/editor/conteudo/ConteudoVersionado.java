@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo;
 
+import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.git.Revisao;
@@ -22,6 +23,7 @@ import javax.xml.transform.dom.DOMSource;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
@@ -39,6 +41,9 @@ public abstract class ConteudoVersionado<T> {
     @Getter(PROTECTED)
     RepositorioGit repositorio;
 
+    @Getter
+    TipoPagina tipo;
+
     LeitorDeArquivos leitorDeArquivos;
 
     EscritorDeArquivos escritorDeArquivos;
@@ -47,8 +52,9 @@ public abstract class ConteudoVersionado<T> {
 
     ReformatadorXml reformatadorXml;
 
-    public ConteudoVersionado(RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+    public ConteudoVersionado(RepositorioGit repositorio, TipoPagina tipo, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
         this.repositorio = repositorio;
+        this.tipo = tipo;
         this.leitorDeArquivos = leitorDeArquivos;
         this.escritorDeArquivos = escritorDeArquivos;
         this.slugify = slugify;
@@ -57,12 +63,14 @@ public abstract class ConteudoVersionado<T> {
 
     public abstract String getId();
 
-    public abstract Path getCaminho();
+    public Path getCaminho() {
+        return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
+    }
 
     public abstract T getConteudo();
 
     public String getBranchRef() {
-        return R_HEADS + getId();
+        return R_HEADS + tipo.prefixo() + getId();
     }
 
     private String getBranchMasterRef() {
@@ -83,6 +91,22 @@ public abstract class ConteudoVersionado<T> {
 
     protected Optional<Revisao> getRevisaoMaisRecenteDoBranch() {
         return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
+    }
+
+
+    public boolean existe() {
+        return existeNoMaster() || existeNoBranch();
+    }
+
+    private boolean existeNoMaster() {
+        return repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(),
+                () -> getCaminhoAbsoluto().toFile().exists());
+    }
+
+    private boolean existeNoBranch() {
+        return repositorio.existeBranch(getId())
+                && repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
+                () -> getCaminhoAbsoluto().toFile().exists());
     }
 
     @Cacheable
@@ -168,7 +192,7 @@ public abstract class ConteudoVersionado<T> {
             repositorio.pull();
             return leitorDeArquivos.ler(getCaminhoAbsoluto().toFile());
         }).orElseThrow(
-                () -> new FileNotFoundException("Não foi possível encontrar o serviço referente ao arquivo '" + getId() + "'")
+                () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + "'")
         );
     }
 

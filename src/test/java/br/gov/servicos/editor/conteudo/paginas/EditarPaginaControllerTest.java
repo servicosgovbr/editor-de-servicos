@@ -38,7 +38,7 @@ public class EditarPaginaControllerTest {
     PaginaVersionada pagina;
 
     @Mock
-    PaginaVersionadaFactory factory;
+    ConteudoVersionadoFactory factory;
 
     EditarPaginaController controller;
 
