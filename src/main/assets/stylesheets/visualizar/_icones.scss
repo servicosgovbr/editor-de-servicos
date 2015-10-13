@@ -1,0 +1,72 @@
+@import '../font-awesome/font-awesome';
+
+#visualizar {
+  .icone {
+    @extend .fa;
+  }
+
+  .icone-grande {
+    @extend .fa;
+    @extend .fa-2x;
+  }
+
+  .empreendedorismo-e-negocios {
+    @extend .fa-pie-chart;
+  }
+
+  .aposentadoria {
+    @extend .fa-user;
+  }
+
+  .cuidados-com-a-saude {
+    @extend .fa-user-md;
+  }
+
+  .documentos-e-certidoes {
+    @extend .fa-file-text-o;
+  }
+
+  .estudos {
+    @extend .fa-graduation-cap;
+  }
+
+  .exportacao-de-produtos-e-servicos {
+    @extend .fa-ship;
+  }
+
+  .importacao-de-produtos-e-servicos {
+    @extend .fa-ship;
+  }
+
+  .veiculos {
+    @extend .fa-car;
+  }
+
+  .apoio-financeiro-e-credito {
+    @extend .fa-usd;
+  }
+
+  .contas-e-impostos {
+    @extend .fa-usd;
+  }
+
+  .imoveis {
+    @extend .fa-home;
+  }
+
+  .familia {
+    @extend .fa-child;
+  }
+
+  .profissao-e-trabalho {
+    @extend .fa-briefcase;
+  }
+
+  .viagem-ao-exterior {
+    @extend .fa-plane;
+  }
+
+  .estrangeiros-no-brasil {
+    @extend .fa-plane;
+  }
+}

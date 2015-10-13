@@ -1,0 +1,169 @@
+@import 'cores';
+
+#visualizar {
+  body.contraste {
+    background: $preto !important;
+    color: $branco !important;
+
+    #header, #main, .outstanding-header .outstanding-title {
+      background: $preto !important;
+      color: $branco !important;
+    }
+
+    #rodape {
+      background: #555;
+    }
+
+    #header {
+      #sobre {
+        background: #333;
+      }
+
+      #sobre li {
+        border-right-color: $branco;
+      }
+
+      #barra-opiniao {
+        background-color: #555;
+      }
+    }
+
+    .busca-principal {
+
+      > form {
+        background-color: #444;
+
+        > input[type='submit'] {
+          background-color: $preto;
+          border: 1px solid $branco;
+        }
+      }
+    }
+
+    a, p, h4, .paginacao-busca, a.markdown, .titulo-home, li, .nav-tree dt h1, h2, h3, #capacho dt, .nav-tree > dd a span, #migalhas-de-pao a,
+    #migalhas-de-pao span, #conteudo a:hover, #conteudo span, .tile-subtitle, .tile p, .tile a,
+    #portal-siteactions a, #portal-siteactions a:hover, #logo #portal-logo,
+    #logo #portal-title, #portal-description, .outstanding-header .outstanding-link, #conteudo .outstanding-header .outstanding-link:hover,
+    .lista-vertical .tile-header span, .cover-collection-tile .tile-header span {
+      color: $branco !important;
+    }
+
+    #conteudo a.acao, #conteudo a.acao-servico {
+      background-color: $branco;
+      color: $preto !important;
+
+      .fa {
+        color: #555;
+      }
+    }
+
+    .feedback-servico, .etapas .circle {
+      background-color: #555;
+
+      input.acao {
+        background-color: $branco !important;
+        color: $preto !important;
+      }
+    }
+
+    .paginacao-letras {
+      a, .paginacao-busca {
+        color: $preto !important;
+      }
+    }
+
+    #acessibilidade span {
+      color: $preto !important;
+    }
+
+    #conteudo .subtitulo-etapa {
+      background-color: $preto !important;
+      color: $branco !important;
+    }
+
+    .nav-tree dt {
+      color: $branco;
+      background: $preto;
+
+      .fa {
+        color: $branco;
+      }
+    }
+
+    *.acao {
+      background-color: $preto;
+      border-color: $branco;
+    }
+
+    #rodape {
+      #capacho .doormatColumn {
+        border-color: $branco !important;
+        background: $preto !important;
+        color: $branco !important;
+      }
+
+      #capacho dl {
+        border-left: 1px dotted $branco;
+      }
+
+      #footer-brasil {
+        background: #333;
+        color: $branco !important;
+      }
+    }
+
+    #portal-siteactions {
+      border-bottom: 1px dotted $branco;
+    }
+
+    .outstanding-header .outstanding-link {
+      background: url('/img/seta_branca.png') no-repeat scroll right 5px transparent;
+    }
+
+    #portal-searchbox {
+      border-color: $branco;
+      background-color: $preto;
+
+      .searchField {
+        background-color: $branco;
+        color: black !important;
+      }
+    }
+
+    .outstanding-header .outstanding-title {
+      border-top: 2px solid $branco;
+      border-bottom: 1px solid $branco;
+    }
+
+    .outstanding-header {
+      background: $preto;
+    }
+
+    #barra-brasil .link-barra {
+      color: $cinza-escuro !important;
+    }
+
+    .lista-vertical {
+      border: 1px solid $branco;
+      background: $preto !important;
+    }
+
+    .destaque .area-de-interesse {
+      background: none;
+    }
+
+  }
+
+  #barra-brasil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: content-box;
+  }
+
+  #header {
+    position: relative;
+    margin-top: 33px;
+  }
+}

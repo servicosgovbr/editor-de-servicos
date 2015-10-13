@@ -1,27 +1,22 @@
-
-$baseFontSize: em(16);
-
-$openSansLight: "open_sanslight";
-$openSansRegular: "open_sansregular";
-$openSansSemiBold: "open_sanssemibold";
-$openSansBold: "open_sansbold";
-$openSansExtraBold: "open_sansextrabold";
-
-$baseLineHeight: 1.4em;
-$h2LineHeight: 1.2em;
-
-$helvetica: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-
-$azul-claro: #2c66ce;
-$azul-escuro: #1f4da3;
-$branco: #ffffff;
-$preto: #000000;
-$cinza-claro: #f0f2f1;
-$cinza-medio: #d5d5d5;
-$cinza-escuro: #606060;
-
+@import '../bourbon/bourbon';
+@import '../neat/neat';
+@import 'typography';
+@import 'base';
+@import 'icones';
+@import 'grid';
+@import 'acessibilidade';
 
 #visualizar {
+
+  #conteudo {
+    margin-top: 5em;
+    top: $tamanho-do-cabecalho;
+  }
+
+  h2 {
+    text-transform: none;
+  }
+
   #conteudo, .conteudo {
     @include span-columns(9);
     @include omega();

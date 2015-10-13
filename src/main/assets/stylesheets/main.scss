@@ -1,12 +1,13 @@
 @charset "UTF-8";
 
 @import 'bourbon/bourbon';
+@import 'editor/typography';
 @import 'base/base';
 @import 'neat/neat';
 @import 'neat/settings/grid';
 @import 'font-awesome/font-awesome';
 @import 'editor/index';
-@import 'editor/visualizar-servico';
+@import 'visualizar/main';
 
 body {
   padding: 0;
