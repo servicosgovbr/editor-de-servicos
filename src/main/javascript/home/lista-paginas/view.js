@@ -2,6 +2,52 @@
 
 var referencia = require('referencia');
 
+function isServico(p) {
+  return p.conteudo.tipo === 'servico';
+}
+
+function excluirView(ctrl, pagina) {
+  if (!isServico(pagina)) {
+    return '';
+  }
+
+  if (pagina.excluindo && pagina.excluindo()) {
+    return m('i.fa.fa-spin.fa-spinner');
+  }
+
+  return m('button.remover', {
+    title: 'Remover este conteúdo',
+    onclick: _.bind(ctrl.excluirConteudo, ctrl, pagina.id, pagina.conteudo.tipo, pagina)
+  }, m('i.fa.fa-trash-o'));
+
+}
+
+function visualizarView(ctrl, pagina) {
+  if (!isServico(pagina)) {
+    return '';
+  }
+  return m('a.visualizar', {
+    href: '/editar/visualizar/' + pagina.conteudo.tipo + '/' + pagina.id,
+    target: '_blank',
+    title: 'Visualizar este conteúdo'
+  }, m('i.fa.fa-eye'));
+}
+
+function publicarView(ctrl, pagina) {
+  if (!isServico(pagina)) {
+    return '';
+  }
+
+  if (!pagina.temAlteracoesNaoPublicadas) {
+    return '';
+  }
+
+  return m('button.publicar', {
+    onclick: _.bind(ctrl.publicarConteudo, ctrl, pagina.id),
+    title: 'Publicar alterações deste conteúdo'
+  }, m('i.fa.fa-paper-plane'));
+}
+
 module.exports = function (ctrl, args) {
 
   var filtro = args.filtro;
@@ -23,48 +69,39 @@ module.exports = function (ctrl, args) {
      ])
     ].concat(paginas.map(function (s) {
 
+
+
     return m('tr', [
 
-       m('td', m('a', {
+      m('td', m('a', {
         href: '/editar/' + s.conteudo.tipo + '/' + s.id
       }, [
-         m('span.fa', {
+        m('span.fa', {
           class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
         }),
-         m.trust(' &nbsp; '),
-         s.conteudo.nome
-       ])),
-       m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
-       m('td.center', s.publicado ? [
-         moment(s.publicado.horario).fromNow(),
-         ', por ',
-         s.publicado.autor.split('@')[0]
-       ] : '—'),
+        m.trust(' &nbsp; '),
+        s.conteudo.nome
+      ])),
+      m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
+      m('td.center', s.publicado ? [
+        moment(s.publicado.horario).fromNow(),
+        ', por ',
+        s.publicado.autor.split('@')[0]
+      ] : '—'),
 
-       m('td.center', s.editado ? [
-         moment(s.editado.horario).fromNow(),
-         ', por ',
-         s.editado.autor.split('@')[0]
-       ] : '—'),
+      m('td.center', s.editado ? [
+        moment(s.editado.horario).fromNow(),
+        ', por ',
+        s.editado.autor.split('@')[0]
+      ] : '—'),
 
-       m('td.right', [
+      m('td.right', [
+        publicarView(ctrl, s),
+        visualizarView(ctrl, s),
+        excluirView(ctrl, s),
+      ])
 
-         s.temAlteracoesNaoPublicadas ? m('button.publicar', {
-          onclick: _.bind(ctrl.publicarConteudo, ctrl, s.id),
-          title: 'Publicar alterações deste conteúdo'
-        }, m('i.fa.fa-paper-plane')) : null,
+    ]);
 
-         m('a.visualizar', {
-          href: '/editar/visualizar/servico/' + s.id,
-          target: '_blank',
-          title: 'Visualizar este conteúdo'
-        }, m('i.fa.fa-eye')),
-           s.excluindo && s.excluindo() ? m('i.fa.fa-spin.fa-spinner') :
-             m('button.remover', {
-          title: 'Remover este conteúdo',
-          onclick: _.bind(ctrl.excluirConteudo, ctrl, s.id, s.conteudo.tipo, s)
-        }, m('i.fa.fa-trash-o')),
-       ])
-     ]);
   })));
 };
