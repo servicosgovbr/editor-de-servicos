@@ -2,32 +2,13 @@
 
 module.exports = {
 
-  controller: function (args) {
-
-    var config = _.merge({
-      salvar: _.noop,
-      publicar: _.noop,
-      visualizar: _.noop,
-      cabecalho: {}
-    }, args);
-
-    this.salvar = config.salvar;
-    this.publicar = config.publicar;
-    this.visualizar = config.visualizar;
-    this.cabecalho = config.cabecalho;
-  },
-
   view: function (ctrl, args) {
-
     function metadados() {
       if (!args.metadados) {
         return m('');
       }
-      return m.component(require('cabecalho/metadados'), {
-        salvar: _.bind(ctrl.salvar, ctrl),
-        publicar: _.bind(ctrl.publicar, ctrl),
-        visualizar: _.bind(ctrl.visualizar, ctrl)
-      });
+
+      return m.component(require('cabecalho/metadados'), args);
     }
 
     function logout() {

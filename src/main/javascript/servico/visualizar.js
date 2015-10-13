@@ -13,7 +13,7 @@ module.exports = {
 
   view: function (ctrl, args) {
     var servico = limparModelo(ctrl.servico());
-      window.console.log(servico.nome());
+    window.console.log(servico.nome());
     return m('#conteudo', [
                 m('span.cabecalho-cor'),
                 m('#wrapper', [
