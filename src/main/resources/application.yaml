@@ -29,7 +29,7 @@ flags:
 
 eds:
   cartas:
-    repositorio: "https://github.com/servicosgovbr/cartas-de-servico.git"
+    repositorio: "https://github.com/servicosgovbr/cartas-de-teste.git"
 
 google:
   client:
