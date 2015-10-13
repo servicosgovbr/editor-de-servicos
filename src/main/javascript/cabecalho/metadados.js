@@ -31,7 +31,7 @@ module.exports = {
       if (!config.publicar()) {
         alertify.error('Serviço ainda contém erros.');
       } else {
-        alertify.success('Serviço está pronto!');
+        alertify.success('Serviço publicado com sucesso!');
       }
     };
 
