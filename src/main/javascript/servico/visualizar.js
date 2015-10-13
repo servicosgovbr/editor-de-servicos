@@ -29,7 +29,8 @@ module.exports = {
                         m('.row', m.component(require('servico/visualizar/tempo'), servico)),
                         m('.row', m.component(require('servico/visualizar/legislacao'), servico)),
                         m('.row', m.component(require('servico/visualizar/outras-info'), servico)),
-                        m('.row', m.component(require('servico/visualizar/feedback')))
+                        m('.row', m.component(require('servico/visualizar/feedback'))),
+                        m('.row', m.component(require('servico/visualizar/rodape')))
                     ])))
                 ])
         ]);
