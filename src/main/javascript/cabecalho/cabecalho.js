@@ -7,6 +7,7 @@ module.exports = {
     var config = _.merge({
       salvar: _.noop,
       publicar: _.noop,
+      visualizar: _.noop,
       cabecalho: {}
     }, args);
 

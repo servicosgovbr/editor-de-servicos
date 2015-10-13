@@ -41,7 +41,7 @@ public class EditarPaginaController {
             @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
             HttpServletResponse response) throws FileNotFoundException {
-        return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
+            return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
     }
 
     @ResponseBody
@@ -65,9 +65,18 @@ public class EditarPaginaController {
             response.setHeader("X-Git-Horario-Editado", valueOf(r.getHorario().getTime()));
         });
 
-        Pagina pagina = carregarConteudoPagina(paginaVersionada);
+        return converterParaJson(conteudoCompleto(paginaVersionada));
+    }
 
-        return converterParaJson(pagina);
+    private Pagina conteudoCompleto(PaginaVersionada paginaVersionada) throws FileNotFoundException {
+        String[] linhas = paginaVersionada.getConteudoRaw().split("\n");
+
+        int posicaoCabecalhoConteudo = linhas.length > 2 ? 3 : linhas.length;
+
+        return new Pagina()
+                .withTipo(paginaVersionada.getTipo().getNome())
+                .withNome(linhas[0])
+                .withConteudo(join("\n", Arrays.copyOfRange(linhas, posicaoCabecalhoConteudo, linhas.length)));
     }
 
     @SneakyThrows
@@ -76,17 +85,4 @@ public class EditarPaginaController {
         return ow.writeValueAsString(pagina);
     }
 
-    private Pagina carregarConteudoPagina(PaginaVersionada paginaVersionada) throws FileNotFoundException {
-        String[] linhas = paginaVersionada.getConteudoRaw().split("\n");
-        int posicaoCabecalhoConteudo = linhas.length > 2 ? 3 : linhas.length;
-
-        Pagina pagina = paginaVersionada
-                .getMetadados()
-                .getConteudo()
-                .withTipo(paginaVersionada.getTipo().getNome());
-
-        pagina.setConteudo(join("\n", Arrays.copyOfRange(linhas, posicaoCabecalhoConteudo, linhas.length)));
-
-        return pagina;
-    }
 }

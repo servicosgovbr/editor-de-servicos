@@ -8,11 +8,9 @@ module.exports = function (config) {
   this.id = id('pagina');
   this.tipo = v.prop(data.tipo || '', v.obrigatorio);
   this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto);
-  this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(1500));
+  this.conteudo = m.prop(data.conteudo || '');
 
   this.tamanhoConteudo = _.bind(function (tamanho) {
-    var backup = this.conteudo();
-    this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(tamanho));
-    this.conteudo(backup);
+    this.conteudo = v.prop(this.conteudo(), v.obrigatorio, v.maximo(tamanho));
   }, this);
 };

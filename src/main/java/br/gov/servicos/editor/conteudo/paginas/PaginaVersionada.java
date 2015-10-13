@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static com.google.common.io.Files.readFirstLine;
@@ -33,7 +31,7 @@ public class PaginaVersionada extends ConteudoVersionado<Pagina> {
         this.id = id;
     }
 
-    public Pagina getConteudo() {
+    protected Pagina getMetadadosConteudo() {
         File arquivo = getCaminhoAbsoluto().toFile();
         try {
             return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),

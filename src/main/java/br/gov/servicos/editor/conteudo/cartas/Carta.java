@@ -47,7 +47,7 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
         return getTipo().getCaminhoPasta().resolve(id + ".xml");
     }
 
-    public Servico getConteudo() {
+    public Servico getMetadadosConteudo() {
         File arquivo = getCaminhoAbsoluto().toFile();
         try {
             return getRepositorio().comRepositorioAbertoNoBranch(getBranchRef(),

@@ -67,7 +67,7 @@ public abstract class ConteudoVersionado<T> {
         return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
     }
 
-    public abstract T getConteudo();
+    protected abstract T getMetadadosConteudo();
 
     public String getBranchRef() {
         return R_HEADS + tipo.prefixo() + getId();
@@ -115,7 +115,7 @@ public abstract class ConteudoVersionado<T> {
                 .withId(getId())
                 .withPublicado(getRevisaoMaisRecenteDoArquivo().orElse(null))
                 .withEditado(getRevisaoMaisRecenteDoBranch().orElse(null))
-                .withConteudo(getConteudo());
+                .withConteudo(getMetadadosConteudo());
     }
 
     @CacheEvict

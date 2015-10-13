@@ -5,11 +5,10 @@ var EditorPagina = require('pagina/editor');
 
 module.exports = {
   view: function () {
-
     return m.component(EditorPagina, {
       tipo: 'pagina-especial',
       tituloNome: 'Nome da página especial',
-      componenteNome: require('especial/componentes/nome'),
+      componenteNome: require('pagina-especial/componentes/nome'),
       tamanhoConteudo: 10000,
 
       tooltips: {
