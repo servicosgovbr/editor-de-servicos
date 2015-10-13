@@ -1,5 +1,7 @@
 package br.gov.servicos.editor.fixtures;
 
+import br.gov.servicos.editor.conteudo.paginas.FormatadorConteudoPagina;
+import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import lombok.experimental.FieldDefaults;
@@ -19,11 +21,14 @@ import static lombok.AccessLevel.PRIVATE;
 public class RepositorioCartasBuilder {
 
     Path localRepositorio;
+
     Map<Path, String> paginas;
+    FormatadorConteudoPagina formatadorPagina;
 
     public RepositorioCartasBuilder(Path localRepositorio) {
         this.localRepositorio = localRepositorio;
         paginas = new HashMap<>();
+        formatadorPagina = new FormatadorConteudoPagina();
     }
 
     public RepositorioCartasBuilder touchCarta(String id) {
@@ -42,6 +47,10 @@ public class RepositorioCartasBuilder {
         return pagina(ORGAO, id, conteudo);
     }
 
+    public RepositorioCartasBuilder orgao(String id, Pagina conteudo) {
+        return pagina(ORGAO, id, conteudo);
+    }
+
     public RepositorioCartasBuilder touchAreaDeInteresse(String id) {
         return areaDeInteresse(id, "");
     }
@@ -50,11 +59,19 @@ public class RepositorioCartasBuilder {
         return pagina(AREA_DE_INTERESSE, id, conteudo);
     }
 
+    public RepositorioCartasBuilder areaDeInteresse(String id, Pagina conteudo) {
+        return pagina(AREA_DE_INTERESSE, id, conteudo);
+    }
+
     public RepositorioCartasBuilder touchPaginaEspecial(String id) {
         return paginaEspecial(id, "");
     }
 
     public RepositorioCartasBuilder paginaEspecial(String id, String conteudo) {
+        return pagina(PAGINA_ESPECIAL, id, conteudo);
+    }
+
+    public RepositorioCartasBuilder paginaEspecial(String id, Pagina conteudo) {
         return pagina(PAGINA_ESPECIAL, id, conteudo);
     }
 
@@ -88,6 +105,10 @@ public class RepositorioCartasBuilder {
                 .forEach(entry -> escritor.escrever(this.localRepositorio.resolve(entry.getKey()), entry.getValue()));
 
         return true;
+    }
+
+    private RepositorioCartasBuilder pagina(TipoPagina tipo, String id, Pagina conteudo) {
+        return pagina(tipo, id, formatadorPagina.formatar(conteudo.withTipo(tipo.getNome())));
     }
 
     private RepositorioCartasBuilder pagina(TipoPagina tipo, String id, String conteudo) {

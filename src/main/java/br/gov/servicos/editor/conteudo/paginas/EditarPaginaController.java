@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
 
+import br.gov.servicos.editor.conteudo.cartas.ConteudoInexistenteException;
 import br.gov.servicos.editor.git.Metadados;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -40,7 +41,7 @@ public class EditarPaginaController {
     public String editar(
             @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
-            HttpServletResponse response) throws FileNotFoundException {
+            HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
             return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
     }
 
@@ -50,7 +51,11 @@ public class EditarPaginaController {
         return new Pagina().withTipo(TipoPagina.fromNome(tipo).getNome());
     }
 
-    private String editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException {
+    private String editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
+        if (!paginaVersionada.existe()) {
+            throw new ConteudoInexistenteException(paginaVersionada);
+        }
+
         Metadados<Pagina> metadados = paginaVersionada.getMetadados();
 
         ofNullable(metadados.getPublicado()).ifPresent(r -> {

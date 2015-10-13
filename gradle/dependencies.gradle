@@ -34,7 +34,7 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile 'org.springframework.security:spring-security-test:4.0.2.RELEASE'
+    testCompile 'com.jayway.jsonpath:json-path:2.0.0'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 

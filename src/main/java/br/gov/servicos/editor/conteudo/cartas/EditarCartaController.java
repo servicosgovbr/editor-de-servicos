@@ -67,11 +67,4 @@ class EditarCartaController {
         return "<servico/>";
     }
 
-    @ExceptionHandler(ConteudoInexistenteException.class)
-    @ResponseStatus(NOT_FOUND)
-    @ResponseBody
-    public String conteudoInexistente(ConteudoInexistenteException e) {
-        return e.getMessage();
-    }
-
 }
