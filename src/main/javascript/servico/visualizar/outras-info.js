@@ -52,9 +52,7 @@ module.exports = {
             m('.row', m('p.separacao-orgao', [
                 'Este é um serviço ',
                 ctrl.ehFeminino() ? 'da ' : 'do ',
-                m('a', {
-          href: ctrl.servico.orgao().nome()
-        }, ctrl.nomeOrgao()),
+                m('a', ctrl.nomeOrgao()),
                 '. Em caso de dúvidas, reclamações ou sugestões favor contactá-',
                 ctrl.ehFeminino() ? 'la.' : 'lo.'
             ])),
