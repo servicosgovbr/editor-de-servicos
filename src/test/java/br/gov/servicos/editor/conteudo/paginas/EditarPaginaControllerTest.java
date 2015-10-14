@@ -47,6 +47,9 @@ public class EditarPaginaControllerTest {
         given(factory.pagina(anyString(), any()))
                 .willReturn(pagina);
 
+        given(pagina.existe())
+                .willReturn(true);
+
         given(pagina.getTipo())
                 .willReturn(ORGAO);
 
@@ -86,15 +89,6 @@ public class EditarPaginaControllerTest {
 
         String conteudo = controller.editar("orgao", "ministerio-conteudo", new MockHttpServletResponse());
         assertThat(conteudo, is("{\n  \"tipo\" : \"orgao\",\n  \"nome\" : \"Ministério\",\n  \"conteudo\" : \"Conteúdo\"\n}"));
-    }
-
-    @Test(expected = FileNotFoundException.class)
-    public void retorna404QuandoArquivoNaoEncontrado() throws Exception {
-        given(pagina.getMetadados())
-                .willReturn(METADADOS);
-        given(pagina.getConteudoRaw())
-                .willThrow(new FileNotFoundException());
-        controller.editar("orgao", "", new MockHttpServletResponse());
     }
 
 }
