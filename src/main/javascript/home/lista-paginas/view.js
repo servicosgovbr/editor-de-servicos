@@ -28,7 +28,6 @@ function visualizarView(ctrl, pagina) {
   }
   return m('a.visualizar', {
     href: '/editar/visualizar/' + pagina.conteudo.tipo + '/' + pagina.id,
-    target: '_blank',
     title: 'Visualizar este conteúdo'
   }, m('i.fa.fa-eye'));
 }
