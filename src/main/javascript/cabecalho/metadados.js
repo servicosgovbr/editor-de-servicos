@@ -6,7 +6,8 @@ module.exports = {
     var config = _.merge({
       salvar: _.noop,
       publicar: _.noop,
-      visualizar: _.noop
+      visualizar: _.noop,
+      editar: _.noop,
     }, args);
 
     alertify.set({
@@ -37,6 +38,10 @@ module.exports = {
 
     this.visualizar = function () {
       config.visualizar();
+    };
+
+    this.editar = function () {
+      config.editar();
     };
 
     this.config = config;
@@ -78,11 +83,22 @@ module.exports = {
       ]);
     }
 
+    var editarView = '';
+    if (ctrl.config.editar !== _.noop) {
+      editarView = m('button#editar', {
+        onclick: _.bind(ctrl.editar, ctrl)
+      }, [
+              m('i.fa.fa-pencil'),
+              m.trust('&nbsp; Editar')
+          ]);
+    }
+
     return m('#metadados', [
       m.component(require('componentes/status-conexao')),
       salvarView,
       visualizarView,
       publicarView,
+      editarView,
     ]);
   }
 

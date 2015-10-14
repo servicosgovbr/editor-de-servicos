@@ -38,7 +38,7 @@ header {
     margin-right: -1px;
     line-height: 2.25em;
 
-    #salvar, #publicar, #visualizar {
+    #salvar, #publicar, #visualizar, #editar {
       float: right;
       margin-top: em(2);
       color: $branco;
@@ -68,7 +68,7 @@ header {
         }
       }
 
-      #salvar {
+      #salvar, #editar {
         margin-right: 30px;
       }
   }

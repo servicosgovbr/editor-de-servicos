@@ -3,12 +3,19 @@
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var carregarServico = require('xml/carregar');
 var limparModelo = require('limpar-modelo');
+var slugify = require('slugify');
 
 module.exports = {
 
   controller: function (args) {
     this.cabecalho = new CabecalhoModel();
     this.servico = carregarServico(m.route.param('id'), this.cabecalho);
+
+    this.editar = function () {
+      var id = slugify(this.servico().nome());
+      m.route('/editar/servico/' + id);
+      return true;
+    };
   },
 
   view: function (ctrl, args) {
@@ -17,8 +24,9 @@ module.exports = {
                 m('span.cabecalho-cor'),
                 m('#wrapper', [
                 m.component(require('cabecalho/cabecalho'), {
-          metadados: false,
+          metadados: true,
           logout: true,
+          editar: _.bind(ctrl.editar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
                     m('#visualizar', m('#main', m('section#conteudo', [m('.row', m('h2', servico.nome() + (servico.sigla() ? ' (' + servico.sigla() + ')' : ''))),
