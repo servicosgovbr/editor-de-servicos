@@ -1,7 +1,6 @@
 'use strict';
 
 var CabecalhoModel = require('cabecalho/cabecalho-model');
-var carregarServico = require('xml/carregar');
 var limparModelo = require('limpar-modelo');
 var slugify = require('slugify');
 var service = require('servico/service');
@@ -11,7 +10,7 @@ module.exports = {
 
   controller: function (args) {
     this.cabecalho = new CabecalhoModel();
-    this.servico = _.isNull(service.servico()) ? carregarServico(m.route.param('id'), this.cabecalho) : service.servico();
+    this.servico = service.recuperarServico(this.cabecalho);
 
     this.editar = function () {
       var id = slugify(this.servico().nome());
