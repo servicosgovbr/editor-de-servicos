@@ -24,6 +24,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Profile("teste")
 public class RepositorioConfigParaTeste {
     Path origin;
+
+    @Getter
     Path localCloneRepositorio;
 
     @SneakyThrows

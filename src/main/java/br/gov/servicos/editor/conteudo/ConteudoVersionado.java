@@ -162,13 +162,14 @@ public abstract class ConteudoVersionado<T> {
     @CacheEvict
     public void renomear(UserProfile profile, String novoNome) {
         String novoId = slugify.slugify(novoNome);
+        String novoBranch = tipo.prefixo() + novoId;
 
         repositorio.comRepositorioAbertoNoBranch(getBranchRef(), uncheckedSupplier(() -> {
             repositorio.pull();
             alterarConteudo(profile, novoNome, getBranchRef());
             if (!getId().equals(novoId)) {
-                repositorio.moveBranchPara(novoId);
-                renomearConteudo(profile, novoId, novoId);
+                repositorio.moveBranchPara(novoBranch);
+                renomearConteudo(profile, novoId, novoBranch);
                 repositorio.deleteRemoteBranch(getBranchRef());
             }
             return null;

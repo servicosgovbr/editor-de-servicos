@@ -75,15 +75,19 @@ public class RepositorioCartasBuilder {
         return pagina(PAGINA_ESPECIAL, id, conteudo);
     }
 
-    public boolean build() {
+    public boolean buildSemGit() {
         return criarEstruturaRepositorioCartas()
-                && criarPaginas() && commitPush();
+                && criarPaginas();
+    }
+
+    public boolean build() {
+        return buildSemGit() && commitPush();
     }
 
     private boolean commitPush() {
         try {
             Git git = Git.open(this.localRepositorio.toFile());
-            git.add().addFilepattern("**/*").call();
+            git.add().addFilepattern(".").call();
             git.commit()
                     .setAuthor("Teste", "teste.automatizado@gmail.com")
                     .setMessage("setup de testes")

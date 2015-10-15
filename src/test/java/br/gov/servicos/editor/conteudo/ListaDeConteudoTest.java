@@ -5,6 +5,8 @@ import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
+import br.gov.servicos.editor.fixtures.RepositorioCartasBuilder;
+import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
@@ -17,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.guava.GuavaCache;
 import org.springframework.format.Formatter;
@@ -48,6 +51,8 @@ public class ListaDeConteudoTest {
     @Mock
     RepositorioGit repositorioGit;
 
+    public RepositorioConfigParaTeste repo = new RepositorioConfigParaTeste();
+
     @Mock
     ConteudoVersionadoFactory factory;
 
@@ -67,30 +72,21 @@ public class ListaDeConteudoTest {
 
     @Before
     public void setUp() throws Exception {
-        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, factory, cacheManager, true);
+        repo.reset();
 
-        Path dir = Files.createTempDirectory("listar-cartas-controller");
-        Path servicos = dir.resolve(SERVICO.getCaminhoPasta());
-        Path orgaos = dir.resolve(ORGAO.getCaminhoPasta());
-        Path areasInteresse = dir.resolve(AREA_DE_INTERESSE.getCaminhoPasta());
-        Path paginasEspeciais = dir.resolve(PAGINA_ESPECIAL.getCaminhoPasta());
+        new RepositorioCartasBuilder(repo.getLocalCloneRepositorio())
+                .touchCarta("id-qualquer")
+                .touchOrgao("outro-id-qualquer")
+                .touchAreaDeInteresse("area")
+                .touchPaginaEspecial("pg-especial")
+                .buildSemGit();
 
-        assertTrue(servicos.toFile().mkdirs());
-        assertTrue(orgaos.toFile().mkdirs());
-        assertTrue(areasInteresse.toFile().mkdirs());
-        assertTrue(paginasEspeciais.toFile().mkdirs());
-
-        Files.createFile(servicos.resolve("id-qualquer.xml"));
-        Files.createFile(orgaos.resolve("outro-id-qualquer.md"));
-        Files.createFile(areasInteresse.resolve("area.md"));
-        Files.createFile(paginasEspeciais.resolve("pg-especial.md"));
-
-        given(repositorioGit.getCaminhoAbsoluto()).willReturn(dir);
-
+        given(repositorioGit.getCaminhoAbsoluto()).willReturn(repo.getLocalCloneRepositorio());
         given(factory.pagina(anyString(), Matchers.any(TipoPagina.class)))
                 .willReturn(paginaVersionada);
-
         given(factory.pagina(anyString(), eq(SERVICO))).willReturn(carta);
+
+        listaDeConteudo = new ListaDeConteudo(importador, repositorioGit, factory, cacheManager, true);
     }
 
     @Test
