@@ -14,7 +14,7 @@ module.exports = {
 
   controller: function () {
     this.cabecalho = new CabecalhoModel();
-    this.servico = this.servico = _.isNull(service.servico()) ? carregarServico(m.route.param('id'), this.cabecalho) : service.servico();
+    this.servico = _.isNull(service.servico()) ? carregarServico(m.route.param('id'), this.cabecalho) : service.servico();
 
     this.salvar = function () {
       if (validacoes.valida(this.servico().nome)) {
