@@ -6,6 +6,7 @@ var salvarServico = require('xml/salvar');
 var carregarServico = require('xml/carregar');
 var validacoes = require('utils/validacoes');
 var limparModelo = require('limpar-modelo');
+var service = require('servico/service');
 
 var modificado = m.prop(false);
 
@@ -13,7 +14,7 @@ module.exports = {
 
   controller: function () {
     this.cabecalho = new CabecalhoModel();
-    this.servico = carregarServico(m.route.param('id'), this.cabecalho);
+    this.servico = this.servico = _.isNull(service.servico()) ? carregarServico(m.route.param('id'), this.cabecalho) : service.servico();
 
     this.salvar = function () {
       if (validacoes.valida(this.servico().nome)) {
@@ -50,6 +51,7 @@ module.exports = {
 
     this.visualizar = function () {
       var id = slugify(this.servico().nome());
+      service.servico(this.servico);
       m.route('/editar/visualizar/servico/' + id);
       return true;
     };
