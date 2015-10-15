@@ -5,7 +5,7 @@ var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var validacoes = require('utils/validacoes');
 var limparModelo = require('limpar-modelo');
-var service = require('servico/service');
+var servicoEmEdicao = require('servico/servico-em-edicao');
 
 var modificado = m.prop(false);
 
@@ -13,7 +13,7 @@ module.exports = {
 
   controller: function () {
     this.cabecalho = new CabecalhoModel();
-    this.servico = service.recuperarServico(this.cabecalho);
+    this.servico = servicoEmEdicao.recuperar(this.cabecalho);
 
     this.salvar = function () {
       if (validacoes.valida(this.servico().nome)) {
@@ -50,7 +50,7 @@ module.exports = {
 
     this.visualizar = function () {
       var id = slugify(this.servico().nome());
-      service.salvarServico(this.servico);
+      servicoEmEdicao.manter(this.servico);
       m.route('/editar/visualizar/servico/' + id);
       return true;
     };

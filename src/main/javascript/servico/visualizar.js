@@ -3,14 +3,14 @@
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var limparModelo = require('limpar-modelo');
 var slugify = require('slugify');
-var service = require('servico/service');
+var servicoEmEdicao = require('servico/servico-em-edicao');
 
 
 module.exports = {
 
   controller: function (args) {
     this.cabecalho = new CabecalhoModel();
-    this.servico = service.recuperarServico(this.cabecalho);
+    this.servico = servicoEmEdicao.recuperar(this.cabecalho);
 
     this.editar = function () {
       var id = slugify(this.servico().nome());
