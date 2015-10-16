@@ -29,7 +29,7 @@ module.exports = {
               oninput: m.withAttr('value', ctrl.filtro)
             }),
 
-              m('button.novo',
+              m('span.novo',
               m('a', {
                 href: '/editar/pagina/nova'
               }, [
@@ -37,10 +37,10 @@ module.exports = {
                 ])
               ),
 
-              m('button.novo',
-              m('a', {
-                href: '/editar/servico/novo'
-              }, [
+              m('span.novo',
+                m('a', {
+                  href: '/editar/servico/novo'
+                }, [
                   m.trust('Gerenciar permissões')
                 ])
               ),
