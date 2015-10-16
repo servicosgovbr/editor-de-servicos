@@ -19,7 +19,9 @@ class IndexController {
 
     @RequestMapping({
             "/editar",
+            "/editar/erro",
             "/editar/servico/**",
+            "/editar/pagina/**",
             "/editar/orgao/**",
             "/editar/pagina-especial/**",
             "/editar/area-de-interesse/**",
