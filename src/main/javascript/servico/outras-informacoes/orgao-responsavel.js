@@ -28,13 +28,14 @@ module.exports = {
           m.component(require('tooltips').contatoOrgao)
         ]),
 
-        m.component(require('componentes/editor-markdown'), {
-          rows: 3,
-          value: ctrl.servico().orgao().contato(),
-          onchange: m.withAttr('value', ctrl.servico().orgao().contato),
-          opcional: true,
-          erro: ctrl.servico().orgao().contato.erro()
-        })
+        m('div.input-container', {
+            class: ctrl.servico().orgao().contato.erro(),
+          }, 
+          m('input[type=text]', {
+            onchange: m.withAttr('value', ctrl.servico().orgao().contato),
+            value: ctrl.servico().orgao().contato()
+          })
+        )
       ])
     ]);
   }
