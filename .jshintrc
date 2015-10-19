@@ -11,6 +11,7 @@
       "jQuery",
       "describe",
       "it",
+      "xit",
       "spyOn",
       "expect",
       "jasmine",
