@@ -174,7 +174,7 @@ describe('validação >', function () {
 
       shouldNotExceed('contato', function () {
         return orgao.contato;
-      }, 500);
+      }, 150);
 
     });
 
