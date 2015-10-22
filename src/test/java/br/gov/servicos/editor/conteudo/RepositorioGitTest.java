@@ -90,19 +90,6 @@ public class RepositorioGitTest {
     }
 
     @Test
-    public void fluxoDePublicacao() throws Exception {
-        salvaAlteracao(repo1, "# Teste");
-        garanteQueAlteracaoFoiPara(upstream, "foo");
-
-        salvaAlteracao(repo2, "# Teste 2");
-        garanteQueAlteracaoFoiRecebidaPor(repo1, "# Teste 2");
-
-        salvaAlteracao(repo1, "# Teste");
-        publicaAlteracao(repo1);
-        garanteQueAlteracaoFoiPublicada(upstream);
-    }
-
-    @Test
     public void fluxoDeMoverBranch() throws Exception {
         moveBranch(repo1);
         garanteQueBranchFoiMovida(repo1);
@@ -155,13 +142,6 @@ public class RepositorioGitTest {
     @Test
     public void existeBranchQuandoApenasRemoto() throws Exception {
         salvaAlteracao(repo2, "Alteração");
-        assertTrue(repo1.existeBranch("foo"));
-    }
-
-    @Test
-    public void existeBranchAposPublicar() throws Exception {
-        salvaAlteracao(repo1, "adfasdf");
-        publicaAlteracao(repo1);
         assertTrue(repo1.existeBranch("foo"));
     }
 
@@ -254,15 +234,6 @@ public class RepositorioGitTest {
 
             return null;
         }));
-    }
-
-    private void publicaAlteracao(RepositorioGit r) {
-        r.comRepositorioAbertoNoBranch(R_HEADS + MASTER, () -> {
-            r.pull();
-            r.merge(R_HEADS + "foo");
-            r.push(R_HEADS + MASTER);
-            return null;
-        });
     }
 
     @SneakyThrows

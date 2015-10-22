@@ -16,13 +16,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,16 +46,16 @@ public class ListaDeConteudoIntegrationTest extends TestCase {
     @Autowired
     Importador importador;
 
-    MockMvc mvc;
+    MockMvcEditorAPI api;
 
     @Before
     public void setup() {
-        mvc = MockMvcFactory.semSprinSecurity(context);
+        api = MockMvcFactory.editorAPI(context);
         repo.reset();
         importador.importaRepositorioDeCartas();
 
         new RepositorioCartasBuilder(repoConfig.localRepositorioDeCartas.toPath())
-                .carta("testes","<servico><nome>testes</nome></servico>")
+                .carta("testes", "<servico><nome>testes</nome></servico>")
                 .build();
     }
 
@@ -70,7 +67,7 @@ public class ListaDeConteudoIntegrationTest extends TestCase {
     }
 
     public void listaDeveTerServico(String id, int size) throws Exception {
-        mvc.perform(get("/editar/api/conteudos"))
+        api.listar()
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(size)))
                 .andExpect(jsonPath("$[0].id").value(is(id)))
@@ -78,7 +75,7 @@ public class ListaDeConteudoIntegrationTest extends TestCase {
     }
 
     public void renomear(String de, String para) throws Exception {
-        mvc.perform(patch(String.format("/editar/api/pagina/servico/%s/%s", de, para)))
+        api.renomearCarta(de, para)
                 .andExpect(status().isOk());
     }
 

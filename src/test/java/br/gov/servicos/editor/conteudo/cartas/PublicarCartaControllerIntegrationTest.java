@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Main.class)
@@ -27,10 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest({
         "flags.importar=false",
         "flags.esquentar.cache=false",
+        "flags.git.push=true",
         "server.port:0"
 })
 @ActiveProfiles("teste")
-public class EditarCartaControllerIntegrationTest {
+public class PublicarCartaControllerIntegrationTest {
+
 
     @Autowired
     WebApplicationContext context;
@@ -44,7 +46,8 @@ public class EditarCartaControllerIntegrationTest {
     @Autowired
     Importador importador;
 
-    MockMvcEditorAPI api;
+    private MockMvcEditorAPI api;
+
 
     @Before
     public void setup() {
@@ -54,32 +57,45 @@ public class EditarCartaControllerIntegrationTest {
         importador.importaRepositorioDeCartas();
 
         new RepositorioCartasBuilder(repoConfig.localRepositorioDeCartas.toPath())
-                .carta("teste-a", "<servico><nome>Teste A</nome></servico>")
+                .carta("teste-a", "<servico><nome>Teste A</nome><sigla>TSTA</sigla></servico>")
                 .build();
     }
 
     @Test
-    public void editar() throws Exception {
-        api.editarCarta("teste-a")
-                .andExpect(status().isOk())
-                .andExpect(content().string("<servico><nome>Teste A</nome></servico>"));
-    }
-
-    @Test
-    public void editarNovo() throws Exception {
-        api.editarNovaCarta()
-                .andExpect(status().isOk())
-                .andExpect(content().string("<servico/>"));
-    }
-
-    @Test
-    public void editarServicoNaoExistenteDeveDeixarORepositorioEmEstadoLimpo() throws Exception {
-        api.editarCarta("servico-que-nao-existe")
-                .andExpect(status().isNotFound());
+    public void renomearAlterarPublicarNaoDeveDarConflitos() throws Exception {
 
         api.editarCarta("teste-a")
+                .andExpect(status().isOk());
+
+        api.salvarCarta("teste-a", "<servico><nome>Teste A</nome><sigla>TSTA</sigla><nomes-populares><item>C</item></nomes-populares></servico>")
+                .andExpect(status().is(302))
+                .andExpect(redirectedUrl("/editar/api/pagina/servico/teste-a"));
+
+        api.renomearCarta("teste-a", "teste-b")
+                .andExpect(status().isOk());
+
+        api.editarCarta("teste-b")
+                .andExpect(status().isOk());
+
+        api.salvarCarta("teste-b", "<servico><nome>Teste B</nome><sigla>TSTB</sigla><nomes-populares><item>A</item><item>B</item></nomes-populares></servico>")
+                .andExpect(status().is(302))
+                .andExpect(redirectedUrl("/editar/api/pagina/servico/teste-b"));
+
+        api.listar()
                 .andExpect(status().isOk())
-                .andExpect(content().string("<servico><nome>Teste A</nome></servico>"));
+                .andExpect(jsonPath("$[0].temAlteracoesNaoPublicadas").value(true));
+
+        api.publicarCarta("teste-b")
+                .andExpect(status().isOk());
+
+        api.listar()
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].temAlteracoesNaoPublicadas").value(false));
+
+        api.editarCarta("teste-b")
+                .andExpect(status().isOk())
+                .andExpect(content().xml("<servico><nome>Teste B</nome><sigla>TSTB</sigla><nomes-populares><item>A</item><item>B</item></nomes-populares></servico>"));
+
     }
 
 }

@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.fixtures.UserProfileConfigParaTeste;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +24,12 @@ public class PublicarCartaControllerTest {
 
     PublicarCartaController controller;
 
+    UserProfileConfigParaTeste userProfiles = new UserProfileConfigParaTeste();
+
+
     @Before
     public void setUp() throws Exception {
-        controller = new PublicarCartaController(factory);
+        controller = new PublicarCartaController(factory, userProfiles);
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
     }
@@ -33,7 +37,7 @@ public class PublicarCartaControllerTest {
     @Test
     public void publicaCartaExistente() throws Exception {
         controller.publicar("");
-        verify(carta).publicar();
+        verify(carta).publicar(userProfiles.get());
     }
 
 }

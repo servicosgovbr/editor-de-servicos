@@ -170,10 +170,12 @@ public class RepositorioGit {
         return comRepositorioAberto(uncheckedFunction(git -> {
             pull();
 
+            String idLimpo = id.replaceAll("^" + R_HEADS, "");
+
             List<Ref> branchesList = git.branchList().setListMode(ALL).call();
             Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
 
-            return branches.anyMatch(s -> s.equals(id));
+            return branches.anyMatch(s -> s.equals(idLimpo));
         }));
     }
 
@@ -329,13 +331,7 @@ public class RepositorioGit {
         }
     }
 
-    @SneakyThrows
-    public void merge(String branch) {
-        Repository repo = git.getRepository();
-        Ref ref = repo.getRef(branch);
-
-        MergeResult result = git.merge().include(ref).call();
-
+    private void mergeLog(MergeResult result) throws IOException {
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("git.branch", git.getRepository().getBranch()))
                 .and(append("merge.status", result.getMergeStatus().toString()))
@@ -343,11 +339,8 @@ public class RepositorioGit {
                 .and(append("merge.new-head", result.getNewHead().getName()))
                 .and(appendArray("merge.commits", Stream.of(result.getMergedCommits()).map(AnyObjectId::getName).toArray()))
                 .and(appendArray("merge.conflicts", result.getCheckoutConflicts() == null ? null : result.getCheckoutConflicts().toArray()));
-        log.info(marker, "git merge {}", git.getRepository().getBranch());
 
-        if (!result.getMergeStatus().isSuccessful()) {
-            throw new IllegalStateException("Não foi possível completar o git merge: " + result.getMergeStatus());
-        }
+        log.info(marker, "git merge {}", git.getRepository().getBranch());
     }
 
     @SneakyThrows

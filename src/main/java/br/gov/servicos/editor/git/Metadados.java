@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @Wither
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Metadados<T> implements Serializable {
+
     String id;
     Revisao publicado;
     Revisao editado;
@@ -22,6 +24,13 @@ public class Metadados<T> implements Serializable {
     T conteudo;
 
     public boolean getTemAlteracoesNaoPublicadas() {
-        return publicado != null && editado != null && editado.getHorario().after(publicado.getHorario());
+        if (editado == null) {
+            return false;
+        }
+        if (publicado == null) {
+            return true;
+        }
+        return !Objects.equals(editado.getHash(), publicado.getHash());
     }
+
 }

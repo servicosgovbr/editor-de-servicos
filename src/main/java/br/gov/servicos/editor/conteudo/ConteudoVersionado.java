@@ -104,7 +104,7 @@ public abstract class ConteudoVersionado<T> {
     }
 
     private boolean existeNoBranch() {
-        return repositorio.existeBranch(getId())
+        return repositorio.existeBranch(getBranchRef())
                 && repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
                 () -> getCaminhoAbsoluto().toFile().exists());
     }
@@ -147,13 +147,20 @@ public abstract class ConteudoVersionado<T> {
         return Files.exists(getCaminhoAbsoluto());
     }
 
+    @SneakyThrows
     @CacheEvict
-    public void publicar() {
-        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
-            repositorio.pull();
+    public void publicar(UserProfile profile) {
+        if (!existeNoBranch()) {
+            return;
+        }
 
-            repositorio.merge(getBranchRef());
-            repositorio.push(getBranchMasterRef());
+        String conteudo = getConteudoRaw();
+
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+            salvarConteudo(profile, getBranchMasterRef(), conteudo);
+
+            repositorio.deleteLocalBranch(getBranchRef());
+            repositorio.deleteRemoteBranch(getBranchRef());
 
             return null;
         });
@@ -207,8 +214,8 @@ public abstract class ConteudoVersionado<T> {
     }
 
 
-    private void salvarConteudo(UserProfile profile, String branch, String conteudo) {
-        String mensagem = format("%s '%s'", getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria", getId());
+    private void salvarConteudo(UserProfile profile, String branch, String conteudo, String mensagemBase) {
+        String mensagem = format("%s '%s'", mensagemBase, getId());
 
         repositorio.pull();
         escritorDeArquivos.escrever(getCaminhoAbsoluto(), conteudo);
@@ -216,6 +223,10 @@ public abstract class ConteudoVersionado<T> {
         repositorio.add(getCaminhoRelativo());
         repositorio.commit(getCaminhoRelativo(), mensagem, profile);
         repositorio.push(branch);
+    }
+
+    private void salvarConteudo(UserProfile profile, String branch, String conteudo) {
+        salvarConteudo(profile, branch, conteudo, getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria");
     }
 
 

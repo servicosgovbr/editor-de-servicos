@@ -53,7 +53,7 @@ public class EditarPaginaControllerIntegrationTest {
 
     @Before
     public void setup() {
-        mvc = MockMvcFactory.semSprinSecurity(context);
+        mvc = MockMvcFactory.get(context);
 
         repo.reset();
         importador.importaRepositorioDeCartas();

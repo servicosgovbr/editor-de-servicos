@@ -188,17 +188,4 @@ public class CartaTest {
         verify(repositorio).commit(caminho, "Cria 'um-id-qualquer'", PROFILE);
         verify(repositorio).push("refs/heads/servico-um-id-qualquer");
     }
-
-    @Test
-    public void publicaConteudo() {
-        given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/master"), captor.capture()))
-                .willReturn(null);
-
-        carta.publicar();
-
-        captor.getValue().get();
-
-        verify(repositorio).merge("refs/heads/servico-um-id-qualquer");
-        verify(repositorio).push("refs/heads/master");
-    }
 }
