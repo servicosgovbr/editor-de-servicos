@@ -27,30 +27,31 @@
       outline: none;
     }
 
-    .select2-selection__rendered, .select2-selection__arrow {
-      line-height: 40px;
-    }
 
     .select2-selection__arrow {
+      @extend .fa;
+      @extend .fa-chevron-down;
+      
       line-height: 40px;
       margin-right: 4px;
       color: #888;
-
-      @extend .fa;
-      @extend .fa-chevron-down;
 
       b {
         visibility: hidden;
       }
     }
+    
+    .select2-selection__rendered, .select2-selection__arrow {
+      line-height: 40px;
+    }
 
     .select2-selection__clear {
+      @extend .fa;
+      @extend .fa-times;
+
       line-height: 40px;
       margin-right: 4px;
       color: #888;
-
-      @extend .fa;
-      @extend .fa-times;
 
       &::before {
         font-size: 16px;
