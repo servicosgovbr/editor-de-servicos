@@ -32,7 +32,7 @@
       @extend .fa;
       @extend .fa-chevron-down;
       
-      line-height: 40px;
+      line-height: 40px !important;
       margin-right: 4px;
       color: #888;
 
@@ -42,14 +42,14 @@
     }
     
     .select2-selection__rendered, .select2-selection__arrow {
-      line-height: 40px;
+      line-height: 40px !important;
     }
 
     .select2-selection__clear {
       @extend .fa;
       @extend .fa-times;
 
-      line-height: 40px;
+      line-height: 40px !important;
       margin-right: 4px;
       color: #888;
 
