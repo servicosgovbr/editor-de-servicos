@@ -2,6 +2,13 @@
 
 var referencia = require('referencia');
 
+function gratuidadeView(ehGratuito) {
+  if (ehGratuito) {
+    return m('', m('p', 'Este serviço é gratuito para o cidadão.'));
+  }
+  return '';
+}
+
 module.exports = {
 
   controller: function (args) {
@@ -47,7 +54,7 @@ module.exports = {
             m('h3#servico-outras-info.subtitulo-servico', 'Outras informações'),
             m('.info-extra', [
                 nomesPopularesView(),
-                m('', m('p', 'Este serviço é gratuito para o cidadão.'))
+                gratuidadeView(ctrl.servico.gratuidade() !== false)
             ]),
             m('.row', m('p.separacao-orgao', [
                 'Este é um serviço ',
