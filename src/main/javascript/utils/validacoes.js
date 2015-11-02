@@ -11,10 +11,11 @@ var validador = function (property, validacoes) {
 
   var valida = function () {
     var valor;
-    if (_.isEmpty(arguments))
+    if (_.isEmpty(arguments)) {
       valor = property();
-    else
+    } else {
       valor = _.head(arguments);
+    }
 
     return erro(primeiroErroPara(validacoes, valor || property()));
   };

@@ -24,7 +24,7 @@
 
     "indent": 2,
     "bitwise": true,
-    "curly": false,
+    "curly": true,
     "eqeqeq": true,
     "forin": true,
     "freeze": true,

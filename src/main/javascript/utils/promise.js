@@ -1,8 +1,9 @@
 'use strict';
 
 function callIfFunction(fn) {
-  if (_.isFunction(fn))
+  if (_.isFunction(fn)) {
     fn();
+  }
 }
 
 var pipeListen = _.curry(function(fn, first) {
@@ -19,8 +20,9 @@ var pipe = pipeListen(null);
 var rethrow = rethrowListen(null);
 
 function onSuccOrError(promise, fn) {
-  if (!_.isFunction(fn))
+  if (!_.isFunction(fn)) {
     throw '"fn" deve ser uma função';
+  }
 
   return promise.then(pipeListen(fn), rethrowListen(fn));
 }

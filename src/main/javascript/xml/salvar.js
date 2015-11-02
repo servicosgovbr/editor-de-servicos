@@ -37,8 +37,9 @@ function postarServico(nome, xml, metadados) {
 }
 
 function validaNome(servico) {
-  if (validacoes.valida(servico.nome))
+  if (validacoes.valida(servico.nome)) {
     return servico;
+  }
   throw 'Erro na validação do nome do serviço';
 }
 
