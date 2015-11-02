@@ -171,7 +171,7 @@ module.exports = {
     'presencial': 'Endereço que deverá ser visitado',
     'sms': 'Número para qual o SMS deverá ser enviado',
     'telefone': 'Número para qual a ligação deverá ser realizada',
-    'web': 'Endereço na web que deverá ser visitado',
+    'web': 'Endereço na web que deverá ser visitado (preencha o endereço com http://)',
     'web-acompanhar': 'Endereço na web para acompanhar um pedido para esta etapa',
     'web-agendar': 'Endereço na web para agendar uma visita nesta etapa',
     'web-calcular-taxas': 'Endereço na web para calcular taxas para esta etapa',
