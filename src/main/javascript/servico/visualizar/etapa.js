@@ -3,7 +3,8 @@
 module.exports = {
 
   controller: function (args) {
-    this.etapas = args;
+    this.servico = args;
+    this.etapas = this.servico.etapas();
     this.converter = new window.showdown.Converter();
   },
 
@@ -15,7 +16,10 @@ module.exports = {
                 m('h4.etapa', etapa.titulo() ? etapa.titulo() : 'acesse o serviço'),
                 m('.etapa markdown', m.trust(ctrl.converter.makeHtml(etapa.descricao()))),
                 m.component(m.component(require('servico/visualizar/documentos'), etapa.documentos())),
-                m.component(m.component(require('servico/visualizar/custos'), etapa.custos())),
+                m.component(m.component(require('servico/visualizar/custos'), {
+                  gratuidade: ctrl.servico.gratuidade(),
+                  custos: etapa.custos()
+                })),
                 m.component(m.component(require('servico/visualizar/canais-de-prestacao'), etapa.canaisDePrestacao()))
             ]);
     }));

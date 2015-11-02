@@ -3,7 +3,8 @@
 module.exports = {
 
   controller: function (args) {
-    this.custos = args;
+    this.gratuidade = args.gratuidade;
+    this.custos = args.custos;
 
     this.temCusto = function () {
       return !_.isEmpty(this.custos.casoPadrao().campos()) || !_.isEmpty(this.custos.outrosCasos());
@@ -11,6 +12,9 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    if (ctrl.gratuidade) {
+      return m('');
+    }
 
     var camposView = function (campos) {
       return campos.map(function (campo) {
