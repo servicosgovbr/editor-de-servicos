@@ -153,7 +153,7 @@ module.exports = function (servico) {
     sigla: _.trim(servico.sigla()),
     nomesPopulares: _.compact(servico.nomesPopulares().map(_.trim)),
     descricao: _.trim(servico.descricao()),
-    gratuidade: _.trim(servico.gratuidade()),
+    gratuidade: servico.gratuidade(),
     solicitantes: _.compact(servico.solicitantes().map(limparSolicitante)),
     tempoTotalEstimado: new modelos.TempoTotalEstimado({
       tipo: _.trim(tte.tipo()),

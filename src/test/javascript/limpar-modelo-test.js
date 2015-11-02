@@ -22,7 +22,8 @@ describe('deve limpar > servico >', function () {
       nome: '        ',
       sigla: '   ABC  ',
       descricao: '  blah           ',
-      nomesPopulares: [null, '  nome  ', undefined, '']
+      nomesPopulares: [null, '  nome  ', undefined, ''],
+      gratuidade: false
     });
   });
 
@@ -40,6 +41,10 @@ describe('deve limpar > servico >', function () {
 
   it('nomes populares do servico', function () {
     expect(limparModelo(servico).nomesPopulares()).toEqual(['nome']);
+  });
+
+  it('gratuidade deve manter valor', function() {
+    expect(limparModelo(servico).gratuidade()).toEqual(false);
   });
 
   describe('solicitantes >', function () {
