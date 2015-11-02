@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.git.Revisao;
@@ -61,12 +62,15 @@ public class CartaTest {
     @Mock
     ReformatadorXml reformatadorXml;
 
+    @Mock
+    Siorg siorg;
+
     @Captor
     ArgumentCaptor<Supplier<Optional<String>>> captor;
 
     @Before
     public void setUp() throws Exception {
-        carta = new Carta("um-id-qualquer", repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml);
+        carta = new Carta("um-id-qualquer", repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml, siorg);
     }
 
     @Test

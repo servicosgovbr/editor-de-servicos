@@ -58,7 +58,7 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
 
     private String nomeOrgao() {
         return siorg.nomeDoOrgao(getMetadadosConteudo().getOrgao().getId())
-                .orElse("");
+                .orElse(" - - ");
     }
 
     public Servico getMetadadosConteudo() {
