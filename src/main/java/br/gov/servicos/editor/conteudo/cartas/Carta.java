@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static javax.xml.bind.JAXB.unmarshal;
@@ -57,7 +58,11 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
     }
 
     private String nomeOrgao() {
-        return siorg.nomeDoOrgao(getMetadadosConteudo().getOrgao().getId())
+        return Optional.ofNullable(getMetadadosConteudo())
+                .map(Servico::getOrgao)
+                .map(Orgao::getId)
+                .map(siorg::nomeDoOrgao)
+                .map(Optional::get)
                 .orElse(" - - ");
     }
 
