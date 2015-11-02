@@ -9,7 +9,13 @@ var primeiroErroPara = _.curry(function (validacoes, valor) {
 var validador = function (property, validacoes) {
   var erro = m.prop();
 
-  var valida = function (valor) {
+  var valida = function () {
+    var valor;
+    if (_.isEmpty(arguments))
+      valor = property();
+    else
+      valor = _.head(arguments);
+
     return erro(primeiroErroPara(validacoes, valor || property()));
   };
 
@@ -18,7 +24,6 @@ var validador = function (property, validacoes) {
     if (!_.isEmpty(arguments)) {
       valida(novoValor);
     }
-
     return novoValor;
   };
 

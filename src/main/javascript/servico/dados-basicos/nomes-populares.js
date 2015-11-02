@@ -22,7 +22,9 @@ module.exports = {
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    ctrl.servico = args.servico;
+
     return m('fieldset#nomes-populares.relative', [
       m('h3.opcional', [
         'Nomes populares',

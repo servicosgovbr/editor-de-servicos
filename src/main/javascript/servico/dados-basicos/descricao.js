@@ -1,12 +1,9 @@
 'use strict';
 
 module.exports = {
+  view: function (ctrl, args) {
+    var servico = args.servico;
 
-  controller: function (args) {
-    this.servico = args.servico;
-  },
-
-  view: function (ctrl) {
     return m('fieldset#descricao', [
       m('h3', [
         'Descrição do serviço',
@@ -15,9 +12,9 @@ module.exports = {
 
       m.component(require('componentes/editor-markdown'), {
         rows: 6,
-        onchange: m.withAttr('value', ctrl.servico().descricao),
-        value: ctrl.servico().descricao(),
-        erro: ctrl.servico().descricao.erro()
+        onchange: m.withAttr('value', servico().descricao),
+        value: servico().descricao(),
+        erro: servico().descricao.erro()
       })
     ]);
   }

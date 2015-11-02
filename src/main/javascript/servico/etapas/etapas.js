@@ -16,7 +16,9 @@ module.exports = {
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    ctrl.servico = args.servico;
+
     return m('fieldset#etapas-do-servico', [
       m('h2', {
         class: ctrl.servico().etapas.erro()

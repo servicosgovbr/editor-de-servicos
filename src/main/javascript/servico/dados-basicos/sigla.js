@@ -6,7 +6,9 @@ module.exports = {
     this.servico = args.servico;
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    ctrl.servico = args.servico;
+
     return m('fieldset#sigla', [
       m('h3.opcional', [
         'Sigla do serviço',

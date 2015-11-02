@@ -20,6 +20,7 @@ module.exports = {
       palavrasChave.splice(i, 1);
       this.servico().palavrasChave(palavrasChave);
     };
+
   },
 
   view: function (ctrl) {
@@ -53,12 +54,14 @@ module.exports = {
         ];
       }),
 
-      m('button.adicionar.adicionar-palavra-chave', {
-        onclick: ctrl.adicionar.bind(ctrl)
-      }, [
-        m('i.fa.fa-plus'),
-        ' Adicionar palavra-chave '
-      ])
+      m('div',
+        m('button.adicionar.adicionar-palavra-chave', {
+          onclick: ctrl.adicionar.bind(ctrl)
+        }, [
+         m('i.fa.fa-plus'),
+         ' Adicionar palavra-chave '
+       ])
+      )
     ]);
   }
 };

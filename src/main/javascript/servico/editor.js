@@ -3,49 +3,55 @@
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
-var validacoes = require('utils/validacoes');
-var limparModelo = require('limpar-modelo');
+var publicarServico = require('xml/publicar');
 var servicoEmEdicao = require('servico/servico-em-edicao');
+var promise = require('utils/promise');
 
 var modificado = m.prop(false);
 
-module.exports = {
+function redirecionarNovoServico(nome) {
+  var oldId = m.route.param('id');
+  var newId = slugify(nome);
+  if (!_.isEqual(oldId, newId)) {
+    m.route('/editar/servico/' + newId);
+  }
+}
 
+function endComputation() {
+  m.endComputation();
+}
+
+module.exports = {
   controller: function () {
     this.cabecalho = new CabecalhoModel();
     this.servico = servicoEmEdicao.recuperar(this.cabecalho);
 
+    this._servicoSalvo = _.bind(function (servico) {
+      this.servico(servico);
+      redirecionarNovoServico(this.servico().nome());
+      this.cabecalho.limparErro();
+      modificado(false);
+
+      return servico;
+    }, this);
+
     this.salvar = function () {
-      if (validacoes.valida(this.servico().nome)) {
-        return salvarServico(this.servico, this.cabecalho.metadados)
-          .then(_.bind(this.cabecalho.limparErro, this.cabecalho))
-          .then(function () {
-            modificado(false);
-          }).then(function () {
-            var oldId = m.route.param('id');
-            var newId = slugify(this.servico().nome());
-            if (!_.isEqual(oldId, newId)) {
-              m.route('/editar/servico/' + newId);
-            }
-          }.bind(this));
-      } else {
-        return m.deferred().reject(this.servico().nome.erro()).promise;
-      }
+      m.startComputation();
+
+      return promise.onSuccOrError(
+        salvarServico(this.servico(), this.cabecalho.metadados)
+        .then(this._servicoSalvo),
+        endComputation);
     };
 
     this.publicar = function () {
-      this.servico(limparModelo(this.servico()));
-      var id = slugify(this.servico().nome());
-      if (validacoes.valida(this.servico())) {
-        return this.salvar().then(function () {
-          m.request({
-            method: 'PUT',
-            url: '/editar/api/pagina/servico/' + id
-          });
-        });
-      } else {
-        return false;
-      }
+      m.startComputation();
+
+      promise.onSuccOrError(
+        this.salvar()
+        .then(publicarServico)
+        .then(endComputation),
+        endComputation);
     };
 
     this.visualizar = function () {

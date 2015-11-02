@@ -308,7 +308,7 @@ describe('deve limpar > servico >', function () {
   });
 
   describe('tempo total estimado >', function () {
-    beforeEach(function () {
+    it('não deve limpar os campos preenchidos', function () {
       servico = new modelos.Servico({
         tempoTotalEstimado: new TempoTotalEstimado({
           tipo: ' entre ',
@@ -319,9 +319,7 @@ describe('deve limpar > servico >', function () {
           ateTipoMaximo: ' meses '
         })
       });
-    });
 
-    it('limpar os campos', function () {
       servico = limparModelo(servico);
 
       expect(servico.tempoTotalEstimado().tipo()).toBe('entre');
@@ -330,6 +328,28 @@ describe('deve limpar > servico >', function () {
       expect(servico.tempoTotalEstimado().entreTipoMaximo()).toBe('dias');
       expect(servico.tempoTotalEstimado().ateMaximo()).toBe('30');
       expect(servico.tempoTotalEstimado().ateTipoMaximo()).toBe('meses');
+    });
+
+    it('deve limpar os campos em branco', function () {
+      servico = new modelos.Servico({
+        tempoTotalEstimado: new TempoTotalEstimado({
+          tipo: '  ',
+          entreMinimo: ' ',
+          entreMaximo: ' ',
+          entreTipoMaximo: ' ',
+          ateMaximo: ' ',
+          ateTipoMaximo: ' '
+        })
+      });
+
+      servico = limparModelo(servico);
+
+      expect(servico.tempoTotalEstimado().tipo()).toBe('');
+      expect(servico.tempoTotalEstimado().entreMinimo()).toBe('');
+      expect(servico.tempoTotalEstimado().entreMaximo()).toBe('');
+      expect(servico.tempoTotalEstimado().entreTipoMaximo()).toBe('');
+      expect(servico.tempoTotalEstimado().ateMaximo()).toBe('');
+      expect(servico.tempoTotalEstimado().ateTipoMaximo()).toBe('');
     });
 
   });

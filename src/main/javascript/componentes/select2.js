@@ -53,10 +53,10 @@ var language = {
 module.exports = {
   controller: function (args) {
     this.prop = args.prop;
-
   },
 
   view: function (ctrl, args) {
+    ctrl.prop = args.prop;
     var options = _.omit(args, 'prop');
 
     return m('.clear.select2-message-container', m('select', {

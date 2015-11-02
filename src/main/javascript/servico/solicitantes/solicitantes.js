@@ -22,7 +22,9 @@ module.exports = {
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    ctrl.servico = args.servico;
+
     return m('fieldset#solicitantes', [
       m('h2', 'solicitantes'),
 

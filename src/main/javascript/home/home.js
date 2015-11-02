@@ -38,9 +38,9 @@ module.exports = {
               ),
 
               m('span.novo',
-                m('a', {
-                  href: '/editar/servico/novo'
-                }, [
+              m('a', {
+                href: '/editar/servico/novo'
+              }, [
                   m.trust('Gerenciar permissões')
                 ])
               ),

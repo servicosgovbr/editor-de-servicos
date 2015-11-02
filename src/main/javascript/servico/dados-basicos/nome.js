@@ -37,6 +37,8 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
+    ctrl.servico = args.servico;
+
     var novo = args.novo;
     var servico = ctrl.servico();
 

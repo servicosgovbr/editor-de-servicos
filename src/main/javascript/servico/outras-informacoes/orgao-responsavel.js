@@ -30,7 +30,7 @@ module.exports = {
 
         m('div.input-container', {
             class: ctrl.servico().orgao().contato.erro(),
-          }, 
+          },
           m('input[type=text]', {
             onchange: m.withAttr('value', ctrl.servico().orgao().contato),
             value: ctrl.servico().orgao().contato()
