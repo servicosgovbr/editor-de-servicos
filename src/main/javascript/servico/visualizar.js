@@ -31,7 +31,6 @@ module.exports = {
           cabecalho: ctrl.cabecalho
         }),
                     m('#visualizar', m('#main', m('section#conteudo', [m('.row', m('h2', servico.nome() + (servico.sigla() ? ' (' + servico.sigla() + ')' : ''))),
-                        m('.row', m.component(require('servico/visualizar/ancoras'), servico)),
                         m('.row', m.component(require('servico/visualizar/descricao'), servico)),
                         m('.row', m.component(require('servico/visualizar/solicitantes'), servico)),
                         m('.row', m.component(require('servico/visualizar/etapas'), servico)),

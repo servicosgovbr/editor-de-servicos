@@ -16,7 +16,7 @@ module.exports = {
       return campos.map(function (campo) {
         return m('li', [
                     m('span', campo.descricao()),
-                    m('span', !_.isEmpty(campo.moeda()) ? campo.moeda() : ' R$'),
+                    m('span', !_.isEmpty(campo.moeda()) ? campo.moeda() : ' R$ '),
                     m('span', campo.valor())
                 ]);
       });
