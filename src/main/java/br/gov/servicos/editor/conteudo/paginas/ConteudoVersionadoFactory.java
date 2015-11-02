@@ -2,6 +2,7 @@ package br.gov.servicos.editor.conteudo.paginas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.cartas.Carta;
+import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
@@ -34,11 +35,14 @@ public class ConteudoVersionadoFactory {
     @Autowired
     ReformatadorXml reformatadorXml;
 
+    @Autowired
+    Siorg siorg;
+
     @Bean // necessário para @Cacheable
     @Scope("prototype")
     public ConteudoVersionado pagina(String texto, TipoPagina tipo) {
         if (tipo == TipoPagina.SERVICO)
-            return new Carta(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
+            return new Carta(slugify.slugify(texto), repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml, siorg);
         return new PaginaVersionada(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
     }
 

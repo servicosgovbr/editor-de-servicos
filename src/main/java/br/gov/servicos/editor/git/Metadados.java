@@ -18,6 +18,7 @@ import java.util.Objects;
 public class Metadados<T> implements Serializable {
 
     String id;
+    String nomeOrgao;
     Revisao publicado;
     Revisao editado;
 

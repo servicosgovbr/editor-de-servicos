@@ -61,6 +61,7 @@ module.exports = function (ctrl, args) {
   return m('table', [
      m('tr', [
        m('th[width="40%"]', 'Nome'),
+       m('th.center', 'Órgão'),
        m('th.center', 'Tipo'),
        m('th.center', 'Publicação'),
        m('th.center', 'Edição'),
@@ -81,6 +82,7 @@ module.exports = function (ctrl, args) {
         m.trust(' &nbsp; '),
         s.conteudo.nome
       ])),
+      m('td.center', s.nomeOrgao),
       m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
       m('td.center', s.publicado ? [
         moment(s.publicado.horario).fromNow(),
