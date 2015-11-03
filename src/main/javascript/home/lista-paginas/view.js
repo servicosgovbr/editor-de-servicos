@@ -32,21 +32,6 @@ function visualizarView(ctrl, pagina) {
   }, m('i.fa.fa-eye'));
 }
 
-function publicarView(ctrl, pagina) {
-  if (!isServico(pagina)) {
-    return '';
-  }
-
-  if (!pagina.temAlteracoesNaoPublicadas) {
-    return '';
-  }
-
-  return m('button.publicar', {
-    onclick: _.bind(ctrl.publicarConteudo, ctrl, pagina.id),
-    title: 'Publicar alterações deste conteúdo'
-  }, m('i.fa.fa-paper-plane'));
-}
-
 module.exports = function (ctrl, args) {
 
   var filtro = args.filtro;
@@ -68,8 +53,6 @@ module.exports = function (ctrl, args) {
        m('th.right', '')
      ])
     ].concat(paginas.map(function (s) {
-
-
 
     return m('tr', [
 
@@ -97,12 +80,9 @@ module.exports = function (ctrl, args) {
       ] : '—'),
 
       m('td.right', [
-        publicarView(ctrl, s),
         visualizarView(ctrl, s),
         excluirView(ctrl, s),
       ])
-
     ]);
-
   })));
 };
