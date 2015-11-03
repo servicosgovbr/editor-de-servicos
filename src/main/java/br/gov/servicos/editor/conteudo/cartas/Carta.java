@@ -62,7 +62,7 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
                 .map(Servico::getOrgao)
                 .map(Orgao::getId)
                 .map(siorg::nomeDoOrgao)
-                .map(Optional::get)
+                .map(o -> o.orElse(null))
                 .orElse(" - - ");
     }
 

@@ -16,6 +16,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,6 +34,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -146,6 +148,28 @@ public class CartaTest {
     }
 
     @Test
+    public void metadadosQuandoNaoTemNomeDeOrgao() throws Exception {
+        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/servico-um-id-qualquer"))
+                .willReturn(empty());
+
+        given(repositorio.comRepositorioAbertoNoBranch(anyString(), any()))
+                .willReturn(new Carta.Servico()
+                        .withOrgao(new Carta.Orgao()
+                                .withId("qualquer")));
+
+        given(repositorio.getCaminhoAbsoluto())
+                .willReturn(Paths.get("/um/caminho/qualquer"));
+
+        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
+                .willReturn(of(REVISAO));
+
+        given(siorg.nomeDoOrgao(anyString()))
+                .willReturn(empty());
+
+        assertThat(carta.getMetadados().getNomeOrgao(), is(" - - "));
+    }
+
+    @Test
     public void retornaConteudoVazioQuandoArquivoNaoExisteNoBranch() throws Exception {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/servico-um-id-qualquer"), captor.capture()))
                 .willReturn(of("<servico/>"));
@@ -167,8 +191,8 @@ public class CartaTest {
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
         given(repositorio.comRepositorioAbertoNoBranch(
-                        eq("refs/heads/servico-um-id-qualquer"),
-                        any()))
+                eq("refs/heads/servico-um-id-qualquer"),
+                any()))
                 .willReturn(Optional.empty());
 
         carta.getConteudoRaw();
