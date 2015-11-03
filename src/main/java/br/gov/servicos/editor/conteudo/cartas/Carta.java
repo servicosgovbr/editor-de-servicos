@@ -52,8 +52,8 @@ public class Carta extends ConteudoVersionado<Carta.Servico> {
     }
 
     @Override
-    public Metadados<Servico> getMetadados() {
-        return super.getMetadados()
+    protected Metadados<Servico> internalGetMetadados() {
+        return super.internalGetMetadados()
                 .withNomeOrgao(nomeOrgao());
     }
 

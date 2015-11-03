@@ -111,6 +111,10 @@ public abstract class ConteudoVersionado<T> {
 
     @Cacheable
     public Metadados<T> getMetadados() {
+        return internalGetMetadados();
+    }
+
+    protected Metadados<T> internalGetMetadados() {
         return new Metadados<T>()
                 .withId(getId())
                 .withPublicado(getRevisaoMaisRecenteDoArquivo().orElse(null))
