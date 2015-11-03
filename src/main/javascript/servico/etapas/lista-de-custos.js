@@ -59,7 +59,7 @@ module.exports = {
         ]);
       }),
       m('button.adicionar.adicionar-custo', {
-        onclick: ctrl.adicionar.bind(ctrl)
+        onclick: ctrl.adicionar.bind(ctrl, custos)
       }, [
         m('i.fa.fa-plus'),
         ' Adicionar custo '
