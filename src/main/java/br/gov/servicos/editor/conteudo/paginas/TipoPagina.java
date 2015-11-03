@@ -2,16 +2,14 @@ package br.gov.servicos.editor.conteudo.paginas;
 
 import br.gov.servicos.editor.config.SlugifyConfig;
 import lombok.Getter;
-import lombok.SneakyThrows;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
 public enum TipoPagina {
-    ORGAO("conteudo/orgaos","md"),
-    AREA_DE_INTERESSE("conteudo/areas-de-interesse","md"),
+    ORGAO("conteudo/orgaos", "md"),
+    AREA_DE_INTERESSE("conteudo/areas-de-interesse", "md"),
     PAGINA_ESPECIAL("conteudo/paginas-especiais", "md"),
     SERVICO("cartas-servico/v3/servicos", "xml");
 

@@ -42,7 +42,7 @@ public class EditarPaginaController {
             @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
             HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
-            return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
+        return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
     }
 
     @ResponseBody

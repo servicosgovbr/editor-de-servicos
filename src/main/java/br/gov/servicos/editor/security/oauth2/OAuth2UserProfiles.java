@@ -56,7 +56,7 @@ public class OAuth2UserProfiles implements UserProfiles {
     private UserProfile buscaUsuario() {
         UserProfile profile = restTemplate.getForEntity(urlTemplate, UserProfile.class, token()).getBody();
         cache.put(token(), profile
-          .withPermissao(gerenciadorPermissoes.permissao(profile.getEmail())));
+                .withPermissao(gerenciadorPermissoes.permissao(profile.getEmail())));
         return profile;
     }
 

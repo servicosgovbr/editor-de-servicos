@@ -2,7 +2,6 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 

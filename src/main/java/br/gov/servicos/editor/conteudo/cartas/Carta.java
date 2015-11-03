@@ -1,7 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
@@ -16,15 +15,16 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static javax.xml.bind.JAXB.unmarshal;
 import static javax.xml.bind.annotation.XmlAccessType.NONE;
 import static lombok.AccessLevel.PRIVATE;

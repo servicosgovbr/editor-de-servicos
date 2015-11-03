@@ -170,6 +170,18 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
+    public void descartarAlteracoes() {
+        if (!existeNoBranch()) {
+            return;
+        }
+
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+            repositorio.deleteLocalBranch(getBranchRef());
+            repositorio.deleteRemoteBranch(getBranchRef());
+            return null;
+        });
+    }
+
     @CacheEvict
     public void renomear(UserProfile profile, String novoNome) {
         String novoId = slugify.slugify(novoNome);
@@ -208,6 +220,7 @@ public abstract class ConteudoVersionado<T> {
         );
     }
 
+
     @SneakyThrows
     private String mudarNomeConteudo(String novoNome) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -216,7 +229,6 @@ public abstract class ConteudoVersionado<T> {
         doc.getElementsByTagName("nome").item(0).setTextContent(novoNome);
         return reformatadorXml.formata(new DOMSource(doc));
     }
-
 
     private void salvarConteudo(UserProfile profile, String branch, String conteudo, String mensagemBase) {
         String mensagem = format("%s '%s'", mensagemBase, getId());
@@ -229,10 +241,10 @@ public abstract class ConteudoVersionado<T> {
         repositorio.push(branch);
     }
 
+
     private void salvarConteudo(UserProfile profile, String branch, String conteudo) {
         salvarConteudo(profile, branch, conteudo, getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria");
     }
-
 
     @SneakyThrows
     private void renomearConteudo(UserProfile profile, String nomeNovoArquivo, String branch) {
@@ -250,5 +262,4 @@ public abstract class ConteudoVersionado<T> {
         String conteudo = mudarNomeConteudo(novoNome);
         salvarConteudo(profile, branch, conteudo);
     }
-
 }

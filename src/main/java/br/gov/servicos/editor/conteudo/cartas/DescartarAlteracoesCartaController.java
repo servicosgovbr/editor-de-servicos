@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static lombok.AccessLevel.PRIVATE;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class PublicarCartaController {
+class DescartarAlteracoesCartaController {
 
     private ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
-    public PublicarCartaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
+    public DescartarAlteracoesCartaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
         this.factory = factory;
         this.userProfiles = userProfiles;
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = PUT)
-    void publicar(@PathVariable("id") String id) {
+    @RequestMapping(value = "/editar/api/pagina/servico/{id}/descartar", method = POST)
+    void descartar(@PathVariable("id") String id) {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
-        carta.publicar(userProfiles.get());
+        carta.descartarAlteracoes();
     }
 
 }

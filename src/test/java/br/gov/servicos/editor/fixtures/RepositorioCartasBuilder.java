@@ -93,7 +93,6 @@ public class RepositorioCartasBuilder {
                     .setMessage("setup de testes")
                     .call();
             git.push().setPushAll().call();
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;

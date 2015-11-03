@@ -25,8 +25,8 @@ public class RepositorioConfig {
 
     @Autowired
     public RepositorioConfig(@Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
-                      @Value("${flags.importar}") boolean deveImportar,
-                      @Value("${flags.git.push}") boolean fazerPush) throws IOException {
+                             @Value("${flags.importar}") boolean deveImportar,
+                             @Value("${flags.git.push}") boolean fazerPush) throws IOException {
         this(urlRepositorioCartas, deveImportar, fazerPush, createTempDirectory("editor-de-servicos").toFile());
     }
 
