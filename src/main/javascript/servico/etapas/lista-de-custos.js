@@ -54,7 +54,7 @@ module.exports = {
           })]),
           ' ',
           custos().length === 1 ? m('') : m('button.remove', {
-            onclick: ctrl.remover.bind(ctrl, i)
+            onclick: ctrl.remover.bind(ctrl, custos, i)
           }, [m('span')])
         ]);
       }),
