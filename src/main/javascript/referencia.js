@@ -171,17 +171,17 @@ module.exports = {
     'presencial': 'Endereço que deverá ser visitado',
     'sms': 'Número para qual o SMS deverá ser enviado',
     'telefone': 'Número para qual a ligação deverá ser realizada',
-    'web': 'Endereço na web que deverá ser visitado (preencha o endereço com http://)',
-    'web-acompanhar': 'Endereço na web para acompanhar um pedido para esta etapa (preencha o endereço com http://)',
-    'web-agendar': 'Endereço na web para agendar uma visita nesta etapa (preencha o endereço com http://)',
-    'web-calcular-taxas': 'Endereço na web para calcular taxas para esta etapa (preencha o endereço com http://)',
-    'web-consultar': 'Endereço na web para consultar dados para esta etapa (preencha o endereço com http://)',
-    'web-declarar': 'Endereço na web para fazer declarações para esta etapa (preencha o endereço com http://)',
-    'web-emitir': 'Endereço na web para emitir documentos ou certidões para esta etapa (preencha o endereço com http://)',
-    'web-inscrever-se': 'Endereço na web para inscrever-se nesta etapa (preencha o endereço com http://)',
-    'web-postos-de-atendimento': 'Endereço na web para encontrar postos de atendimento que realizam esta etapa (preencha o endereço com http://)',
-    'web-preencher': 'Endereço na web baixar ou preencher um formulário para esta etapa (preencha o endereço com http://)',
-    'web-simular': 'Endereço na web para simular esta etapa (preencha o endereço com http://)'
+    'web': 'Endereço na web que deverá ser visitado (preencha com http://)',
+    'web-acompanhar': 'Endereço na web para acompanhar um pedido para esta etapa (preencha com http://)',
+    'web-agendar': 'Endereço na web para agendar uma visita nesta etapa (preencha com http://)',
+    'web-calcular-taxas': 'Endereço na web para calcular taxas para esta etapa (preencha com http://)',
+    'web-consultar': 'Endereço na web para consultar dados para esta etapa (preencha com http://)',
+    'web-declarar': 'Endereço na web para fazer declarações para esta etapa (preencha com http://)',
+    'web-emitir': 'Endereço na web para emitir documentos ou certidões para esta etapa (preencha com http://)',
+    'web-inscrever-se': 'Endereço na web para inscrever-se nesta etapa (preencha com http://)',
+    'web-postos-de-atendimento': 'Endereço na web para encontrar postos de atendimento que realizam esta etapa (preencha com http://)',
+    'web-preencher': 'Endereço na web baixar ou preencher um formulário para esta etapa (preencha com http://)',
+    'web-simular': 'Endereço na web para simular esta etapa (preencha com http://)'
   },
 
   unidadesDeTempo: [
