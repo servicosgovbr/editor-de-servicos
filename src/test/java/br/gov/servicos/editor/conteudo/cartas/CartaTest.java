@@ -46,7 +46,9 @@ public class CartaTest {
             .withAutor("User Name")
             .withHorario(HORARIO);
 
-    static final Metadados<Carta.Servico> METADADOS = new Metadados<Carta.Servico>().withId("um-id-qualquer");
+    static final Metadados<Carta.Servico> METADADOS = new Metadados<Carta.Servico>()
+            .withId("um-id-qualquer")
+            .withNomeOrgao(" - - ");
 
     Carta carta;
 
