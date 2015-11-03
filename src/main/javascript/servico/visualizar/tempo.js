@@ -10,11 +10,11 @@ module.exports = {
     this.converter = new window.showdown.Converter();
 
     this.temTempoEntre = function () {
-      return (!_.isEmpty(this.servico.tempoTotalEstimado().entreMinimo()) || !_.isEmpty(this.servico.tempoTotalEstimado().entreMaximo()));
+      return this.servico.tempoTotalEstimado().tipo() === 'entre';
     };
 
     this.temTempoAte = function () {
-      return !_.isEmpty(this.servico.tempoTotalEstimado().ateMaximo());
+      return this.servico.tempoTotalEstimado().tipo() === 'ate';
     };
 
     this.temTempo = function () {
