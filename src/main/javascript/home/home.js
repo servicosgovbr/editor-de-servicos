@@ -27,22 +27,22 @@ module.exports = {
             }),
             m('label', [
               m('input[type=checkbox]', {}),
-              'Áreas de interesse'
+              'Páginas de áreas de interesse'
             ]),
 
             m('label', [
               m('input[type=checkbox]', {}),
-              'Órgãos'
+              'Páginas de órgãos'
             ]),
 
             m('label', [
               m('input[type=checkbox]', {}),
-              'Páginas especiais'
+              'Páginas temáticas'
             ]),
 
             m('label', [
               m('input[type=checkbox]', {}),
-              'Serviços'
+              'Páginas de serviços'
             ])
           ]),
           m.component(ListaPaginas, {
