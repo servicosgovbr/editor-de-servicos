@@ -30,7 +30,9 @@ module.exports = {
           editar: _.bind(ctrl.editar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
-                    m('#visualizar', m('#main', m('section#conteudo', [m('.row', m('h2', servico.nome() + (servico.sigla() ? ' (' + servico.sigla() + ')' : ''))),
+                    m('#visualizar', m('#main', m('section#conteudo', [m('.row', 
+                        m('.aviso-visualizar', 'Esta é uma pré-visualização de como ficará o serviço quando publicado no Portal de Serviços.'),
+                        m('h2', servico.nome() + (servico.sigla() ? ' (' + servico.sigla() + ')' : ''))),
                         m('.row', m.component(require('servico/visualizar/descricao'), servico)),
                         m('.row', m.component(require('servico/visualizar/solicitantes'), servico)),
                         m('.row', m.component(require('servico/visualizar/etapas'), servico)),
