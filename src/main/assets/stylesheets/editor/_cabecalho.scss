@@ -17,6 +17,13 @@ header {
   position: fixed;
   z-index: 99;
 
+  .fa-arrow-left {
+    font-size: 0.8em;
+    margin-right: 5px;
+    position: relative;
+    top: -2px;
+  }
+
   div {
     @include span-columns(3 of 12);
     line-height: 3em;
