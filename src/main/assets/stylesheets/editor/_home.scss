@@ -12,16 +12,18 @@
     @include span-columns(12);
 
     input[type=search] {
-      @include span-columns(7.5);
+      @include span-columns(9);
     }
 
     label {
-      @include span-columns(2.4);
+      @include span-columns(3);
       display: inline-block;
       margin-right: 0;
       margin-bottom: 0;
       position: relative;
+      font-size: 13px;
       top: -5px;
+      float: right;
     }
 
     .novo {
