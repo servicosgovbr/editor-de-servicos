@@ -21,53 +21,30 @@ module.exports = {
         }),
 
         m('#bem-vindo', [
-          m('h2', 'Bem-vindo!'),
-
           m('div.busca', [
-
-              m('input[type=search][placeholder="Filtrar por..."]', {
+            m('input[type=search][placeholder="Filtre os resultados por serviços, órgãos, áreas de interesse e palavras chave"]', {
               oninput: m.withAttr('value', ctrl.filtro)
             }),
+            m('label', [
+              m('input[type=checkbox]', {}),
+              'Áreas de interesse'
+            ]),
 
-              m('span.novo',
-              m('a', {
-                href: '/editar/pagina/nova'
-              }, [
-                  m.trust('Nova página')
-                ])
-              ),
+            m('label', [
+              m('input[type=checkbox]', {}),
+              'Órgãos'
+            ]),
 
-              m('span.novo',
-              m('a', {
-                href: '/editar/servico/novo'
-              }, [
-                  m.trust('Gerenciar permissões')
-                ])
-              ),
+            m('label', [
+              m('input[type=checkbox]', {}),
+              'Páginas especiais'
+            ]),
+
+            m('label', [
+              m('input[type=checkbox]', {}),
+              'Serviços'
+            ])
           ]),
-
-          m('label', [
-            m('input[type=checkbox]', {}),
-            'Áreas de interesse'
-          ]),
-
-          m('label', [
-            m('input[type=checkbox]', {}),
-            'Órgãos'
-          ]),
-
-          m('label', [
-            m('input[type=checkbox]', {}),
-            'Páginas especiais'
-          ]),
-
-          m('label', [
-            m('input[type=checkbox]', {}),
-            'Serviços'
-          ]),
-
-
-
           m.component(ListaPaginas, {
             filtro: {
               orgao: ctrl.orgao(),

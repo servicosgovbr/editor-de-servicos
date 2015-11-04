@@ -3,13 +3,25 @@
 #bem-vindo {
   @include span-columns(12);
 
-  margin-top: $tamanho-do-cabecalho + 2em;
-
   .busca {
+    background: #F7F7F7;
+    padding-top: $tamanho-do-cabecalho + 2em;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    margin-bottom: 15px;
     @include span-columns(12);
 
     input[type=search] {
-      @include span-columns(7);
+      @include span-columns(7.5);
+    }
+
+    label {
+      @include span-columns(2.4);
+      display: inline-block;
+      margin-right: 0;
+      margin-bottom: 0;
+      position: relative;
+      top: -5px;
     }
 
     .novo {
