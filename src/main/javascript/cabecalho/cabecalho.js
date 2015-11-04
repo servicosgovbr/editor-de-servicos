@@ -19,7 +19,7 @@ module.exports = {
     }
 
     return m('header', [
-      m('', m('a[href=/editar]', m('h1', [m('i.fa.fa-arrow-left'), 'Editor de Serviços'])),
+      m('', m('a[href=/editar]', m('h1', [m('i.fa.fa-arrow-left'), 'Editor de Serviços']))),
 
       metadados(),
       logout()
