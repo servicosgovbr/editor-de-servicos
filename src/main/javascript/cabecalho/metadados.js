@@ -14,20 +14,6 @@ module.exports = {
       delay: 1500
     });
 
-    this.salvando = m.prop(false);
-    this.salvar = function () {
-      this.salvando(true);
-      return config.salvar().then(_.bind(function (resp) {
-        this.salvando(false);
-        alertify.success('Rascunho salvo com sucesso!');
-        m.redraw();
-        return resp;
-      }, this), _.bind(function () {
-        this.salvando(false);
-        m.redraw();
-      }, this));
-    };
-
     this.publicar = function () {
       if (!config.publicar()) {
         alertify.error('Serviço ainda contém erros.');
@@ -48,19 +34,11 @@ module.exports = {
   },
 
   view: function (ctrl) {
-
     var salvarView = '';
     if (ctrl.config.salvar !== _.noop) {
-      salvarView = m('button#salvar', {
-        onclick: _.bind(ctrl.salvar, ctrl),
-        disabled: ctrl.salvando() ? 'disabled' : ''
-      }, ctrl.salvando() ? [
-        m('i.fa.fa-spin.fa-spinner'),
-        m.trust('&nbsp; Salvando...')
-      ] : [
-        m('i.fa.fa-floppy-o'),
-        m.trust('&nbsp; Salvar')
-      ]);
+      salvarView = m.component(require('cabecalho/salvar-button'), {
+        salvar: ctrl.config.salvar
+      });
     }
 
     var visualizarView = '';
@@ -92,6 +70,8 @@ module.exports = {
               m.trust('&nbsp; Editar')
           ]);
     }
+
+
 
     return m('#metadados', [
       m.component(require('componentes/status-conexao')),
