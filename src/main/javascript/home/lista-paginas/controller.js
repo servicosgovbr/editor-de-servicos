@@ -5,14 +5,11 @@ var erro = require('utils/erro-ajax');
 var referencia = require('referencia');
 
 module.exports = function (args) {
-
   this.publicarConteudo = _.noop;
-
   var paginasProp = m.prop([]);
 
   this.paginasFiltradas = function (filtro) {
     var paginas = paginasProp();
-
     var filtroFn = _.identity;
 
     if (filtro.publicados) {
@@ -28,6 +25,7 @@ module.exports = function (args) {
     if (filtro.filtroServicos) { filtroTipos.push('servico'); }
     if (filtro.filtroOrgaos) { filtroTipos.push('orgao'); }
     if (filtro.filtroPaginasEspeciais) { filtroTipos.push('pagina-especial'); }
+    if (filtro.filtroAreasDeInteresse) { filtroTipos.push('area-de-interesse'); }
 
     if (filtroTipos.length > 0) {
       filtroFn = _.flow(function (pg) {
@@ -73,8 +71,6 @@ module.exports = function (args) {
           });
       }
     }.bind(this));
-
-
   };
 
   this.listarConteudos();
