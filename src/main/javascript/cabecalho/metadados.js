@@ -14,14 +14,6 @@ module.exports = {
       delay: 1500
     });
 
-    this.publicar = function () {
-      if (!config.publicar()) {
-        alertify.error('Serviço ainda contém erros.');
-      } else {
-        alertify.success('Serviço publicado com sucesso!');
-      }
-    };
-
     this.editar = function () {
       config.editar();
     };
@@ -46,12 +38,9 @@ module.exports = {
 
     var publicarView = '';
     if (ctrl.config.publicar !== _.noop) {
-      publicarView = m('button#publicar', {
-        onclick: _.bind(ctrl.publicar, ctrl)
-      }, [
-        m('i.fa.fa-tv'),
-         m.trust('&nbsp; Publicar')
-      ]);
+      publicarView = m.component(require('cabecalho/publicar-button'), {
+        publicar: ctrl.config.publicar
+      });
     }
 
     var editarView = '';

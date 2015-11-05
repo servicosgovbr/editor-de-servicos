@@ -23,7 +23,6 @@ function onSuccOrError(promise, fn) {
   if (!_.isFunction(fn)) {
     throw '"fn" deve ser uma função';
   }
-
   return promise.then(pipeListen(fn), rethrowListen(fn));
 }
 

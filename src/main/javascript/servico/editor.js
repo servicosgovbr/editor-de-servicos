@@ -47,10 +47,8 @@ module.exports = {
     this.publicar = function () {
       m.startComputation();
 
-      promise.onSuccOrError(
-        this.salvar()
-        .then(publicarServico)
-        .then(endComputation),
+      return promise.onSuccOrError(
+        this.salvar().then(publicarServico),
         endComputation);
     };
 
