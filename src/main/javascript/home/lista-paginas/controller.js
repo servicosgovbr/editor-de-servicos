@@ -24,6 +24,17 @@ module.exports = function (args) {
       });
     }
 
+    var filtroTipos = [];
+    if (filtro.filtroServicos) { filtroTipos.push('servico'); }
+    if (filtro.filtroOrgaos) { filtroTipos.push('orgao'); }
+    if (filtro.filtroPaginasEspeciais) { filtroTipos.push('pagina-especial'); }
+
+    if (filtroTipos.length > 0) {
+      filtroFn = _.flow(function (pg) {
+        return _.contains(filtroTipos, _.property('conteudo.tipo')(pg));
+      });
+    }
+
     paginas = _.filter(paginas, filtroFn);
 
     if (_.isEmpty(_.trim(filtro.busca))) {
