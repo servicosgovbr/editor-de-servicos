@@ -22,10 +22,6 @@ module.exports = {
       }
     };
 
-    this.visualizar = function () {
-      config.visualizar();
-    };
-
     this.editar = function () {
       config.editar();
     };
@@ -43,12 +39,9 @@ module.exports = {
 
     var visualizarView = '';
     if (ctrl.config.visualizar !== _.noop) {
-      visualizarView = m('button#visualizar', {
-        onclick: _.bind(ctrl.visualizar, ctrl),
-      }, [
-        m('i.fa.fa-eye'),
-        m.trust('&nbsp; Visualizar')
-      ]);
+      visualizarView = m.component(require('cabecalho/visualizar-button'), {
+        visualizar: ctrl.config.visualizar
+      });
     }
 
     var publicarView = '';
