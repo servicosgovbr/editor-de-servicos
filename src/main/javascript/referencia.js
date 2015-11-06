@@ -4,14 +4,23 @@ var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
 
 var tiposDePaginaList = [
-  'Área de Interesse',
-  'Página Especial',
-  'Órgão',
-  'Serviço'
+  {
+    id: 'Área de Interesse',
+    text: 'Área de Interesse'
+  }, {
+    id: 'Página Especial',
+    text: 'Página Temática'
+  }, {
+    id: 'Órgão',
+    text: 'Órgão'
+  }, {
+    id: 'Serviço',
+    text: 'Serviço'
+  }
 ].map(function (t) {
   return {
-    id: slugify(t),
-    text: t
+    id: slugify(t.id),
+    text: t.text
   };
 });
 
