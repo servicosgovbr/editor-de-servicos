@@ -5,25 +5,26 @@
 
   .busca {
     background: #F7F7F7;
-    padding-top: $tamanho-do-cabecalho + 2em;
     padding-bottom: 20px;
     padding-left: 20px;
     margin-bottom: 15px;
+    padding-top: 2em;
+    margin-top: 4em;
     @include span-columns(12);
 
     input[type=search] {
-      @include span-columns(9);
+      @include span-columns(11.7);
     }
 
     label {
-      @include span-columns(3);
       display: inline-block;
-      margin-right: 0;
+      margin-right: 10px;
       margin-bottom: 0;
-      position: relative;
       font-size: 13px;
-      top: -5px;
-      float: right;
+
+      input {
+        margin-right: 0;
+      }
     }
 
     .novo {
