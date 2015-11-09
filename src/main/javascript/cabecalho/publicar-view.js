@@ -4,6 +4,15 @@ var safeGet = require('utils/code-checks').safeGet;
 var avisos = require('utils/avisos');
 var promise = require('utils/promise');
 
+function botaoQueEspera(flagProp, opts) {
+  return m('button#' + opts.id, {
+      onclick: opts.onclick,
+      disabled: flagProp() ? 'disabled' : ''
+    }, flagProp() ? m('i.fa.fa-spin.fa-spinner')
+     : m('i.fa.fa-' + opts.icon)
+  );
+}
+
 module.exports = {
   controller: function (args) {
 
@@ -43,21 +52,20 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('span', [
+    return m('span#publicar-view', [
       'Publicar alterações?',
-
-      m('button#descartar', {
+      m.trust('&nbsp&nbsp'),
+      botaoQueEspera(ctrl.operando, {
+        id: 'descartar',
         onclick: _.bind(ctrl.descartarClick, ctrl),
-        disabled: ctrl.operando() ? 'disabled' : ''
-      }, 'N'),
-
-      m('button#publicar', {
+        icon: 'times'
+      }),
+      botaoQueEspera(ctrl.operando, {
+        id: 'publicar',
         onclick: _.bind(ctrl.publicarClick, ctrl),
-        disabled: ctrl.operando() ? 'disabled' : ''
-      }, 'Y')
-
+        icon: 'check'
+      })
     ]);
-
   }
 
 };

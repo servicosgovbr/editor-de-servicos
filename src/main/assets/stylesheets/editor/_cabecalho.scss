@@ -46,34 +46,43 @@ header {
     line-height: 2.25em;
   }
 
-  #salvar, #publicar, #visualizar, #editar, #nova-pagina, #permissoes {
+  #publicar-view {
+    text-transform: uppercase;
+    font-size: 12px;
+    padding-right: 10px;
+    float: right;
+  }
+
+  #salvar, #publicar, #descartar, #visualizar, #editar, #nova-pagina, #permissoes {
     float: right;
     margin-top: em(2);
     color: $branco;
     margin-right: 1em;
     font-size: 14px;
     background-color: $verde;
-    border-bottom: 2px solid #199772;
-    border-right: 2px solid #199772;
-    border-top: 3px solid $verde; 
     padding-bottom: 9px;
     margin-left: -6px;
+    text-transform: uppercase;
 
     &:hover {
       background-color: #199772;
-      border-top: 3px solid #199772; 
     }
   }
 
-  #publicar, #visualizar, #permissoes {
+  #visualizar, #permissoes {
     background-color: #2355b1;
-    border-bottom: 2px solid #244e9d;
-    border-right: 2px solid #244e9d;
-    border-top: 3px solid #2355b1; 
 
     &:hover {
       background-color: #244e9d;
       border-top: 3px solid #244e9d; 
+    }
+  }
+
+  #descartar {
+    background-color: #fb445a;
+
+    &:hover {
+      background-color: #ed0521;
     }
   }
 
