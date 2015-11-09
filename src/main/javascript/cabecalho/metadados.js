@@ -6,6 +6,7 @@ module.exports = {
     var config = _.merge({
       salvar: _.noop,
       publicar: _.noop,
+      descartar: _.noop,
       visualizar: _.noop,
       editar: _.noop,
     }, args);
@@ -34,8 +35,9 @@ module.exports = {
 
     var publicarView = '';
     if (ctrl.config.publicar !== _.noop) {
-      publicarView = m.component(require('cabecalho/publicar-button'), {
-        publicar: ctrl.config.publicar
+      publicarView = m.component(require('cabecalho/publicar-view'), {
+        publicar: ctrl.config.publicar,
+        descartar: ctrl.config.descartar
       });
     }
 

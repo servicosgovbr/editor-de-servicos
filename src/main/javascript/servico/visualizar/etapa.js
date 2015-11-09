@@ -17,9 +17,9 @@ module.exports = {
                 m('.etapa markdown', m.trust(ctrl.converter.makeHtml(etapa.descricao()))),
                 m.component(m.component(require('servico/visualizar/documentos'), etapa.documentos())),
                 m.component(m.component(require('servico/visualizar/custos'), {
-                  gratuidade: ctrl.servico.gratuidade(),
-                  custos: etapa.custos()
-                })),
+          gratuidade: ctrl.servico.gratuidade(),
+          custos: etapa.custos()
+        })),
                 m.component(m.component(require('servico/visualizar/canais-de-prestacao'), etapa.canaisDePrestacao()))
             ]);
     }));

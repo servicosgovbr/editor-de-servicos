@@ -43,7 +43,7 @@ describe('deve limpar > servico >', function () {
     expect(limparModelo(servico).nomesPopulares()).toEqual(['nome']);
   });
 
-  it('gratuidade deve manter valor', function() {
+  it('gratuidade deve manter valor', function () {
     expect(limparModelo(servico).gratuidade()).toEqual(false);
   });
 

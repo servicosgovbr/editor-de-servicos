@@ -3,7 +3,7 @@
 var safeGet = require('utils/code-checks').safeGet;
 
 module.exports = {
-  controller: function(args) {
+  controller: function (args) {
     this.visualizar = safeGet(args, 'visualizar');
 
     this.onClick = function () {
@@ -11,7 +11,7 @@ module.exports = {
     };
   },
 
-  view: function(ctrl) {
+  view: function (ctrl) {
     return m('button#visualizar', {
       onclick: _.bind(ctrl.onClick, ctrl),
     }, [
@@ -20,4 +20,3 @@ module.exports = {
     ]);
   }
 };
-

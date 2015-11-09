@@ -3,7 +3,7 @@
 var safeGet = require('utils/code-checks').safeGet;
 
 module.exports = {
-  controller: function(args) {
+  controller: function (args) {
     this.salvar = safeGet(args, 'salvar');
 
     this.salvando = m.prop(false);
@@ -23,7 +23,7 @@ module.exports = {
     };
   },
 
-  view: function(ctrl) {
+  view: function (ctrl) {
     return m('button#salvar', {
       onclick: _.bind(ctrl.onClick, ctrl),
       disabled: ctrl.salvando() ? 'disabled' : ''
@@ -36,4 +36,3 @@ module.exports = {
     ]);
   }
 };
-

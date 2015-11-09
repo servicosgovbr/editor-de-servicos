@@ -6,12 +6,12 @@ function callIfFunction(fn) {
   }
 }
 
-var pipeListen = _.curry(function(fn, first) {
+var pipeListen = _.curry(function (fn, first) {
   callIfFunction(fn);
   return first;
 });
 
-var rethrowListen = _.curry(function(fn, first) {
+var rethrowListen = _.curry(function (fn, first) {
   callIfFunction(fn);
   throw first;
 });
@@ -43,13 +43,13 @@ function _deferredPromise(fn) {
 }
 
 function rejected(first) {
-  return _deferredPromise(function(d) {
+  return _deferredPromise(function (d) {
     d.reject(first);
   });
 }
 
 function resolved(first) {
-  return _deferredPromise(function(d) {
+  return _deferredPromise(function (d) {
     d.resolve(first);
   });
 }

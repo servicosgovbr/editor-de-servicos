@@ -6,18 +6,18 @@ module.exports = {
     function metadados() {
       if (!args.metadados) {
         return [m('span.novo',
-          m('a.button#nova-pagina', {
-            href: '/editar/pagina/nova'
-          }, [
+            m('a.button#nova-pagina', {
+              href: '/editar/pagina/nova'
+            }, [
               m('i.fa.fa-file-text-o'),
               m.trust('Nova página')
           ])
         ),
 
         m('span.novo',
-          m('a.button#permissoes', {
-            href: '/editar/servico/novo'
-          }, [
+            m('a.button#permissoes', {
+              href: '/editar/servico/novo'
+            }, [
               m('i.fa.fa-user-plus'),
               m.trust('Gerenciar permissões')
           ])

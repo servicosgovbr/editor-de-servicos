@@ -10,13 +10,13 @@ function erro(msg) {
 }
 
 function sucessoFn(msg) {
-  return function() {
+  return function () {
     sucesso(msg);
   };
 }
 
 function erroFn(msg) {
-  return function() {
+  return function () {
     erro(msg);
   };
 }

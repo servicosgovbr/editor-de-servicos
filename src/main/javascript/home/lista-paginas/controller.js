@@ -22,10 +22,18 @@ module.exports = function (args) {
     }
 
     var filtroTipos = [];
-    if (filtro.filtroServicos) { filtroTipos.push('servico'); }
-    if (filtro.filtroOrgaos) { filtroTipos.push('orgao'); }
-    if (filtro.filtroPaginasEspeciais) { filtroTipos.push('pagina-especial'); }
-    if (filtro.filtroAreasDeInteresse) { filtroTipos.push('area-de-interesse'); }
+    if (filtro.filtroServicos) {
+      filtroTipos.push('servico');
+    }
+    if (filtro.filtroOrgaos) {
+      filtroTipos.push('orgao');
+    }
+    if (filtro.filtroPaginasEspeciais) {
+      filtroTipos.push('pagina-especial');
+    }
+    if (filtro.filtroAreasDeInteresse) {
+      filtroTipos.push('area-de-interesse');
+    }
 
     if (filtroTipos.length > 0) {
       filtroFn = _.flow(function (pg) {

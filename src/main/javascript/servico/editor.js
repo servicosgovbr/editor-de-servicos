@@ -4,6 +4,7 @@ var CabecalhoModel = require('cabecalho/cabecalho-model');
 var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var publicarServico = require('xml/publicar');
+var descartarServico = require('xml/descartar');
 var servicoEmEdicao = require('servico/servico-em-edicao');
 var promise = require('utils/promise');
 
@@ -52,6 +53,11 @@ module.exports = {
         endComputation);
     };
 
+    this.descartar = function () {
+      return descartarServico(this.servico())
+        .then(this._servicoSalvo);
+    };
+
     this.visualizar = function () {
       var id = slugify(this.servico().nome());
       servicoEmEdicao.manter(this.servico);
@@ -91,6 +97,7 @@ module.exports = {
           salvar: _.bind(ctrl.salvar, ctrl),
           publicar: _.bind(ctrl.publicar, ctrl),
           visualizar: _.bind(ctrl.visualizar, ctrl),
+          descartar: _.bind(ctrl.descartar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
         m.component(require('componentes/menu-lateral'), binding),

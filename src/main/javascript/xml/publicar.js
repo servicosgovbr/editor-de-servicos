@@ -10,7 +10,7 @@ function publicar(servico) {
   return m.request({
     method: 'PUT',
     url: '/editar/api/pagina/servico/' + idServico
-  }).then(function() {
+  }).then(function () {
     return servico;
   });
 }
@@ -23,9 +23,8 @@ function validar(servico) {
   }
 }
 
-module.exports = function(servico) {
-   return promise.resolved(servico)
-            .then(validar)
-            .then(publicar);
+module.exports = function (servico) {
+  return promise.resolved(servico)
+    .then(validar)
+    .then(publicar);
 };
-
