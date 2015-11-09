@@ -30,31 +30,23 @@ module.exports = {
               oninput: m.withAttr('value', ctrl.filtro)
             }),
             m('label', [
-              m('input[type=checkbox]', {
-                onclick: m.withAttr('checked', ctrl.filtroAreasDeInteresse)
-              }),
-              'Páginas de áreas de interesse'
+              m('input[type=checkbox]', { onclick: m.withAttr('checked', ctrl.filtroAreasDeInteresse) }),
+              'Páginas de áreas de interesse', m.component(require('tooltips').paginasAreasInteresse)
             ]),
 
             m('label', [
-              m('input[type=checkbox]', {
-                onclick: m.withAttr('checked', ctrl.filtroOrgaos)
-              }),
-              'Páginas de órgãos'
+              m('input[type=checkbox]', { onclick: m.withAttr('checked', ctrl.filtroOrgaos) }),
+              'Páginas de órgãos', m.component(require('tooltips').paginasOrgaos)
             ]),
 
             m('label', [
-              m('input[type=checkbox]', {
-                onclick: m.withAttr('checked', ctrl.filtroPaginasEspeciais)
-              }),
-              'Páginas temáticas'
+              m('input[type=checkbox]', { onclick: m.withAttr('checked', ctrl.filtroPaginasEspeciais) }),
+              'Páginas temáticas', m.component(require('tooltips').paginasTematicas)
             ]),
 
             m('label', [
-              m('input[type=checkbox]', {
-                onclick: m.withAttr('checked', ctrl.filtroServicos)
-              }),
-              'Páginas de serviços'
+              m('input[type=checkbox]', { onclick: m.withAttr('checked', ctrl.filtroServicos) }),
+              'Páginas de serviços', m.component(require('tooltips').paginasServicos)
             ])
           ]),
           m.component(ListaPaginas, {

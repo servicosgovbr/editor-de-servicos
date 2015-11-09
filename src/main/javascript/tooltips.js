@@ -37,5 +37,9 @@ module.exports = {
   conteudoPaginaEspecial: t('Descreva o conteúdo desta página especial. Você pode incluir links, listas, etc.'),
   escolhaAreaInteresse: t('Selecione a Área de Interesse que está sendo criada ou editada.'),
   conteudoAreaInteresse: t('Descreva o que é esta Área de Interesse e porque importa para o cidadão.'),
-  contatoOrgao: t('Caso o serviço possua um contato direto, indique-o para que o cidadão tire dúvidas.')
+  contatoOrgao: t('Caso o serviço possua um contato direto, indique-o para que o cidadão tire dúvidas.'),
+  paginasAreasInteresse: t('São as páginas das categorias (áreas de interesse) que organizam os serviços.'),
+  paginasOrgaos: t('São as páginas com conteúdos dos órgãos responsáveis pelos serviços do Governo Federal.'),
+  paginasTematicas: t('São as páginas que agrupam conteúdos específicos e temáticos. Exemplo: DARF, CPF.'),
+  paginasServicos: t('São as páginas dos serviços públicos disponibilizados no Portal de Serviços')
 };

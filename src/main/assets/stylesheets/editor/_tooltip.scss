@@ -9,8 +9,9 @@
   width: 20pt;
   display: inline-block;
   text-align: center;
-  padding-top: .2em;
-  font-size: 16px;
+  padding-top: 3px;
+  padding-right: 2px;
+  font-size: 17px !important;
   text-transform: initial;
 
   @extend .fa;
@@ -66,3 +67,18 @@
     }
   }
 }
+
+
+label .tooltip {
+  margin-left: 0.6em;
+  border: 2px solid #ddd;
+  background-color: #eee;
+  border-radius: 999em;
+  height: 16pt;
+  width: 16pt;
+  display: inline-block;
+  text-align: center;
+  padding-top: 2px;
+  padding-right: 1px;
+  font-size: 13px !important;
+  }
