@@ -6,11 +6,9 @@ var promise = require('utils/promise');
 
 function botaoQueEspera(flagProp, opts) {
   return m('button#' + opts.id, {
-      onclick: opts.onclick,
-      disabled: flagProp() ? 'disabled' : ''
-    }, flagProp() ? m('i.fa.fa-spin.fa-spinner')
-     : m('i.fa.fa-' + opts.icon)
-  );
+    onclick: opts.onclick,
+    disabled: flagProp() ? 'disabled' : ''
+  }, flagProp() ? m('i.fa.fa-spin.fa-spinner') : m('i.fa.fa-' + opts.icon));
 }
 
 module.exports = {

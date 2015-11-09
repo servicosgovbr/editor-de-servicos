@@ -54,7 +54,7 @@ module.exports = {
     };
 
     this.descartar = function () {
-      return descartarServico(this.servico())
+      return descartarServico(this.servico(), this.cabecalho.metadados)
         .then(this._servicoSalvo);
     };
 
