@@ -14,10 +14,6 @@ module.exports = {
       delay: 1500
     });
 
-    this.editar = function () {
-      config.editar();
-    };
-
     this.config = config;
   },
 
@@ -45,15 +41,10 @@ module.exports = {
 
     var editarView = '';
     if (ctrl.config.editar !== _.noop) {
-      editarView = m('button#editar', {
-        onclick: _.bind(ctrl.editar, ctrl)
-      }, [
-              m('i.fa.fa-pencil'),
-              m.trust('&nbsp; Editar')
-          ]);
+      editarView = m.component(require('cabecalho/editar-button'), {
+        editar: ctrl.config.editar
+      });
     }
-
-
 
     return m('#metadados', [
       m.component(require('componentes/status-conexao')),

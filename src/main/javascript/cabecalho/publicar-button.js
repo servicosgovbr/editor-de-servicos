@@ -10,7 +10,7 @@ module.exports = {
     this.publicar = safeGet(args, 'publicar');
     this.publicando = m.prop(false);
 
-    this.onClick = function () {
+    this.publicarClick = function () {
       this.publicando(true);
       m.redraw();
 
@@ -25,11 +25,16 @@ module.exports = {
         }, this)
       );
     };
+
+    this.rejeitarClick = function () {
+
+    };
+
   },
 
   view: function(ctrl) {
     return m('button#publicar', {
-      onclick: _.bind(ctrl.onClick, ctrl),
+      onclick: _.bind(ctrl.publicarClick, ctrl),
       disabled: ctrl.publicando() ? 'disabled' : ''
     }, ctrl.publicando() ? [
       m('i.fa.fa-spin.fa-spinner'),
