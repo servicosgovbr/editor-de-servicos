@@ -68,7 +68,7 @@ public class DescartarAlteracoesCartaControllerIntegrationTest {
                 .andExpect(content().xml("<servico><nome>Carta A</nome><sigla>CA</sigla></servico>"));
 
         api.descartarCarta("carta-a")
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
 
         api.editarCarta("carta-a")
                 .andExpect(status().isOk())
@@ -92,7 +92,7 @@ public class DescartarAlteracoesCartaControllerIntegrationTest {
                 .andExpect(content().xml("<servico><nome>Carta B</nome><sigla>CA</sigla></servico>"));
 
         api.descartarCarta("carta-b")
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
 
         api.editarCarta("carta-b")
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ public class DescartarAlteracoesCartaControllerIntegrationTest {
                 .andExpect(content().xml("<servico> <nome>Carta Nova</nome> </servico>"));
 
         api.descartarCarta("carta-nova")
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
 
         api.editarCarta("carta-nova")
                 .andExpect(status().isNotFound());
@@ -118,13 +118,13 @@ public class DescartarAlteracoesCartaControllerIntegrationTest {
     @Test
     public void descartarAlteracoesDeServicosInexistentesRetornaStatusOk() throws Exception {
         api.descartarCarta("nao-existe")
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
     public void descartarAlteracoesDeServicosSemEdicoesRetornaStatusOk() throws Exception {
         api.descartarCarta("carta-a")
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 }
 

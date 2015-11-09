@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static lombok.AccessLevel.PRIVATE;
@@ -30,9 +31,11 @@ class DescartarAlteracoesCartaController {
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/editar/api/pagina/servico/{id}/descartar", method = POST)
-    void descartar(@PathVariable("id") String id) {
+    RedirectView descartar(@PathVariable("id") String id) {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
         carta.descartarAlteracoes();
+
+        return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
     }
 
 }
