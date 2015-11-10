@@ -8,19 +8,19 @@
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
-<div th:if="${param.logout}">
+<div th:if="${param.sair}">
     You have been logged out.
 </div>
 
 <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/editar/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
+<form th:action="@{/editar/sair}" method="post">
+    <input type="submit" value="Sair do editor"/>
 </form>
 
-<form th:action="@{/editar/login}" method="post">
+<form th:action="@{/editar/autenticar}" method="post">
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="Autenticar"/></div>
 </form>
 </body>
 </html>

@@ -16,7 +16,7 @@ import static org.springframework.http.HttpMethod.*;
 @EnableWebMvcSecurity
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
-    public static final String LOGIN_URL = "/editar/login";
+    public static final String LOGIN_URL = "/editar/autenticar";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -26,17 +26,17 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .formLogin()
-                    .loginPage("/editar/login")
+                    .loginPage("/editar/autenticar")
                     .permitAll()
                 .and()
 
                 .logout()
-                .logoutUrl("/editar/logout")
-                .logoutSuccessUrl("/editar/login?logout")
+                .logoutUrl("/editar/sair")
+                .logoutSuccessUrl("/editar/autenticar?sair")
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/editar/login").permitAll()
+                .antMatchers("/login", "/editar/autenticar").permitAll()
                 .antMatchers(DELETE, "/editar/**").authenticated()
                 .antMatchers(PATCH, "/editar/**").authenticated()
                 .antMatchers(PUT, "/editar/**").authenticated()

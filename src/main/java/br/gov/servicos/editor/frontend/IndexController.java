@@ -30,7 +30,7 @@ class IndexController {
         return new ModelAndView("index");
     }
 
-    @RequestMapping("/editar/login")
+    @RequestMapping("/editar/autenticar")
     ModelAndView login() {
         return new ModelAndView("login");
     }
