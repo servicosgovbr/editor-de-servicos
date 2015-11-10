@@ -30,6 +30,11 @@ class IndexController {
         return new ModelAndView("index");
     }
 
+    @RequestMapping("/editar/login")
+    ModelAndView login() {
+        return new ModelAndView("login");
+    }
+
     @RequestMapping("/editar/ajuda-markdown")
     ModelAndView ajudaComMarkdown() {
         return new ModelAndView("ajuda-markdown");
