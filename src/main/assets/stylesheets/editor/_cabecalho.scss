@@ -62,17 +62,24 @@ header {
     margin-right: 1em;
     font-size: 14px;
     background-color: $verde;
+    border-bottom: 2px solid #199772;
+    border-right: 2px solid #199772;
+    border-top: 3px solid $verde;
     padding-bottom: 9px;
     margin-left: -6px;
     text-transform: uppercase;
 
     &:hover {
       background-color: #199772;
+      border-top: 3px solid #199772;
     }
   }
 
   #visualizar, #permissoes {
     background-color: #2355b1;
+    border-bottom: 2px solid #244e9d;
+    border-right: 2px solid #244e9d;
+    border-top: 3px solid #2355b1;
 
     &:hover {
       background-color: #244e9d;
@@ -82,9 +89,13 @@ header {
 
   #descartar {
     background-color: #fb445a;
+    border-bottom: 2px solid #da4a4a;
+    border-right: 2px solid #da4a4a;
+    border-top: 3px solid #fb445a;
 
     &:hover {
-      background-color: #ed0521;
+      background-color: #da4a4a;
+      border-top: #da4a4a;
     }
   }
 
