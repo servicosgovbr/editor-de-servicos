@@ -38,9 +38,8 @@ module.exports = {
 
     return m('header', [
       m('', m('a[href=/editar]', m('h1', [setaVoltar, ' Editor de Serviços']))),
-
-      logout(),
-      metadados()
+      metadados(),
+      logout()
     ]);
   }
 };
