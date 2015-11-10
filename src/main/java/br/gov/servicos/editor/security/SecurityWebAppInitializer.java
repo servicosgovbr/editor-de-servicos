@@ -50,7 +50,16 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                  .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+                .withUser("user").password("password").roles("USER").and()
+                .withUser("jkirchne@thoughtworks.com").password("password").roles("ADMIN").and()
+                .withUser("jean.kirchner@gmail.com").password("password").roles("ADMIN").and()
+                .withUser("ojanequi@thoughtworks.com").password("password").roles("ADMIN").and()
+                .withUser("srosa@thoughtworks.com").password("password").roles("ADMIN").and()
+                .withUser("bleite@thoughtworks.com").password("password").roles("ADMIN").and()
+                .withUser("gfreita@thoughtworks.com").password("password").roles("ADMIN").and()
+
+                .withUser("almeidafab@gmail.com").password("password").roles("ADMIN").and()
+                .withUser("formiga.mauricio@gmail.com").password("password").roles("ADMIN");
     }
 
 }
