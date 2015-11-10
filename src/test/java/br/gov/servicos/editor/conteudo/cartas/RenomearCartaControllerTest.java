@@ -46,9 +46,7 @@ public class RenomearCartaControllerTest {
     @Test
     public void removeCartaExistente() throws Exception {
         given(userProfiles.get()).willReturn(PROFILE);
-
         controller.renomear("", "novo-id");
-
         verify(carta).renomear(PROFILE, "novo-id");
     }
 }

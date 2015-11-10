@@ -17,7 +17,7 @@ module.exports = function (args) {
     }
     if (filtro.orgao) {
       filtroFn = _.flow(function (pg) {
-        return filtro.orgao === _.property('conteudo.orgao.id')(pg);
+        return filtro.orgao === _.get(pg, 'conteudo.orgao.id');
       });
     }
 
@@ -37,7 +37,7 @@ module.exports = function (args) {
 
     if (filtroTipos.length > 0) {
       filtroFn = _.flow(function (pg) {
-        return _.contains(filtroTipos, _.property('conteudo.tipo')(pg));
+        return _.contains(filtroTipos, _.get('conteudo.tipo'));
       });
     }
 

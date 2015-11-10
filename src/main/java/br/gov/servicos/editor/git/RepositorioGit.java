@@ -325,7 +325,6 @@ public class RepositorioGit {
 
                         log.info(marker, "git push em {}", branchRemoto);
                     }));
-
         } catch (GitAPIException e) {
             log.error(append("push.branch", branchRemoto), "git push falhou", e);
         }

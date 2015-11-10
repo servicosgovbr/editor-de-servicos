@@ -49,12 +49,15 @@ module.exports = {
       m.startComputation();
 
       return promise.onSuccOrError(
-        this.salvar().then(publicarServico),
+        this.salvar()
+          .then(_.bind(function(s) {
+            return publicarServico(s, this.cabecalho.metadados);
+          }, this)),
         endComputation);
     };
 
     this.descartar = function () {
-      return descartarServico(this.servico())
+      return descartarServico(this.servico(), this.cabecalho.metadados)
         .then(this._servicoSalvo);
     };
 

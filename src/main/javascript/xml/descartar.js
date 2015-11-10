@@ -6,9 +6,9 @@ var slugify = require('slugify');
 var validacoes = require('utils/validacoes');
 var importarXml = require('xml/importar');
 
-function descartar(servico) {
+function descartar(servico, metadados) {
   var idServico = slugify(servico.nome());
-  return api.descartar(idServico);
+  return api.descartar(idServico, metadados);
 }
 
 function validaNome(servico) {
@@ -18,10 +18,11 @@ function validaNome(servico) {
   throw 'Erro na validação do nome do serviço';
 }
 
-module.exports = function(servico) {
-   return promise.resolved(servico)
-            .then(validaNome)
-            .then(descartar)
-            .then(importarXml);
+module.exports = function (servico, metadados) {
+  return promise.resolved(servico)
+    .then(validaNome)
+    .then(function (s) {
+      return descartar(s, metadados);
+    })
+    .then(importarXml);
 };
-

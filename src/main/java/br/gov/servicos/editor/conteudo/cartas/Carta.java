@@ -35,20 +35,16 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class Carta extends ConteudoVersionado<Carta.Servico> {
 
-    @Getter
-    String id;
-
     Siorg siorg;
 
     public Carta(String id, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml, Siorg siorg) {
-        super(repositorio, SERVICO, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
-        this.id = id;
+        super(id, repositorio, SERVICO, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
         this.siorg = siorg;
     }
 
     @Override
     public Path getCaminho() {
-        return getTipo().getCaminhoPasta().resolve(id + ".xml");
+        return getTipo().getCaminhoPasta().resolve(getId() + ".xml");
     }
 
     @Override

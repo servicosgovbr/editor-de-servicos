@@ -23,12 +23,8 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class PaginaVersionada extends ConteudoVersionado<Pagina> {
 
-    @Getter
-    String id;
-
     PaginaVersionada(String id, TipoPagina tipo, RepositorioGit repositorio, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
-        super(repositorio, tipo, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
-        this.id = id;
+        super(id, repositorio, tipo, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml);
     }
 
     protected Pagina getMetadadosConteudo() {

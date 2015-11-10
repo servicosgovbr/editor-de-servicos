@@ -2,6 +2,7 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.fixtures.UserProfileConfigParaTeste;
+import br.gov.servicos.editor.git.Metadados;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,8 @@ public class PublicarCartaControllerTest {
     @Before
     public void setUp() throws Exception {
         controller = new PublicarCartaController(factory, userProfiles);
+        given(carta.getMetadados())
+                .willReturn(new Metadados<>());
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
     }

@@ -34,7 +34,6 @@ class DescartarAlteracoesCartaController {
     RedirectView descartar(@PathVariable("id") String id) {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
         carta.descartarAlteracoes();
-
         return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
     }
 
