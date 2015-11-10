@@ -7,16 +7,15 @@ var promise = require('utils/promise');
 function botaoQueEspera(flagProp, opts) {
   return m('button#' + opts.id, {
     onclick: opts.onclick,
-    disabled: flagProp() ? 'disabled' : ''
+    disabled: (opts.disabled || flagProp() ? 'disabled' : '')
   }, flagProp() ? m('i.fa.fa-spin.fa-spinner') : m('i.fa.fa-' + opts.icon));
 }
 
 module.exports = {
-  controller: function (args) {
 
+  controller: function (args) {
     this.publicar = safeGet(args, 'publicar');
     this.descartar = safeGet(args, 'descartar');
-
     this.operando = m.prop(false);
 
     this.opera = function (operacao) {
@@ -46,24 +45,35 @@ module.exports = {
           avisos.sucessoFn('Alterações rejeitadas, recarregando dados de serviço'),
           avisos.erroFn('Não foi possível descartar as alterações')));
     };
-
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
+    var meta = args.metadados;
+
+    function podeDescartar() {
+      return _.get(meta, 'editado.revisao') && (_.get(meta, 'editado.revisao') !== _.get(meta, 'publicado.revisao'));
+    }
+
+    function podePublicar() {
+      return podeDescartar();
+    }
+
     return m('span#publicar-view', [
       'Publicar alterações?',
       m.trust('&nbsp&nbsp'),
       botaoQueEspera(ctrl.operando, {
         id: 'descartar',
         onclick: _.bind(ctrl.descartarClick, ctrl),
-        icon: 'times'
+        icon: 'times',
+        disabled: !podeDescartar()
       }),
+
       botaoQueEspera(ctrl.operando, {
         id: 'publicar',
         onclick: _.bind(ctrl.publicarClick, ctrl),
-        icon: 'check'
+        icon: 'check',
+        disabled: !podePublicar()
       })
     ]);
   }
-
 };

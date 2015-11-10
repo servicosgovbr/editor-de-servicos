@@ -185,7 +185,7 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @CacheEvict
-    public void renomear(UserProfile profile, String novoNome) {
+    public String renomear(UserProfile profile, String novoNome) {
         String novoId = slugify.slugify(novoNome);
         String novoBranch = tipo.prefixo() + novoId;
 
@@ -210,6 +210,8 @@ public abstract class ConteudoVersionado<T> {
             }
             return null;
         }));
+
+        return novoId;
     }
 
     @CacheEvict

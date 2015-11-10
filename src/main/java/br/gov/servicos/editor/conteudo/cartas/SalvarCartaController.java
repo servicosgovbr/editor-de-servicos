@@ -38,12 +38,12 @@ public class SalvarCartaController {
     @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = POST)
     RedirectView salvar(
             @PathVariable("id") String id,
-            @RequestBody DOMSource servico
-    ) throws Exception {
+            @RequestBody DOMSource servico) throws Exception {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
 
         String conteudo = reformatadorXml.formata(servico);
         carta.salvar(userProfiles.get(), conteudo);
+
         return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
     }
 

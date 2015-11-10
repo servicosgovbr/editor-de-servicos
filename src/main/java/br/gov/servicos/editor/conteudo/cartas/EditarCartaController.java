@@ -1,8 +1,8 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.git.Metadados;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static java.lang.String.valueOf;
-import static java.util.Optional.ofNullable;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -43,19 +42,9 @@ class EditarCartaController {
             throw new ConteudoInexistenteException(carta);
         }
 
-        Metadados<Carta.Servico> metadados = carta.getMetadados();
-
-        ofNullable(metadados.getPublicado()).ifPresent(r -> {
-            response.setHeader("X-Git-Commit-Publicado", r.getHash());
-            response.setHeader("X-Git-Autor-Publicado", r.getAutor());
-            response.setHeader("X-Git-Horario-Publicado", valueOf(r.getHorario().getTime()));
-        });
-
-        ofNullable(metadados.getEditado()).ifPresent(r -> {
-            response.setHeader("X-Git-Commit-Editado", r.getHash());
-            response.setHeader("X-Git-Autor-Editado", r.getAutor());
-            response.setHeader("X-Git-Horario-Editado", valueOf(r.getHorario().getTime()));
-        });
+        MetadadosUtils.metadados(carta)
+                .entrySet()
+                .forEach(e -> response.setHeader(e.getKey(), e.getValue()));
 
         return carta.getConteudoRaw();
     }

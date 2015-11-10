@@ -1,16 +1,13 @@
 'use strict';
 
+var api = require('api');
 var promise = require('utils/promise');
 var slugify = require('slugify');
 var validacoes = require('utils/validacoes');
 
-function publicar(servico) {
+function publicar(servico, metadados) {
   var idServico = slugify(servico.nome());
-
-  return m.request({
-    method: 'PUT',
-    url: '/editar/api/pagina/servico/' + idServico
-  }).then(function () {
+  return api.publicar(idServico, metadados).then(function () {
     return servico;
   });
 }
@@ -23,8 +20,10 @@ function validar(servico) {
   }
 }
 
-module.exports = function (servico) {
+module.exports = function (servico, metadados) {
   return promise.resolved(servico)
     .then(validar)
-    .then(publicar);
+    .then(function(s) {
+      return publicar(s, metadados);
+    });
 };

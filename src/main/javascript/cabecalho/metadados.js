@@ -37,7 +37,8 @@ module.exports = {
     if (ctrl.config.publicar !== _.noop) {
       publicarView = m.component(require('cabecalho/publicar-view'), {
         publicar: ctrl.config.publicar,
-        descartar: ctrl.config.descartar
+        descartar: ctrl.config.descartar,
+        metadados: ctrl.config.cabecalho.metadados()
       });
     }
 
