@@ -38,6 +38,9 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 @CacheConfig(cacheNames = METADADOS, keyGenerator = "geradorDeChavesParaCacheDeCommitsRecentes")
 public abstract class ConteudoVersionado<T> {
 
+    @Getter
+    private String id;
+
     @Getter(PROTECTED)
     RepositorioGit repositorio;
 
@@ -52,7 +55,8 @@ public abstract class ConteudoVersionado<T> {
 
     ReformatadorXml reformatadorXml;
 
-    public ConteudoVersionado(RepositorioGit repositorio, TipoPagina tipo, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+    public ConteudoVersionado(String id, RepositorioGit repositorio, TipoPagina tipo, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
+        this.id = id;
         this.repositorio = repositorio;
         this.tipo = tipo;
         this.leitorDeArquivos = leitorDeArquivos;
@@ -60,8 +64,6 @@ public abstract class ConteudoVersionado<T> {
         this.slugify = slugify;
         this.reformatadorXml = reformatadorXml;
     }
-
-    public abstract String getId();
 
     public Path getCaminho() {
         return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
