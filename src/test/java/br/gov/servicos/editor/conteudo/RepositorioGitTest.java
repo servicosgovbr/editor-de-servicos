@@ -56,7 +56,7 @@ public class RepositorioGitTest {
 
     @BeforeClass
     public static void setUpOrigin() {
-        cloneBare("https://github.com/servicosgovbr/cartas-de-servico.git", github);
+        cloneBare("https://github.com/servicosgovbr/cartas-de-teste.git", github);
     }
 
     @Before
@@ -85,7 +85,7 @@ public class RepositorioGitTest {
 
     private void _caminhoRevisoes(RepositorioGit repo, File folder) {
         assertThat(repo.getCaminhoAbsoluto(), is(folder.toPath()));
-        assertThat(repo.getRevisaoMaisRecenteDoArquivo(Paths.get("README.md")), is(not(empty())));
+        assertThat(repo.getRevisaoMaisRecenteDoArquivo(Paths.get("LICENSE")), is(not(empty())));
         assertThat(repo.getRevisaoMaisRecenteDoBranch("master"), is(not(empty())));
     }
 
@@ -115,7 +115,7 @@ public class RepositorioGitTest {
         garanteQueAlteracaoFoiPara(upstream, "foo");
 
         repo1.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
-            Path arquivo = Paths.get("README.md");
+            Path arquivo = Paths.get("LICENSE");
             repo1.deleteLocalBranch("foo"); //git branch -D foo
             repo1.deleteRemoteBranch(R_HEADS + "foo"); //git push :foo
             repo1.remove(arquivo);
@@ -127,7 +127,7 @@ public class RepositorioGitTest {
         verificaSeBranchExisteLocalERemoto(clone1);
 
         repo1.comRepositorioAbertoNoBranch(R_HEADS + MASTER, uncheckedSupplier(() -> {
-            Path arquivo = repo1.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
+            Path arquivo = repo1.getCaminhoAbsoluto().resolve(Paths.get("LICENSE"));
             assertFalse(Files.exists(arquivo));
             return null;
         }));
@@ -162,7 +162,7 @@ public class RepositorioGitTest {
 
     private void moveBranch(RepositorioGit r) throws IOException {
         r.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
-            Path origem = Paths.get("README.md");
+            Path origem = Paths.get("LICENSE");
             Path destino = Paths.get("baz-bar.md");
             r.moveBranchPara("baz-bar");
             Files.move(r.getCaminhoAbsoluto().resolve(origem), r.getCaminhoAbsoluto().resolve(destino));
@@ -180,7 +180,7 @@ public class RepositorioGitTest {
         assertTrue(r.branches().anyMatch(n -> n.equals("baz-bar")));
 
         r.comRepositorioAbertoNoBranch("baz-bar", uncheckedSupplier(() -> {
-            Path antigo = r.getCaminhoAbsoluto().resolve(Paths.get("README.md"));
+            Path antigo = r.getCaminhoAbsoluto().resolve(Paths.get("LICENSE"));
             Path novo = r.getCaminhoAbsoluto().resolve(Paths.get("baz-bar.md"));
 
             r.pull();
@@ -197,7 +197,7 @@ public class RepositorioGitTest {
 
     private void garanteQueAlteracaoFoiRecebidaPor(RepositorioGit r, String alteracao) throws IOException {
         r.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
-            Path relativo = Paths.get("README.md");
+            Path relativo = Paths.get("LICENSE");
             Path absoluto = r.getCaminhoAbsoluto().resolve(relativo);
 
             r.pull();
@@ -224,7 +224,7 @@ public class RepositorioGitTest {
         r.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
             r.pull();
 
-            Path relativo = Paths.get("README.md");
+            Path relativo = Paths.get("LICENSE");
             Path absoluto = r.getCaminhoAbsoluto().resolve(relativo);
 
             Files.write(absoluto, asList(alteracao, "\n", absoluto.toString()), WRITE);
