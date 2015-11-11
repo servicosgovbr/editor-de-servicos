@@ -16,22 +16,25 @@ module.exports = {
   controller: function (args) {
     this.publicar = safeGet(args, 'publicar');
     this.descartar = safeGet(args, 'descartar');
-    this.operando = m.prop(false);
 
-    this.opera = function (operacao) {
-      this.operando(true);
+    this.publicando = m.prop(false);
+    this.descartando = m.prop(false);
+
+    this.opera = function (prop, operacao) {
+      prop(true);
       m.redraw();
 
       promise.onSuccOrError(
         operacao,
         _.bind(function () {
-          this.operando(false);
+          prop(false);
           m.redraw();
         }, this));
     };
 
     this.publicarClick = function () {
       this.opera(
+        this.publicando,
         this.publicar()
         .then(
           avisos.sucessoFn('Serviço publicado com sucesso!'),
@@ -40,6 +43,7 @@ module.exports = {
 
     this.descartarClick = function () {
       this.opera(
+        this.descartando,
         this.descartar()
         .then(
           avisos.sucessoFn('Alterações rejeitadas, recarregando dados de serviço'),
@@ -50,6 +54,8 @@ module.exports = {
   view: function (ctrl, args) {
     var meta = args.metadados;
 
+    var desabilitaBotoes = ctrl.publicando() || ctrl.descartando();
+
     function podeDescartar() {
       return _.get(meta, 'editado.revisao') && (_.get(meta, 'editado.revisao') !== _.get(meta, 'publicado.revisao'));
     }
@@ -58,21 +64,22 @@ module.exports = {
       return podeDescartar();
     }
 
+
     return m('span#publicar-view', [
       'Publicar alterações?',
       m.trust('&nbsp&nbsp'),
-      botaoQueEspera(ctrl.operando, {
+      botaoQueEspera(ctrl.descartando, {
         id: 'descartar',
         onclick: _.bind(ctrl.descartarClick, ctrl),
         icon: 'times',
-        disabled: !podeDescartar()
+        disabled: desabilitaBotoes || !podeDescartar()
       }),
 
-      botaoQueEspera(ctrl.operando, {
+      botaoQueEspera(ctrl.publicando, {
         id: 'publicar',
         onclick: _.bind(ctrl.publicarClick, ctrl),
         icon: 'check',
-        disabled: !podePublicar()
+        disabled: desabilitaBotoes || !podePublicar()
       })
     ]);
   }

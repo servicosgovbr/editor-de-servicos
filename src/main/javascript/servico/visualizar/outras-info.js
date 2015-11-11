@@ -63,7 +63,7 @@ module.exports = {
                 '. Em caso de dúvidas, reclamações ou sugestões favor contactá-',
                 ctrl.ehFeminino() ? 'la.' : 'lo.'
             ]),
-            m('p.orgao-contato', [
+        m('p.orgao-contato', [
                 'Para mais informações ou dúvidas sobre este serviço, entre em contato: ',
                 ctrl.servico.orgao().contato()
             ])),

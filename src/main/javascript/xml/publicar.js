@@ -23,7 +23,7 @@ function validar(servico) {
 module.exports = function (servico, metadados) {
   return promise.resolved(servico)
     .then(validar)
-    .then(function(s) {
+    .then(function (s) {
       return publicar(s, metadados);
     });
 };

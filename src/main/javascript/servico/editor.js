@@ -50,9 +50,9 @@ module.exports = {
 
       return promise.onSuccOrError(
         this.salvar()
-          .then(_.bind(function(s) {
-            return publicarServico(s, this.cabecalho.metadados);
-          }, this)),
+        .then(_.bind(function (s) {
+          return publicarServico(s, this.cabecalho.metadados);
+        }, this)),
         endComputation);
     };
 

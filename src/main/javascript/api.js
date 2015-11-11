@@ -3,7 +3,7 @@
 var extrairMetadados = require('utils/extrair-metadados');
 
 module.exports = {
-  publicar: function(id, metadados) {
+  publicar: function (id, metadados) {
     metadados = metadados || m.prop({});
 
     return m.request({
