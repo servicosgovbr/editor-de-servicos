@@ -36,7 +36,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/editar/autenticar").permitAll()
+                .antMatchers("/editar/autenticar", "/editar/api/**").permitAll()
                 .antMatchers(DELETE, "/editar/**").authenticated()
                 .antMatchers(PATCH, "/editar/**").authenticated()
                 .antMatchers(PUT, "/editar/**").authenticated()
