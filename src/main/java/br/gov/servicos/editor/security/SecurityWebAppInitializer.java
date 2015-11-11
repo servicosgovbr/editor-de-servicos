@@ -1,22 +1,23 @@
 package br.gov.servicos.editor.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import static org.springframework.http.HttpMethod.*;
 
-@Order(1)
-@Configuration
-@EnableWebMvcSecurity
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     public static final String LOGIN_URL = "/editar/autenticar";
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public SecurityWebAppInitializer(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -48,18 +49,41 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        String hash = "$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm";
         auth
                  .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER").and()
-                .withUser("jkirchne@thoughtworks.com").password("password").roles("ADMIN").and()
-                .withUser("jean.kirchner@gmail.com").password("password").roles("ADMIN").and()
-                .withUser("ojanequi@thoughtworks.com").password("password").roles("ADMIN").and()
-                .withUser("srosa@thoughtworks.com").password("password").roles("ADMIN").and()
-                .withUser("bleite@thoughtworks.com").password("password").roles("ADMIN").and()
-                .withUser("gfreita@thoughtworks.com").password("password").roles("ADMIN").and()
-
-                .withUser("almeidafab@gmail.com").password("password").roles("ADMIN").and()
-                .withUser("formiga.mauricio@gmail.com").password("password").roles("ADMIN");
+                .passwordEncoder(passwordEncoder)
+                .withUser("mauricio.formiga@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("formiga.mauricio@gmail.com").password(hash).roles("ADMIN").and()
+                .withUser("almeidafab@gmail.com").password(hash).roles("ADMIN").and()
+                .withUser("fabricio.fontenele@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("silvia.belarmino@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("everson.aguiar@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("cvillela@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("bleite@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("oliviaj@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("srosa@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("jkirchne@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("pleal@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("gfreita@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("andrea.ricciardi@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("nitai.silva@cultura.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("joelson.vellozo@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("bruno.palvarini@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("izabel.garcia@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("esau.mendes@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("martins@aneel.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("alysson@aneel.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("monica.ribeiro@mds.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("ariana.souza@mds.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("nicir.chaves@previdencia.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("celia.torres@previdencia.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("matheus.foliveira@mj.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("lucas.fernandes@mj.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("raquel.sinfronio@mj.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("rodrigo.koury@bcb.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("thiago.avila@seplag.al.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("toni.esteves@gmail.com").password(hash).roles("ADMIN");
     }
 
 }
