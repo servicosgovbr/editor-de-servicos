@@ -81,6 +81,10 @@ public class RepositorioCartasBuilder {
     }
 
     public boolean build() {
+        this.touchCarta("dummy")
+                .touchOrgao("dummy")
+                .touchPaginaEspecial("dummy")
+                .touchAreaDeInteresse("dummy");
         return buildSemGit() && commitPush();
     }
 

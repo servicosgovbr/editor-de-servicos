@@ -95,17 +95,16 @@ public abstract class ConteudoVersionado<T> {
         return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
     }
 
-
     public boolean existe() {
         return existeNoMaster() || existeNoBranch();
     }
 
-    private boolean existeNoMaster() {
+    public boolean existeNoMaster() {
         return repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(),
                 () -> getCaminhoAbsoluto().toFile().exists());
     }
 
-    private boolean existeNoBranch() {
+    public boolean existeNoBranch() {
         return repositorio.existeBranch(getBranchRef())
                 && repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
                 () -> getCaminhoAbsoluto().toFile().exists());
@@ -184,6 +183,24 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
+    @SneakyThrows
+    public void despublicarAlteracoes(UserProfile profile) {
+        if (!existeNoMaster()) return;
+        String conteudo = getConteudoRaw();
+        salvar(profile, conteudo);
+        despublicar(profile);
+    }
+
+    private void despublicar(UserProfile profile) {
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+            repositorio.remove(getCaminhoRelativo());
+            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+            repositorio.push(getBranchMasterRef());
+
+            return null;
+        });
+    }
+
     @CacheEvict
     public String renomear(UserProfile profile, String novoNome) {
         String novoId = slugify.slugify(novoNome);
@@ -214,6 +231,7 @@ public abstract class ConteudoVersionado<T> {
         return novoId;
     }
 
+
     @CacheEvict
     public String getConteudoRaw() throws FileNotFoundException {
         return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
@@ -224,7 +242,6 @@ public abstract class ConteudoVersionado<T> {
         );
     }
 
-
     @SneakyThrows
     private String mudarNomeConteudo(String novoNome) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -233,6 +250,7 @@ public abstract class ConteudoVersionado<T> {
         doc.getElementsByTagName("nome").item(0).setTextContent(novoNome);
         return reformatadorXml.formata(new DOMSource(doc));
     }
+
 
     private void salvarConteudo(UserProfile profile, String branch, String conteudo, String mensagemBase) {
         String mensagem = format("%s '%s'", mensagemBase, getId());
@@ -244,7 +262,6 @@ public abstract class ConteudoVersionado<T> {
         repositorio.commit(getCaminhoRelativo(), mensagem, profile);
         repositorio.push(branch);
     }
-
 
     private void salvarConteudo(UserProfile profile, String branch, String conteudo) {
         salvarConteudo(profile, branch, conteudo, getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria");
