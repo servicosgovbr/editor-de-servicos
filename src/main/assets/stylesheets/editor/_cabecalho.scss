@@ -69,7 +69,7 @@ header {
     margin-left: -6px;
     text-transform: uppercase;
 
-    &:hover {
+    &:not(:disabled):hover {
       background-color: #199772;
       border-top: 3px solid #199772;
     }
@@ -81,10 +81,21 @@ header {
     border-right: 2px solid #244e9d;
     border-top: 3px solid #2355b1;
 
-    &:hover {
+    &:not(:disabled):hover {
       background-color: #244e9d;
       border-top: 3px solid #244e9d; 
     }
+  }
+
+  .label-botao {
+    font-family: $openSansBold;
+    width: 80px;
+    display: inline-block;
+    line-height: 1.2em;
+    vertical-align: bottom;
+    margin-bottom: 3px;
+    text-align: right;
+    margin-right: 10px;
   }
 
   #descartar {
@@ -93,9 +104,11 @@ header {
     border-right: 2px solid #da4a4a;
     border-top: 3px solid #fb445a;
 
-    &:hover {
+    &:not(:disabled):hover {
       background-color: #da4a4a;
-      border-top: #da4a4a;
+      border-bottom: 2px solid #da4a4a;
+      border-right: 2px solid #da4a4a;
+      border-top: 3px solid #da4a4a;
     }
   }
 

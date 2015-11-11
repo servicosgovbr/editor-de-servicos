@@ -66,7 +66,7 @@ module.exports = {
 
 
     return m('span#publicar-view', [
-      'Publicar alterações?',
+      m('span.label-botao','Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
       botaoQueEspera(ctrl.descartando, {
         id: 'descartar',
