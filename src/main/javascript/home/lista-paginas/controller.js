@@ -37,7 +37,7 @@ module.exports = function (args) {
 
     if (filtroTipos.length > 0) {
       filtroFn = _.flow(function (pg) {
-        return _.contains(filtroTipos, _.get('conteudo.tipo'));
+        return _.contains(filtroTipos, _.get(pg, 'conteudo.tipo'));
       });
     }
 
