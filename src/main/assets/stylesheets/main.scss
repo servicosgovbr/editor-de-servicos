@@ -13,3 +13,14 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.carregando {
+	text-align: center;
+	font-size: 1em;
+
+	i {
+		margin-right: 10px;
+		position: relative;
+		top: 5px;
+	}
+}

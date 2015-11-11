@@ -32,18 +32,25 @@ function visualizarView(ctrl, pagina) {
   }, m('i.fa.fa-eye'));
 }
 
+function estaFiltrando(ctrl, args) {
+  return args.filtro.filtroAreasDeInteresse ||
+      args.filtro.filtroOrgaos ||
+      args.filtro.filtroPaginasEspeciais ||
+      args.filtro.filtroServicos ||
+      args.filtro.busca.length > 0;
+}
+
 module.exports = function (ctrl, args) {
-
   var filtro = args.filtro;
-
   var paginas = ctrl.paginasFiltradas(filtro);
+  var mostrarCarregando = paginas.length === 0 && !estaFiltrando(ctrl, args);
 
   var iconesDeTipo = {
     servico: 'fa-file-text-o',
     orgao: 'fa-building-o'
   };
 
-  return m('table', [
+  return m('', mostrarCarregando ? m('div.carregando', m('i.fa.fa-spin.fa-spinner.fa-2x'), 'Carregando...') : '', paginas.length !== 0 ? m('table', [
      m('tr', [
        m('th[width="40%"]', 'Nome'),
        m('th.center', 'Órgão'),
@@ -84,5 +91,5 @@ module.exports = function (ctrl, args) {
         excluirView(ctrl, s),
       ])
     ]);
-  })));
+  }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '');
 };
