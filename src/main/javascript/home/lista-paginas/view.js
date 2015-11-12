@@ -63,7 +63,7 @@ module.exports = function (ctrl, args) {
 
     return m('tr', [
 
-      m('td', m('a', {
+      m('td', m('a.nome-link', {
         href: '/editar/' + s.conteudo.tipo + '/' + s.id
       }, [
         m('span.fa', {
@@ -71,7 +71,7 @@ module.exports = function (ctrl, args) {
         }),
         m.trust(' &nbsp; '),
         s.conteudo.nome
-      ])),
+      ]), s.temAlteracoesNaoPublicadas ? m('span.mudanca', 'Alterações não publicadas') : ''),
       m('td.center', s.nomeOrgao),
       m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
       m('td.center', s.publicado ? [
