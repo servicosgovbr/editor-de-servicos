@@ -37,8 +37,7 @@ class EditarCartaController {
     @ResponseBody
     @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = GET, produces = "application/xml")
     ResponseEntity editar(
-            @PathVariable("id") String id,
-            HttpServletResponse response) throws ConteudoInexistenteException, FileNotFoundException {
+            @PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
 
         if (!carta.existe()) {
