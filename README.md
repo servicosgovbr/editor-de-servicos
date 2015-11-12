@@ -12,8 +12,8 @@ Este é o repositório oficial do Editor de Serviços. Uma versão [alpha](http:
 Documentação
 ----
 
-Para saber mais sobre o projeto, [consulte a documentação](http://servicosgovbr.github.io/editor-de-servicos/) e,
+Para saber mais sobre o projeto, [consulte a documentação](http://servicosgovbr.github.io/portal-de-servicos/) e,
 para saber como colaborar e contribuir com o projeto, confira as [tarefas a fazer][ISSUES] ou o
-[guia do desenvolvedor](http://servicosgovbr.github.io/editor-de-servicos/desenvolvimento/index.html).
+[guia do desenvolvedor](http://servicosgovbr.github.io/portal-de-servicos/desenvolvimento/index.html).
 
 [ISSUES]:https://github.com/servicosgovbr/editor-de-servicos/issues
