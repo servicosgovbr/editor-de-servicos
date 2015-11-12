@@ -46,7 +46,7 @@ module.exports = {
         this.descartando,
         this.descartar()
         .then(
-          avisos.sucessoFn('Alterações rejeitadas, recarregando serviço'),
+          avisos.erroFn('Alterações rejeitadas, recarregando serviço'),
           avisos.erroFn('Não foi possível descartar as alterações')));
     };
   },
@@ -66,7 +66,7 @@ module.exports = {
 
 
     return m('span#publicar-view', [
-      m('span.label-botao', 'Publicar alterações?'),
+      m('span.label-botao','Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
       botaoQueEspera(ctrl.descartando, {
         id: 'descartar',
