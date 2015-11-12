@@ -2,11 +2,11 @@
 
 
 function sucesso(msg) {
-  alertify.success(msg);
+  alertify.success(msg, 4000);
 }
 
 function erro(msg) {
-  alertify.error(msg);
+  alertify.error(msg, 4000);
 }
 
 function sucessoFn(msg) {
