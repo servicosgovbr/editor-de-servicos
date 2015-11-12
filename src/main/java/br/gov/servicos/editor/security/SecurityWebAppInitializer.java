@@ -1,109 +1,22 @@
 package br.gov.servicos.editor.security;
 
-import br.gov.servicos.editor.security.oauth2.google.GoogleTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.AccessTokenRequest;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import javax.annotation.Resource;
-
-import static br.gov.servicos.editor.security.Permissao.ADMIN;
-import static java.util.Arrays.asList;
 import static org.springframework.http.HttpMethod.*;
-import static org.springframework.security.oauth2.common.AuthenticationScheme.form;
-import static org.springframework.security.oauth2.common.AuthenticationScheme.query;
 
-@Order(1)
-@Configuration
-@EnableOAuth2Client
-@EnableWebSecurity
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
-    public static final String LOGIN_URL = "/editar/login";
-
-    @Resource
-    @Qualifier("accessTokenRequest")
-    AccessTokenRequest accessTokenRequest;
-
-    @Value("${google.client.id}")
-    String clientId;
-
-    @Value("${google.client.secret}")
-    String clientSecret;
-
-    @Value("${google.access.token.uri}")
-    String accessTokenUri;
-
-    @Value("${google.user.authorization.uri}")
-    String userAuthorizationUri;
-
-    @Value("${google.authorization.code}")
-    String authorizationCode;
-
-    @Value("${google.auth.scope}")
-    String authScope;
+    public static final String LOGIN_URL = "/editar/autenticar";
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    OAuth2ClientContextFilter oauth2ClientContextFilter;
-
-    @Autowired
-    OAuth2ClientAuthenticationProcessingFilter oauth2ClientAuthenticationProcessingFilter;
-
-    @Bean
-    @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-    OAuth2RestTemplate googleRestTemplate() {
-        return new OAuth2RestTemplate(googleResource(), new DefaultOAuth2ClientContext(accessTokenRequest));
-    }
-
-    @Bean
-    @Scope("session")
-    OAuth2ProtectedResourceDetails googleResource() {
-        AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
-
-        details.setId("google-oauth-client");
-
-        details.setClientId(clientId);
-        details.setClientSecret(clientSecret);
-        details.setAccessTokenUri(accessTokenUri);
-        details.setUserAuthorizationUri(userAuthorizationUri);
-        details.setTokenName(authorizationCode);
-        details.setScope(asList(authScope.split(",")));
-
-        details.setUseCurrentUri(true);
-        details.setAuthenticationScheme(query);
-        details.setClientAuthenticationScheme(form);
-
-        return details;
-    }
-
-    @Bean
-    OAuth2ClientAuthenticationProcessingFilter oauth2ClientAuthenticationProcessingFilter(
-            OAuth2RestTemplate restTemplate,
-            GoogleTokenServices tokenServices
-    ) {
-        OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(LOGIN_URL);
-        filter.setRestTemplate(restTemplate);
-        filter.setTokenServices(tokenServices);
-        return filter;
+    public SecurityWebAppInitializer(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -111,27 +24,56 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL))
-
                 .and()
-                .addFilterBefore(oauth2ClientAuthenticationProcessingFilter, FilterSecurityInterceptor.class)
-                .addFilterAfter(oauth2ClientContextFilter, ExceptionTranslationFilter.class)
+
+                .formLogin()
+                    .loginPage("/editar/autenticar")
+                    .permitAll()
+                .and()
 
                 .logout()
-                .logoutUrl("/editar/logout")
-                .logoutSuccessUrl("/editar/")
+                .logoutUrl("/editar/sair")
+                .logoutSuccessUrl("/editar/autenticar?sair")
 
                 .and()
-                .anonymous().disable()
-                .csrf().disable()
-
                 .authorizeRequests()
-                .antMatchers(DELETE, "/editar/**").hasAuthority(ADMIN.name())
-                .antMatchers(PATCH, "/editar/**").hasAuthority(ADMIN.name())
-                .antMatchers(PUT, "/editar/**").hasAuthority(ADMIN.name())
+                .antMatchers("/editar/autenticar", "/editar/api/**").permitAll()
+                .antMatchers(DELETE, "/editar/**").authenticated()
+                .antMatchers(PATCH, "/editar/**").authenticated()
+                .antMatchers(PUT, "/editar/**").authenticated()
 
                 .anyRequest().fullyAuthenticated()
 
         ;
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        String hash = "$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm";
+        auth
+                 .inMemoryAuthentication()
+                .passwordEncoder(passwordEncoder)
+                .withUser("mauricio.formiga@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("formiga.mauricio@gmail.com").password(hash).roles("ADMIN").and()
+                .withUser("almeidafab@gmail.com").password(hash).roles("ADMIN").and()
+                .withUser("fabricio.fontenele@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("carlos.vieira@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("silvia.belarmino@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("andrea.ricciardi@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("everson.aguiar@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("joelson.vellozo@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("izabel.garcia@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("cvillela@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("bleite@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("oliviaj@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("srosa@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("jkirchne@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("pleal@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("gfreita@thoughtworks.com").password(hash).roles("ADMIN").and()
+                .withUser("nitai.silva@cultura.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("esau.mendes@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("thiago.avila@seplag.al.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("toni.esteves@gmail.com").password(hash).roles("ADMIN");
     }
 
 }

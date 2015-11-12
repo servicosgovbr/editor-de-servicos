@@ -30,14 +30,3 @@ flags:
 eds:
   cartas:
     repositorio: "https://github.com/servicosgovbr/cartas-de-teste.git"
-
-google:
-  client:
-    id: '685196536802-9sc9seplkc1isa9ee8dn6ctubp6dvau1.apps.googleusercontent.com'
-    secret: 'k3LeZd4BAMIFXaZkOd7f6WK_'
-  auth.scope: 'https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/userinfo.profile'
-  access.token.uri: 'https://accounts.google.com/o/oauth2/token'
-  user.authorization.uri: 'https://accounts.google.com/o/oauth2/auth'
-  authorization.code: 'authorization_code'
-  user.info.uri: 'https://www.googleapis.com/oauth2/v2/userinfo?access_token={token}'
-  token.info.uri: 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={token}'

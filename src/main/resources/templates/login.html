@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Acessar o Editor de Serviços</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+        <form id="logout" th:action="@{/editar/sair}" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </header>
+
+    <form id="login" th:action="@{/editar/autenticar}" method="post">
+
+        <h1>Login</h1>
+
+        <p th:if="${param.error}" class="erro">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;
+            Nome ou senha incorretos.
+        </p>
+
+        <p th:if="${param.sair}" class="info">
+            <i class="fa fa-info"></i>&nbsp;
+            Você saiu do sistema.
+        </p>
+
+        <label for="usuario">Usuário</label>
+        <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
+               autofocus="true"/>
+
+        <label for="senha">Senha</label>
+        <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
+
+        <button type="submit">
+            <i class="fa fa-sign-in"></i>&nbsp;
+            Entrar
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

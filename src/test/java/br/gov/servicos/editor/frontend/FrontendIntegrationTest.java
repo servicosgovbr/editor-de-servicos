@@ -14,7 +14,6 @@ import java.net.URL;
 
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,10 +27,6 @@ public class FrontendIntegrationTest {
 
     @Test
     public void abrePaginaInfoComSucesso() throws Exception {
-        HttpURLConnection home = (HttpURLConnection) new URL(format("http://localhost:%d/", port)).openConnection();
-        assertThat(home.getResponseCode(), is(302));
-        assertThat(home.getHeaderField("Location"), startsWith("https://accounts.google.com/o/oauth2/auth"));
-
         HttpURLConnection info = (HttpURLConnection) new URL(format("http://localhost:%d/editar/info", port)).openConnection();
         assertThat(info.getResponseCode(), is(200));
 

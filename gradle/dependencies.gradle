@@ -15,10 +15,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
-    compile 'org.springframework.security:spring-security-config:4.0.2.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
-    compile 'org.springframework.security.oauth:spring-security-oauth2:2.0.7.RELEASE'
 
     compile 'com.sun.xml.bind:jaxb-core:2.2.11'
     compile 'com.sun.xml.bind:jaxb-impl:2.2.11'
