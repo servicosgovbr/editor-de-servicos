@@ -7,7 +7,7 @@ module.exports = {
   view: function () {
     return m.component(EditorPagina, {
       tipo: 'pagina-especial',
-      tituloNome: 'Nome da página especial',
+      tituloNome: 'Nome da Página Especial',
       componenteNome: require('pagina-especial/componentes/nome'),
       tamanhoConteudo: 10000,
 
