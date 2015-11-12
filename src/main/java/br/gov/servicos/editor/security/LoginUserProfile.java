@@ -27,6 +27,7 @@ public class LoginUserProfile implements UserProfiles {
             return new UserProfile()
                     .withId(username)
                     .withEmail(username)
+                    .withName(username)
                     .withPermissao(gerenciadorPermissoes.permissao(username));
         } else {
             return new UserProfile();
