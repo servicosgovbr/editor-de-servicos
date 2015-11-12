@@ -2,26 +2,28 @@
 
 var extrairMetadados = require('utils/extrair-metadados');
 
+function request(opts) {
+  return m.request(_.merge({
+    method: 'GET',
+    deserialize: _.identity,
+    serialize: _.identity
+  }, opts));
+}
+
 module.exports = {
   publicar: function (id, metadados) {
-    metadados = metadados || m.prop({});
-
-    return m.request({
+    return request({
       method: 'PUT',
       url: '/editar/api/pagina/servico/' + id,
-      extract: extrairMetadados(metadados),
-      config: function (xhr) {
-        xhr.setRequestHeader('Accepts', 'text/plain');
-      }
+      extract: extrairMetadados(metadados)
     });
   },
 
   descartar: function (id, metadados) {
-    metadados = metadados || m.prop({});
     var url = '/editar/api/pagina/servico/' + id + '/descartar';
     var mimeType = 'application/xml';
 
-    return m.request({
+    return request({
       method: 'POST',
       url: url,
       config: function (xhr) {
@@ -31,6 +33,15 @@ module.exports = {
       deserialize: function (str) {
         return new DOMParser().parseFromString(str, 'application/xml');
       },
+    });
+  },
+
+  despublicar: function(id, metadados) {
+    var url = '/editar/api/pagina/servico/' + id + '/despublicar';
+    return request({
+      method: 'POST',
+      url: url,
+      extract: extrairMetadados(metadados)
     });
   }
 };

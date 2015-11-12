@@ -72,10 +72,4 @@ public class EditarCartaControllerTest {
         assertThat(response.getHeader("X-Git-Horario-Editado"), is(valueOf(HORARIO.getTime())));
     }
 
-    @Test
-    public void retornaConteudoDoServico() throws Exception {
-        String conteudo = controller.editar("um-id-qq", new MockHttpServletResponse());
-        assertThat(conteudo, is("<servico/>"));
-    }
-
 }

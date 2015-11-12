@@ -69,8 +69,6 @@ public abstract class ConteudoVersionado<T> {
         return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
     }
 
-    protected abstract T getMetadadosConteudo();
-
     public String getBranchRef() {
         return R_HEADS + tipo.prefixo() + getId();
     }
@@ -115,6 +113,8 @@ public abstract class ConteudoVersionado<T> {
         return internalGetMetadados();
     }
 
+    protected abstract T getMetadadosConteudo();
+
     protected Metadados<T> internalGetMetadados() {
         return new Metadados<T>()
                 .withId(getId())
@@ -148,10 +148,6 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
-    private boolean isPublicado() {
-        return Files.exists(getCaminhoAbsoluto());
-    }
-
     @SneakyThrows
     @CacheEvict
     public void publicar(UserProfile profile) {
@@ -171,6 +167,7 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
+    @CacheEvict
     public void descartarAlteracoes() {
         if (!existeNoBranch()) {
             return;
@@ -184,21 +181,12 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @SneakyThrows
+    @CacheEvict
     public void despublicarAlteracoes(UserProfile profile) {
         if (!existeNoMaster()) return;
         String conteudo = getConteudoRaw();
         salvar(profile, conteudo);
         despublicar(profile);
-    }
-
-    private void despublicar(UserProfile profile) {
-        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
-            repositorio.remove(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
-            repositorio.push(getBranchMasterRef());
-
-            return null;
-        });
     }
 
     @CacheEvict
@@ -231,7 +219,6 @@ public abstract class ConteudoVersionado<T> {
         return novoId;
     }
 
-
     @CacheEvict
     public String getConteudoRaw() throws FileNotFoundException {
         return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
@@ -240,6 +227,21 @@ public abstract class ConteudoVersionado<T> {
         }).orElseThrow(
                 () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + "'")
         );
+    }
+
+    private boolean isPublicado() {
+        return Files.exists(getCaminhoAbsoluto());
+    }
+
+
+    private void despublicar(UserProfile profile) {
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+            repositorio.remove(getCaminhoRelativo());
+            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+            repositorio.push(getBranchMasterRef());
+
+            return null;
+        });
     }
 
     @SneakyThrows

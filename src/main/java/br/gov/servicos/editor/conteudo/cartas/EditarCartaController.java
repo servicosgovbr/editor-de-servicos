@@ -6,6 +6,8 @@ import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import java.io.FileNotFoundException;
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static java.lang.String.valueOf;
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Slf4j
@@ -33,7 +36,7 @@ class EditarCartaController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = GET, produces = "application/xml")
-    String editar(
+    ResponseEntity editar(
             @PathVariable("id") String id,
             HttpServletResponse response) throws ConteudoInexistenteException, FileNotFoundException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
@@ -42,11 +45,7 @@ class EditarCartaController {
             throw new ConteudoInexistenteException(carta);
         }
 
-        MetadadosUtils.metadados(carta)
-                .entrySet()
-                .forEach(e -> response.setHeader(e.getKey(), e.getValue()));
-
-        return carta.getConteudoRaw();
+        return new ResponseEntity(carta.getConteudoRaw(), MetadadosUtils.metadados(carta), OK);
     }
 
     @ResponseBody

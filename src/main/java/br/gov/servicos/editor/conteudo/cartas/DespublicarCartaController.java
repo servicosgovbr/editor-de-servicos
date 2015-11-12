@@ -1,11 +1,13 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +30,15 @@ class DespublicarCartaController {
         this.userProfiles = userProfiles;
     }
 
-    @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/editar/api/pagina/servico/{id}/despublicar", method = POST)
-    void despublicar(@PathVariable("id") String id) throws ConteudoInexistenteException {
+    ResponseEntity despublicar(@PathVariable("id") String id) throws ConteudoInexistenteException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);
         }
         carta.despublicarAlteracoes(userProfiles.get());
+
+        return new ResponseEntity(MetadadosUtils.metadados(carta), HttpStatus.OK);
     }
 
 }
