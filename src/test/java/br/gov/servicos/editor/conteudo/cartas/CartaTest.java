@@ -77,12 +77,6 @@ public class CartaTest {
     }
 
     @Test
-    public void formataBranchLocal() throws Exception {
-        assertThat(carta.getBranchRef(),
-                is("refs/heads/servico-um-id-qualquer"));
-    }
-
-    @Test
     public void resolveCaminhoAbsoluto() throws Exception {
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
