@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -16,6 +17,7 @@ public class DespublicarCartaControllerIntegrationTest extends RepositorioGitInt
 
     static String CARTA_A_SIMPLES = "<servico><nome>Carta A</nome></servico>";
     static String CARTA_A_ALTERACOES = "<servico><nome>Carta A</nome><sigla>CA</sigla></servico>";
+    static String CARTA_B = "<servico><nome>Carta B</nome><sigla>CB</sigla></servico>";
 
     @Autowired
     public ConteudoVersionadoFactory factory;
@@ -23,6 +25,7 @@ public class DespublicarCartaControllerIntegrationTest extends RepositorioGitInt
     @Before
     public void setup() {
         super.setupBase()
+                .carta("carta-b", CARTA_B)
                 .build();
     }
 
@@ -40,7 +43,7 @@ public class DespublicarCartaControllerIntegrationTest extends RepositorioGitInt
                 .andExpect(status().isOk())
                 .andExpect(content().xml(CARTA_A_SIMPLES));
 
-        ConteudoVersionado carta = factory.pagina("carta-a", TipoPagina.SERVICO);
+        ConteudoVersionado carta = factory.pagina("carta-a", SERVICO);
         assertTrue(carta.existeNoBranch());
         assertFalse(carta.existeNoMaster());
     }
@@ -68,8 +71,10 @@ public class DespublicarCartaControllerIntegrationTest extends RepositorioGitInt
                 .andExpect(status().isOk())
                 .andExpect(content().xml(CARTA_A_ALTERACOES));
 
-        api.despublicarCarta("carta-a");
-        ConteudoVersionado carta = factory.pagina("carta-a", TipoPagina.SERVICO);
+        api.despublicarCarta("carta-a")
+                .andExpect(status().isOk());
+
+        ConteudoVersionado carta = factory.pagina("carta-a", SERVICO);
         assertTrue(carta.existeNoBranch());
         assertFalse(carta.existeNoMaster());
 
@@ -78,6 +83,21 @@ public class DespublicarCartaControllerIntegrationTest extends RepositorioGitInt
                 .andExpect(content().xml(CARTA_A_ALTERACOES));
     }
 
+    @Test
+    public void existeNoMasterNaoExisteNoBranchDeveTirarDoMasterEFazerCopiaParaOBranch() throws Exception {
+        ConteudoVersionado carta = factory.pagina("carta-b", SERVICO);
+        assertTrue(carta.existeNoMaster());
+        assertFalse(carta.existeNoBranch());
 
+        api.despublicarCarta("carta-b")
+                .andExpect(status().isOk());
+
+        assertTrue(carta.existeNoBranch());
+        assertFalse(carta.existeNoMaster());
+
+        api.editarCarta("carta-b")
+                .andExpect(status().isOk())
+                .andExpect(content().xml(CARTA_B));
+    }
 
 }
