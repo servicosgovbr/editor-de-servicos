@@ -9,7 +9,7 @@ module.exports = {
 
     return m.component(EditorPagina, {
       tipo: 'orgao',
-      tituloNome: 'Selecione o Órgão',
+      tituloNome: 'Selecione o órgão',
       componenteNome: require('orgao/select-orgao'),
       tamanhoConteudo: 1500,
 

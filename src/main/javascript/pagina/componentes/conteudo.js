@@ -11,7 +11,7 @@ module.exports = {
 
     return m('fieldset#conteudo-pagina', [
       m('h3', [
-        'Conteúdo da Página',
+        'Conteúdo da página',
         m.component(args.tooltipConteudo)
       ]),
       m('.input-container', [
