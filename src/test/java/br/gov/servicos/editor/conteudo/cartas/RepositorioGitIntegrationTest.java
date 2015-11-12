@@ -39,7 +39,7 @@ public abstract class RepositorioGitIntegrationTest {
     @Autowired
     Importador importador;
 
-    MockMvcEditorAPI api;
+    protected MockMvcEditorAPI api;
 
     protected RepositorioCartasBuilder setupBase() {
         api = MockMvcFactory.editorAPI(context);
