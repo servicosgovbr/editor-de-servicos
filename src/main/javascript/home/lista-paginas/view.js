@@ -34,10 +34,10 @@ function visualizarView(ctrl, pagina) {
 
 function estaFiltrando(ctrl, args) {
   return args.filtro.filtroAreasDeInteresse ||
-      args.filtro.filtroOrgaos ||
-      args.filtro.filtroPaginasEspeciais ||
-      args.filtro.filtroServicos ||
-      args.filtro.busca.length > 0;
+    args.filtro.filtroOrgaos ||
+    args.filtro.filtroPaginasEspeciais ||
+    args.filtro.filtroServicos ||
+    args.filtro.busca.length > 0;
 }
 
 module.exports = function (ctrl, args) {
