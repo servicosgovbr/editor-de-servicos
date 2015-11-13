@@ -31,9 +31,10 @@ module.exports = {
         m('div.input-container', {
             class: ctrl.servico().orgao().contato.erro(),
           },
-          m('input[type=text]', {
+          m.component(require('componentes/editor-markdown'), {
+            rows: 3,
+            value: ctrl.servico().orgao().contato(),
             onchange: m.withAttr('value', ctrl.servico().orgao().contato),
-            value: ctrl.servico().orgao().contato()
           })
         )
       ])

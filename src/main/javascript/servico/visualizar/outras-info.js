@@ -7,6 +7,7 @@ module.exports = {
   controller: function (args) {
     this.servico = args;
     this.nomeOrgao = m.prop('');
+    this.converter = new window.showdown.Converter();
 
     this.obterOrgao = function (orgao) {
       m.request({
@@ -65,7 +66,7 @@ module.exports = {
             ]),
         m('p.orgao-contato', [
                 'Para mais informações ou dúvidas sobre este serviço, entre em contato: ',
-                ctrl.servico.orgao().contato()
+                m.trust(ctrl.converter.makeHtml(ctrl.servico.orgao().contato()))
             ])),
             m('hr', {
         style: {
