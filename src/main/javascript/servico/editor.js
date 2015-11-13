@@ -117,7 +117,8 @@ module.exports = {
           cabecalho: ctrl.cabecalho
         }),
         m.component(require('componentes/menu/menu-lateral'), _.merge(binding, {
-          despublicar: _.bind(ctrl.despublicar, ctrl)
+          despublicar: _.bind(ctrl.despublicar, ctrl),
+          metadados: ctrl.cabecalho.metadados()
         })),
 
         m('#servico', m('.scroll', [
