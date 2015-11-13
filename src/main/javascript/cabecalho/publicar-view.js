@@ -46,7 +46,7 @@ module.exports = {
         this.descartando,
         this.descartar()
         .then(
-          avisos.alertFn('Alterações recusadas, recarregando serviço'),
+          avisos.alertFn('Alterações recusadas. Recarregando serviço.'),
           avisos.erroFn('Não foi possível descartar as alterações')));
     };
   },
