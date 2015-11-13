@@ -5,6 +5,7 @@ var slugify = require('slugify');
 var salvarServico = require('xml/salvar');
 var publicarServico = require('xml/publicar');
 var descartarServico = require('xml/descartar');
+var despublicarServico = require('api').despublicar;
 var servicoEmEdicao = require('servico/servico-em-edicao');
 var promise = require('utils/promise');
 
@@ -20,6 +21,14 @@ function redirecionarNovoServico(nome) {
 
 function endComputation() {
   m.endComputation();
+}
+
+function idServico() {
+  return m.route.param('id');
+}
+
+function ehNovo() {
+  return idServico() === 'novo';
 }
 
 module.exports = {
@@ -61,6 +70,10 @@ module.exports = {
         .then(this._servicoSalvo);
     };
 
+    this.despublicar = function () {
+      return despublicarServico(idServico(), this.cabecalho.metadados);
+    };
+
     this.visualizar = function () {
       var id = slugify(this.servico().nome());
       servicoEmEdicao.manter(this.servico);
@@ -72,7 +85,7 @@ module.exports = {
   view: function (ctrl) {
     var binding = {
       servico: ctrl.servico,
-      novo: m.route.param('id') === 'novo'
+      novo: ehNovo()
     };
 
     return m('#conteudo', {
@@ -103,7 +116,10 @@ module.exports = {
           descartar: _.bind(ctrl.descartar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
-        m.component(require('componentes/menu-lateral'), binding),
+        m.component(require('componentes/menu/menu-lateral'), _.merge(binding, {
+          despublicar: _.bind(ctrl.despublicar, ctrl),
+          metadados: ctrl.cabecalho.metadados()
+        })),
 
         m('#servico', m('.scroll', [
           m.component(require('servico/dados-basicos/dados-basicos'), binding),

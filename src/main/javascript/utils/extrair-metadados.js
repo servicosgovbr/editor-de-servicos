@@ -1,10 +1,14 @@
 'use strict';
 
+function fazMockSeRodarEmTestes(xhr) {
+  if (!xhr.getResponseHeader) {
+    xhr.getResponseHeader = _.noop;
+  }
+}
+
 module.exports = function (metadados) {
   return function (xhr) {
-    if (!xhr.getResponseHeader) { // fix para o mock de testes
-      xhr.getResponseHeader = _.noop;
-    }
+    fazMockSeRodarEmTestes(xhr);
 
     metadados({
       publicado: {
@@ -21,4 +25,5 @@ module.exports = function (metadados) {
 
     return xhr.responseText;
   };
+
 };

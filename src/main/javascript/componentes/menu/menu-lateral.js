@@ -41,34 +41,33 @@ var etapas = function (lista, ctrl) {
   });
 };
 
-module.exports = {
 
+module.exports = {
   controller: function (args) {
     this.servico = args.servico;
-
     this.remover = function (i) {
       alertify.labels.cancel = 'Cancelar';
       alertify.labels.ok = 'Remover';
       alertify.confirm('Você tem certeza que deseja remover essa etapa?', function (result) {
         if (result) {
-          var etapas = this.servico().etapas();
-          etapas.splice(i, 1);
-          this.servico().etapas(etapas);
+          var etps = this.servico().etapas();
+          etps.splice(i, 1);
+          this.servico().etapas(etps);
           m.redraw();
         }
       }.bind(this));
     };
   },
 
-  view: function (ctrl) {
+  view: function (ctrl, args) {
     return m('nav#menu-lateral', [
       m('ul', [
         item('Dados básicos'),
         item('Solicitantes'),
         item('Etapas do Serviço', m('ul', etapas(ctrl.servico().etapas(), ctrl))),
         item('Outras Informações'),
+        m.component(require('componentes/menu/despublicar-button'), args),
       ]),
     ]);
   }
-
 };

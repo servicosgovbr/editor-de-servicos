@@ -4,6 +4,7 @@ import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import org.springframework.http.HttpHeaders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,20 +13,19 @@ import static java.util.Optional.ofNullable;
 
 public class MetadadosUtils {
 
-    public static HashMap<String, String> metadados(ConteudoVersionado conteudoVersionado) {
+    public static HttpHeaders metadados(ConteudoVersionado conteudoVersionado) {
         Metadados metadados = conteudoVersionado.getMetadados();
 
-        HashMap<String, String> headers = Maps.newHashMap();
-        ofNullable(metadados.getPublicado()).ifPresent(r -> headers.putAll(metadadosHeaders(r, "Publicado")));
-        ofNullable(metadados.getEditado()).ifPresent(r -> headers.putAll(metadadosHeaders(r, "Editado")));
+        HttpHeaders headers = new HttpHeaders();
+        ofNullable(metadados.getPublicado()).ifPresent(r -> metadadosHeaders(headers, r, "Publicado"));
+        ofNullable(metadados.getEditado()).ifPresent(r -> metadadosHeaders(headers, r, "Editado"));
 
         return headers;
     }
 
-    private static Map<String, String> metadadosHeaders(Revisao r, String sufixo) {
-        return ImmutableMap.of(
-                "X-Git-Commit-" + sufixo, r.getHash(),
-                "X-Git-Autor-" + sufixo, r.getAutor(),
-                "X-Git-Horario-" + sufixo, String.valueOf(r.getHorario().getTime()));
+    private static void metadadosHeaders(HttpHeaders headers, Revisao r, String sufixo) {
+        headers.add("X-Git-Commit-" + sufixo, r.getHash());
+        headers.add("X-Git-Autor-" + sufixo, r.getAutor());
+        headers.add("X-Git-Horario-" + sufixo, String.valueOf(r.getHorario().getTime()));
     }
 }

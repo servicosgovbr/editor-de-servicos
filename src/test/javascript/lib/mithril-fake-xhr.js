@@ -6,6 +6,7 @@ module.exports = function (base) {
   var SaveXML = base.XMLHttpRequest;
   var pending = {};
   var unexpectedRequests = 0;
+  var fake;
 
   base.XMLHttpRequest = (function () {
 
@@ -27,10 +28,10 @@ module.exports = function (base) {
       this.open = function (method, url, async, user, password) {
         this.method = method;
         this.url = url;
-        select(this, function (pending) {
-          if (pending.passthrough) {
-            pending.xhr = new SaveXML();
-            return pending.xhr.open(method, url, async, user, password);
+        select(this, function (waiting) {
+          if (waiting.passthrough) {
+            waiting.xhr = new SaveXML();
+            return waiting.xhr.open(method, url, async, user, password);
           }
         });
       };
@@ -69,7 +70,7 @@ module.exports = function (base) {
 
   }());
 
-  var fake = function (method, url, data, headers) {
+  fake = function (method, url, data, headers) {
 
     var key = method.toLowerCase() + url;
     var prop = m.prop('');

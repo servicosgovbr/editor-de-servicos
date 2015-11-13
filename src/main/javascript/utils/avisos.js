@@ -1,6 +1,8 @@
 'use strict';
 
-alertify.set({ delay: 10000 });
+alertify.set({
+  delay: 10000
+});
 
 function sucesso(msg) {
   alertify.success(msg);

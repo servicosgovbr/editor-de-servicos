@@ -1,60 +1,18 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.Main;
-import br.gov.servicos.editor.fixtures.MockMvcFactory;
-import br.gov.servicos.editor.fixtures.RepositorioCartasBuilder;
-import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
-import br.gov.servicos.editor.git.Importador;
-import br.gov.servicos.editor.git.RepositorioConfig;
-import junit.framework.TestCase;
+import br.gov.servicos.editor.conteudo.cartas.RepositorioGitIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Main.class)
-@WebAppConfiguration
-@IntegrationTest({
-        "flags.importar=false",
-        "flags.esquentar.cache=false",
-        "server.port:0"
-})
-@ActiveProfiles("teste")
-public class ListaDeConteudoIntegrationTest extends TestCase {
-
-    @Autowired
-    WebApplicationContext context;
-
-    @Autowired
-    public RepositorioConfigParaTeste repo;
-
-    @Autowired
-    RepositorioConfig repoConfig;
-
-    @Autowired
-    Importador importador;
-
-    MockMvcEditorAPI api;
+public class ListaDeConteudoIntegrationTest extends RepositorioGitIntegrationTest {
 
     @Before
     public void setup() {
-        api = MockMvcFactory.editorAPI(context);
-        repo.reset();
-        importador.importaRepositorioDeCartas();
-
-        new RepositorioCartasBuilder(repoConfig.localRepositorioDeCartas.toPath())
+        super.setupBase()
                 .carta("testes", "<servico><nome>testes</nome></servico>")
                 .build();
     }

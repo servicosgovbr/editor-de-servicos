@@ -3,54 +3,42 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
-import static java.lang.String.valueOf;
 import static lombok.AccessLevel.PRIVATE;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class EditarCartaController {
+class DespublicarCartaController {
 
     private ConteudoVersionadoFactory factory;
+    UserProfiles userProfiles;
 
     @Autowired
-    public EditarCartaController(ConteudoVersionadoFactory factory) {
+    public DespublicarCartaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
         this.factory = factory;
+        this.userProfiles = userProfiles;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = GET, produces = "application/xml")
-    ResponseEntity editar(
-            @PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
+    @RequestMapping(value = "/editar/api/pagina/servico/{id}/despublicar", method = POST)
+    ResponseEntity despublicar(@PathVariable("id") String id) throws ConteudoInexistenteException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
-
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);
         }
+        carta.despublicarAlteracoes(userProfiles.get());
 
-        return new ResponseEntity(carta.getConteudoRaw(), MetadadosUtils.metadados(carta), OK);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/servico/novo", method = GET, produces = "application/xml")
-    String editarNovo() {
-        return "<servico/>";
+        return new ResponseEntity(MetadadosUtils.metadados(carta), HttpStatus.OK);
     }
 
 }

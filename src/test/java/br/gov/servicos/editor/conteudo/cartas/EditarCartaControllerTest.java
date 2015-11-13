@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.util.Date;
@@ -59,23 +61,16 @@ public class EditarCartaControllerTest {
 
     @Test
     public void adicionaHeadersDosMetadados() throws Exception {
-        MockHttpServletResponse response = new MockHttpServletResponse();
 
-        controller.editar("", response);
+        HttpHeaders response = controller.editar("").getHeaders();
 
-        assertThat(response.getHeader("X-Git-Commit-Publicado"), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
-        assertThat(response.getHeader("X-Git-Autor-Publicado"), is("Fulano de Tal"));
-        assertThat(response.getHeader("X-Git-Horario-Publicado"), is(valueOf(HORARIO.getTime())));
+        assertThat(response.get("X-Git-Commit-Publicado").get(0), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+        assertThat(response.get("X-Git-Autor-Publicado").get(0), is("Fulano de Tal"));
+        assertThat(response.get("X-Git-Horario-Publicado").get(0), is(valueOf(HORARIO.getTime())));
 
-        assertThat(response.getHeader("X-Git-Commit-Editado"), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
-        assertThat(response.getHeader("X-Git-Autor-Editado"), is("Fulano de Tal"));
-        assertThat(response.getHeader("X-Git-Horario-Editado"), is(valueOf(HORARIO.getTime())));
-    }
-
-    @Test
-    public void retornaConteudoDoServico() throws Exception {
-        String conteudo = controller.editar("um-id-qq", new MockHttpServletResponse());
-        assertThat(conteudo, is("<servico/>"));
+        assertThat(response.get("X-Git-Commit-Editado").get(0), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+        assertThat(response.get("X-Git-Autor-Editado").get(0), is("Fulano de Tal"));
+        assertThat(response.get("X-Git-Horario-Editado").get(0), is(valueOf(HORARIO.getTime())));
     }
 
 }

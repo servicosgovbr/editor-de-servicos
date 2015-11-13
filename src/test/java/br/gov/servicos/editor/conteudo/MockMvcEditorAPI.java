@@ -47,6 +47,12 @@ public class MockMvcEditorAPI {
                 .accept(ALL));
     }
 
+    public ResultActions despublicarCarta(String id) throws Exception {
+        String url = String.format("/editar/api/pagina/servico/%s/despublicar", id);
+        return mvc.perform(post(url)
+                .accept(ALL));
+    }
+
     public ResultActions listar() throws Exception {
         return mvc.perform(get("/editar/api/conteudos")
                 .accept(ALL));

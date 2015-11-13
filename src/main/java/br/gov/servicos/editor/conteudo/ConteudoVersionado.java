@@ -69,8 +69,6 @@ public abstract class ConteudoVersionado<T> {
         return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
     }
 
-    protected abstract T getMetadadosConteudo();
-
     public String getBranchRef() {
         return R_HEADS + tipo.prefixo() + getId();
     }
@@ -87,25 +85,30 @@ public abstract class ConteudoVersionado<T> {
         return repositorio.getCaminhoAbsoluto().relativize(getCaminhoAbsoluto());
     }
 
-    protected Optional<Revisao> getRevisaoMaisRecenteDoArquivo() {
-        return repositorio.getRevisaoMaisRecenteDoArquivo(getCaminhoRelativo());
+    protected Optional<Revisao> getRevisaoMaisRecenteDoMaster() {
+        if (!existeNoMaster()) {
+            return Optional.empty();
+        }
+        return repositorio.getRevisaoMaisRecenteDoBranch(getBranchMasterRef(), getCaminhoRelativo());
     }
 
     protected Optional<Revisao> getRevisaoMaisRecenteDoBranch() {
-        return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
+        if (!existeNoBranch()) {
+            return Optional.empty();
+        }
+        return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef(), getCaminhoRelativo());
     }
-
 
     public boolean existe() {
         return existeNoMaster() || existeNoBranch();
     }
 
-    private boolean existeNoMaster() {
+    public boolean existeNoMaster() {
         return repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(),
                 () -> getCaminhoAbsoluto().toFile().exists());
     }
 
-    private boolean existeNoBranch() {
+    public boolean existeNoBranch() {
         return repositorio.existeBranch(getBranchRef())
                 && repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
                 () -> getCaminhoAbsoluto().toFile().exists());
@@ -116,10 +119,12 @@ public abstract class ConteudoVersionado<T> {
         return internalGetMetadados();
     }
 
+    protected abstract T getMetadadosConteudo();
+
     protected Metadados<T> internalGetMetadados() {
         return new Metadados<T>()
                 .withId(getId())
-                .withPublicado(getRevisaoMaisRecenteDoArquivo().orElse(null))
+                .withPublicado(getRevisaoMaisRecenteDoMaster().orElse(null))
                 .withEditado(getRevisaoMaisRecenteDoBranch().orElse(null))
                 .withConteudo(getMetadadosConteudo());
     }
@@ -149,10 +154,6 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
-    private boolean isPublicado() {
-        return Files.exists(getCaminhoAbsoluto());
-    }
-
     @SneakyThrows
     @CacheEvict
     public void publicar(UserProfile profile) {
@@ -172,6 +173,7 @@ public abstract class ConteudoVersionado<T> {
         });
     }
 
+    @CacheEvict
     public void descartarAlteracoes() {
         if (!existeNoBranch()) {
             return;
@@ -182,6 +184,15 @@ public abstract class ConteudoVersionado<T> {
             repositorio.deleteRemoteBranch(getBranchRef());
             return null;
         });
+    }
+
+    @SneakyThrows
+    @CacheEvict
+    public void despublicarAlteracoes(UserProfile profile) {
+        if (!existeNoMaster()) return;
+        String conteudo = getConteudoRaw();
+        salvar(profile, conteudo);
+        despublicar(profile);
     }
 
     @CacheEvict
@@ -224,6 +235,20 @@ public abstract class ConteudoVersionado<T> {
         );
     }
 
+    private boolean isPublicado() {
+        return Files.exists(getCaminhoAbsoluto());
+    }
+
+
+    private void despublicar(UserProfile profile) {
+        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+            repositorio.remove(getCaminhoRelativo());
+            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+            repositorio.push(getBranchMasterRef());
+
+            return null;
+        });
+    }
 
     @SneakyThrows
     private String mudarNomeConteudo(String novoNome) {
@@ -233,6 +258,7 @@ public abstract class ConteudoVersionado<T> {
         doc.getElementsByTagName("nome").item(0).setTextContent(novoNome);
         return reformatadorXml.formata(new DOMSource(doc));
     }
+
 
     private void salvarConteudo(UserProfile profile, String branch, String conteudo, String mensagemBase) {
         String mensagem = format("%s '%s'", mensagemBase, getId());
@@ -244,7 +270,6 @@ public abstract class ConteudoVersionado<T> {
         repositorio.commit(getCaminhoRelativo(), mensagem, profile);
         repositorio.push(branch);
     }
-
 
     private void salvarConteudo(UserProfile profile, String branch, String conteudo) {
         salvarConteudo(profile, branch, conteudo, getCaminhoAbsoluto().toFile().exists() ? "Altera" : "Cria");

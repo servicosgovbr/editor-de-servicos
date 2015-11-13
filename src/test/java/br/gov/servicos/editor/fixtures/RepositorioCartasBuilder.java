@@ -4,16 +4,17 @@ import br.gov.servicos.editor.conteudo.paginas.FormatadorConteudoPagina;
 import br.gov.servicos.editor.conteudo.paginas.Pagina;
 import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
+import br.gov.servicos.editor.utils.Unchecked;
 import lombok.experimental.FieldDefaults;
 import org.eclipse.jgit.api.Git;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.utils.Unchecked.Supplier.*;
 import static java.util.Arrays.asList;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -126,8 +127,11 @@ public class RepositorioCartasBuilder {
                 .stream()
                 .map(t -> localRepositorio.resolve(t.getCaminhoPasta()))
                 .map(Path::toFile)
-                .map(File::mkdirs)
-                .allMatch(x -> x);
+                .map(f -> {
+                    f.mkdirs();
+                    return uncheckedSupplier(() -> f.toPath().resolve("dummy").toFile().createNewFile());
+                })
+                .allMatch(x -> x.get());
     }
 
 }
