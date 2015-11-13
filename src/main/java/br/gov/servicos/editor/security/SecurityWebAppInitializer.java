@@ -64,6 +64,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .withUser("everson.aguiar@planejamento.gov.br").password(hash).roles("ADMIN").and()
                 .withUser("joelson.vellozo@planejamento.gov.br").password(hash).roles("ADMIN").and()
                 .withUser("izabel.garcia@planejamento.gov.br").password(hash).roles("ADMIN").and()
+                .withUser("carlos-eduardo.melo@planejamento.gov.br").password(hash).roles("ADMIN").and()
                 .withUser("cvillela@thoughtworks.com").password(hash).roles("ADMIN").and()
                 .withUser("bleite@thoughtworks.com").password(hash).roles("ADMIN").and()
                 .withUser("oliviaj@thoughtworks.com").password(hash).roles("ADMIN").and()
