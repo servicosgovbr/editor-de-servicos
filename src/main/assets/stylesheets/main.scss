@@ -39,3 +39,9 @@ body {
 .nome-link {
 	margin-right: 9px;
 }
+
+#area-de-interesse, #select-orgao {
+	.select2-message-container {
+		width: 100%;
+	}
+}

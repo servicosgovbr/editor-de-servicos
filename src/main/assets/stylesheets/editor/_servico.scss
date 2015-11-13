@@ -28,16 +28,16 @@
 
   #nome, #sigla, #nomes-populares, #descricao, #tempo-total-estimado, #editor-markdown, #solicitantes, #palavras-chave, #legislacoes, .titulo, .caso {
     input {
-      max-width: 93%;
-      width: 93%;
+      max-width: 100%;
+      width: 100%;
     }
   }
 
   .editor-markdown {
     textarea {
       margin-bottom: 0;
-      max-width: 93%;
-      width: 93%;
+      max-width: 100%;
+      width: 100%;
     }
 
     .footer {
@@ -52,7 +52,6 @@
 
       .counter {
         float: right;
-        margin-right: 7%;
       }
     }
   }
@@ -118,7 +117,7 @@
 
   #orgao-responsavel {
     .clear {
-      width: 93%;
+      width: 100%;
     }
   }
 }

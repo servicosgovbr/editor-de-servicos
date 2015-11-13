@@ -8,7 +8,7 @@ module.exports = {
   view: function (ctrl, args) {
     var orgao = safeGet(args, 'prop');
 
-    return m.component(require('componentes/select2'), {
+    return m('div#select-orgao', m.component(require('componentes/select2'), {
       ajax: {
         url: '/editar/api/orgaos',
         dataType: 'json',
@@ -19,7 +19,6 @@ module.exports = {
           };
         },
         processResults: function (data, page) {
-
           var result = _.map(data, function (o) {
             return {
               id: o.id,
@@ -30,20 +29,15 @@ module.exports = {
           return {
             results: result
           };
-
         },
         cache: true
-
       },
-
       prop: orgao,
       width: '100%',
       minimumResultsForSearch: 1,
       minimumInputLength: 3,
       initSelection: function (element, callback) {
-
         m.request({
-
           method: 'GET',
           url: '/editar/api/orgao',
           data: {
@@ -52,18 +46,13 @@ module.exports = {
           deserialize: function (data) {
             return data;
           }
-
         }).then(function (orgaoNome) {
           callback({
             id: orgao(),
             text: orgaoNome
           });
         }, erro);
-
       }
-
-    });
-
+    }));
   }
-
 };
