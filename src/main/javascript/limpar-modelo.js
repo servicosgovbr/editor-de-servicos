@@ -93,11 +93,9 @@ var limparCusto = function (custo) {
 
 var limparCustos = function (custos) {
   var config = limparCasos(custos, limparCusto);
-
   if (!config) {
     return;
   }
-
   return new modelos.Custos(config);
 };
 

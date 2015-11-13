@@ -71,39 +71,19 @@ public class RepositorioGit {
         return raiz.getAbsoluteFile().toPath();
     }
 
-    public Optional<Revisao> getRevisaoMaisRecenteDoArquivo(Path caminhoRelativo) {
+    public Optional<Revisao> getRevisaoMaisRecenteDoBranch(String branchRef, Path caminhoRelativo) {
         RevCommit commit = comRepositorioAbertoParaLeitura(uncheckedFunction(git -> {
-
             Repository repo = git.getRepository();
             RevWalk revWalk = new RevWalk(repo);
 
             revWalk.setTreeFilter(AndTreeFilter.create(PathFilter.create(caminhoRelativo.toString()), TreeFilter.ANY_DIFF));
-            revWalk.markStart(revWalk.lookupCommit(repo.resolve(HEAD)));
+            revWalk.markStart(revWalk.lookupCommit(repo.resolve(branchRef)));
 
             Iterator<RevCommit> revs = revWalk.iterator();
             if (revs.hasNext()) {
                 return revs.next();
             }
             return null;
-        }));
-
-        if (commit == null) {
-            return empty();
-        }
-
-        return of(new Revisao(commit));
-    }
-
-    public Optional<Revisao> getRevisaoMaisRecenteDoBranch(String branch) {
-        RevCommit commit = comRepositorioAbertoParaLeitura(uncheckedFunction(git -> {
-            Repository repo = git.getRepository();
-            Ref ref = repo.getRef(branch);
-
-            if (ref == null) {
-                return null;
-            }
-
-            return new RevWalk(repo).parseCommit(ref.getObjectId());
         }));
 
         if (commit == null) {

@@ -3,14 +3,17 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class DespublicarCartaControllerIntegrationTest extends RepositorioGitIntegrationTest {
@@ -90,7 +93,13 @@ public class DespublicarCartaControllerIntegrationTest extends RepositorioGitInt
         assertFalse(carta.existeNoBranch());
 
         api.despublicarCarta("carta-b")
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(header().doesNotExist("X-Git-Commit-Publicado"))
+                .andExpect(header().doesNotExist("X-Git-Autor-Publicado"))
+                .andExpect(header().doesNotExist("X-Git-Horario-Publicado"))
+                .andExpect(header().string("X-Git-Commit-Editado", notNullValue()))
+                .andExpect(header().string("X-Git-Autor-Editado", notNullValue()))
+                .andExpect(header().string("X-Git-Horario-Editado", notNullValue()));
 
         assertTrue(carta.existeNoBranch());
         assertFalse(carta.existeNoMaster());

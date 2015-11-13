@@ -5,8 +5,7 @@ var extrairMetadados = require('utils/extrair-metadados');
 function request(opts) {
   return m.request(_.merge({
     method: 'GET',
-    deserialize: _.identity,
-    serialize: _.identity
+    deserialize: _.identity
   }, opts));
 }
 
@@ -36,7 +35,7 @@ module.exports = {
     });
   },
 
-  despublicar: function(id, metadados) {
+  despublicar: function (id, metadados) {
     var url = '/editar/api/pagina/servico/' + id + '/despublicar';
     return request({
       method: 'POST',

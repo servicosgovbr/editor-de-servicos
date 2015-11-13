@@ -64,10 +64,10 @@ module.exports = {
       return podeDescartar();
     }
 
-
     return m('span#publicar-view', [
       m('span.label-botao', 'Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
+
       botaoQueEspera(ctrl.descartando, {
         id: 'descartar',
         onclick: _.bind(ctrl.descartarClick, ctrl),
@@ -81,6 +81,7 @@ module.exports = {
         icon: 'check',
         disabled: desabilitaBotoes || !podePublicar()
       })
+
     ]);
   }
 };

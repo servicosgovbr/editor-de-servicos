@@ -78,18 +78,6 @@ public class RepositorioGitTest {
     }
 
     @Test
-    public void caminhosERevisoes() throws Exception {
-        _caminhoRevisoes(repo1, clone1);
-        _caminhoRevisoes(repo2, clone2);
-    }
-
-    private void _caminhoRevisoes(RepositorioGit repo, File folder) {
-        assertThat(repo.getCaminhoAbsoluto(), is(folder.toPath()));
-        assertThat(repo.getRevisaoMaisRecenteDoArquivo(Paths.get("LICENSE")), is(not(empty())));
-        assertThat(repo.getRevisaoMaisRecenteDoBranch("master"), is(not(empty())));
-    }
-
-    @Test
     public void fluxoDeMoverBranch() throws Exception {
         moveBranch(repo1);
         garanteQueBranchFoiMovida(repo1);

@@ -85,12 +85,18 @@ public abstract class ConteudoVersionado<T> {
         return repositorio.getCaminhoAbsoluto().relativize(getCaminhoAbsoluto());
     }
 
-    protected Optional<Revisao> getRevisaoMaisRecenteDoArquivo() {
-        return repositorio.getRevisaoMaisRecenteDoArquivo(getCaminhoRelativo());
+    protected Optional<Revisao> getRevisaoMaisRecenteDoMaster() {
+        if (!existeNoMaster()) {
+            return Optional.empty();
+        }
+        return repositorio.getRevisaoMaisRecenteDoBranch(getBranchMasterRef(), getCaminhoRelativo());
     }
 
     protected Optional<Revisao> getRevisaoMaisRecenteDoBranch() {
-        return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef());
+        if (!existeNoBranch()) {
+            return Optional.empty();
+        }
+        return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef(), getCaminhoRelativo());
     }
 
     public boolean existe() {
@@ -118,7 +124,7 @@ public abstract class ConteudoVersionado<T> {
     protected Metadados<T> internalGetMetadados() {
         return new Metadados<T>()
                 .withId(getId())
-                .withPublicado(getRevisaoMaisRecenteDoArquivo().orElse(null))
+                .withPublicado(getRevisaoMaisRecenteDoMaster().orElse(null))
                 .withEditado(getRevisaoMaisRecenteDoBranch().orElse(null))
                 .withConteudo(getMetadadosConteudo());
     }

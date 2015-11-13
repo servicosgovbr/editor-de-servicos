@@ -16,7 +16,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +33,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -74,6 +72,7 @@ public class CartaTest {
 
     @Before
     public void setUp() throws Exception {
+
         carta = new Carta("um-id-qualquer", repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml, siorg);
     }
 
@@ -102,28 +101,19 @@ public class CartaTest {
     }
 
     @Test
-    public void buscaMetadadosDoUltimoCommitQuandoExisteBranch() throws Exception {
-        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
-                .willReturn(Optional.empty());
+    public void buscaMetadadosDoUltimoCommitQuandoNaoExisteBranch() throws Exception {
+        given(repositorio.comRepositorioAbertoNoBranch(
+                eq("refs/heads/master"),
+                any()))
+                .willReturn(true);
 
-        given(repositorio.getCaminhoAbsoluto())
-                .willReturn(Paths.get("/um/caminho/qualquer"));
-
-        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/servico-um-id-qualquer"))
+        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/servico-um-id-qualquer", Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
                 .willReturn(of(REVISAO));
 
-        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(null).withEditado(REVISAO)));
-    }
-
-    @Test
-    public void buscaMetadadosDoUltimoCommitQuandoNaoExisteBranch() throws Exception {
-        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/servico-um-id-qualquer"))
-                .willReturn(empty());
-
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
+        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/master", Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
                 .willReturn(of(REVISAO));
 
         assertThat(carta.getMetadados(), is(METADADOS.withPublicado(REVISAO).withEditado(null)));
@@ -145,28 +135,6 @@ public class CartaTest {
 
         assertThat(carta.getConteudoRaw(), is("<servico/>"));
         assertThat(captor.getValue().get().get(), is("<servico/>"));
-    }
-
-    @Test
-    public void metadadosQuandoNaoTemNomeDeOrgao() throws Exception {
-        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/servico-um-id-qualquer"))
-                .willReturn(empty());
-
-        given(repositorio.comRepositorioAbertoNoBranch(anyString(), any()))
-                .willReturn(new Carta.Servico()
-                        .withOrgao(new Carta.Orgao()
-                                .withId("qualquer")));
-
-        given(repositorio.getCaminhoAbsoluto())
-                .willReturn(Paths.get("/um/caminho/qualquer"));
-
-        given(repositorio.getRevisaoMaisRecenteDoArquivo(Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
-                .willReturn(of(REVISAO));
-
-        given(siorg.nomeDoOrgao(anyString()))
-                .willReturn(empty());
-
-        assertThat(carta.getMetadados().getNomeOrgao(), is(" - - "));
     }
 
     @Test

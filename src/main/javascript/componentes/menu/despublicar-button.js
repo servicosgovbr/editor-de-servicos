@@ -11,21 +11,21 @@ function botaoQueEspera(opts) {
 }
 
 module.exports = {
-  controller: function(args) {
+  controller: function (args) {
     this.despublicar = safeGet(args, 'despublicar');
     this.despublicando = m.prop(false);
 
-    this.onClick = function() {
+    this.onClick = function () {
       this.despublicando(true);
       m.redraw();
-      return promise.onSuccOrError(this.despublicar(), _.bind(function() {
+      return promise.onSuccOrError(this.despublicar(), _.bind(function () {
         this.despublicando(false);
         m.redraw();
       }, this));
     };
   },
 
-  view: function(ctrl, args) {
+  view: function (ctrl, args) {
     return m('#secao-despublicar', [
       m('hr'),
       botaoQueEspera({
