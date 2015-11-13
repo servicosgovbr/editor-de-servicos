@@ -16,6 +16,10 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'org.flywaydb:flyway-core'
+    compile 'com.h2database:h2:1.4.190'
+
     compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
 
     compile 'com.sun.xml.bind:jaxb-core:2.2.11'
