@@ -56,20 +56,6 @@
     }
 }
 
-.alertify-log-success {
-	font-family: $heading-font-family;
-	font-size: 14px;
-	background: $verde;
-	text-shadow: none;
-}
-
-.alertify-log-error {
-	font-family: $openSansBold;
-	font-size: 14px;
-	background: $vermelho;
-	text-shadow: none;
-}
-
 .alertify-log {
 	position: initial;
 	height: 40px;
@@ -78,6 +64,21 @@
     border: transparent;
     text-align: center;
     padding: 15px 5px;
+    font-size: 14px;
+	text-shadow: none;
+	font-family: $openSansBold;
+    color: $cinza-escuro;
+    background: $amarelo;
+
+    &.alertify-log-success {
+		background: $verde !important;
+		color: $branco !important;
+	}
+
+	&.alertify-log-error {
+		background: $vermelho !important;
+		color: $branco !important;
+	}
 }
 
 .alertify-logs {

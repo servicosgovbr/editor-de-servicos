@@ -1,12 +1,17 @@
 'use strict';
 
+alertify.set({ delay: 10000 });
 
 function sucesso(msg) {
-  alertify.success(msg, 4000);
+  alertify.success(msg);
 }
 
 function erro(msg) {
-  alertify.error(msg, 4000);
+  alertify.error(msg);
+}
+
+function alerta(msg) {
+  alertify.log(msg);
 }
 
 function sucessoFn(msg) {
@@ -21,9 +26,17 @@ function erroFn(msg) {
   };
 }
 
+function alertFn(msg) {
+  return function () {
+    alerta(msg);
+  };
+}
+
 module.exports = {
   sucesso: sucesso,
   erro: erro,
+  alerta: alerta,
   sucessoFn: sucessoFn,
-  erroFn: erroFn
+  erroFn: erroFn,
+  alertFn: alertFn
 };

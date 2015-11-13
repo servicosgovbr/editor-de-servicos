@@ -11,10 +11,6 @@ module.exports = {
       editar: _.noop,
     }, args);
 
-    alertify.set({
-      delay: 1500
-    });
-
     this.config = config;
   },
 
