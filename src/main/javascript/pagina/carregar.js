@@ -32,12 +32,12 @@ var config = function (args, metadados) {
 
 };
 
-var importar = function (cabecalho, json) {
+var lerJson = function (cabecalho, json) {
   cabecalho.limparErro();
   return new ModeloPagina(json);
 };
 
 module.exports = function (args, cabecalho) {
   return m.request(config(args, cabecalho.metadados))
-    .then(_.bind(importar, this, cabecalho), erro);
+    .then(_.bind(lerJson, this, cabecalho), erro);
 };

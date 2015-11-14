@@ -2,7 +2,7 @@
 
 var slugify = require('slugify');
 var extrairMetadados = require('utils/extrair-metadados');
-var importarXml = require('xml/importar');
+var domParaServico = require('xml/servico-factory').domParaServico;
 var exportarXml = require('xml/exportar');
 var validacoes = require('utils/validacoes');
 var promiseUtil = require('utils/promise');
@@ -53,5 +53,5 @@ module.exports = function (servico, metadados) {
     .then(function (xml) {
       return postarServico(servico.nome(), xml, metadados);
     })
-    .then(importarXml, onAjaxError);
+    .then(domParaServico, onAjaxError);
 };
