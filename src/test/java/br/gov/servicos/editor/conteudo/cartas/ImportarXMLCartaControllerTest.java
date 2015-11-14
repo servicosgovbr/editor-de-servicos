@@ -16,11 +16,14 @@ public class ImportarXMLCartaControllerTest {
     private Path xml_inexistente;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws Exception {
         valido = Files.createTempFile("valido", "xml");
         valido.toFile().deleteOnExit();
         xml_inexistente = Files.createTempFile("xml_inexistente", "xml");
-        xml_inexistente.toFile().delete();
+
+        if (xml_inexistente.toFile().delete()) {
+           throw new Exception("Erro ao inicializar testes");
+        }
 
         new EscritorDeArquivos().escrever(valido, "<servico><nome>Carta A</nome></servico>");
     }
