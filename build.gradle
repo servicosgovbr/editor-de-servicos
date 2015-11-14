@@ -37,3 +37,7 @@ apply from: "${rootProject.rootDir}/gradle/git-properties.gradle"
 apply from: "${rootProject.rootDir}/gradle/rpm.gradle"
 apply from: "${rootProject.rootDir}/gradle/idea.gradle"
 apply from: "${rootProject.rootDir}/gradle/tests.gradle"
+
+bootRun {
+    systemProperty "spring.profiles.active", "desenvolvimento"
+}
