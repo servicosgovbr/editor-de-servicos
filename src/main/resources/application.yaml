@@ -5,6 +5,10 @@ spring:
   thymeleaf:
     cache: false
 
+  datasource:
+    url: jdbc:postgresql://postgres:5432/postgres
+    username: postgres
+
 security:
   ignored:
     - '/editar/info'
@@ -30,3 +34,11 @@ flags:
 eds:
   cartas:
     repositorio: "https://github.com/servicosgovbr/cartas-de-teste.git"
+
+---
+
+spring:
+  profiles: desenvolvimento,teste
+
+  datasource:
+    url: jdbc:h2:mem:editor

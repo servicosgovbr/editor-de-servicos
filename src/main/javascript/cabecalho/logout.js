@@ -3,7 +3,7 @@
 module.exports = {
 
   view: function () {
-    return m('form#logout[action=/editar/logout][method=POST]', [
+    return m('form#logout[action=/editar/sair][method=POST]', [
       m('button', {
           title: 'Sair do editor (logout)'
         }, m.trust('&nbsp; Sair &nbsp;'),

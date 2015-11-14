@@ -7,16 +7,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import javax.sql.DataSource;
+
 import static org.springframework.http.HttpMethod.*;
 
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     public static final String LOGIN_URL = "/editar/autenticar";
     private PasswordEncoder passwordEncoder;
+    private DataSource dataSource;
 
-    @Autowired
-    public SecurityWebAppInitializer(PasswordEncoder passwordEncoder) {
+    public SecurityWebAppInitializer(PasswordEncoder passwordEncoder, DataSource dataSource) {
         this.passwordEncoder = passwordEncoder;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -50,33 +53,10 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        String hash = "$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm";
         auth
-                 .inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("mauricio.formiga@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("formiga.mauricio@gmail.com").password(hash).roles("ADMIN").and()
-                .withUser("almeidafab@gmail.com").password(hash).roles("ADMIN").and()
-                .withUser("fabricio.fontenele@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("carlos.vieira@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("silvia.belarmino@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("andrea.ricciardi@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("everson.aguiar@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("joelson.vellozo@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("izabel.garcia@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("carlos-eduardo.melo@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("cvillela@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("bleite@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("oliviaj@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("srosa@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("jkirchne@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("pleal@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("gfreita@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("gramos@thoughtworks.com").password(hash).roles("ADMIN").and()
-                .withUser("nitai.silva@cultura.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("esau.mendes@planejamento.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("thiago.avila@seplag.al.gov.br").password(hash).roles("ADMIN").and()
-                .withUser("toni.esteves@gmail.com").password(hash).roles("ADMIN");
+                .jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder);
     }
 
 }
