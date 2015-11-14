@@ -73,16 +73,159 @@ public abstract class ConteudoVersionado<T> {
         return R_HEADS + tipo.prefixo() + getId();
     }
 
-    private String getBranchMasterRef() {
-        return R_HEADS + MASTER;
-    }
-
     public Path getCaminhoAbsoluto() {
         return repositorio.getCaminhoAbsoluto().resolve(getCaminho()).toAbsolutePath();
     }
 
     public Path getCaminhoRelativo() {
         return repositorio.getCaminhoAbsoluto().relativize(getCaminhoAbsoluto());
+    }
+
+    public boolean existe() {
+        synchronized (RepositorioGit.class) {
+            return existeNoMaster() || existeNoBranch();
+        }
+    }
+
+    public boolean existeNoMaster() {
+        synchronized (RepositorioGit.class) {
+            return repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(),
+                    () -> getCaminhoAbsoluto().toFile().exists());
+        }
+    }
+
+    public boolean existeNoBranch() {
+        synchronized (RepositorioGit.class) {
+            return repositorio.existeBranch(getBranchRef())
+                    && repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
+                    () -> getCaminhoAbsoluto().toFile().exists());
+        }
+    }
+
+    @Cacheable
+    public Metadados<T> getMetadados() {
+        synchronized (RepositorioGit.class) {
+            return internalGetMetadados();
+        }
+    }
+
+    @CacheEvict
+    public void salvar(UserProfile profile, String conteudo) {
+        synchronized (RepositorioGit.class) {
+            repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
+                salvarConteudo(profile, getBranchRef(), conteudo);
+                return null;
+            });
+        }
+    }
+
+    @CacheEvict
+    public void remover(UserProfile profile) {
+        synchronized (RepositorioGit.class) {
+            repositorio.comRepositorioAbertoNoBranch(this.getBranchMasterRef(), () -> {
+                repositorio.pull();
+
+                repositorio.deleteLocalBranch(this.getBranchRef());
+                repositorio.deleteRemoteBranch(this.getBranchRef());
+
+                if (isPublicado()) {
+                    repositorio.remove(getCaminhoRelativo());
+                    repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+                    repositorio.push(getBranchMasterRef());
+                }
+                return null;
+            });
+        }
+    }
+
+    @SneakyThrows
+    @CacheEvict
+    public void publicar(UserProfile profile) {
+        synchronized (RepositorioGit.class) {
+            if (!existeNoBranch()) {
+                return;
+            }
+
+            String conteudo = getConteudoRaw();
+
+            repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+                salvarConteudo(profile, getBranchMasterRef(), conteudo);
+
+                repositorio.deleteLocalBranch(getBranchRef());
+                repositorio.deleteRemoteBranch(getBranchRef());
+
+                return null;
+            });
+        }
+    }
+
+    @CacheEvict
+    public void descartarAlteracoes() {
+        synchronized (RepositorioGit.class) {
+            if (!existeNoBranch()) {
+                return;
+            }
+            repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
+                repositorio.deleteLocalBranch(getBranchRef());
+                repositorio.deleteRemoteBranch(getBranchRef());
+                return null;
+            });
+        }
+    }
+
+    @SneakyThrows
+    @CacheEvict
+    public void despublicarAlteracoes(UserProfile profile) {
+        synchronized (RepositorioGit.class) {
+            if (!existeNoMaster()) return;
+            String conteudo = getConteudoRaw();
+            salvar(profile, conteudo);
+            despublicar(profile);
+        }
+    }
+
+    @CacheEvict
+    public String renomear(UserProfile profile, String novoNome) {
+        synchronized (RepositorioGit.class) {
+            String novoId = slugify.slugify(novoNome);
+            String novoBranch = tipo.prefixo() + novoId;
+
+            repositorio.comRepositorioAbertoNoBranch(getBranchRef(), uncheckedSupplier(() -> {
+                repositorio.pull();
+                alterarConteudo(profile, novoNome, getBranchRef());
+                if (!getId().equals(novoId)) {
+                    repositorio.moveBranchPara(novoBranch);
+                    renomearConteudo(profile, novoId, novoBranch);
+                    repositorio.deleteRemoteBranch(getBranchRef());
+                }
+                return null;
+            }));
+
+            repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), uncheckedSupplier(() -> {
+                repositorio.pull();
+                if (isPublicado()) {
+                    alterarConteudo(profile, novoNome, getBranchMasterRef());
+                    if (!getId().equals(novoId)) {
+                        renomearConteudo(profile, novoId, getBranchMasterRef());
+                    }
+                }
+                return null;
+            }));
+
+            return novoId;
+        }
+    }
+
+    @CacheEvict
+    public String getConteudoRaw() throws FileNotFoundException {
+        synchronized (RepositorioGit.class) {
+            return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
+                repositorio.pull();
+                return leitorDeArquivos.ler(getCaminhoAbsoluto().toFile());
+            }).orElseThrow(
+                    () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + "'")
+            );
+        }
     }
 
     protected Optional<Revisao> getRevisaoMaisRecenteDoMaster() {
@@ -92,34 +235,14 @@ public abstract class ConteudoVersionado<T> {
         return repositorio.getRevisaoMaisRecenteDoBranch(getBranchMasterRef(), getCaminhoRelativo());
     }
 
+    protected abstract T getMetadadosConteudo();
+
     protected Optional<Revisao> getRevisaoMaisRecenteDoBranch() {
         if (!existeNoBranch()) {
             return Optional.empty();
         }
         return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef(), getCaminhoRelativo());
     }
-
-    public boolean existe() {
-        return existeNoMaster() || existeNoBranch();
-    }
-
-    public boolean existeNoMaster() {
-        return repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(),
-                () -> getCaminhoAbsoluto().toFile().exists());
-    }
-
-    public boolean existeNoBranch() {
-        return repositorio.existeBranch(getBranchRef())
-                && repositorio.comRepositorioAbertoNoBranch(getBranchRef(),
-                () -> getCaminhoAbsoluto().toFile().exists());
-    }
-
-    @Cacheable
-    public Metadados<T> getMetadados() {
-        return internalGetMetadados();
-    }
-
-    protected abstract T getMetadadosConteudo();
 
     protected Metadados<T> internalGetMetadados() {
         return new Metadados<T>()
@@ -129,116 +252,13 @@ public abstract class ConteudoVersionado<T> {
                 .withConteudo(getMetadadosConteudo());
     }
 
-    @CacheEvict
-    public void salvar(UserProfile profile, String conteudo) {
-        repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
-            salvarConteudo(profile, getBranchRef(), conteudo);
-            return null;
-        });
-    }
-
-    @CacheEvict
-    public void remover(UserProfile profile) {
-        repositorio.comRepositorioAbertoNoBranch(this.getBranchMasterRef(), () -> {
-            repositorio.pull();
-
-            repositorio.deleteLocalBranch(this.getBranchRef());
-            repositorio.deleteRemoteBranch(this.getBranchRef());
-
-            if (isPublicado()) {
-                repositorio.remove(getCaminhoRelativo());
-                repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
-                repositorio.push(getBranchMasterRef());
-            }
-            return null;
-        });
-    }
-
-    @SneakyThrows
-    @CacheEvict
-    public void publicar(UserProfile profile) {
-        if (!existeNoBranch()) {
-            return;
-        }
-
-        String conteudo = getConteudoRaw();
-
-        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
-            salvarConteudo(profile, getBranchMasterRef(), conteudo);
-
-            repositorio.deleteLocalBranch(getBranchRef());
-            repositorio.deleteRemoteBranch(getBranchRef());
-
-            return null;
-        });
-    }
-
-    @CacheEvict
-    public void descartarAlteracoes() {
-        if (!existeNoBranch()) {
-            return;
-        }
-
-        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
-            repositorio.deleteLocalBranch(getBranchRef());
-            repositorio.deleteRemoteBranch(getBranchRef());
-            return null;
-        });
-    }
-
-    @SneakyThrows
-    @CacheEvict
-    public void despublicarAlteracoes(UserProfile profile) {
-        if (!existeNoMaster()) return;
-        String conteudo = getConteudoRaw();
-        salvar(profile, conteudo);
-        despublicar(profile);
-    }
-
-    @CacheEvict
-    public String renomear(UserProfile profile, String novoNome) {
-        String novoId = slugify.slugify(novoNome);
-        String novoBranch = tipo.prefixo() + novoId;
-
-        repositorio.comRepositorioAbertoNoBranch(getBranchRef(), uncheckedSupplier(() -> {
-            repositorio.pull();
-            alterarConteudo(profile, novoNome, getBranchRef());
-            if (!getId().equals(novoId)) {
-                repositorio.moveBranchPara(novoBranch);
-                renomearConteudo(profile, novoId, novoBranch);
-                repositorio.deleteRemoteBranch(getBranchRef());
-            }
-            return null;
-        }));
-
-        repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), uncheckedSupplier(() -> {
-            repositorio.pull();
-            if (isPublicado()) {
-                alterarConteudo(profile, novoNome, getBranchMasterRef());
-                if (!getId().equals(novoId)) {
-                    renomearConteudo(profile, novoId, getBranchMasterRef());
-                }
-            }
-            return null;
-        }));
-
-        return novoId;
-    }
-
-    @CacheEvict
-    public String getConteudoRaw() throws FileNotFoundException {
-        return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
-            repositorio.pull();
-            return leitorDeArquivos.ler(getCaminhoAbsoluto().toFile());
-        }).orElseThrow(
-                () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + "'")
-        );
-    }
-
     private boolean isPublicado() {
         return Files.exists(getCaminhoAbsoluto());
     }
 
+    private String getBranchMasterRef() {
+        return R_HEADS + MASTER;
+    }
 
     private void despublicar(UserProfile profile) {
         repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
