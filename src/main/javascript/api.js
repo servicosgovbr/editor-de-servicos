@@ -1,12 +1,14 @@
 'use strict';
 
+var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 
 function request(opts) {
   return m.request(_.merge({
     method: 'GET',
     deserialize: _.identity
-  }, opts));
+  }, opts))
+    .then(_.identity, erro);
 }
 
 module.exports = {
