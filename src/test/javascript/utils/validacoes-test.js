@@ -149,6 +149,10 @@ describe('validação >', function () {
       return servico.legislacoes;
     }, 1);
 
+    eachItemShouldNotExceed('legislações', function(){
+      return servico.legislacoes;
+    }, 500);
+
     it('deve haver no mínimo 3 palavras chave', function () {
       servico.palavrasChave([]);
       expect(servico.palavrasChave.erro()).toBe('erro-min-3');

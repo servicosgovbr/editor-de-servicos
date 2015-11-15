@@ -116,7 +116,7 @@ var Servico = function (config) {
   this.segmentosDaSociedade = v.prop(data.segmentosDaSociedade || [], v.minimo(1));
   this.areasDeInteresse = v.prop(data.areasDeInteresse || [], v.minimo(1));
   this.palavrasChave = v.prop(data.palavrasChave || [], v.minimo(3), v.cada(v.textoCurto), v.cada(v.obrigatorio));
-  this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1));
+  this.legislacoes = v.prop(data.legislacoes || [], v.minimo(1), v.cada(v.textoLongo), v.cada(v.obrigatorio));
 };
 
 module.exports = {

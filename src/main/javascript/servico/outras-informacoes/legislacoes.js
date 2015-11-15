@@ -3,7 +3,6 @@
 var focus = require('focus');
 
 module.exports = {
-
   controller: function (args) {
     this.servico = args.servico;
 
@@ -24,7 +23,9 @@ module.exports = {
 
   view: function (ctrl) {
     return m('fieldset#legislacoes.relative', [
-      m('h3', [
+      m('h3.input-container', {
+        class: ctrl.servico().legislacoes.erro()
+      }, [
         'Legislações relacionadas ao serviço',
         m.component(require('tooltips').legislacoes)
       ]),
@@ -35,16 +36,18 @@ module.exports = {
             onclick: ctrl.remover.bind(ctrl, i)
           }),
 
-          m('.input-container', [
-            m.component(require('componentes/editor-markdown'), {
-              rows: 3,
-              config: focus(ctrl),
-              value: legislacao,
-              onchange: function (e) {
-                ctrl.servico().legislacoes()[i] = e.target.value;
-              }
-            })
-          ])
+          m.component(require('componentes/editor-markdown'), {
+            rows: 3,
+            config: focus(ctrl),
+            value: legislacao,
+            erro: (ctrl.servico().legislacoes.erro() || [])[i],
+            onchange: function (e) {
+              var valorNovo = e.target.value;
+              var tmp = ctrl.servico().legislacoes();
+              tmp[i] = valorNovo;
+              ctrl.servico().legislacoes(tmp);
+            }
+          })
         ];
       }),
       m('button.adicionar.adicionar-legislacao', {
