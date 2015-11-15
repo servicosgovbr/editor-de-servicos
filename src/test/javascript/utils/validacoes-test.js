@@ -198,6 +198,10 @@ describe('validação >', function () {
       return tte.descricao;
     }, 500);
 
+    shouldBePresent('tipo', function () {
+      return tte.tipo;
+    });
+
     shouldBePresent('ate', function () {
       tte.tipo('ate');
       return tte.ateMaximo;
