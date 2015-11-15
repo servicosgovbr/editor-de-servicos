@@ -250,9 +250,14 @@ describe('validação >', function () {
       etapa = new modelos.Etapa();
     });
 
+    shouldBePresent('titulo', function () {
+      return etapa.titulo;
+    });
+
     shouldNotExceed('titulo', function () {
       return etapa.titulo;
     }, 150);
+
     shouldNotExceed('descrição', function () {
       return etapa.descricao;
     }, 500);
