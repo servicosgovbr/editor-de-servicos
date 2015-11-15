@@ -5,9 +5,9 @@ var extrairMetadados = require('utils/extrair-metadados');
 
 function request(opts) {
   return m.request(_.merge({
-    method: 'GET',
-    deserialize: _.identity
-  }, opts))
+      method: 'GET',
+      deserialize: _.identity
+    }, opts))
     .then(_.identity, erro);
 }
 
@@ -46,7 +46,7 @@ module.exports = {
     });
   },
 
-  importarXml: function(urlParam) {
+  importarXml: function (urlParam) {
     return request({
       method: 'GET',
       url: '/editar/api/importar-xml',

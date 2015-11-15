@@ -158,8 +158,8 @@ var servico = function (x) {
   });
 };
 
-module.exports =  {
-  domParaServico : function (dom) {
+module.exports = {
+  domParaServico: function (dom) {
     return servico(jQuery('servico', dom));
   }
 };
