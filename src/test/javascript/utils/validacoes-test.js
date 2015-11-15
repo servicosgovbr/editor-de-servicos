@@ -115,6 +115,10 @@ describe('validação >', function () {
       return servico.descricao;
     });
 
+    shouldBePresent('grauidade', function () {
+      return servico.gratuidade;
+    });
+
     shouldNotExceed('nome', function () {
       return servico.nome;
     }, 150);
@@ -149,7 +153,7 @@ describe('validação >', function () {
       return servico.legislacoes;
     }, 1);
 
-    eachItemShouldNotExceed('legislações', function(){
+    eachItemShouldNotExceed('legislações', function () {
       return servico.legislacoes;
     }, 500);
 

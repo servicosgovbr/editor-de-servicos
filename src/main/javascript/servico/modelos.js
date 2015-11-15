@@ -97,6 +97,9 @@ var Orgao = function (config) {
   this.contato = v.prop(data.contato || '', v.textoCurto);
 };
 
+var GRATUITO = 'gratuito';
+var PAGO = 'pago';
+
 var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
@@ -107,7 +110,7 @@ var Servico = function (config) {
   this.sigla = v.prop(data.sigla || '', v.maximo(15));
   this.nomesPopulares = v.prop(data.nomesPopulares || [], v.cada(v.textoCurto));
   this.descricao = v.prop(data.descricao || '', v.obrigatorio, v.textoLongo);
-  this.gratuidade = m.prop(data.gratuidade);
+  this.gratuidade = v.prop(data.gratuidade, v.obrigatorio);
   this.solicitantes = v.prop(data.solicitantes || [], v.minimo(1));
   this.tempoTotalEstimado = m.prop(data.tempoTotalEstimado || new TempoTotalEstimado());
   this.etapas = v.prop(data.etapas || [], v.minimo(1));
@@ -131,5 +134,9 @@ module.exports = {
   Etapa: Etapa,
   Servico: Servico,
   Orgao: Orgao,
-  TempoTotalEstimado: TempoTotalEstimado
+  TempoTotalEstimado: TempoTotalEstimado,
+  Gratuidade: {
+    GRATUITO: GRATUITO,
+    PAGO: PAGO
+  }
 };

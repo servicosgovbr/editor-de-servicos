@@ -15,9 +15,10 @@
     border: none;
     
     &:not(:checked):before {
-      width: 15px;
+      @extend .fa;
       @extend .fa-circle-o;
       color: $vermelho-regular;
+      width: 15px;
     }
   }
 
@@ -165,6 +166,9 @@ h3.input-container {
     @include validacao-erro-inline('Deve haver no mínimo um item selecionado', -3px, 5px);
   }
 
+  &.erro-campo-obrigatorio {
+    @include validacao-erro-inline('Campo obrigatório', -3px, 5px);
+  }
 }
 
 h2.erro-min-1 {
