@@ -6,24 +6,17 @@ import org.junit.Test;
 import org.springframework.test.util.XmlExpectationsHelper;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ImportarXMLCartaControllerTest {
 
     private Path valido;
-    private Path xml_inexistente;
 
     @Before
     public void setup() throws Exception {
         valido = Files.createTempFile("valido", "xml");
         valido.toFile().deleteOnExit();
-        xml_inexistente = Files.createTempFile("xml_inexistente", "xml");
-
-        if (xml_inexistente.toFile().delete()) {
-           throw new Exception("Erro ao inicializar testes");
-        }
 
         new EscritorDeArquivos().escrever(valido, "<servico><nome>Carta A</nome></servico>");
     }
@@ -34,9 +27,9 @@ public class ImportarXMLCartaControllerTest {
         new XmlExpectationsHelper().assertXmlEqual("<servico><nome>Carta A</nome></servico>", xml);
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test(expected = Exception.class)
     public void deveReceberUrlDeXmlEValidarFormatoXml() throws Exception {
-        new ImportarXMLCartaController().editar("https://urlquenaoexiste/arquivo.xml");
+        new ImportarXMLCartaController().editar("https://urlquenaoexiste.com/arquivo.xml");
     }
 
 }
