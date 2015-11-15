@@ -1,62 +1,15 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.Main;
-import br.gov.servicos.editor.conteudo.MockMvcEditorAPI;
-import br.gov.servicos.editor.fixtures.MockMvcFactory;
-import br.gov.servicos.editor.fixtures.RepositorioCartasBuilder;
-import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
-import br.gov.servicos.editor.git.Importador;
-import br.gov.servicos.editor.git.RepositorioConfig;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Main.class)
-@WebAppConfiguration
-@IntegrationTest({
-        "flags.importar=false",
-        "flags.esquentar.cache=false",
-        "flags.git.push=true",
-        "server.port:0"
-})
-@ActiveProfiles("teste")
-public class PublicarCartaControllerIntegrationTest {
-
-
-    @Autowired
-    WebApplicationContext context;
-
-    @Autowired
-    public RepositorioConfigParaTeste repo;
-
-    @Autowired
-    RepositorioConfig repoConfig;
-
-    @Autowired
-    Importador importador;
-
-    private MockMvcEditorAPI api;
-
+public class PublicarCartaControllerIntegrationTest extends RepositorioGitIntegrationTest {
 
     @Before
     public void setup() {
-        api = MockMvcFactory.editorAPI(context);
-
-        repo.reset();
-        importador.importaRepositorioDeCartas();
-
-        new RepositorioCartasBuilder(repoConfig.localRepositorioDeCartas.toPath())
+        setupBase()
                 .carta("teste-a", "<servico><nome>Teste A</nome><sigla>TSTA</sigla></servico>")
                 .build();
     }

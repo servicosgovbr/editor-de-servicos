@@ -2,16 +2,25 @@
 
 var carregarServico = require('xml/carregar');
 
+var servicoMantido = m.prop(null);
+
+function carregar(cabecalho) {
+  return carregarServico(m.route.param('id'), cabecalho);
+}
+
 module.exports = {
-
-  servico: m.prop(null),
-
   recuperar: function (cabecalho) {
-    return _.isNull(this.servico()) ? carregarServico(m.route.param('id'), cabecalho) : this.servico();
+    var servicoRetorno = m.prop(null);
+    if (servicoMantido()) {
+      servicoRetorno(servicoMantido());
+    } else {
+      carregar(cabecalho)
+        .then(servicoRetorno);
+    }
+    return servicoRetorno;
   },
 
   manter: function (servico) {
-    this.servico(servico);
+    servicoMantido(servico);
   }
-
 };

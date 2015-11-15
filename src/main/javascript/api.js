@@ -1,12 +1,14 @@
 'use strict';
 
+var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 
 function request(opts) {
   return m.request(_.merge({
     method: 'GET',
     deserialize: _.identity
-  }, opts));
+  }, opts))
+    .then(_.identity, erro);
 }
 
 module.exports = {
@@ -26,7 +28,7 @@ module.exports = {
       method: 'POST',
       url: url,
       config: function (xhr) {
-        xhr.setRequestHeader('Accepts', mimeType);
+        xhr.setRequestHeader('Accept', mimeType);
       },
       extract: extrairMetadados(metadados),
       deserialize: function (str) {
@@ -41,6 +43,22 @@ module.exports = {
       method: 'POST',
       url: url,
       extract: extrairMetadados(metadados)
+    });
+  },
+
+  importarXml: function(urlParam) {
+    return request({
+      method: 'GET',
+      url: '/editar/api/importar-xml',
+      config: function (xhr) {
+        xhr.setRequestHeader('Accept', 'application/xml');
+      },
+      data: {
+        url: urlParam
+      },
+      deserialize: function (str) {
+        return new DOMParser().parseFromString(str, 'application/xml');
+      }
     });
   }
 };

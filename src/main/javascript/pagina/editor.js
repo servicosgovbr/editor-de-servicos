@@ -1,15 +1,12 @@
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
-
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var EditorBase = require('componentes/editor-base');
-
 var carregarPagina = require('pagina/carregar');
 var salvarOrgao = require('pagina/salvar');
 
 module.exports = {
-
   controller: function (args) {
     var tipo = safeGet(args, 'tipo');
 
@@ -31,6 +28,7 @@ module.exports = {
     var tituloNome = safeGet(args, 'tituloNome');
     var componenteNome = safeGet(args, 'componenteNome');
     var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
+
     var tooltips = {
       tipo: safeGet(args, 'tooltips.tipo'),
       nome: safeGet(args, 'tooltips.nome'),

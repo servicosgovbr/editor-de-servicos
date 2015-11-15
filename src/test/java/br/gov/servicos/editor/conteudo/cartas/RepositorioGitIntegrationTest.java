@@ -49,4 +49,5 @@ public abstract class RepositorioGitIntegrationTest {
 
         return new RepositorioCartasBuilder(repoConfig.localRepositorioDeCartas.toPath());
     }
+
 }

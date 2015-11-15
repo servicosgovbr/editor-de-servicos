@@ -4,7 +4,7 @@ var api = require('api');
 var promise = require('utils/promise');
 var slugify = require('slugify');
 var validacoes = require('utils/validacoes');
-var importarXml = require('xml/importar');
+var domParaServico = require('xml/servico-factory').domParaServico;
 
 function descartar(servico, metadados) {
   var idServico = slugify(servico.nome());
@@ -24,5 +24,5 @@ module.exports = function (servico, metadados) {
     .then(function (s) {
       return descartar(s, metadados);
     })
-    .then(importarXml);
+    .then(domParaServico);
 };

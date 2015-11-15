@@ -5,21 +5,20 @@ var erro = require('utils/erro-ajax');
 
 var tiposDePaginaList = [
   {
-    id: 'Área de Interesse',
     text: 'Área de Interesse'
   }, {
     id: 'Página Especial',
     text: 'Página Temática'
   }, {
-    id: 'Órgão',
     text: 'Órgão'
   }, {
-    id: 'Serviço',
     text: 'Serviço'
+  }, {
+    text: 'Importar XML'
   }
 ].map(function (t) {
   return {
-    id: slugify(t.id),
+    id: slugify(t.id || t.text),
     text: t.text
   };
 });
@@ -225,11 +224,9 @@ module.exports = {
 
   tipoDePagina: function (id) {
     var tipo = tiposDePaginaMap[id];
-
     if (!tipo) {
       throw new Error('Tipo de página não encontrado para id: ' + id);
     }
-
     return tipo.text;
   }
 };

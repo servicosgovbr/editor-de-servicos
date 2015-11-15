@@ -1,7 +1,7 @@
 'use strict';
 
 var slugify = require('slugify');
-var importar = require('xml/importar');
+var domParaServico = require('xml/servico-factory').domParaServico;
 var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 
@@ -25,7 +25,7 @@ var config = function (id, metadados) {
 
 var carregar = function (cabecalho, xml) {
   cabecalho.limparErro();
-  return importar(xml);
+  return domParaServico(xml);
 };
 
 module.exports = function (id, cabecalho) {

@@ -8,9 +8,8 @@ module.exports = {
     return m.component(EditorPagina, {
       tipo: 'pagina-especial',
       tituloNome: 'Nome da página especial',
-      componenteNome: require('pagina-especial/componentes/nome'),
+      componenteNome: require('componentes/input'),
       tamanhoConteudo: 10000,
-
       tooltips: {
         tipo: Tooltips.tipoPagina,
         nome: Tooltips.nomePaginaEspecial,
