@@ -7,6 +7,7 @@ var servicoEmEdicao = require('servico/servico-em-edicao');
 var promise = require('utils/promise');
 
 var importarXml = require('xml/importar-xml');
+var isBlank = _.flow(_.trim, _.isEmpty);
 
 function botaoQueEspera(opts) {
   return m('button#' + opts.id, {
@@ -19,8 +20,8 @@ module.exports = {
   controller: function () {
     this.cabecalho = new CabecalhoModel();
     this.url = m.prop('');
-
     this.importando = m.prop(false);
+
     this.ok = function () {
       this.importando(true);
       m.redraw();
@@ -57,7 +58,7 @@ module.exports = {
           botaoQueEspera({
             id: 'importar-xml',
             onclick: _.bind(ctrl.ok, ctrl),
-            disabled: ctrl.importando(),
+            disabled: ctrl.importando() || isBlank(ctrl.url()),
             espera: ctrl.importando()
           })
         ])
