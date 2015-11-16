@@ -14,7 +14,8 @@ var tiposDePaginaList = [
   }, {
     text: 'Serviço'
   }, {
-    text: 'Importar XML'
+    id: 'Importar XML',
+    text: 'Serviço (utilizando XML)'
   }
 ].map(function (t) {
   return {

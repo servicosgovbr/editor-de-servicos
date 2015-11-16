@@ -4,9 +4,7 @@ var Tooltips = require('tooltips');
 var EditorPagina = require('pagina/editor');
 
 module.exports = {
-
   view: function (ctrl) {
-
     return m.component(EditorPagina, {
       tipo: 'orgao',
       tituloNome: 'Selecione o órgão',
@@ -19,7 +17,5 @@ module.exports = {
         conteudo: Tooltips.conteudoOrgao
       }
     });
-
   }
-
 };

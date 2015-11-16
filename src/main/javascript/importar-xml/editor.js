@@ -51,7 +51,7 @@ module.exports = {
           method: 'POST',
           action: '/editar/importar-xml'
         }, [
-          m('h3', 'Informe a URL de um XML de Serviço:'),
+          m('h3', 'Informe a URL de um XML de Serviço:', m.component(require('tooltips').importarXML)),
           m.component(input, {
             prop: ctrl.url
           }),

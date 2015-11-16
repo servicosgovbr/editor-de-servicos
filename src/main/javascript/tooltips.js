@@ -41,5 +41,6 @@ module.exports = {
   paginasAreasInteresse: t('São as páginas das categorias (áreas de interesse) que organizam os serviços.'),
   paginasOrgaos: t('São as páginas com conteúdos dos órgãos responsáveis pelos serviços do Governo Federal.'),
   paginasTematicas: t('São as páginas que agrupam conteúdos específicos e temáticos. Exemplo: DARF, CPF.'),
-  paginasServicos: t('São as páginas dos serviços públicos disponibilizados no Portal de Serviços')
+  paginasServicos: t('São as páginas dos serviços públicos disponibilizados no Portal de Serviços'),
+  importarXML: t('Essa página importa um serviço externo em XML, criando um novo serviço no Editor')
 };
