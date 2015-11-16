@@ -7,6 +7,7 @@ var exportarXml = require('xml/exportar');
 var validacoes = require('utils/validacoes');
 var promiseUtil = require('utils/promise');
 var limparModelo = require('limpar-modelo');
+var atributosCsrf = require('utils/atributos-csrf');
 
 function postarServico(nome, xml, metadados) {
   var id = slugify(nome);
@@ -21,6 +22,7 @@ function postarServico(nome, xml, metadados) {
     config: function (xhr) {
       xhr.setRequestHeader('Accepts', 'application/xml');
       xhr.setRequestHeader('Content-Type', 'application/xml');
+      xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
     },
 
     serialize: function (svc) {
