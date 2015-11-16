@@ -76,7 +76,7 @@ module.exports = {
 
     this.visualizar = function () {
       var id = slugify(this.servico().nome());
-      servicoEmEdicao.manter(this.servico);
+      servicoEmEdicao.manter(this.servico, this.cabecalho.metadados);
       m.route('/editar/visualizar/servico/' + id);
       return true;
     };

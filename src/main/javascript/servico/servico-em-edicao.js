@@ -7,17 +7,25 @@ function carregar(cabecalho) {
 }
 
 var servicoMantido = m.prop(null);
+var metadadosMantido = m.prop(null);
 
 module.exports = {
   recuperar: function (cabecalho) {
     if (!servicoMantido()) {
       carregar(cabecalho)
-        .then(servicoMantido);
+        .then(function(ser) {
+          servicoMantido(ser);
+          metadadosMantido = cabecalho.metadados;
+          window.console.log('promise');
+          window.console.log(metadadosMantido());
+        });
     }
+    cabecalho.metadados(metadadosMantido());
     return servicoMantido;
   },
 
-  manter: function (servico) {
+  manter: function (servico, metadados) {
     servicoMantido = servico;
+    metadadosMantido = metadados;
   }
 };

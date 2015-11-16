@@ -5,9 +5,7 @@ var limparModelo = require('limpar-modelo');
 var slugify = require('slugify');
 var servicoEmEdicao = require('servico/servico-em-edicao');
 
-
 module.exports = {
-
   controller: function (args) {
     this.cabecalho = new CabecalhoModel();
     this.servico = servicoEmEdicao.recuperar(this.cabecalho);
