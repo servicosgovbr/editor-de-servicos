@@ -2,13 +2,17 @@
 
 var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
+var atributosCsrf = require('utils/atributos-csrf');
 
 function request(opts) {
   return m.request(_.merge({
-      method: 'GET',
       deserialize: _.identity
     }, opts))
     .then(_.identity, erro);
+}
+
+function configCsrf(xhr) {
+  xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
 }
 
 module.exports = {
@@ -16,7 +20,8 @@ module.exports = {
     return request({
       method: 'PUT',
       url: '/editar/api/pagina/servico/' + id,
-      extract: extrairMetadados(metadados)
+      extract: extrairMetadados(metadados),
+      config: configCsrf 
     });
   },
 
@@ -29,6 +34,7 @@ module.exports = {
       url: url,
       config: function (xhr) {
         xhr.setRequestHeader('Accept', mimeType);
+        configCsrf(xhr);
       },
       extract: extrairMetadados(metadados),
       deserialize: function (str) {
@@ -42,7 +48,8 @@ module.exports = {
     return request({
       method: 'POST',
       url: url,
-      extract: extrairMetadados(metadados)
+      extract: extrairMetadados(metadados),
+      config: configCsrf
     });
   },
 

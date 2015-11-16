@@ -2,6 +2,7 @@
 
 var slugify = require('slugify');
 var idUnico = require('utils/id-unico');
+var atributosCsrf = require('utils/atributos-csrf');
 
 module.exports = {
 
@@ -26,7 +27,10 @@ module.exports = {
       var idAtual = slugify(servico.nome());
       m.request({
         method: 'PATCH',
-        url: '/editar/api/pagina/servico/' + idAtual + '/' + novoNome
+        url: '/editar/api/pagina/servico/' + idAtual + '/' + novoNome,
+        config: function(xhr) {
+          xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
+        }
       }).then(_.bind(function () {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));

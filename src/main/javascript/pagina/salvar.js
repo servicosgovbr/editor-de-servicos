@@ -4,6 +4,7 @@ var safeGet = require('utils/code-checks').safeGet;
 
 var slugify = require('slugify');
 var onErro = require('utils/erro-ajax');
+var atributosCsrf = require('utils/atributos-csrf');
 
 function postarPagina(args) {
   var tipo = safeGet(args, 'tipo');
@@ -18,7 +19,10 @@ function postarPagina(args) {
     method: 'POST',
     url: '/editar/api/pagina/' + tipo + '/' + id,
     data: pagina,
-    background: true
+    background: true,
+    config: function(xhr) {
+      xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
+    }
   });
 }
 
