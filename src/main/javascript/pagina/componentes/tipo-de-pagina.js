@@ -14,7 +14,7 @@ module.exports = {
 
     return m('fieldset#tipoDePagina', [
       m('h3', [
-        'Tipo de Página',
+        'Tipo de Página: ',
         args.novo ? m.component(tooltipTipo) : '',
         componenteTipo
       ])
