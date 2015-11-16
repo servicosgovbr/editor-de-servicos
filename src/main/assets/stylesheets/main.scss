@@ -50,3 +50,13 @@ body {
 	width: 100% !important;
 	margin-top: 15px;
 } 
+
+#importar-xml {
+	input {
+		@include span-columns(10);
+	}
+
+	button {
+		@include span-columns(2);
+	}
+}

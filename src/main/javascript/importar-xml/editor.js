@@ -10,7 +10,7 @@ var importarXml = require('xml/importar-xml');
 var isBlank = _.flow(_.trim, _.isEmpty);
 
 function botaoQueEspera(opts) {
-  return m('button#' + opts.id, {
+  return m('button.botao-primario#' + opts.id, {
     onclick: opts.onclick,
     disabled: (opts.disabled ? 'disabled' : '')
   }, opts.espera ? [m('i.fa.fa-spin.fa-spinner'), 'Importando...'] : [m('i.fa.fa-' + opts.icon), 'Importar']);
