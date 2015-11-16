@@ -39,7 +39,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/editar/autenticar?sair")
 
                 .and()
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/editar/autenticar", "/editar/api/**").permitAll()
                 .antMatchers(DELETE, "/editar/**").authenticated()
