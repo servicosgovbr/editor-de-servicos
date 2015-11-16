@@ -34,9 +34,10 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
 
-                .logout()
-                .logoutUrl("/editar/sair")
-                .logoutSuccessUrl("/editar/autenticar?sair")
+                    .logout()
+                    .logoutUrl("/editar/sair")
+                    .logoutSuccessUrl("/editar/autenticar?sair")
+                    .deleteCookies("JSESSIONID", "SESSION")
 
                 .and()
                 .authorizeRequests()
@@ -47,7 +48,12 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .anyRequest().fullyAuthenticated()
 
-        ;
+                .and()
+                    .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+
+                .and()
+                    .sessionManagement()
+                    .invalidSessionUrl("/editar/autenticar?sessao");
     }
 
     @Autowired

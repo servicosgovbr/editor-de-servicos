@@ -39,6 +39,11 @@
             Você saiu do sistema.
         </p>
 
+        <p th:if="${param.sessao}" class="info">
+            <i class="fa fa-info"></i>&nbsp;
+            Sua sessão expirou
+        </p>
+
         <label for="usuario">Usuário</label>
         <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
                autofocus="true"/>
