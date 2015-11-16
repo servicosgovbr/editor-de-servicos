@@ -34,7 +34,11 @@ module.exports = {
       return m.component(require('cabecalho/logout'));
     }
 
-    var setaVoltar = args.metadados || m.route() === '/editar/pagina/nova' ? m('i.fa.fa-arrow-left') : '';
+    var paginasComVoltar = [
+    '/editar/pagina/nova',
+    '/editar/importar-xml/novo'];
+
+    var setaVoltar = args.metadados || _.contains(paginasComVoltar, m.route()) ? m('i.fa.fa-arrow-left') : '';
 
     return m('header', [
       m('', m('a[href=/editar]', m('h1', [setaVoltar, ' Editor de Serviços']))),
