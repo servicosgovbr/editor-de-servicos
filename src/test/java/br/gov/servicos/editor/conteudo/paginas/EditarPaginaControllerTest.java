@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
+import br.gov.servicos.editor.conteudo.cartas.EditarCartaController;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import java.io.FileNotFoundException;
 import java.util.Date;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.ORGAO;
@@ -40,7 +40,7 @@ public class EditarPaginaControllerTest {
     @Mock
     ConteudoVersionadoFactory factory;
 
-    EditarPaginaController controller;
+    EditarCartaController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +54,7 @@ public class EditarPaginaControllerTest {
                 .willReturn(ORGAO);
 
 
-        controller = new EditarPaginaController(factory);
+        controller = new EditarCartaController(factory);
     }
 
     @Test
