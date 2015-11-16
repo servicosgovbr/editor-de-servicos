@@ -1,7 +1,6 @@
 package br.gov.servicos.editor.frontend;
 
 import br.gov.servicos.editor.Main;
-import br.gov.servicos.editor.fixtures.MockMvcFactory;
 import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.RepositorioConfig;
@@ -17,9 +16,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.Filter;
+
 import static java.util.Arrays.asList;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -48,11 +51,17 @@ public class IndexControllerIntegrationTest extends TestCase {
     @Autowired
     Importador importador;
 
+    @Autowired
+    private Filter springSecurityFilterChain;
+
     MockMvc mvc;
 
     @Before
     public void setup() {
-        mvc = MockMvcFactory.get(context);
+        mvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .addFilters(springSecurityFilterChain)
+                .build();
         repo.reset();
         importador.importaRepositorioDeCartas();
     }
@@ -73,7 +82,7 @@ public class IndexControllerIntegrationTest extends TestCase {
 
     @SneakyThrows
     private void testarRota(String rota) {
-        mvc.perform(get(rota))
+        mvc.perform(get(rota).with(user("user").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
