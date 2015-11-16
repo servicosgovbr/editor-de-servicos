@@ -40,8 +40,13 @@ body {
 	margin-right: 9px;
 }
 
-#area-de-interesse, #select-orgao {
+#area-de-interesse, #select-orgao, #tipoDePagina {
 	.select2-message-container {
 		width: 100%;
 	}
 }
+
+#tipoDePagina .select2-container {
+	width: 100% !important;
+	margin-top: 15px;
+} 
