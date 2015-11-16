@@ -47,7 +47,7 @@ module.exports = {
         cabecalho: ctrl.cabecalho
       },
       componentes: [
-        m('#importar-xml', {
+        m('fieldset#importar-xml', {
           method: 'POST',
           action: '/editar/importar-xml'
         }, [
