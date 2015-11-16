@@ -53,15 +53,22 @@ module.exports = {
 
   view: function (ctrl, args) {
     var meta = args.metadados;
-
     var desabilitaBotoes = ctrl.publicando() || ctrl.descartando();
 
-    function podeDescartar() {
-      return _.get(meta, 'editado.revisao') && (_.get(meta, 'editado.revisao') !== _.get(meta, 'publicado.revisao'));
+    function temEdicao() {
+      return _.get(meta, 'editado.revisao');
     }
-
+    function temPublicacao() {
+      return _.get(meta, 'publicado.revisao');
+    }
+    function revisaoEditadoEPublicadoDiferente() {
+      return (_.get(meta, 'editado.revisao') !== _.get(meta, 'publicado.revisao'));
+    }
+    function podeDescartar() {
+      return  temEdicao() && temPublicacao() && revisaoEditadoEPublicadoDiferente();
+    }
     function podePublicar() {
-      return podeDescartar();
+      return  temEdicao() && revisaoEditadoEPublicadoDiferente();
     }
 
     return m('span#publicar-view', [

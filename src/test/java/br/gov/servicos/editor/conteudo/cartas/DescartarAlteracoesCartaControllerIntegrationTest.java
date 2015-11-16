@@ -57,7 +57,7 @@ public class DescartarAlteracoesCartaControllerIntegrationTest extends Repositor
     }
 
     @Test
-    public void descartarAlteracoesDeNovoServicoDeletaOServico() throws Exception {
+    public void descartarAlteracoesDeNovoServicoSemEstarPublicadaNadaAcontece() throws Exception {
         api.salvarCarta("carta-nova", "<servico><nome>Carta Nova</nome></servico>")
                 .andExpect(status().is3xxRedirection());
 
@@ -66,16 +66,13 @@ public class DescartarAlteracoesCartaControllerIntegrationTest extends Repositor
                 .andExpect(content().xml("<servico> <nome>Carta Nova</nome> </servico>"));
 
         api.descartarCarta("carta-nova")
-                .andExpect(status().is3xxRedirection());
-
-        api.editarCarta("carta-nova")
-                .andExpect(status().isNotFound());
+                .andExpect(status().is(406));
     }
 
     @Test
     public void descartarAlteracoesDeServicosInexistentesRetornaStatusOk() throws Exception {
         api.descartarCarta("nao-existe")
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isNotFound());
     }
 
     @Test

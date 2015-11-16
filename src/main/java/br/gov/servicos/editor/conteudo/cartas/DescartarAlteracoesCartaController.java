@@ -31,9 +31,18 @@ class DescartarAlteracoesCartaController {
 
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/editar/api/pagina/servico/{id}/descartar", method = POST)
-    RedirectView descartar(@PathVariable("id") String id) {
+    RedirectView descartar(@PathVariable("id") String id) throws ConteudoInexistenteException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
+
+        if (!carta.existe()) {
+            throw new ConteudoInexistenteException(carta);
+        }
+        if (!carta.existeNoMaster()) {
+            throw new IllegalStateException("Descartar um serviço que não foi publicado, seria o equivalente a excluir o serviço");
+        }
+
         carta.descartarAlteracoes();
+
         return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
     }
 

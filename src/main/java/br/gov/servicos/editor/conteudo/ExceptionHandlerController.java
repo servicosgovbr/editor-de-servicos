@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
@@ -14,6 +15,13 @@ public class ExceptionHandlerController {
     @ResponseStatus(NOT_FOUND)
     @ResponseBody
     public String conteudoInexistente(ConteudoInexistenteException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(NOT_ACCEPTABLE)
+    @ResponseBody
+    public String estadoInvalido(IllegalStateException e) {
         return e.getMessage();
     }
 }
