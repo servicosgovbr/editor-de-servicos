@@ -140,13 +140,25 @@ var orgao = function (x) {
   });
 };
 
+var Gratuidade = require('servico/modelos').Gratuidade;
+var gratuidade = function (x) {
+  var value = x.text();
+  switch (value) {
+  case 'true':
+    return Gratuidade.GRATUITO;
+  case 'false':
+    return Gratuidade.PAGO;
+  }
+  return undefined;
+};
+
 var servico = function (x) {
   return new modelos.Servico({
     nome: x.find('> nome').text(),
     sigla: x.find('> sigla').text(),
     nomesPopulares: um(x.find('> nomes-populares > item').map(item).get(), str),
     descricao: x.find('> descricao').text(),
-    gratuidade: (x.find('> gratuito').text() === 'true') ? true : (x.find('> gratuito').text() === 'false' ? false : undefined),
+    gratuidade: gratuidade(x.find('> gratuito')),
     tempoTotalEstimado: x.find('> tempo-total-estimado').map(tempoTotalEstimado).get(0),
     solicitantes: um(x.find('> solicitantes > solicitante').map(solicitantes).get(), solicitantes),
     etapas: um(x.find('etapas > etapa', x).map(etapas).get(), etapas),

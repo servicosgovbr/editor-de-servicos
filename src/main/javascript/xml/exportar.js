@@ -98,6 +98,17 @@ var solicitantes = function (sol) {
   }));
 };
 
+var Gratuidade = require('servico/modelos').Gratuidade;
+var gratuidade = function (ehGratuito) {
+  switch (ehGratuito) {
+  case Gratuidade.GRATUITO:
+    return true;
+  case Gratuidade.PAGO:
+    return false;
+  }
+  return undefined;
+};
+
 var xmlDoc = function (ns) {
   return document.implementation.createDocument(ns, '');
 };
@@ -114,7 +125,7 @@ module.exports = function (servico) {
     m('sigla', servico.sigla()),
     m('nomes-populares', servico.nomesPopulares().map(item)),
     m('descricao', servico.descricao()),
-    m('gratuito', servico.gratuidade()),
+    m('gratuito', gratuidade(servico.gratuidade())),
     solicitantes(servico.solicitantes()),
     tempoTotalEstimado(servico.tempoTotalEstimado()),
     m('etapas', servico.etapas().map(etapa)),

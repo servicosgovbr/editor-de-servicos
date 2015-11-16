@@ -1,6 +1,7 @@
 'use strict';
 
 var referencia = require('referencia');
+var Gratuidade = require('servico/modelos').Gratuidade;
 
 module.exports = {
 
@@ -55,7 +56,7 @@ module.exports = {
             m('h3#servico-outras-info.subtitulo-servico', 'Outras informações'),
             m('.info-extra', [
                 nomesPopularesView(),
-                gratuidadeView(ctrl.servico.gratuidade())
+                gratuidadeView(ctrl.servico.gratuidade() === Gratuidade.GRATUITO)
             ]),
             m('.row', m('p.separacao-orgao', [
                 'Este é um serviço ',

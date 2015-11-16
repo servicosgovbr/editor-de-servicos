@@ -21,6 +21,7 @@ module.exports = {
 
   view: function (ctrl, args) {
     var servico = limparModelo(ctrl.servico());
+
     return m('#conteudo', [
                 m('span.cabecalho-cor'),
                 m('#wrapper', [

@@ -1,5 +1,7 @@
 'use strict';
 
+var Gratuidade = require('servico/modelos').Gratuidade;
+
 module.exports = {
 
   controller: function (args) {
@@ -12,7 +14,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    if (ctrl.gratuidade) {
+    if (ctrl.gratuidade === Gratuidade.GRATUITO) {
       return m('');
     }
 

@@ -1,5 +1,7 @@
 'use strict';
 
+var Gratuidade = require('servico/modelos').Gratuidade;
+
 module.exports = {
   view: function (ctrl, args) {
     var etapa = args.etapa;
@@ -27,7 +29,7 @@ module.exports = {
         indice: indice,
       }),
 
-      gratuidade() ? null : m.component(require('servico/etapas/custos'), {
+      gratuidade() === Gratuidade.GRATUITO ? null : m.component(require('servico/etapas/custos'), {
         custos: etapa.custos,
         indice: indice,
       }),
