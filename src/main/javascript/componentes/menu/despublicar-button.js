@@ -6,7 +6,7 @@ var promise = require('utils/promise');
 var confirmacao = require('componentes/menu/despublicar-confirmacao');
 
 function botaoQueEspera(opts) {
-  return m('button#' + opts.id, {
+  return m('button.botao-primario#' + opts.id, {
     onclick: opts.onclick,
     disabled: (opts.disabled ? 'disabled' : '')
   }, opts.espera ? [m('i.fa.fa-spin.fa-spinner'), 'Despublicando...'] : [m('i.fa.fa-' + opts.icon), 'Despublicar']);
