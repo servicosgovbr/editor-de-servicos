@@ -11,7 +11,7 @@ module.exports = {
       m('span.cabecalho-cor'),
       m('#wrapper', [
         m.component(require('../cabecalho/cabecalho'), cabecalhoConfig),
-        m('#servico',
+        m('#pagina',
           m('.scroll', args.componentes)
         )
       ])
