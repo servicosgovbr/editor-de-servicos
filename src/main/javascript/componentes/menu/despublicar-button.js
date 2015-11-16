@@ -15,7 +15,7 @@ function botaoQueEspera(opts) {
 function urlInNewContext(contexto) {
   var parser = document.createElement('a');
   parser.href = window.location.href;
-  parser.pathname = contexto;
+  parser.pathname = '/servico/' + contexto;
   parser.search = '';
   parser.hash = '';
   return parser.href;
