@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
 
-    private final int OPERATION_COUNT = 37;
+    private static final int OPERATION_COUNT = 37;
 
     static String CARTA_A = "<servico><nome>Carta A</nome></servico>";
     static String CARTA_A_ALTERACOES = "<servico><nome>Carta A</nome><sigla>CA</sigla></servico>";
