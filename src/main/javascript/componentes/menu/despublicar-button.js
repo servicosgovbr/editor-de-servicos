@@ -9,7 +9,7 @@ function botaoQueEspera(opts) {
   return m('button.botao-primario#' + opts.id, {
     onclick: opts.onclick,
     disabled: (opts.disabled ? 'disabled' : '')
-  }, opts.espera ? [m('i.fa.fa-spin.fa-spinner'), 'Despublicando...'] : [m('i.fa.fa-' + opts.icon), 'Despublicar']);
+  }, opts.espera ? [m('i.fa.fa-spin.fa-spinner'), m.trust('&nbsp;Despublicando...')] : [m('i.fa.fa-' + opts.icon), 'Despublicar']);
 }
 
 function urlInNewContext(contexto) {
@@ -43,7 +43,7 @@ module.exports = {
       m('label', [
         m('', [
           'Status: ',
-          publicado ? m('span.publicado', 'Publicado') : m('span.npublicado', 'Despublicado')
+          publicado ? m('span.publicado', 'publicado') : m('span.npublicado', 'despublicado')
         ]),
         publicado ? m('a', {
           href: urlInNewContext(m.route.param('id'))
