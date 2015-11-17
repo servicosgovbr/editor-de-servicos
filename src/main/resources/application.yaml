@@ -33,7 +33,7 @@ flags:
 
 eds:
   cartas:
-    repositorio: "https://github.com/servicosgovbr/cartas-de-teste.git"
+    repositorio: "git@github.com:servicosgovbr/cartas-de-teste.git"
 
 ---
 
