@@ -65,7 +65,7 @@ module.exports = {
                 '. Em caso de dúvidas, reclamações ou sugestões favor contactá-',
                 ctrl.ehFeminino() ? 'la.' : 'lo.'
             ]),
-        m('p.orgao-contato', [
+        m('p.orgao-contato.markdown', [
                 'Para mais informações ou dúvidas sobre este serviço, entre em contato: ',
                 m.trust(ctrl.converter.makeHtml(ctrl.servico.orgao().contato()))
             ])),
