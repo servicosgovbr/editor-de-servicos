@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.conteudo.EditarPaginaController;
 import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
@@ -21,7 +22,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EditarCartaControllerTest {
+public class EditarPaginaControllerTest {
 
     static final Date HORARIO = new Date();
 
@@ -39,7 +40,7 @@ public class EditarCartaControllerTest {
     @Mock
     Carta carta;
 
-    EditarCartaController controller;
+    EditarPaginaController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +55,7 @@ public class EditarCartaControllerTest {
         given(factory.pagina(anyString(), eq(SERVICO)))
                 .willReturn(carta);
 
-        controller = new EditarCartaController(factory);
+        controller = new EditarPaginaController(factory);
     }
 
     @Test

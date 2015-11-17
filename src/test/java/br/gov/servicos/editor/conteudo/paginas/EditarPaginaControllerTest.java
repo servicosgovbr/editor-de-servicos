@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
-import br.gov.servicos.editor.conteudo.cartas.EditarCartaController;
+import br.gov.servicos.editor.conteudo.EditarPaginaController;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class EditarPaginaControllerTest {
     @Mock
     ConteudoVersionadoFactory factory;
 
-    EditarCartaController controller;
+    EditarPaginaController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +54,7 @@ public class EditarPaginaControllerTest {
                 .willReturn(ORGAO);
 
 
-        controller = new EditarCartaController(factory);
+        controller = new EditarPaginaController(factory);
     }
 
     @Test

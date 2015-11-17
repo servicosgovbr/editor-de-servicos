@@ -1,15 +1,19 @@
-package br.gov.servicos.editor.conteudo.cartas;
+package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
-import br.gov.servicos.editor.conteudo.paginas.*;
-import br.gov.servicos.editor.git.Metadados;
+import br.gov.servicos.editor.conteudo.cartas.ConteudoInexistenteException;
+import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.paginas.Pagina;
+import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
+import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,82 +23,68 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.Optional;
 
 import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
 import static java.lang.String.join;
-import static java.lang.String.valueOf;
 import static lombok.AccessLevel.PRIVATE;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class EditarCartaController {
+public class EditarPaginaController {
 
     private ConteudoVersionadoFactory factory;
 
     @Autowired
-    public EditarCartaController(ConteudoVersionadoFactory factory) {
+    public EditarPaginaController(ConteudoVersionadoFactory factory) {
         this.factory = factory;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = GET, produces = "application/xml")
+    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = GET, produces = APPLICATION_XML_VALUE)
     ResponseEntity editar(
             @PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
-
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);
         }
-
         return new ResponseEntity(carta.getConteudoRaw(), MetadadosUtils.metadados(carta), OK);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/servico/novo", method = GET, produces = "application/xml")
+    @RequestMapping(value = "/editar/api/pagina/servico/novo", method = GET, produces = APPLICATION_XML_VALUE)
     String editarNovo() {
         return "<servico/>";
     }
 
     @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = GET, produces = "application/json")
-    public String editar(
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity editar(
             @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
             HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
         return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
     }
 
-
     @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/{tipo}/novo", method = GET, produces = "application/json")
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/novo", method = GET, produces = APPLICATION_JSON_VALUE)
     public Pagina editarNovo(@PathVariable("tipo") String tipo) {
         return new Pagina().withTipo(TipoPagina.fromNome(tipo).getNome());
     }
 
-    private String editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
+    private ResponseEntity editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
         if (!paginaVersionada.existe()) {
             throw new ConteudoInexistenteException(paginaVersionada);
         }
 
-        Metadados<Pagina> metadados = paginaVersionada.getMetadados();
+        HttpHeaders headers = MetadadosUtils.metadados(paginaVersionada);
+        String conteudoRetorno = converterParaJson(conteudoCompleto(paginaVersionada));
 
-        Optional.ofNullable(metadados.getPublicado()).ifPresent(r -> {
-            response.setHeader("X-Git-Commit-Publicado", r.getHash());
-            response.setHeader("X-Git-Autor-Publicado", r.getAutor());
-            response.setHeader("X-Git-Horario-Publicado", valueOf(r.getHorario().getTime()));
-        });
-
-        Optional.ofNullable(metadados.getEditado()).ifPresent(r -> {
-            response.setHeader("X-Git-Commit-Editado", r.getHash());
-            response.setHeader("X-Git-Autor-Editado", r.getAutor());
-            response.setHeader("X-Git-Horario-Editado", valueOf(r.getHorario().getTime()));
-        });
-
-        return converterParaJson(conteudoCompleto(paginaVersionada));
+        return new ResponseEntity(conteudoRetorno, headers, OK);
     }
 
     private Pagina conteudoCompleto(PaginaVersionada paginaVersionada) throws FileNotFoundException {
