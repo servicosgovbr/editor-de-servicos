@@ -28,10 +28,6 @@ module.exports = {
       id: m.route.param('id')
     }, this.cabecalho);
 
-    window.console.log('editor pagina');
-    window.console.log(this.pagina);
-    window.console.log(this.pagina());
-
     this.salvar = _.bind(function () {
       return salvarPagina(tipo, this.pagina())
         .then(this.pagina)
