@@ -1,32 +1,23 @@
 package br.gov.servicos.editor.frontend;
 
-import br.gov.servicos.editor.Main;
+import br.gov.servicos.editor.conteudo.cartas.RepositorioGitIntegrationTest;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Main.class)
-@IntegrationTest({
-        "flags.importar=false",
-        "flags.esquentar.cache=false",
-        "server.port:0"
-})
-@ActiveProfiles("desenvolvimento")
-public class OrgaosIntegrationTest {
+public class OrgaosIntegrationTest extends RepositorioGitIntegrationTest {
 
     @Autowired
     Orgaos orgaos;
+
+    @Before
+    public void setup() {
+        setupBase().build();
+    }
 
     @Test
     public void deveListarOrgaosContendoTermoComNomeParcial() throws Exception {
