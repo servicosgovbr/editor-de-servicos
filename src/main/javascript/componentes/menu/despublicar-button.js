@@ -46,7 +46,8 @@ module.exports = {
           publicado ? m('span.publicado', 'publicado') : m('span.npublicado', 'despublicado')
         ]),
         publicado ? m('a', {
-          href: urlInNewContext(m.route.param('id'))
+          href: urlInNewContext(m.route.param('id')),
+          target: '_blank'
         }, 'Versão no Portal') : ''
      ]),
       botaoQueEspera({
