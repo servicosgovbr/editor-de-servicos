@@ -20,7 +20,7 @@ function postarPagina(args) {
     url: '/editar/api/pagina/' + tipo + '/' + id,
     data: pagina,
     background: true,
-    config: function(xhr) {
+    config: function (xhr) {
       xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
     }
   });

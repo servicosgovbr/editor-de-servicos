@@ -23,9 +23,13 @@ class ImportarXMLCartaController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/importar-xml", method = GET, produces = "application/xml")
-    String editar(@RequestParam("url") String url) throws URISyntaxException, IOException {
-        return new LeitorDeArquivos().ler(new URI(url))
-                .get();
+    String editar(@RequestParam("url") String url) throws ImportacaoXmlException {
+        try {
+            return new LeitorDeArquivos().ler(new URI(url))
+                    .get();
+        } catch(Exception e) {
+            throw new ImportacaoXmlException(url, e);
+        }
     }
 
 }

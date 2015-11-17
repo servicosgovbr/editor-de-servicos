@@ -28,7 +28,7 @@ module.exports = {
       m.request({
         method: 'PATCH',
         url: '/editar/api/pagina/servico/' + idAtual + '/' + novoNome,
-        config: function(xhr) {
+        config: function (xhr) {
           xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
         }
       }).then(_.bind(function () {

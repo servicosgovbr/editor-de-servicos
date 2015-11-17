@@ -58,17 +58,21 @@ module.exports = {
     function temEdicao() {
       return _.get(meta, 'editado.revisao');
     }
+
     function temPublicacao() {
       return _.get(meta, 'publicado.revisao');
     }
+
     function revisaoEditadoEPublicadoDiferente() {
       return (_.get(meta, 'editado.revisao') !== _.get(meta, 'publicado.revisao'));
     }
+
     function podeDescartar() {
-      return  temEdicao() && temPublicacao() && revisaoEditadoEPublicadoDiferente();
+      return temEdicao() && temPublicacao() && revisaoEditadoEPublicadoDiferente();
     }
+
     function podePublicar() {
-      return  temEdicao() && revisaoEditadoEPublicadoDiferente();
+      return temEdicao() && revisaoEditadoEPublicadoDiferente();
     }
 
     return m('span#publicar-view', [

@@ -6,9 +6,9 @@ module.exports = {
   view: function () {
     return m('form#logout[action=/editar/sair][method=POST]', [
       m('input', {
-          type: 'hidden',
-          name: atributosCsrf.name,
-          value: atributosCsrf.token
+        type: 'hidden',
+        name: atributosCsrf.name,
+        value: atributosCsrf.token
       }),
       m('button', {
           title: 'Sair do editor (logout)'

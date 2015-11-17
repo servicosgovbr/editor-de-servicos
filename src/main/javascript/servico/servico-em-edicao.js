@@ -13,7 +13,7 @@ module.exports = {
   recuperar: function (cabecalho) {
     if (!servicoMantido()) {
       carregar(cabecalho)
-        .then(function(ser) {
+        .then(function (ser) {
           servicoMantido(ser);
           metadadosMantido = cabecalho.metadados;
         });

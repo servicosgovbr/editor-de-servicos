@@ -21,7 +21,7 @@ module.exports = {
       method: 'PUT',
       url: '/editar/api/pagina/servico/' + id,
       extract: extrairMetadados(metadados),
-      config: configCsrf 
+      config: configCsrf
     });
   },
 
@@ -62,10 +62,10 @@ module.exports = {
       },
       data: {
         url: urlParam
-      },
-      deserialize: function (str) {
-        return new DOMParser().parseFromString(str, 'application/xml');
       }
+    }).then(function (str) {
+      //retorno com erro não usa xml, por isso não usamos função "deserialize", e fazemos isso aqui
+      return new DOMParser().parseFromString(str, 'application/xml');
     });
   }
 };

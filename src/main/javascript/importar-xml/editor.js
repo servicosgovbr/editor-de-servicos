@@ -28,8 +28,8 @@ module.exports = {
 
       promise.onSuccOrError(
         importarXml(this.url())
-        .then(_.bind(function(ser) {
-          servicoEmEdicao.manter(ser, this.cabecalho.metadados);
+        .then(_.bind(function (ser) {
+          servicoEmEdicao.manter(m.prop(ser), this.cabecalho.metadados);
         }, this))
         .then(function () {
           m.route('/editar/servico/novo');

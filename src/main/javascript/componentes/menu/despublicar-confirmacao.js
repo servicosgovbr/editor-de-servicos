@@ -6,9 +6,9 @@ module.exports = function (despublicarFn) {
   return function () {
     alertify.labels.cancel = 'Cancelar';
     alertify.labels.ok = 'Despublicar';
-    alertify.confirm(mensagem, function(ok) {
+    alertify.confirm(mensagem, function (ok) {
       if (ok) {
-       despublicarFn();
+        despublicarFn();
       }
     });
   };
