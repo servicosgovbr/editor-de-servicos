@@ -1,6 +1,7 @@
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
+var ModeloPagina = require('pagina/modelo');
 
 var slugify = require('slugify');
 var onErro = require('utils/erro-ajax');
@@ -26,10 +27,14 @@ function postarPagina(args) {
   });
 }
 
+var lerJson = function (json) {
+  return new ModeloPagina(json);
+};
+
 module.exports = function (tipo, pagina) {
   return postarPagina({
     tipo: tipo,
     nome: pagina.nome(),
     conteudo: pagina.conteudo()
-  }).then(_.identity, onErro);
+  }).then(lerJson, onErro);
 };

@@ -1,16 +1,11 @@
 package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.conteudo.cartas.Carta;
-import br.gov.servicos.editor.conteudo.paginas.Pagina;
-import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.fixtures.RepositorioCartasBuilder;
 import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
-import com.github.slugify.Slugify;
 import com.google.common.cache.Cache;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
@@ -19,20 +14,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.guava.GuavaCache;
-import org.springframework.format.Formatter;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static java.util.Locale.getDefault;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;

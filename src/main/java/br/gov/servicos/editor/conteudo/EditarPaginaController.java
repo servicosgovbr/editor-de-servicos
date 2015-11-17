@@ -1,12 +1,6 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.ConteudoVersionado;
-import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.cartas.ConteudoInexistenteException;
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.Pagina;
-import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;
@@ -20,11 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static java.lang.String.join;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.OK;
@@ -46,8 +39,7 @@ public class EditarPaginaController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = GET, produces = APPLICATION_XML_VALUE)
-    ResponseEntity editar(
-            @PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
+    public ResponseEntity editar(@PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);
@@ -57,7 +49,7 @@ public class EditarPaginaController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/pagina/servico/novo", method = GET, produces = APPLICATION_XML_VALUE)
-    String editarNovo() {
+    public String editarNovo() {
         return "<servico/>";
     }
 
@@ -65,9 +57,8 @@ public class EditarPaginaController {
     @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity editar(
             @PathVariable("tipo") String tipo,
-            @PathVariable("id") String id,
-            HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
-        return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)), response);
+            @PathVariable("id") String id) throws FileNotFoundException, ConteudoInexistenteException {
+        return editar((PaginaVersionada) factory.pagina(id, TipoPagina.fromNome(tipo)));
     }
 
     @ResponseBody
@@ -76,7 +67,7 @@ public class EditarPaginaController {
         return new Pagina().withTipo(TipoPagina.fromNome(tipo).getNome());
     }
 
-    private ResponseEntity editar(PaginaVersionada paginaVersionada, HttpServletResponse response) throws FileNotFoundException, ConteudoInexistenteException {
+    private ResponseEntity editar(PaginaVersionada paginaVersionada) throws FileNotFoundException, ConteudoInexistenteException {
         if (!paginaVersionada.existe()) {
             throw new ConteudoInexistenteException(paginaVersionada);
         }

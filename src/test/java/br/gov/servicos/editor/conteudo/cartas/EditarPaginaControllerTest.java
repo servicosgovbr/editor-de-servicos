@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.EditarPaginaController;
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import org.springframework.http.HttpHeaders;
 
 import java.util.Date;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -60,7 +60,6 @@ public class EditarPaginaControllerTest {
 
     @Test
     public void adicionaHeadersDosMetadados() throws Exception {
-
         HttpHeaders response = controller.editar("").getHeaders();
 
         assertThat(response.get("X-Git-Commit-Publicado").get(0), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));

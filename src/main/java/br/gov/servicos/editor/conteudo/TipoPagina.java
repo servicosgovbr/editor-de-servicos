@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo.paginas;
+package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.config.SlugifyConfig;
 import lombok.Getter;

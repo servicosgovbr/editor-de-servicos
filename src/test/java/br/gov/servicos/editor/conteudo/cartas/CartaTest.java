@@ -25,9 +25,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static br.gov.servicos.editor.utils.TestData.PROFILE;
-import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

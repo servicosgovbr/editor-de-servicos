@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.git.Revisao;

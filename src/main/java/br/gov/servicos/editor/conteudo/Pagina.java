@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo.paginas;
+package br.gov.servicos.editor.conteudo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,5 @@
-package br.gov.servicos.editor.conteudo.paginas;
+package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;

@@ -10,7 +10,6 @@ import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -24,7 +23,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static javax.xml.bind.JAXB.unmarshal;
 import static javax.xml.bind.annotation.XmlAccessType.NONE;
 import static lombok.AccessLevel.PRIVATE;

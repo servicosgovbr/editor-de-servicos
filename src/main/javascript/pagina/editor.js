@@ -4,7 +4,16 @@ var safeGet = require('utils/code-checks').safeGet;
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var EditorBase = require('componentes/editor-base');
 var carregarPagina = require('pagina/carregar');
-var salvarOrgao = require('pagina/salvar');
+var salvarPagina = require('pagina/salvar');
+var slugify = require('slugify');
+
+function redirecionarNovaPagina(tipo, nome) {
+  var oldId = m.route.param('id');
+  var newId = slugify(nome);
+  if (!_.isEqual(oldId, newId)) {
+    m.route('/editar/' + tipo + '/' + newId);
+  }
+}
 
 module.exports = {
   controller: function (args) {
@@ -13,17 +22,31 @@ module.exports = {
     this.modificado = m.prop(false);
     this.cabecalho = new CabecalhoModel();
 
+
     this.pagina = carregarPagina({
       tipo: tipo,
       id: m.route.param('id')
     }, this.cabecalho);
 
+    window.console.log('editor pagina');
+    window.console.log(this.pagina);
+    window.console.log(this.pagina());
+
     this.salvar = _.bind(function () {
-      return salvarOrgao(tipo, this.pagina());
+      return salvarPagina(tipo, this.pagina())
+        .then(this.pagina)
+        .then(_.bind(function (pagina) {
+          window.console.log(pagina);
+          redirecionarNovaPagina(tipo, pagina.nome());
+        }));
     }, this);
   },
 
   view: function (ctrl, args) {
+    if (!ctrl.pagina()) {
+      return m('');
+    }
+
     var tipo = safeGet(args, 'tipo');
     var tituloNome = safeGet(args, 'tituloNome');
     var componenteNome = safeGet(args, 'componenteNome');

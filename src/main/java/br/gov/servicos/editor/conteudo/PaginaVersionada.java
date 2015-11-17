@@ -1,12 +1,10 @@
-package br.gov.servicos.editor.conteudo.paginas;
+package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
-import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 

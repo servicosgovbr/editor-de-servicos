@@ -1,10 +1,11 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
+import br.gov.servicos.editor.conteudo.Pagina;
 import br.gov.servicos.editor.conteudo.cartas.RepositorioGitIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

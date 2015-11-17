@@ -1,6 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.fixtures.UserProfileConfigParaTeste;
 import br.gov.servicos.editor.git.Metadados;
 import org.junit.Before;

@@ -3,13 +3,13 @@
 var ultimo = '';
 
 module.exports = {
-  set: function(v) {
+  set: function (v) {
     ultimo = v;
   },
-  get: function() {
+  get: function () {
     return ultimo;
   },
-  clear: function() {
+  clear: function () {
     ultimo = '';
   }
 };

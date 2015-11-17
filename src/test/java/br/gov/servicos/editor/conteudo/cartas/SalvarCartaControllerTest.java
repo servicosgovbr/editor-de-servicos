@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
+import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.FormatadorConteudoPagina;
 import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -31,6 +31,9 @@ public class SalvarCartaControllerTest {
     ReformatadorXml reformatadorXml;
 
     @Mock
+    FormatadorConteudoPagina reformatadorMarkdown;
+
+    @Mock
     UserProfiles userProfiles;
 
     @Mock
@@ -42,7 +45,7 @@ public class SalvarCartaControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        controller = new SalvarCartaController(reformatadorXml, userProfiles, factory);
+        controller = new SalvarCartaController(reformatadorXml, reformatadorMarkdown, userProfiles, factory);
         given(factory.pagina(anyString(), eq(SERVICO)))
                 .willReturn(carta);
     }

@@ -1,7 +1,5 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
@@ -23,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
