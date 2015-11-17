@@ -21,7 +21,7 @@
         <div class="metadados">&nbsp;</div>
         <span></span>
         <form id="logout" th:action="@{/editar/sair}" method="post">
-            <button type="submit">Sair</button>
+            <button type="submit">Sair            <i class="fa fa-sign-in"></i>&nbsp;</button>
         </form>
     </header>
 
@@ -44,7 +44,7 @@
             Sua sessão expirou
         </p>
 
-        <label for="usuario">Usuário</label>
+        <label for="usuario">E-mail</label>
         <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
                autofocus="true"/>
 
@@ -52,7 +52,6 @@
         <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
 
         <button type="submit">
-            <i class="fa fa-sign-in"></i>&nbsp;
             Entrar
         </button>
     </form>
@@ -60,3 +59,4 @@
 
 </body>
 </html>
+>
