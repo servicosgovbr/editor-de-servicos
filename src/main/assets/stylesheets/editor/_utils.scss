@@ -53,6 +53,16 @@
   color: $vermelho;
 }
 
+.publicado {
+  color: $verde;
+  font-weight: bold;
+}
+
+.npublicado {
+  color: $amarelo;
+  font-weight: bold;
+}
+
 .relative {
   position: relative;
 }

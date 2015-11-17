@@ -43,7 +43,7 @@ module.exports = {
       m('label', [
         m('', [
           'Status: ',
-          publicado ? 'Publicado' : 'Despublicado'
+          publicado ? m('span.publicado', 'Publicado') : m('span.npublicado', 'Despublicado')
         ]),
         publicado ? m('a', {
           href: urlInNewContext(m.route.param('id'))
