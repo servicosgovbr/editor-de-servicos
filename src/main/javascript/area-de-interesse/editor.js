@@ -5,25 +5,16 @@ var EditorPagina = require('pagina/editor');
 
 module.exports = {
   view: function () {
-
     return m.component(EditorPagina, {
-
       tipo: 'area-de-interesse',
-
       tituloNome: 'Selecione a área de interesse',
-
       componenteNome: require('area-de-interesse/componentes/select'),
-
       tamanhoConteudo: 1500,
-
       tooltips: {
         tipo: Tooltips.tipoPagina,
         nome: Tooltips.escolhaAreaInteresse,
         conteudo: Tooltips.conteudoAreaInteresse
       }
-
     });
-
   }
-
 };

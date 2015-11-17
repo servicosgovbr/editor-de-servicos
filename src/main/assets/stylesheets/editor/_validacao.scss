@@ -183,4 +183,8 @@ h2.erro-min-1 {
     @include validacao-erro-inline('Selecione ao menos uma opção', 7px, 15px);
   }
 
+  &.erro-nome-servico-existente {
+    @include validacao-erro-input('Já existe um serviço com este nome', 127px);
+  }
+
 }

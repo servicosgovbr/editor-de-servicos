@@ -57,6 +57,7 @@ module.exports = {
 
   view: function (ctrl, args) {
     ctrl.prop = args.prop;
+
     var erro = (ctrl.prop.erro || _.noop)();
     var options = _.omit(args, 'prop');
 
@@ -65,7 +66,6 @@ module.exports = {
     }, m('select', {
       config: function (element, isInitialized) {
         var el = jQuery(element);
-
         if (!isInitialized) {
           var select2 = el.select2(_.merge({
             language: language,

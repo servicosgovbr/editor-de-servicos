@@ -13,7 +13,7 @@ module.exports = function (config) {
 
   var validaIdJaExistente = _.trim(data.nome) ? _.noop : validaIdServico;
   this.id = id('pagina');
-  this.tipo = v.prop(data.tipo || '', v.obrigatorio);
+  this.tipo = m.prop(data.tipo || '');
   this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto, validaIdJaExistente);
   this.conteudo = m.prop(data.conteudo || '');
   this.tamanhoConteudo = _.bind(function (tamanho) {

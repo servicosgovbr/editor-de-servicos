@@ -27,12 +27,12 @@ function onSuccOrError(promise, fn) {
 }
 
 function log(first) {
-  window.console.log('log: ' + first);
+  window.console.log(first);
   return first;
 }
 
 function err(first) {
-  window.console.log('err: ' + first);
+  window.console.error(first);
   throw first;
 }
 

@@ -18,21 +18,23 @@ function redirecionarNovaPagina(tipo, nome) {
 module.exports = {
   controller: function (args) {
     var tipo = safeGet(args, 'tipo');
+    var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
 
     this.modificado = m.prop(false);
     this.cabecalho = new CabecalhoModel();
 
-
     this.pagina = carregarPagina({
       tipo: tipo,
       id: m.route.param('id')
-    }, this.cabecalho);
+    }, this.cabecalho).then(function (pg) {
+      pg.tamanhoConteudo(tamanhoConteudo);
+      return pg;
+    });
 
     this.salvar = _.bind(function () {
       return salvarPagina(tipo, this.pagina())
         .then(this.pagina)
         .then(_.bind(function (pagina) {
-          window.console.log(pagina);
           redirecionarNovaPagina(tipo, pagina.nome());
         }));
     }, this);
@@ -55,7 +57,6 @@ module.exports = {
     };
 
     ctrl.pagina().tipo(tipo);
-    ctrl.pagina().tamanhoConteudo(tamanhoConteudo);
 
     var binding = {
       pagina: ctrl.pagina,
