@@ -24,7 +24,7 @@ button, .button {
     font-size: 13px;
   }
 
-  &.botao-primario {
+  &.botao-primario, &.botao-primario:active, &.botao-primario:focus {
     margin-top: em(2);
     color: $branco;
     margin-right: 1em;
