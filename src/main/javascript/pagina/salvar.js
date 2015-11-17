@@ -40,7 +40,7 @@ function validaNome(pagina) {
 }
 
 module.exports = function (tipo, pagina) {
-  return promise.resolve(pagina)
+  return promise.resolved(pagina)
     .then(validaNome)
     .then(function (pg) {
       return postarPagina({

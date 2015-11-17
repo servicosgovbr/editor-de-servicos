@@ -5,10 +5,10 @@ var extrairMetadados = require('utils/extrair-metadados');
 var atributosCsrf = require('utils/atributos-csrf');
 
 function request(opts) {
-  return m.request(_.merge({
+  return m.request(_.assign({
       deserialize: _.identity
     }, opts))
-    .then(_.identity, erro);
+    .then(null, erro);
 }
 
 function configCsrf(xhr) {
@@ -69,6 +69,15 @@ module.exports = {
     }).then(function (str) {
       //retorno com erro não usa xml, por isso não usamos função "deserialize", e fazemos isso aqui
       return new DOMParser().parseFromString(str, 'application/xml');
+    });
+  },
+  obterNomeOrgao: function (urlOrgao) {
+    return request({
+      method: 'GET',
+      url: '/editar/api/orgao',
+      data: {
+        urlOrgao: urlOrgao
+      }
     });
   }
 };

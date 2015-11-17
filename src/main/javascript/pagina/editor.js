@@ -35,6 +35,7 @@ module.exports = {
       return salvarPagina(tipo, this.pagina())
         .then(this.pagina)
         .then(_.bind(function (pagina) {
+          pagina.tamanhoConteudo(tamanhoConteudo);
           redirecionarNovaPagina(tipo, pagina.nome());
         }));
     }, this);
@@ -49,6 +50,7 @@ module.exports = {
     var tituloNome = safeGet(args, 'tituloNome');
     var componenteNome = safeGet(args, 'componenteNome');
     var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
+    var nomeFn = args.nomeFn || _.identity;
 
     var tooltips = {
       tipo: safeGet(args, 'tooltips.tipo'),
@@ -94,6 +96,7 @@ module.exports = {
         m.component(require('pagina/componentes/nome'), _.assign(binding, {
           titulo: tituloNome,
           componente: componenteNome,
+          nomeFn: nomeFn,
           tooltipNome: tooltips.nome
         })),
         m.component(require('pagina/componentes/conteudo'), _.assign(binding, {
