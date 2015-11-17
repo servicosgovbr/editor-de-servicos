@@ -16,8 +16,6 @@ module.exports = {
         .then(function(ser) {
           servicoMantido(ser);
           metadadosMantido = cabecalho.metadados;
-          window.console.log('promise');
-          window.console.log(metadadosMantido());
         });
     }
     cabecalho.metadados(metadadosMantido());
