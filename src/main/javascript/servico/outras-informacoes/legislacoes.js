@@ -22,9 +22,13 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    var erro = ctrl.servico().legislacoes.erro();
+    var erroFieldSet = _.isString(erro) ? erro : '';
+    var erroItens = _.isArray(erro) ? erro : [];
+
     return m('fieldset#legislacoes.relative', [
       m('h3.input-container', {
-        class: ctrl.servico().legislacoes.erro()
+        class: erroFieldSet
       }, [
         'Legislações relacionadas ao serviço',
         m.component(require('tooltips').legislacoes)
@@ -40,7 +44,7 @@ module.exports = {
             rows: 3,
             config: focus(ctrl),
             value: legislacao,
-            erro: (ctrl.servico().legislacoes.erro() || [])[i],
+            erro: erroItens[i],
             onchange: function (e) {
               var valorNovo = e.target.value;
               var tmp = ctrl.servico().legislacoes();
