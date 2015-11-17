@@ -142,6 +142,7 @@ module.exports = function (servico) {
 
   cdata(doc, 'descricao');
   cdata(doc, 'requisitos');
+  cdata(doc, 'contato');
 
   return doc;
 };
