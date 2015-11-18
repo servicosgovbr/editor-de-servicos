@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Acessar o Editor de Serviços</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+        <form id="logout" th:action="@{/editar/sair}" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </header>
+
+    <form id="login" th:action="@{/editar/usuarios/usuario}" method="post">
+
+        <h1>Cadastrar</h1>
+
+        <label for="cpf">CPF</label>
+        <input id="cpf" name="cpf" type="text" placeholder="CPF" required="required" autofocus="true"/>
+
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" placeholder="Senha" required="required"/>
+
+        <label for="siorg">SIORG</label>
+        <input id="siorg" name="siorg" type="text" placeholder="siorg" required="required"/>
+
+        <label for="siape">SIAPE</label>
+        <input id="siape" name="siape" type="text" placeholder="siape"/>
+
+        <label for="email_institucional">Email Institucional</label>
+        <input id="email_institucional" name="emailInstitucional" type="email" placeholder="email@instituicional.gov.br"/>
+
+        <label for="email_secundario">Email Secundario</label>
+        <input id="email_secundario" name="emailSecundario" type="email" placeholder="email@secundario"/>
+
+        <label for="servidor">É servidor?</label>
+        <input id="servidor" name="servidor" type="checkbox"/>
+
+        <select name="papelId">
+            <option th:each="papel : ${papeis}" th:value="${papel.id}" th:text="${papel.nome}"></option>
+        </select>
+
+        <button type="submit">
+            <i class="fa fa-sign-in"></i>&nbsp;
+            Entrar
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

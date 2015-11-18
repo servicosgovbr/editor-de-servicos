@@ -1,25 +1,21 @@
 package br.gov.servicos.editor.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-
-import javax.sql.DataSource;
 
 import static org.springframework.http.HttpMethod.*;
 
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     public static final String LOGIN_URL = "/editar/autenticar";
-    private PasswordEncoder passwordEncoder;
-    private DataSource dataSource;
+    private DaoAuthenticationProvider daoAuthenticationProvider;
 
-    public SecurityWebAppInitializer(PasswordEncoder passwordEncoder, DataSource dataSource) {
-        this.passwordEncoder = passwordEncoder;
-        this.dataSource = dataSource;
+    public SecurityWebAppInitializer(DaoAuthenticationProvider daoAuthenticationProvider) {
+        this.daoAuthenticationProvider = daoAuthenticationProvider;
     }
 
     @Override
@@ -58,10 +54,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder);
+        auth.authenticationProvider(daoAuthenticationProvider);
     }
 
 }
