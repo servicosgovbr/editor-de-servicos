@@ -2,8 +2,10 @@ package br.gov.servicos.editor.usuarios;
 
 
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Wither;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +16,9 @@ import java.util.Collection;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="USERS")
+@AllArgsConstructor
+@Wither
+@Table(name="USUARIOS")
 public class Usuario implements Serializable, UserDetails{
 
     @Id
@@ -22,25 +26,29 @@ public class Usuario implements Serializable, UserDetails{
     private String cpf;
 
     @Column(nullable = false)
-    private String password;
+    private String senha;
 
     @Column(nullable = false)
     private boolean servidor;
 
     @Column(nullable = false)
-    private boolean enabled;
+    private boolean habilitado;
+
+    @Column(nullable = false)
+    private String siorg;
+
+    @Column
+    private String siape;
+
+    @Column
+    private String emailInstitucional;
+
+    @Column
+    private String emailSecundario;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="role_id")
+    @JoinColumn(name="papel_id")
     private Papel papel;
-
-    public Usuario(String cpf, String password, Papel papel) {
-        this.cpf = cpf;
-        this.password = password;
-        this.papel = papel;
-        this.enabled = true;
-        this.servidor = true;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -49,7 +57,12 @@ public class Usuario implements Serializable, UserDetails{
 
     @Override
     public String getUsername() {
-        return cpf;
+        return getCpf();
+    }
+
+    @Override
+    public String getPassword() {
+        return getSenha();
     }
 
     @Override
@@ -65,6 +78,11 @@ public class Usuario implements Serializable, UserDetails{
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isHabilitado();
     }
 
 }

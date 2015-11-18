@@ -9,14 +9,14 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="ROLES")
+@Table(name="PAPEIS")
 public class Papel implements GrantedAuthority {
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String nome;
 
     public Papel(Long id) {
         this.id = id;
@@ -24,6 +24,6 @@ public class Papel implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return getName();
+        return getNome();
     }
 }

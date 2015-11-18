@@ -18,6 +18,12 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class FormularioUsuario {
     String cpf;
-    String password;
+    String senha;
     String papelId;
+    String siorg;
+    String siape;
+    String emailInstitucional;
+    String emailSecundario;
+    boolean servidor;
+
 }

@@ -10,8 +10,17 @@ public class UsuarioFactory {
     private PasswordEncoder passwordEncoder;
 
     public Usuario criarUsuario(FormularioUsuario formulario) {
-        String senhaCodificada = passwordEncoder.encode(formulario.getPassword());
+        String senhaCodificada = passwordEncoder.encode(formulario.getSenha());
         Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
-        return new Usuario(formulario.getCpf(), senhaCodificada, papel);
+        return new Usuario()
+                .withCpf(formulario.getCpf())
+                .withSenha(senhaCodificada)
+                .withPapel(papel)
+                .withSiorg(formulario.getSiorg())
+                .withSiape(formulario.getSiape())
+                .withEmailInstitucional(formulario.getEmailInstitucional())
+                .withEmailSecundario(formulario.getEmailSecundario())
+                .withServidor(formulario.isServidor())
+                .withHabilitado(true);
     }
 }
