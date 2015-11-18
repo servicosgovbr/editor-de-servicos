@@ -58,9 +58,8 @@
 
 .alertify-log {
 	position: initial;
-	height: 40px;
     line-height: 9px;
-    width: 325px;
+    width: 410px;
     border: transparent;
     text-align: center;
     padding: 15px 5px;
@@ -71,6 +70,8 @@
     background: $amarelo;
 
     &.alertify-log-success {
+        line-height: 15px;
+        width: 410px;
 		background: $verde !important;
 		color: $branco !important;
 	}
