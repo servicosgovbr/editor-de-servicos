@@ -48,7 +48,7 @@ module.exports = {
         publicado ? m('a', {
           href: urlInNewContext(m.route.param('id')),
           target: '_blank'
-        }, 'Versão no Portal') : ''
+        }, 'Acesse a versão no Portal') : ''
      ]),
       botaoQueEspera({
         id: 'despublicar',
