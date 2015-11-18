@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Acessar o Editor de Serviços</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+        <form id="logout" th:action="@{/editar/sair}" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </header>
+
+    <form id="login" th:action="@{/editar/usuarios/usuario}" method="post">
+
+        <h1>Cadastrar</h1>
+
+        <label for="cpf">CPF</label>
+        <input id="cpf" name="cpf" type="text" placeholder="CPF" required="required"
+               autofocus="true"/>
+
+        <label for="senha">Senha</label>
+        <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
+
+        <select name="papelId">
+            <option th:each="papel : ${papeis}" th:value="${papel.id}" th:text="${papel.name}"></option>
+        </select>
+
+        <button type="submit">
+            <i class="fa fa-sign-in"></i>&nbsp;
+            Entrar
+        </button>
+    </form>
+</div>
+
+</body>
+</html>
