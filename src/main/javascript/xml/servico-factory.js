@@ -134,9 +134,11 @@ var etapas = function (i, e) {
 };
 
 var orgao = function (x) {
+  var orgaoXML = x.find('servico > orgao');
+  var contatoXML = x.find('> contato');
   return new modelos.Orgao({
-    nome: x.attr('id'),
-    contato: x.find('contato').text()
+    nome: orgaoXML.attr('id'),
+    contato: contatoXML.text()
   });
 };
 
@@ -162,7 +164,7 @@ var servico = function (x) {
     tempoTotalEstimado: x.find('> tempo-total-estimado').map(tempoTotalEstimado).get(0),
     solicitantes: um(x.find('> solicitantes > solicitante').map(solicitantes).get(), solicitantes),
     etapas: um(x.find('etapas > etapa', x).map(etapas).get(), etapas),
-    orgao: orgao(x.find('servico > orgao')),
+    orgao: orgao(x),
     segmentosDaSociedade: x.find('servico > segmentos-da-sociedade > item').map(item).get(),
     areasDeInteresse: x.find('servico > areas-de-interesse > item').map(item).get(),
     palavrasChave: tres(x.find('servico > palavras-chave > item').map(item).get(), str),
