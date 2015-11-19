@@ -46,12 +46,8 @@ module.exports = {
     }, this);
 
     this.salvar = function () {
-      m.startComputation();
-
-      return promise.onSuccOrError(
-        salvarServico(this.servico(), this.cabecalho.metadados)
-        .then(this._servicoSalvo),
-        endComputation);
+      return salvarServico(this.servico(), this.cabecalho.metadados)
+        .then(this._servicoSalvo);
     };
 
     this.publicar = function () {

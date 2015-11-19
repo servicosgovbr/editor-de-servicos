@@ -10,7 +10,6 @@ module.exports = {
 
     this.onClick = function () {
       this.salvando(true);
-      m.redraw();
       return this.salvar().then(_.bind(function (resp) {
         this.salvando(false);
         alertify.success('Rascunho salvo com sucesso!');
