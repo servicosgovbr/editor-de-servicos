@@ -19,6 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @EqualsAndHashCode
 public class FormularioUsuario {
     public static final String EMAIL_INVALIDO = "formato de email não valido";
+    @CpfUnico
     String cpf;
     @Size(min=8, max=50, message = "Senha: tamanho deve estar entre 8 e 50")
     String senha;
