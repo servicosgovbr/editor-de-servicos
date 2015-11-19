@@ -25,14 +25,14 @@
         </form>
     </header>
 
-    <form id="login" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" method="post">
+    <form id="cadastro" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" method="post">
 
         <p th:if="${param.sucesso}" class="info">
             <i class="fa fa-info"></i>&nbsp;
             Cadastro realizado com sucesso
         </p>
 
-        <div th:if="${#fields.hasAnyErrors()}">
+        <div th:if="${#fields.hasAnyErrors()}" class="erro">
             <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
         </div>
 
@@ -42,7 +42,8 @@
         <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="CPF" required="required" autofocus="true"/>
 
         <label for="senha">Senha</label>
-        <input id="senha" name="senha" type="password" placeholder="Senha" required="required"/>
+        <input id="senha" name="senha" type="password" placeholder="Senha" required="required"
+               th:class="${#fields.hasErrors('senha')}? erroCampo"/>
 
         <label for="siorg">SIORG</label>
         <input id="siorg" name="siorg" type="text" th:value="*{siorg}" placeholder="siorg" required="required"/>
@@ -51,10 +52,12 @@
         <input id="siape" name="siape" type="text" th:value="*{siape}" placeholder="siape"/>
 
         <label for="email_institucional">Email Institucional</label>
-        <input id="email_institucional" name="emailInstitucional" th:value="*{emailInstitucional}" type="email" placeholder="email@instituicional.gov.br"/>
+        <input id="email_institucional" name="emailInstitucional" th:value="*{emailInstitucional}" type="email"
+               placeholder="email@instituicional.gov.br" th:class="${#fields.hasErrors('emailInstitucional')}? erroCampo"/>
 
         <label for="email_secundario">Email Secundario</label>
-        <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email" placeholder="email@secundario.org"/>
+        <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email"
+               placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 
         <label for="servidor">É servidor?</label>
         <input id="servidor" name="servidor" th:field="*{servidor}" type="checkbox"/>
