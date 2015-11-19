@@ -16,14 +16,15 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode
 public class FormularioUsuario {
+    public static final String EMAIL_INVALIDO = "Formato de email não valido";
     String cpf;
     String senha;
     String papelId;
     String siorg;
     String siape;
-    @Email
+    @Email(message = EMAIL_INVALIDO)
     String emailInstitucional;
-    @Email
+    @Email(message = EMAIL_INVALIDO)
     String emailSecundario;
     boolean servidor;
 
