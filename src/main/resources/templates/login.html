@@ -20,18 +20,15 @@
         </div>
         <div class="metadados">&nbsp;</div>
         <span></span>
-        <form id="logout" th:action="@{/editar/sair}" method="post">
-            <button type="submit">Sair            <i class="fa fa-sign-in"></i>&nbsp;</button>
-        </form>
     </header>
 
     <form id="login" th:action="@{/editar/autenticar}" method="post">
 
-        <h1>Login</h1>
+        <h2>Acesso para Servidores Públicos</h2>
 
         <p th:if="${param.error}" class="erro">
             <i class="fa fa-exclamation-triangle"></i>&nbsp;
-            Nome ou senha incorretos.
+            Seu CPF e/ou sua senha estão incorretos.
         </p>
 
         <p th:if="${param.sair}" class="info">
@@ -41,19 +38,25 @@
 
         <p th:if="${param.sessao}" class="info">
             <i class="fa fa-info"></i>&nbsp;
-            Sua sessão expirou
+            Sua sessão expirou!
         </p>
 
-        <label for="usuario">E-mail</label>
-        <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
-               autofocus="true"/>
+        <div class="borda">
+            <label for="usuario">E-mail</label>
+            <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
+                   autofocus="true"/>
 
-        <label for="senha">Senha</label>
-        <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
+            <label for="senha">Senha</label>
+            <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
 
-        <button type="submit">
-            Entrar
-        </button>
+            <p class="tooltip-home">Esqueceu sua senha ou não tem cadastro?</p>
+            <button type="submit">
+                Entrar
+            </button>
+        </div>
+
+        <a><i class="fa fa-user"></i>&nbsp; Acesso para colaborar como Cidadão não cadastrado</a>
+
     </form>
 </div>
 

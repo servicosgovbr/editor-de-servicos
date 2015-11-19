@@ -1,27 +1,70 @@
 @charset "UTF-8";
 
 #login {
-  @include shift(4 of 12);
-  @include span-columns(4 of 12);
+  @include shift(3 of 12);
+  @include span-columns(6 of 12);
   margin-top: $tamanho-do-cabecalho + 2em;
+
+
+  .borda {
+    border: 1px solid #ddd;
+    padding: 30px 40px 60px 40px;
+    border-radius: 4px;
+    margin-bottom: 40px;
+
+    p.tooltip-home {
+      color: $azul-regular;
+      font-size: 12px;
+      display: inline;
+      position: relative;
+      top: 15px;
+      text-transform: uppercase;
+    }
+
+  }
+
+  a {
+    font-size: 15px;
+    display: block;
+    text-align: center;
+  }
+
+  p { 
+    display: block;
+    text-align: center;
+
+  }
+
+
+
+  h2 {
+    text-transform: capitalize;
+    font-size: 22px;
+    font-family: $openSansBold;
+    text-align: center;
+  } 
 
   .erro {
     color: #d00;
   }
 
   .info {
-    color: $azul-regular;
+    color: #33BA7D;
+  }
+
+  input {
+    background-color: #f3f3f3;
   }
 
   button {
     float: right;
+    margin-top: 10px;
     background-color: $azul-regular;
     color: $branco;
 
     &:hover {
       color: $branco;
-      text-shadow: 0 0 2px $branco;
-      background-color: $azul-regular;
+      background-color: $azul-escuro;
     }
   }
 }
