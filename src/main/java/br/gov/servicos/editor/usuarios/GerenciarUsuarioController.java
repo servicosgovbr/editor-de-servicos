@@ -32,15 +32,13 @@ public class GerenciarUsuarioController {
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
-    ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
-        ModelMap model = new ModelMap();
+    String criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
             usuarioRepository.save(factory.criarUsuario(formularioUsuario));
-            model.addAttribute("formularioUsuario", new FormularioUsuario());
+            return "redirect:/editar/usuarios/usuario?sucesso";
         } else {
-            model.addAttribute("formularioUsuario", formularioUsuario);
+            return "cadastrar";
         }
-        return new ModelAndView("cadastrar", model);
     }
 
     @RequestMapping("/editar/usuarios/usuario")

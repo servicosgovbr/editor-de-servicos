@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,8 +41,9 @@ public class GerenciarUsuarioControllerTest {
     public void retornarNovoUsuarioFormularioCasoCadastroTenhaSidoFeito() {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
-        ModelAndView view = controller.criar(FORM_USUARIO, bindingResult);
-        assertThat(view.getModelMap().get("formularioUsuario"), equalTo(new FormularioUsuario()));
+        String endereco = controller.criar(FORM_USUARIO, bindingResult);
+        assertThat(endereco, equalTo("redirect:/editar/usuarios/usuario?sucesso"));
+
     }
 
 
@@ -59,8 +59,8 @@ public class GerenciarUsuarioControllerTest {
     public void retornaMesmoUsuarioFormularioSeFormularioPossuiErros() {
         when(bindingResult.hasErrors()).thenReturn(true);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
-        ModelAndView view = controller.criar(FORM_USUARIO, bindingResult);
-        assertThat(view.getModelMap().get("formularioUsuario"), equalTo(FORM_USUARIO));
+        String endereco = controller.criar(FORM_USUARIO, bindingResult);
+        assertThat(endereco, equalTo("cadastrar"));
     }
 
 }

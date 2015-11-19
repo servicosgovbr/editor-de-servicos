@@ -27,6 +27,11 @@
 
     <form id="login" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" method="post">
 
+        <p th:if="${param.sucesso}" class="info">
+            <i class="fa fa-info"></i>&nbsp;
+            Cadastro realizado com sucesso
+        </p>
+
         <div th:if="${#fields.hasAnyErrors()}">
             <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
         </div>
