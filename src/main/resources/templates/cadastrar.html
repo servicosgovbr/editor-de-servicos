@@ -34,27 +34,27 @@
         <h1>Cadastrar</h1>
 
         <label for="cpf">CPF</label>
-        <input id="cpf" name="cpf" type="text" placeholder="CPF" required="required" autofocus="true"/>
+        <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="CPF" required="required" autofocus="true"/>
 
         <label for="senha">Senha</label>
         <input id="senha" name="senha" type="password" placeholder="Senha" required="required"/>
 
         <label for="siorg">SIORG</label>
-        <input id="siorg" name="siorg" type="text" placeholder="siorg" required="required"/>
+        <input id="siorg" name="siorg" type="text" th:value="*{siorg}" placeholder="siorg" required="required"/>
 
         <label for="siape">SIAPE</label>
-        <input id="siape" name="siape" type="text" placeholder="siape"/>
+        <input id="siape" name="siape" type="text" th:value="*{siape}" placeholder="siape"/>
 
         <label for="email_institucional">Email Institucional</label>
-        <input id="email_institucional" name="emailInstitucional" type="email" placeholder="email@instituicional.gov.br"/>
+        <input id="email_institucional" name="emailInstitucional" th:value="*{emailInstitucional}" type="email" placeholder="email@instituicional.gov.br"/>
 
         <label for="email_secundario">Email Secundario</label>
-        <input id="email_secundario" name="emailSecundario" type="email" placeholder="email@secundario"/>
+        <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email" placeholder="email@secundario"/>
 
         <label for="servidor">É servidor?</label>
-        <input id="servidor" name="servidor" type="checkbox"/>
+        <input id="servidor" name="servidor" th:field="*{servidor}" type="checkbox"/>
 
-        <select name="papelId">
+        <select name="papelId" th:field="*{papelId}">
             <option th:each="papel : ${papeis}" th:value="${papel.id}" th:text="${papel.nome}"></option>
         </select>
 
