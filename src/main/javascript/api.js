@@ -19,6 +19,7 @@ module.exports = {
   publicar: function (id, metadados) {
     return request({
       method: 'PUT',
+      background: true,
       url: '/editar/api/pagina/servico/' + id,
       extract: extrairMetadados(metadados),
       config: configCsrf
@@ -31,6 +32,7 @@ module.exports = {
 
     return request({
       method: 'POST',
+      background: true,
       url: url,
       config: function (xhr) {
         xhr.setRequestHeader('Accept', mimeType);
@@ -47,6 +49,7 @@ module.exports = {
     var url = '/editar/api/pagina/servico/' + id + '/despublicar';
     return request({
       method: 'POST',
+      background: true,
       url: url,
       extract: extrairMetadados(metadados),
       config: configCsrf

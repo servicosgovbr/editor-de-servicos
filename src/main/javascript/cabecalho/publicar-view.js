@@ -22,7 +22,6 @@ module.exports = {
 
     this.opera = function (prop, operacao) {
       prop(true);
-      m.redraw();
 
       promise.onSuccOrError(
         operacao,

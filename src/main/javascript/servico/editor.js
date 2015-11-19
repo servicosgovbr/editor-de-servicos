@@ -7,7 +7,6 @@ var publicarServico = require('xml/publicar');
 var descartarServico = require('xml/descartar');
 var despublicarServico = require('api').despublicar;
 var servicoEmEdicao = require('servico/servico-em-edicao');
-var promise = require('utils/promise');
 
 var modificado = m.prop(false);
 
@@ -17,10 +16,6 @@ function redirecionarNovoServico(nome) {
   if (!_.isEqual(oldId, newId)) {
     m.route('/editar/servico/' + newId);
   }
-}
-
-function endComputation() {
-  m.endComputation();
 }
 
 function idServico() {
@@ -51,14 +46,10 @@ module.exports = {
     };
 
     this.publicar = function () {
-      m.startComputation();
-
-      return promise.onSuccOrError(
-        this.salvar()
+      return this.salvar()
         .then(_.bind(function (s) {
           return publicarServico(s, this.cabecalho.metadados);
-        }, this)),
-        endComputation);
+        }, this));
     };
 
     this.descartar = function () {
