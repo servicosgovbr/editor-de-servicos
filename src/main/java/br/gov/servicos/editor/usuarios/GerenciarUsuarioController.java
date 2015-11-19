@@ -3,9 +3,13 @@ package br.gov.servicos.editor.usuarios;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+
+import javax.validation.Valid;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -22,17 +26,26 @@ public class GerenciarUsuarioController {
     @Autowired
     private PapelRepository papelRepository;
 
+    @ModelAttribute("papeis")
+    public Iterable<Papel> papularPapeis() {
+        return this.papelRepository.findAll();
+    }
+
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
-    RedirectView criar(FormularioUsuario formulario) {
-        usuarioRepository.save(factory.criarUsuario(formulario));
-        return new RedirectView("/editar");
+    ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+        if (!result.hasErrors()) {
+            usuarioRepository.save(factory.criarUsuario(formularioUsuario));
+        }
+        ModelMap model = new ModelMap();
+        model.addAttribute("users", formularioUsuario);
+        return new ModelAndView("cadastrar", model);
     }
 
     @RequestMapping("/editar/usuarios/usuario")
-    ModelAndView login() {
-        ModelAndView cadastroView = new ModelAndView("cadastrar");
-        cadastroView.addObject("papeis", papelRepository.findAll());
-        return cadastroView;
+    ModelAndView login(FormularioUsuario formularioUsuario) {
+        ModelMap model = new ModelMap();
+        model.addAttribute("users", formularioUsuario);
+        return new ModelAndView("cadastrar", model);
     }
 
 }

@@ -25,7 +25,11 @@
         </form>
     </header>
 
-    <form id="login" th:action="@{/editar/usuarios/usuario}" method="post">
+    <form id="login" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" method="post">
+
+        <div th:if="${#fields.hasAnyErrors()}">
+            <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+        </div>
 
         <h1>Cadastrar</h1>
 

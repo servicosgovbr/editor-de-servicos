@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
+import org.hibernate.validator.constraints.Email;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -22,7 +23,9 @@ public class FormularioUsuario {
     String papelId;
     String siorg;
     String siape;
+    @Email
     String emailInstitucional;
+    @Email
     String emailSecundario;
     boolean servidor;
 

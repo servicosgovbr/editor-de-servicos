@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.validation.BindingResult;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GerenciarUsuarioControllerTest {
@@ -21,19 +21,26 @@ public class GerenciarUsuarioControllerTest {
     @Mock
     private UsuarioFactory factory;
 
+    @Mock
+    private BindingResult bindingResult;
+
     @InjectMocks
     private GerenciarUsuarioController controller;
 
     @Test
     public void salvaNovoUsuario() {
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
-        controller.criar(FORM_USUARIO);
+        controller.criar(FORM_USUARIO, bindingResult);
         verify(repository).save(USUARIO);
-
     }
 
-    private FormularioUsuario criarFormularioUsuario() {
-        return new FormularioUsuario();
+    @Test
+    public void naoSalvaSeFormularioPossuiErros() {
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
+        controller.criar(FORM_USUARIO, bindingResult);
+        verify(repository, never()).save(USUARIO);
     }
 
 }
