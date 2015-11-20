@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.cadastro;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

@@ -1,6 +1,7 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.cadastro;
 
 
+import br.gov.servicos.editor.usuarios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

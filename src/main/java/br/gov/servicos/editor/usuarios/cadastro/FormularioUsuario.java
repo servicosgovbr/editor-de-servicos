@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.cadastro;
 
 
 import br.com.caelum.stella.bean.validation.CPF;

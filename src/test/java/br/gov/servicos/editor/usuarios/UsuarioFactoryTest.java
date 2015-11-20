@@ -1,5 +1,8 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
+import br.gov.servicos.editor.usuarios.cadastro.CamposServidor;
+import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

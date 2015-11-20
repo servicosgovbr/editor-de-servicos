@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.cadastro;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
