@@ -52,11 +52,11 @@
         <label for="siape">SIAPE</label>
         <input id="siape" name="siape" type="text" th:value="*{siape}" placeholder="siape"/>
 
-        <label for="email_institucional">Email Institucional</label>
-        <input id="email_institucional" name="emailInstitucional" th:value="*{emailInstitucional}" type="email"
-               placeholder="email@instituicional.gov.br" th:class="${#fields.hasErrors('emailInstitucional')}? erroCampo"/>
+        <label for="email_primario">Email Primário</label>
+        <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
+               placeholder="email@instituicional.gov.br" th:class="${#fields.hasErrors('emailPrimario')}? erroCampo"/>
 
-        <label for="email_secundario">Email Secundario</label>
+        <label for="email_secundario">Email Secundário</label>
         <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email"
                placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 

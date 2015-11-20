@@ -19,7 +19,7 @@ public class UsuarioFactory {
                 .withPapel(papel)
                 .withSiorg(formulario.getSiorg())
                 .withSiape(StringUtils.defaultIfEmpty(formulario.getSiape(), null))
-                .withEmailInstitucional(formulario.getEmailInstitucional())
+                .withEmailPrimario(formulario.getEmailPrimario())
                 .withEmailSecundario(formulario.getEmailSecundario())
                 .withServidor(formulario.isServidor())
                 .withHabilitado(true);

@@ -23,7 +23,7 @@ public class UsuarioFactoryTest {
     private static final String SENHA_CODIFICADA = "encoded";
     private static final String SIORG = "1234";
     private static final String SIAPE = "43214321";
-    private static final String EMAIL_INST = "email@institucional.gov.br";
+    private static final String EMAIL_PRIMARIO = "email@institucional.gov.br";
     private static final String EMAIL_SECUNDARIO = "email@secundario.org";
     private static final boolean SERVIDOR = true;
 
@@ -42,7 +42,7 @@ public class UsuarioFactoryTest {
                 withSenha(SENHA).
                 withSiorg(SIORG).
                 withSiape(SIAPE).
-                withEmailInstitucional(EMAIL_INST).
+                withEmailPrimario(EMAIL_PRIMARIO).
                 withEmailSecundario(EMAIL_SECUNDARIO).
                 withServidor(SERVIDOR);
     }
@@ -53,7 +53,7 @@ public class UsuarioFactoryTest {
 
         assertThat(usuario.getCpf(), equalTo(CPF));
         assertThat(usuario.getSiorg(), equalTo(SIORG));
-        assertThat(usuario.getEmailInstitucional(), equalTo(EMAIL_INST));
+        assertThat(usuario.getEmailPrimario(), equalTo(EMAIL_PRIMARIO));
         assertThat(usuario.getEmailSecundario(), equalTo(EMAIL_SECUNDARIO));
         assertThat(usuario.getSiape(), equalTo(SIAPE));
         assertThat(usuario.isServidor(), equalTo(SERVIDOR));
