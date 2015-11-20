@@ -18,6 +18,41 @@
       position: relative;
       top: 15px;
       text-transform: uppercase;
+
+      span {
+        display: none;
+        background-color: #ddd;
+        position: absolute;
+        top: 30px;
+        left: 15px;
+        width: 240px;
+        padding: 10px 15px;
+        border-radius: 4px;
+        text-align: left;
+        text-transform: none;
+        font-size: 13px;
+        color: $cinza-escuro;
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: -16px;
+            left: 111px;
+            margin-top: 0;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #ddd;
+            border-top: 8px solid transparent;
+          }
+      }
+
+      &:hover {
+        span {
+          display: block;
+        }
+      }
     }
 
   }
