@@ -50,7 +50,8 @@ module.exports = function (args) {
     paginas = new Fuse(paginas, {
       keys: ['conteudo.nome'],
       threshold: 0.2,
-      distance: 2000,
+      distance: 5000,
+      maxPatternLength: 150
     }).search(filtro.busca);
 
     return paginas;
