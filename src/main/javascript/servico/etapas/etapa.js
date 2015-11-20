@@ -3,13 +3,16 @@
 var Gratuidade = require('servico/modelos').Gratuidade;
 
 module.exports = {
+  controller: function(args) {
+    this.adicionado = false;
+  },
+
   view: function (ctrl, args) {
     var etapa = args.etapa;
     var gratuidade = args.gratuidade;
     var indice = args.indice;
 
-    ctrl.adicionado = args.ctrl.adicionado;
-    args.ctrl.adicionado = false;
+    ctrl.adicionado = args.adicionado;
 
     return m('fieldset#' + etapa.id, [
 
