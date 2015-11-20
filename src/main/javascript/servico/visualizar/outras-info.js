@@ -34,17 +34,6 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    var nomesPopularesView = function () {
-      if (!_.isEmpty(ctrl.servico.nomesPopulares())) {
-        return m('.row', m('p', [
-                    'Você também pode conhecer este serviço como: ',
-                    ctrl.servico.nomesPopulares().join(', '),
-                    '.'
-                ]));
-      }
-      return m.component(require('servico/visualizar/view-vazia'));
-    };
-
     var gratuidadeView = function (ehGratuito) {
       if (ehGratuito) {
         return m('', m('p', 'Este serviço é gratuito para o cidadão.'));
@@ -54,10 +43,7 @@ module.exports = {
 
     return m('', [
             m('h3#servico-outras-info.subtitulo-servico', 'Outras informações'),
-            m('.info-extra', [
-                nomesPopularesView(),
-                gratuidadeView(ctrl.servico.gratuidade() === Gratuidade.GRATUITO)
-            ]),
+            m('.info-extra', gratuidadeView(ctrl.servico.gratuidade() === Gratuidade.GRATUITO)),
             m('.row', m('p.separacao-orgao', [
                 'Este é um serviço ',
                 ctrl.ehFeminino() ? 'da ' : 'do ',
