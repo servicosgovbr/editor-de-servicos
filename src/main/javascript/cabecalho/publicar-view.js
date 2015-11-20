@@ -36,7 +36,7 @@ module.exports = {
         this.publicando,
         this.publicar()
         .then(
-          avisos.sucessoFn('Serviço publicado com sucesso! Essas informações aparecerão no Portal em até 15 minutos.'),
+          avisos.sucessoFn('Serviço publicado com sucesso! As informações aparecerão no Portal em até 15 minutos.'),
           avisos.erroFn('Serviço ainda contém erros.')));
     };
 
