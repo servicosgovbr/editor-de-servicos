@@ -41,10 +41,9 @@ public class UsuarioFactoryTest {
                 withPapelId(PAPEL_ID.toString()).
                 withSenha(SENHA).
                 withSiorg(SIORG).
-                withSiape(SIAPE).
+                withCamposServidor(new CamposServidor().withServidor(SERVIDOR).withSiape(SIAPE)).
                 withEmailPrimario(EMAIL_PRIMARIO).
-                withEmailSecundario(EMAIL_SECUNDARIO).
-                withServidor(SERVIDOR);
+                withEmailSecundario(EMAIL_SECUNDARIO);
     }
 
     @Test
@@ -82,7 +81,8 @@ public class UsuarioFactoryTest {
 
     @Test
     public void criaUsuarioComSiapeNullSeValorForVazio() {
-        Usuario usuario = factory.criarUsuario(formularioUsuario.withSiape(""));
+        CamposServidor camposSerividorSemSiape = formularioUsuario.getCamposServidor().withSiape("");
+        Usuario usuario = factory.criarUsuario(formularioUsuario.withCamposServidor(camposSerividorSemSiape));
         assertNull(usuario.getSiape());
     }
 

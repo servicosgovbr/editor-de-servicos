@@ -49,9 +49,6 @@
         <label for="siorg">SIORG</label>
         <input id="siorg" name="siorg" type="text" th:value="*{siorg}" placeholder="siorg" required="required"/>
 
-        <label for="siape">SIAPE</label>
-        <input id="siape" name="siape" type="text" th:value="*{siape}" placeholder="siape"/>
-
         <label for="email_primario">Email Primário</label>
         <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
                placeholder="email@instituicional.gov.br" th:class="${#fields.hasErrors('emailPrimario')}? erroCampo"/>
@@ -61,7 +58,12 @@
                placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 
         <label for="servidor">É servidor?</label>
-        <input id="servidor" name="servidor" th:field="*{servidor}" type="checkbox"/>
+        <input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox"
+               th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
+
+        <label for="siape">SIAPE</label>
+        <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape"
+               th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
 
         <select name="papelId" th:field="*{papelId}">
             <option th:each="papel : ${papeis}" th:value="${papel.id}" th:text="${papel.nome}"></option>

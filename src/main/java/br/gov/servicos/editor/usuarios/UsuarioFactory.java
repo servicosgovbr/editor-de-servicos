@@ -18,10 +18,10 @@ public class UsuarioFactory {
                 .withSenha(senhaCodificada)
                 .withPapel(papel)
                 .withSiorg(formulario.getSiorg())
-                .withSiape(StringUtils.defaultIfEmpty(formulario.getSiape(), null))
+                .withSiape(StringUtils.defaultIfEmpty(formulario.getCamposServidor().getSiape(), null))
                 .withEmailPrimario(formulario.getEmailPrimario())
                 .withEmailSecundario(formulario.getEmailSecundario())
-                .withServidor(formulario.isServidor())
+                .withServidor(formulario.getCamposServidor().isServidor())
                 .withHabilitado(true);
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import static net.logstash.logback.encoder.org.apache.commons.lang.StringUtils.isBlank;
+
 public class SiapeUnicoValidator implements ConstraintValidator<SiapeUnico, String> {
     @Autowired
     private UsuarioRepository repository;
@@ -16,6 +18,6 @@ public class SiapeUnicoValidator implements ConstraintValidator<SiapeUnico, Stri
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value.isEmpty() || repository.findBySiape(value) == null;
+        return isBlank(value) || repository.findBySiape(value) == null;
     }
 }

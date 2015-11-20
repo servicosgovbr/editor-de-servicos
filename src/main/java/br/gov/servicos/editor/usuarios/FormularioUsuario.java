@@ -8,6 +8,7 @@ import lombok.experimental.Wither;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -33,10 +34,12 @@ public class FormularioUsuario {
 
     String papelId;
 
-    String siorg;
+    @Servidor
+    @Cidadao
+    @Valid
+    CamposServidor camposServidor = new CamposServidor();
 
-    @SiapeUnico
-    String siape;
+    String siorg;
 
     @NotBlank(message = "Email Primario: " + CAMPO_OBRIGATORIO)
     @Email(message = "Email Primario: " + EMAIL_INVALIDO)
@@ -44,7 +47,4 @@ public class FormularioUsuario {
 
     @Email(message = "Email Secundario: " + EMAIL_INVALIDO)
     String emailSecundario;
-
-    boolean servidor;
-
 }
