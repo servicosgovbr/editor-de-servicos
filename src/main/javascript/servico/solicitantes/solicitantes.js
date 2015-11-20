@@ -38,7 +38,8 @@ module.exports = {
           solicitante: s,
           index: i,
           showDelete: ctrl.servico().solicitantes().length > 1,
-          remover: ctrl.remover.bind(ctrl, i)
+          remover: ctrl.remover.bind(ctrl, i),
+          adicionado: ctrl.adicionado
         });
       }),
 

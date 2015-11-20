@@ -3,12 +3,16 @@
 var focus = require('focus');
 
 module.exports = {
+  controller: function(args) {
+    this.adicionado = false;
+  },
 
   view: function (ctrl, args) {
     var solicitante = args.solicitante;
     var index = args.index;
     var showDelete = args.showDelete;
     var removerFn = args.remover;
+    ctrl.adicionado = args.adicionado;
 
     return m('fieldset#' + solicitante.id + '.relative', {
       key: solicitante.id
