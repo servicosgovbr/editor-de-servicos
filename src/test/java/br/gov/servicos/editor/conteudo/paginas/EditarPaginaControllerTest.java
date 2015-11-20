@@ -1,9 +1,9 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.EditarPaginaController;
-import br.gov.servicos.editor.conteudo.Pagina;
-import br.gov.servicos.editor.conteudo.PaginaVersionada;
+import br.gov.servicos.editor.git.ConteudoMetadados;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.util.Date;
 
@@ -33,13 +32,13 @@ public class EditarPaginaControllerTest {
             .withAutor("Fulano de Tal")
             .withHorario(HORARIO);
 
-    static final Metadados<Pagina> METADADOS = new Metadados<Pagina>()
+    static final Metadados METADADOS = new Metadados()
             .withEditado(REVISAO)
             .withPublicado(REVISAO)
-            .withConteudo(new Pagina().withNome("Ministerio").withTipo(ORGAO.getNome()));
+            .withConteudo(new ConteudoMetadados().withNome("Ministerio").withTipo(ORGAO.getNome()));
 
     @Mock
-    PaginaVersionada pagina;
+    ConteudoVersionado pagina;
 
     @Mock
     ConteudoVersionadoFactory factory;
@@ -57,7 +56,6 @@ public class EditarPaginaControllerTest {
         given(pagina.getTipo())
                 .willReturn(ORGAO);
 
-
         controller = new EditarPaginaController(factory);
     }
 
@@ -67,9 +65,9 @@ public class EditarPaginaControllerTest {
                 .willReturn(METADADOS);
 
         given(pagina.getConteudoRaw())
-                .willReturn("Ministério\n--\n\nConteúdo");
+                .willReturn("<orgao><nome>Ministério Conteúdo</nome></orgao>");
 
-        HttpHeaders headers = controller.editar("orgao", "ministerio-conteudo").getHeaders();
+        HttpHeaders headers = controller.editar(ORGAO.getNome(), "ministerio-conteudo").getHeaders();
 
         assertThat(headers.get("X-Git-Commit-Publicado").get(0), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
         assertThat(headers.get("X-Git-Autor-Publicado").get(0), is("Fulano de Tal"));
@@ -86,10 +84,10 @@ public class EditarPaginaControllerTest {
                 .willReturn(METADADOS);
 
         given(pagina.getConteudoRaw())
-                .willReturn("Ministério\n--\n\nConteúdo");
+                .willReturn("<orgao><nome>Ministério Conteúdo</nome></orgao>");
 
-        String conteudo = (String) controller.editar("orgao", "ministerio-conteudo").getBody();
-        assertThat(conteudo, is("{\n  \"tipo\" : \"orgao\",\n  \"nome\" : \"Ministério\",\n  \"conteudo\" : \"Conteúdo\"\n}"));
+        String conteudo = (String) controller.editar(ORGAO.getNome(), "ministerio-conteudo").getBody();
+        assertThat(conteudo, is("<orgao><nome>Ministério Conteúdo</nome></orgao>"));
     }
 
 }

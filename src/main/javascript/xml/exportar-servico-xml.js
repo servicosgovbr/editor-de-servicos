@@ -1,14 +1,6 @@
 'use strict';
 
-var cdata = function (doc, selector) {
-  _(doc.querySelectorAll(selector)).each(function (el) {
-    var content = _(el.childNodes).map(function (cn) {
-      return el.removeChild(cn).nodeValue;
-    }).join('');
-
-    el.appendChild(doc.createCDATASection(content));
-  });
-};
+var XML = require('utils/xml');
 
 var tempoTotalEstimado = function (tempoEstimado) {
   var limite;
@@ -109,12 +101,8 @@ var gratuidade = function (ehGratuito) {
   return undefined;
 };
 
-var xmlDoc = function (ns) {
-  return document.implementation.createDocument(ns, '');
-};
-
 module.exports = function (servico) {
-  var doc = xmlDoc('http://servicos.gov.br/v3/schema');
+  var doc = XML.createDocument('http://servicos.gov.br/v3/schema');
 
   m.render(doc, m('servico', {
     'xmlns': 'http://servicos.gov.br/v3/schema',
@@ -131,7 +119,7 @@ module.exports = function (servico) {
     tempoTotalEstimado(servico.tempoTotalEstimado()),
     m('etapas', servico.etapas().map(etapa)),
     m('orgao', {
-        id: servico.orgao().nome()
+      id: servico.orgao().nome()
     }),
     m('segmentos-da-sociedade', servico.segmentosDaSociedade().map(item)),
     m('areas-de-interesse', servico.areasDeInteresse().map(item)),
@@ -139,9 +127,9 @@ module.exports = function (servico) {
     m('legislacoes', servico.legislacoes().map(item))
   ]));
 
-  cdata(doc, 'descricao');
-  cdata(doc, 'requisitos');
-  cdata(doc, 'contato');
+  XML.cdata(doc, 'descricao');
+  XML.cdata(doc, 'requisitos');
+  XML.cdata(doc, 'contato');
 
   return doc;
 };

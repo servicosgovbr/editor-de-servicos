@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.fixtures.UserProfileConfigParaTeste;
 import br.gov.servicos.editor.git.Metadados;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.verify;
 public class PublicarCartaControllerTest {
 
     @Mock
-    Carta carta;
+    ConteudoVersionado carta;
 
     @Mock
     ConteudoVersionadoFactory factory;
@@ -32,7 +33,7 @@ public class PublicarCartaControllerTest {
     public void setUp() throws Exception {
         controller = new PublicarCartaController(factory, userProfiles);
         given(carta.getMetadados())
-                .willReturn(new Metadados<>());
+                .willReturn(new Metadados());
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
     }

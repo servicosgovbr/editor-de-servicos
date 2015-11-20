@@ -13,8 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class Pagina {
-    String tipo;
-    String nome;
+public class PaginaXML {
+    String id;
     String conteudo;
 }

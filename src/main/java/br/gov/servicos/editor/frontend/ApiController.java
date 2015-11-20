@@ -50,7 +50,7 @@ class ApiController {
 
     @RequestMapping("/orgaos")
     @ResponseBody
-    List<Orgao> orgaos(@RequestParam("q") String termo) {
+    List<OrgaoDTO> orgaos(@RequestParam("q") String termo) {
         return orgaos.get(termo);
     }
 

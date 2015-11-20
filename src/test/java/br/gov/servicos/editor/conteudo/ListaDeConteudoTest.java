@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.cartas.Carta;
 import br.gov.servicos.editor.fixtures.RepositorioCartasBuilder;
 import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
 import br.gov.servicos.editor.git.Importador;
@@ -51,10 +50,10 @@ public class ListaDeConteudoTest {
     Importador importador;
 
     @Mock
-    Carta carta;
+    ConteudoVersionado carta;
 
     @Mock
-    PaginaVersionada paginaVersionada;
+    ConteudoVersionado paginaVersionada;
 
     @Mock
     CacheManager cacheManager;
@@ -68,8 +67,7 @@ public class ListaDeConteudoTest {
         new RepositorioCartasBuilder(repo.getLocalCloneRepositorio())
                 .touchCarta("id-qualquer")
                 .touchOrgao("outro-id-qualquer")
-                .touchAreaDeInteresse("area")
-                .touchPaginaEspecial("pg-especial")
+                .touchPaginaTematica("pg-tematica")
                 .buildSemGit();
 
         given(repositorioGit.getCaminhoAbsoluto()).willReturn(repo.getLocalCloneRepositorio());
@@ -82,10 +80,10 @@ public class ListaDeConteudoTest {
 
     @Test
     public void deveListarDiretorioDeCartas() throws Exception {
-        Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
+        Metadados m1 = new Metadados().withId("id-qualquer");
 
         given(repositorioGit.branches()).will(i -> Stream.empty());
-        given(paginaVersionada.getMetadados()).willReturn(new Metadados<>());
+        given(paginaVersionada.getMetadados()).willReturn(new Metadados());
         given(carta.getMetadados()).willReturn(m1);
 
         Collection<Metadados> metadados = listaDeConteudo.listar();
@@ -105,8 +103,8 @@ public class ListaDeConteudoTest {
     public void forcaAtualizacaoDoCacheAoInicializar() throws Exception {
         Cache cache = mock(Cache.class);
 
-        Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
-        Metadados<Pagina> m2 = new Metadados<Pagina>().withId("outro-id-qualquer");
+        Metadados m1 = new Metadados().withId("id-qualquer");
+        Metadados m2 = new Metadados().withId("outro-id-qualquer");
 
         given(importador.isImportadoComSucesso()).willReturn(true);
         given(repositorioGit.branches()).will(i -> Stream.empty());

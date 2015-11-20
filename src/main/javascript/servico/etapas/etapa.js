@@ -3,7 +3,7 @@
 var Gratuidade = require('servico/modelos').Gratuidade;
 
 module.exports = {
-  controller: function(args) {
+  controller: function (args) {
     this.adicionado = false;
   },
 

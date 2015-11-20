@@ -25,36 +25,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SalvarCartaController {
 
     ReformatadorXml reformatadorXml;
-    FormatadorConteudoPagina formatadorMarkdown;
     UserProfiles userProfiles;
     ConteudoVersionadoFactory factory;
 
     @Autowired
-    public SalvarCartaController(ReformatadorXml reformatadorXml, FormatadorConteudoPagina formatadorMarkdown, UserProfiles userProfiles, ConteudoVersionadoFactory factory) {
+    public SalvarCartaController(ReformatadorXml reformatadorXml, UserProfiles userProfiles, ConteudoVersionadoFactory factory) {
         this.reformatadorXml = reformatadorXml;
-        this.formatadorMarkdown = formatadorMarkdown;
         this.userProfiles = userProfiles;
         this.factory = factory;
     }
 
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = POST)
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = POST)
     RedirectView salvar(
+            @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
             @RequestBody DOMSource servico) throws Exception {
-        ConteudoVersionado carta = factory.pagina(id, SERVICO);
+        ConteudoVersionado conteudoVersionado = factory.pagina(id, TipoPagina.fromNome(tipo));
         String conteudo = reformatadorXml.formata(servico);
-        carta.salvar(userProfiles.get(), conteudo);
-        return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
+        conteudoVersionado.salvar(userProfiles.get(), conteudo);
+        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId());
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = POST)
-    RedirectView editar(@PathVariable("tipo") String tipo,
-                        @PathVariable("id") String id,
-                        @RequestBody Pagina pagina) {
-        ConteudoVersionado paginaVersionada = factory.pagina(id, TipoPagina.fromNome(tipo));
-        paginaVersionada.salvar(userProfiles.get(), formatadorMarkdown.formatar(pagina));
-        return new RedirectView("/editar/api/pagina/" + tipo + "/" + paginaVersionada.getId());
-    }
-
 }

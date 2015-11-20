@@ -7,9 +7,8 @@ module.exports = {
     this.filtro = m.prop('');
     this.filtrarPublicados = m.prop();
     this.orgao = m.prop('');
-    this.filtroAreasDeInteresse = m.prop('');
     this.filtroOrgaos = m.prop('');
-    this.filtroPaginasEspeciais = m.prop('');
+    this.filtroPaginasTematicas = m.prop('');
     this.filtroServicos = m.prop('');
   },
 
@@ -31,13 +30,6 @@ module.exports = {
             }),
             m('label', [
               m('input[type=checkbox]', {
-                onclick: m.withAttr('checked', ctrl.filtroAreasDeInteresse)
-              }),
-              'Páginas de áreas de interesse', m.component(require('tooltips').paginasAreasInteresse)
-            ]),
-
-            m('label', [
-              m('input[type=checkbox]', {
                 onclick: m.withAttr('checked', ctrl.filtroOrgaos)
               }),
               'Páginas de órgãos', m.component(require('tooltips').paginasOrgaos)
@@ -45,7 +37,7 @@ module.exports = {
 
             m('label', [
               m('input[type=checkbox]', {
-                onclick: m.withAttr('checked', ctrl.filtroPaginasEspeciais)
+                onclick: m.withAttr('checked', ctrl.filtroPaginasTematicas)
               }),
               'Páginas temáticas', m.component(require('tooltips').paginasTematicas)
             ]),
@@ -62,9 +54,8 @@ module.exports = {
               orgao: ctrl.orgao(),
               busca: ctrl.filtro(),
               publicados: ctrl.filtrarPublicados(),
-              filtroAreasDeInteresse: ctrl.filtroAreasDeInteresse(),
               filtroOrgaos: ctrl.filtroOrgaos(),
-              filtroPaginasEspeciais: ctrl.filtroPaginasEspeciais(),
+              filtroPaginasTematicas: ctrl.filtroPaginasTematicas(),
               filtroServicos: ctrl.filtroServicos()
             }
           })

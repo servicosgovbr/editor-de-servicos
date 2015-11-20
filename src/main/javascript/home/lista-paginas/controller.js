@@ -15,11 +15,6 @@ module.exports = function (args) {
     if (filtro.publicados) {
       filtroFn = _.flow(_.property('temAlteracoesNaoPublicadas'));
     }
-    if (filtro.orgao) {
-      filtroFn = _.flow(function (pg) {
-        return filtro.orgao === _.get(pg, 'conteudo.orgao.id');
-      });
-    }
 
     var filtroTipos = [];
     if (filtro.filtroServicos) {
@@ -28,11 +23,8 @@ module.exports = function (args) {
     if (filtro.filtroOrgaos) {
       filtroTipos.push('orgao');
     }
-    if (filtro.filtroPaginasEspeciais) {
-      filtroTipos.push('pagina-especial');
-    }
-    if (filtro.filtroAreasDeInteresse) {
-      filtroTipos.push('area-de-interesse');
+    if (filtro.filtroPaginasTematicas) {
+      filtroTipos.push('pagina-tematica');
     }
 
     if (filtroTipos.length > 0) {

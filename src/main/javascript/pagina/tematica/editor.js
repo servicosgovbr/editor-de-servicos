@@ -1,43 +1,27 @@
 'use strict';
 
-var safeGet = require('utils/code-checks').safeGet;
+var Tooltips = require('tooltips');
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var EditorBase = require('componentes/editor-base');
-var carregarPagina = require('pagina/carregar');
-var salvarPagina = require('pagina/salvar');
-var slugify = require('slugify');
 
-function redirecionarNovaPagina(tipo, nome) {
-  var oldId = m.route.param('id');
-  var newId = slugify(nome);
-  if (!_.isEqual(oldId, newId)) {
-    m.route('/editar/' + tipo + '/' + newId);
-  }
-}
+var carregarPagina = require('xml/carregar').carregarPaginaTematica;
+var salvarPagina = require('xml/salvar').salvarPaginaTematica;
+var redirecionarNovaPagina = require('redirecionador');
 
 module.exports = {
   controller: function (args) {
-    var tipo = safeGet(args, 'tipo');
-    var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
+    this.tipo = m.prop('pagina-tematica');
 
     this.modificado = m.prop(false);
     this.cabecalho = new CabecalhoModel();
-
-    this.pagina = carregarPagina({
-      tipo: tipo,
-      id: m.route.param('id')
-    }, this.cabecalho).then(function (pg) {
-      pg.tamanhoConteudo(tamanhoConteudo);
-      return pg;
-    });
+    this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
     this.salvar = _.bind(function () {
-      return salvarPagina(tipo, this.pagina())
+      return salvarPagina(this.pagina(), this.cabecalho.metadados)
         .then(this.pagina)
         .then(_.bind(function (pagina) {
-          pagina.tamanhoConteudo(tamanhoConteudo);
-          redirecionarNovaPagina(tipo, pagina.nome());
-        }));
+          redirecionarNovaPagina(this.tipo(), pagina.nome());
+        }, this));
     }, this);
   },
 
@@ -46,19 +30,12 @@ module.exports = {
       return m('');
     }
 
-    var tipo = safeGet(args, 'tipo');
-    var tituloNome = safeGet(args, 'tituloNome');
-    var componenteNome = safeGet(args, 'componenteNome');
-    var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
-    var nomeFn = args.nomeFn || _.identity;
-
+    var tamanhoConteudo = 10000;
     var tooltips = {
-      tipo: safeGet(args, 'tooltips.tipo'),
-      nome: safeGet(args, 'tooltips.nome'),
-      conteudo: safeGet(args, 'tooltips.conteudo')
+      tipo: Tooltips.tipoPagina,
+      nome: Tooltips.nomePaginaTematica,
+      conteudo: Tooltips.conteudoPaginaTematica
     };
-
-    ctrl.pagina().tipo(tipo);
 
     var binding = {
       pagina: ctrl.pagina,
@@ -90,15 +67,17 @@ module.exports = {
 
       componentes: [
         m.component(require('pagina/componentes/tipo-de-pagina'), {
-          tipo: ctrl.pagina().tipo,
+          tipo: ctrl.tipo,
           tooltipTipo: tooltips.tipo
         }),
+
         m.component(require('pagina/componentes/nome'), _.assign(binding, {
-          titulo: tituloNome,
-          componente: componenteNome,
-          nomeFn: nomeFn,
-          tooltipNome: tooltips.nome
+          titulo: 'Nome da página temática',
+          componente: require('componentes/input'),
+          tooltipNome: tooltips.nome,
+          nomeFn: _.identity
         })),
+
         m.component(require('pagina/componentes/conteudo'), _.assign(binding, {
           maximo: tamanhoConteudo,
           tooltipConteudo: tooltips.conteudo

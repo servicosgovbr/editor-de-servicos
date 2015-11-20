@@ -1,6 +1,6 @@
 'use strict';
 
-var carregarServico = require('xml/carregar');
+var carregarServico = require('xml/carregar').carregarServico;
 
 function carregar(cabecalho) {
   return carregarServico(m.route.param('id'), cabecalho);

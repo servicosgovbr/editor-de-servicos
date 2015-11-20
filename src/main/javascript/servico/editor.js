@@ -2,21 +2,14 @@
 
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var slugify = require('slugify');
-var salvarServico = require('xml/salvar');
+var salvarServico = require('xml/salvar').salvarServico;
 var publicarServico = require('xml/publicar');
 var descartarServico = require('xml/descartar');
 var despublicarServico = require('api').despublicar;
 var servicoEmEdicao = require('servico/servico-em-edicao');
 
+var redirecionarNovoServico = require('redirecionador');
 var modificado = m.prop(false);
-
-function redirecionarNovoServico(nome) {
-  var oldId = m.route.param('id');
-  var newId = slugify(nome);
-  if (!_.isEqual(oldId, newId)) {
-    m.route('/editar/servico/' + newId);
-  }
-}
 
 function idServico() {
   return m.route.param('id');
@@ -33,7 +26,7 @@ module.exports = {
 
     this._servicoSalvo = _.bind(function (servico) {
       this.servico(servico);
-      redirecionarNovoServico(this.servico().nome());
+      redirecionarNovoServico('servico', this.servico().nome());
       this.cabecalho.limparErro();
       modificado(false);
 

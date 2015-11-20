@@ -1,13 +1,12 @@
 package br.gov.servicos.editor.conteudo.paginas;
 
-import br.gov.servicos.editor.conteudo.Pagina;
 import br.gov.servicos.editor.conteudo.cartas.RepositorioGitIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
 
-import static br.gov.servicos.editor.conteudo.TipoPagina.*;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static br.gov.servicos.editor.conteudo.TipoPagina.ORGAO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.PAGINA_TEMATICA;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EditarPaginaControllerIntegrationTest extends RepositorioGitIntegrationTest {
@@ -15,41 +14,30 @@ public class EditarPaginaControllerIntegrationTest extends RepositorioGitIntegra
     @Before
     public void setup() {
         setupBase()
-                .paginaEspecial("pagina-a", new Pagina().withNome("Pagina a"))
-                .orgao("orgao-a", new Pagina().withNome("Orgao a"))
-                .areaDeInteresse("area-a", new Pagina().withNome("Area a"))
+                .paginaTematica("pagina-a", "<pagina-tematica><nome>Pagina A</nome></pagina-tematica>")
+                .orgao("orgao-a", "<orgao><nome>Orgao a</nome></orgao>")
                 .build();
     }
 
     @Test
-    public void editarPaginaEspecial() throws Exception {
-        api.editarPagina("pagina-a", PAGINA_ESPECIAL)
+    public void editarPaginaTematica() throws Exception {
+        api.editarPagina("pagina-a", PAGINA_TEMATICA)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tipo", is("pagina-especial")))
-                .andExpect(jsonPath("$.nome", is("Pagina a")));
-    }
-
-    @Test
-    public void editarAreaDeInteresse() throws Exception {
-        api.editarPagina("area-a", AREA_DE_INTERESSE)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tipo", is("area-de-interesse")))
-                .andExpect(jsonPath("$.nome", is("Area a")));
+                .andExpect(content().xml("<pagina-tematica><nome>Pagina A</nome></pagina-tematica>"));
     }
 
     @Test
     public void editarOrgao() throws Exception {
         api.editarPagina("orgao-a", ORGAO)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tipo", is("orgao")))
-                .andExpect(jsonPath("$.nome", is("Orgao a")));
+                .andExpect(content().xml("<orgao><nome>Orgao a</nome></orgao>"));
     }
 
     @Test
     public void editarNovo() throws Exception {
-        api.editarPaginaNova(PAGINA_ESPECIAL)
+        api.editarPaginaNova(PAGINA_TEMATICA)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tipo", is("pagina-especial")));
+                .andExpect(content().xml("<pagina-tematica></pagina-tematica>"));
     }
 
     @Test
@@ -59,8 +47,6 @@ public class EditarPaginaControllerIntegrationTest extends RepositorioGitIntegra
 
         api.editarPagina("orgao-a", ORGAO)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tipo", is("orgao")))
-                .andExpect(jsonPath("$.nome", is("Orgao a")));
+                .andExpect(content().xml("<orgao><nome>Orgao a</nome></orgao>"));
     }
-
 }

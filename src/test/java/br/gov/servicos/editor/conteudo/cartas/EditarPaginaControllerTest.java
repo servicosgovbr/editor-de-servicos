@@ -1,7 +1,8 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.conteudo.EditarPaginaController;
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.EditarPaginaController;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
@@ -30,7 +31,7 @@ public class EditarPaginaControllerTest {
             .withAutor("Fulano de Tal")
             .withHorario(HORARIO);
 
-    static final Metadados<Carta.Servico> METADADOS = new Metadados<Carta.Servico>()
+    static final Metadados METADADOS = new Metadados()
             .withEditado(REVISAO)
             .withPublicado(REVISAO);
 
@@ -38,7 +39,7 @@ public class EditarPaginaControllerTest {
     ConteudoVersionadoFactory factory;
 
     @Mock
-    Carta carta;
+    ConteudoVersionado carta;
 
     EditarPaginaController controller;
 
@@ -60,7 +61,7 @@ public class EditarPaginaControllerTest {
 
     @Test
     public void adicionaHeadersDosMetadados() throws Exception {
-        HttpHeaders response = controller.editar("").getHeaders();
+        HttpHeaders response = controller.editar("servico", "").getHeaders();
 
         assertThat(response.get("X-Git-Commit-Publicado").get(0), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
         assertThat(response.get("X-Git-Autor-Publicado").get(0), is("Fulano de Tal"));

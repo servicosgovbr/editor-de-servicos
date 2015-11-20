@@ -33,9 +33,8 @@ function visualizarView(ctrl, pagina) {
 }
 
 function estaFiltrando(ctrl, args) {
-  return args.filtro.filtroAreasDeInteresse ||
-    args.filtro.filtroOrgaos ||
-    args.filtro.filtroPaginasEspeciais ||
+  return args.filtro.filtroOrgaos ||
+    args.filtro.filtroPaginasTematicas ||
     args.filtro.filtroServicos ||
     args.filtro.busca.length > 0;
 }
@@ -72,7 +71,7 @@ module.exports = function (ctrl, args) {
         m.trust(' &nbsp; '),
         s.conteudo.nome
       ]), s.temAlteracoesNaoPublicadas ? m('span.mudanca', 'Alterações não publicadas') : ''),
-      m('td.center', s.nomeOrgao),
+      m('td.center', s.conteudo.nomeOrgao),
       m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
       m('td.center', s.publicado ? [
         moment(s.publicado.horario).fromNow(),

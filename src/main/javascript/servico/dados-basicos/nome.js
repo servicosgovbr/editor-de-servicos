@@ -22,11 +22,11 @@ module.exports = {
 
     this.renomearServico = function (novoNome) {
       this.renomeando(true);
-      m.redraw();
       var servico = this.servico();
       var idAtual = slugify(servico.nome());
       m.request({
         method: 'PATCH',
+        background: true,
         url: '/editar/api/pagina/servico/' + idAtual + '/' + novoNome,
         config: function (xhr) {
           xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);

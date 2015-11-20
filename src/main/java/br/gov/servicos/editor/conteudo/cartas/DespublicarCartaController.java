@@ -1,8 +1,8 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
-import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;

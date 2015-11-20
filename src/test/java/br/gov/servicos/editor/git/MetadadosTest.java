@@ -12,7 +12,7 @@ public class MetadadosTest {
 
     @Test
     public void temAlteracoesSeHashPublicadoDiferenteHashEditado() {
-        Metadados<Object> m = new Metadados<>()
+        Metadados m = new Metadados()
                 .withEditado(new Revisao()
                         .withAutor("A")
                         .withHash("asdf")
@@ -27,7 +27,7 @@ public class MetadadosTest {
 
     @Test
     public void naoTemAlteracoesSeEditadoNaoExistir() {
-        Metadados<Object> m = new Metadados<>()
+        Metadados m = new Metadados()
                 .withPublicado(new Revisao()
                         .withAutor("B")
                         .withHash("fdsa")
@@ -38,7 +38,7 @@ public class MetadadosTest {
 
     @Test
     public void temAlteracoesSeApenasEditadoExistir() {
-        Metadados<Object> m = new Metadados<>()
+        Metadados m = new Metadados()
                 .withEditado(new Revisao()
                         .withAutor("B")
                         .withHash("fdsa")

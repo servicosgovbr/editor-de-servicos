@@ -1,9 +1,10 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.conteudo.ConteudoMetadadosProvider;
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.DeserializadorConteudoXML;
 import br.gov.servicos.editor.frontend.Siorg;
-import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
-import br.gov.servicos.editor.git.Revisao;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
@@ -41,15 +42,7 @@ public class CartaTest {
 
     static final Date HORARIO = new Date();
 
-    static final Revisao REVISAO = new Revisao().withHash("da39a3ee5e6b4b0d3255bfef95601890afd80709")
-            .withAutor("User Name")
-            .withHorario(HORARIO);
-
-    static final Metadados<Carta.Servico> METADADOS = new Metadados<Carta.Servico>()
-            .withId("um-id-qualquer")
-            .withNomeOrgao(" - - ");
-
-    Carta carta;
+    ConteudoVersionado conteudoVersionado;
 
     @Mock
     RepositorioGit repositorio;
@@ -66,13 +59,18 @@ public class CartaTest {
     @Mock
     Siorg siorg;
 
+    @Mock
+    ConteudoMetadadosProvider provider;
+
+    DeserializadorConteudoXML deserializadorConteudoXML;
+
     @Captor
     ArgumentCaptor<Supplier<Optional<String>>> captor;
 
     @Before
     public void setUp() throws Exception {
-
-        carta = new Carta("um-id-qualquer", repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml, siorg);
+        deserializadorConteudoXML = new DeserializadorConteudoXML(ServicoXML.class);
+        conteudoVersionado = new ConteudoVersionado("um-id-qualquer", SERVICO, repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml, siorg, deserializadorConteudoXML);
     }
 
     @Test
@@ -80,7 +78,7 @@ public class CartaTest {
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        assertThat(carta.getCaminhoAbsoluto(),
+        assertThat(conteudoVersionado.getCaminhoAbsoluto(),
                 is(Paths.get("/um/caminho/qualquer/", SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")));
     }
 
@@ -89,27 +87,8 @@ public class CartaTest {
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
 
-        assertThat(carta.getCaminhoRelativo(),
+        assertThat(conteudoVersionado.getCaminhoRelativo(),
                 is(Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")));
-    }
-
-    @Test
-    public void buscaMetadadosDoUltimoCommitQuandoNaoExisteBranch() throws Exception {
-        given(repositorio.comRepositorioAbertoNoBranch(
-                eq("refs/heads/master"),
-                any()))
-                .willReturn(true);
-
-        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/servico-um-id-qualquer", Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
-                .willReturn(of(REVISAO));
-
-        given(repositorio.getCaminhoAbsoluto())
-                .willReturn(Paths.get("/um/caminho/qualquer"));
-
-        given(repositorio.getRevisaoMaisRecenteDoBranch("refs/heads/master", Paths.get(SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml")))
-                .willReturn(of(REVISAO));
-
-        assertThat(carta.getMetadados(), is(METADADOS.withPublicado(REVISAO).withEditado(null)));
     }
 
     @Test
@@ -126,7 +105,7 @@ public class CartaTest {
         given(leitorDeArquivos.ler(Paths.get("/um/caminho/qualquer/", SERVICO.getCaminhoPasta().toString(), "um-id-qualquer.xml").toFile()))
                 .willReturn(of("<servico/>"));
 
-        assertThat(carta.getConteudoRaw(), is("<servico/>"));
+        assertThat(conteudoVersionado.getConteudoRaw(), is("<servico/>"));
         assertThat(captor.getValue().get().get(), is("<servico/>"));
     }
 
@@ -135,7 +114,7 @@ public class CartaTest {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/servico-um-id-qualquer"), captor.capture()))
                 .willReturn(of("<servico/>"));
 
-        assertThat(carta.getConteudoRaw(), is("<servico/>"));
+        assertThat(conteudoVersionado.getConteudoRaw(), is("<servico/>"));
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));
@@ -156,7 +135,7 @@ public class CartaTest {
                 any()))
                 .willReturn(Optional.empty());
 
-        carta.getConteudoRaw();
+        conteudoVersionado.getConteudoRaw();
     }
 
     @Test
@@ -164,7 +143,7 @@ public class CartaTest {
         given(repositorio.comRepositorioAbertoNoBranch(eq("refs/heads/servico-um-id-qualquer"), captor.capture()))
                 .willReturn(null);
 
-        carta.salvar(PROFILE, "<servico/>");
+        conteudoVersionado.salvar(PROFILE, "<servico/>");
 
         given(repositorio.getCaminhoAbsoluto())
                 .willReturn(Paths.get("/um/caminho/qualquer"));

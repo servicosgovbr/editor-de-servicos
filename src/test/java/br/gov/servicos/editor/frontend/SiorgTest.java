@@ -41,7 +41,7 @@ public class SiorgTest {
     public void retornaEmptyQuandoSiorgIndisponivel() throws Exception {
         String urlOrgao = "http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/404";
 
-        given(restTemplate.getForEntity(urlOrgao, Siorg.Orgao.class))
+        given(restTemplate.getForEntity(urlOrgao, Siorg.ConsultaUnidadeResumida.class))
                 .willThrow(new RuntimeException("Connection refused"));
 
         assertThat(siorg.nomeDoOrgao(urlOrgao), is(empty()));
@@ -51,8 +51,8 @@ public class SiorgTest {
     public void retornaEmptyQuandoOrgaoNaoExiste() throws Exception {
         String urlOrgao = "http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/404";
 
-        given(restTemplate.getForEntity(urlOrgao, Siorg.Orgao.class))
-                .willReturn(new ResponseEntity<>(new Siorg.Orgao().withServico(new Siorg.Servico().withCodigoErro(102).withMensagem("Unidade não existe")).withUnidade(null), HttpStatus.OK));
+        given(restTemplate.getForEntity(urlOrgao, Siorg.ConsultaUnidadeResumida.class))
+                .willReturn(new ResponseEntity<>(new Siorg.ConsultaUnidadeResumida().withServico(new Siorg.Servico().withCodigoErro(102).withMensagem("Unidade não existe")).withUnidade(null), HttpStatus.OK));
 
         assertThat(siorg.nomeDoOrgao(urlOrgao), is(empty()));
     }
@@ -61,8 +61,8 @@ public class SiorgTest {
     public void retornaNomeESiglaDoOrgao() throws Exception {
         String urlOrgao = "http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934";
 
-        given(restTemplate.getForEntity(urlOrgao, Siorg.Orgao.class))
-                .willReturn(new ResponseEntity<>(new Siorg.Orgao().withServico(new Siorg.Servico().withCodigoErro(0)).withUnidade(new Siorg.Unidade().withNome("Secretaria do Secretariado Secretarial").withSigla("SSS")), HttpStatus.OK));
+        given(restTemplate.getForEntity(urlOrgao, Siorg.ConsultaUnidadeResumida.class))
+                .willReturn(new ResponseEntity<>(new Siorg.ConsultaUnidadeResumida().withServico(new Siorg.Servico().withCodigoErro(0)).withUnidade(new Siorg.Unidade().withNome("Secretaria do Secretariado Secretarial").withSigla("SSS")), HttpStatus.OK));
 
         assertThat(siorg.nomeDoOrgao(urlOrgao).get(), is("Secretaria do Secretariado Secretarial (SSS)"));
     }

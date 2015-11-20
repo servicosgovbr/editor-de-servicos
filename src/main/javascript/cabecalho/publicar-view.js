@@ -12,7 +12,6 @@ function botaoQueEspera(flagProp, opts) {
 }
 
 module.exports = {
-
   controller: function (args) {
     this.publicar = safeGet(args, 'publicar');
     this.descartar = safeGet(args, 'descartar');
@@ -22,7 +21,6 @@ module.exports = {
 
     this.opera = function (prop, operacao) {
       prop(true);
-
       promise.onSuccOrError(
         operacao,
         _.bind(function () {
@@ -91,7 +89,6 @@ module.exports = {
         icon: 'check',
         disabled: desabilitaBotoes || !podePublicar()
       })
-
     ]);
   }
 };

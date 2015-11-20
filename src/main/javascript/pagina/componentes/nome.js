@@ -1,17 +1,13 @@
 'use strict';
 
 module.exports = {
-  controller: function (args) {
-    var pagina = args.pagina();
-    this.nome = args.nomeFn(pagina.nome);
-  },
-
   view: function (ctrl, args) {
+    var nomeProp = args.nome;
     var tooltipNome = args.tooltipNome;
 
     var componenteNome = args.novo ? m.component(args.componente, {
-      prop: args.nome
-    }) : ctrl.nome();
+      prop: nomeProp
+    }) : nomeProp();
 
     return m('fieldset#nome', [
       m('h3', [

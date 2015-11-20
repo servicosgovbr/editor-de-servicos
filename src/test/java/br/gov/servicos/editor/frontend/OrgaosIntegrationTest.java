@@ -22,15 +22,15 @@ public class OrgaosIntegrationTest extends RepositorioGitIntegrationTest {
     @Test
     public void deveListarOrgaosContendoTermoComNomeParcial() throws Exception {
         assertThat(orgaos.get("ministerio do planej"), is(asList(
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/2981",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/2981",
                         "Ministério do Planejamento, Orçamento e Gestão (MP)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202328",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202328",
                         "Superintendência de Administração do Ministério do Planejamento, Orçamento e Gestão nos Estado de Rondônia (SAMPRO)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202330",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202330",
                         "Superintendência de Administração do Ministério do Planejamento, Orçamento e Gestão nos Estado de Roraima (SAMPRR)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202332",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202332",
                         "Superintendência de Administração do Ministério do Planejamento, Orçamento e Gestão nos Estado do Acre (SAMPAC)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202334",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202334",
                         "Superintendência de Administração do Ministério do Planejamento, Orçamento e Gestão nos Estado do Amapá (SAMPAP)")
         )));
     }
@@ -38,13 +38,13 @@ public class OrgaosIntegrationTest extends RepositorioGitIntegrationTest {
     @Test
     public void deveListarOrgaosContendoTermoComSigla() throws Exception {
         assertThat(orgaos.get("minc"), is(asList(
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/107376",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/107376",
                         "Comissão Permanente de Avaliação de Documentos Sigilosos (CPADS/MinC)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/88765",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/88765",
                         "Corregedoria Setorial das Áreas de Cultura e de Esporte (CORAS/MINC)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1926",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1926",
                         "Ministério da Cultura (MinC)"),
-                new Orgao("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/119453",
+                new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/119453",
                         "Subsecretaria de Planejamento, Orçamento e Administração (SPOA-MinC)")
         )));
     }

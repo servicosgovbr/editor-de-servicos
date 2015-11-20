@@ -5,9 +5,6 @@ var erro = require('utils/erro-ajax');
 
 var tiposDePaginaList = [
   {
-    text: 'Área de Interesse'
-  }, {
-    id: 'Página Especial',
     text: 'Página Temática'
   }, {
     text: 'Órgão'

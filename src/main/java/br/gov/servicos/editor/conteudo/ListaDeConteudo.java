@@ -63,7 +63,7 @@ public class ListaDeConteudo {
 
         if (importador.isImportadoComSucesso()) {
             @SuppressWarnings("unchecked")
-            Cache<String, Metadados<?>> metadados =
+            Cache<String, Metadados> metadados =
                     (Cache) cacheManager.getCache(METADADOS).getNativeCache();
 
             listar().forEach(c -> metadados.put(c.getId(), c));
@@ -81,24 +81,23 @@ public class ListaDeConteudo {
 
     public Set<Metadados> listar() throws FileNotFoundException {
         Stream<Metadados> orgaos = listarMetadados(ORGAO);
-        Stream<Metadados> areas = listarMetadados(AREA_DE_INTERESSE);
-        Stream<Metadados> paginas = listarMetadados(PAGINA_ESPECIAL);
+        Stream<Metadados> paginas = listarMetadados(PAGINA_TEMATICA);
         Stream<Metadados> servicos = listarMetadados(SERVICO);
 
-        Stream<Metadados> todos = concat(orgaos, areas);
-        todos = concat(todos, paginas);
+        Stream<Metadados> todos = concat(orgaos, paginas);
         todos = concat(todos, servicos);
         return todos.collect(toSet());
     }
 
     private Stream<Metadados> listarMetadados(TipoPagina tipo) throws FileNotFoundException {
-        return concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
+        Stream<Metadados> lista = concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
                 repositorioGit.branches()
                         .filter(n -> !n.equals(MASTER))
                         .filter(n -> n.startsWith(tipo.prefixo()))
                         .map(n -> n.replaceFirst(tipo.prefixo(), "")))
                 .map(uncheckedFunction(id -> conteudoVersionadoFactory.pagina(id, tipo)))
                 .map(ConteudoVersionado::getMetadados);
+        return lista;
     }
 
     private Stream<String> listar(Path caminho, String ext) throws FileNotFoundException {
