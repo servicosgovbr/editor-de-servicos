@@ -7,4 +7,5 @@ public interface UsuarioRepository extends Repository<Usuario, String> {
     Usuario findByCpf(String cpf);
     Usuario save(Usuario usuario);
     boolean exists(String cpf);
+    Usuario findBySiape(String value);
 }

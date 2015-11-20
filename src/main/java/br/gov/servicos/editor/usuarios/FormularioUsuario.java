@@ -25,6 +25,7 @@ public class FormularioUsuario {
     String senha;
     String papelId;
     String siorg;
+    @SiapeUnico
     String siape;
     @Email(message = "Email Institucional: " + EMAIL_INVALIDO)
     String emailInstitucional;

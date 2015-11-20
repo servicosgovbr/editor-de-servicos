@@ -37,7 +37,7 @@ public class Usuario implements Serializable, UserDetails{
     @Column(nullable = false)
     private String siorg;
 
-    @Column
+    @Column(unique = true)
     private String siape;
 
     @Column
