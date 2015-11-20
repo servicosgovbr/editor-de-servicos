@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -77,6 +78,12 @@ public class UsuarioFactoryTest {
     public void criaUsuarioComAlgunsValoresPadrão() {
         Usuario usuario = factory.criarUsuario(formularioUsuario);
         assertThat(usuario.isHabilitado(), is(true));
+    }
+
+    @Test
+    public void criaUsuarioComSiapeNullSeValorForVazio() {
+        Usuario usuario = factory.criarUsuario(formularioUsuario.withSiape(""));
+        assertNull(usuario.getSiape());
     }
 
 

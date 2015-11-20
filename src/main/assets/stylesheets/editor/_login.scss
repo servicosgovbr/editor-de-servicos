@@ -1,10 +1,9 @@
 @charset "UTF-8";
 
-#login {
+#login, #cadastro {
   @include shift(3 of 12);
   @include span-columns(6 of 12);
   margin-top: $tamanho-do-cabecalho + 2em;
-
 
   .borda {
     border: 1px solid #ddd;
@@ -54,6 +53,10 @@
 
   input {
     background-color: #f3f3f3;
+  }
+
+  .erroCampo {
+    border-color: #d00;
   }
 
   button {
