@@ -77,7 +77,7 @@ module.exports = function (args) {
             url: '/editar/api/pagina/servico/' + slugify(id),
           }).then(this.listarConteudos, erro)
           .then(function () {
-            alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!');
+            alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!', 0);
             s.excluindo(false);
           });
       }

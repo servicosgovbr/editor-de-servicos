@@ -34,7 +34,7 @@ module.exports = {
       }).then(_.bind(function () {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));
-        alertify.success('Serviço renomeado com sucesso!');
+        alertify.success('Serviço renomeado com sucesso!', 0);
         this.renomeando(false);
       }, this));
     };

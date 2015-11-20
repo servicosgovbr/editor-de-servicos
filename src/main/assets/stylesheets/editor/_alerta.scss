@@ -65,13 +65,23 @@
     padding: 15px 5px;
     font-size: 14px;
 	text-shadow: none;
+    position: relative;
 	font-family: $openSansBold;
     color: $cinza-escuro;
     background: $amarelo;
+    cursor: pointer;
+    line-height: 15px;
+    width: 410px;
+
+    &:after {
+        content: '\f00d';
+        position: absolute;
+        top: 4px;
+        right: 6px;
+        font-family: "FontAwesome";
+    }
 
     &.alertify-log-success {
-        line-height: 15px;
-        width: 410px;
 		background: $verde !important;
 		color: $branco !important;
 	}

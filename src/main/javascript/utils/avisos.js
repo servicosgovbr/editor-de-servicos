@@ -1,19 +1,15 @@
 'use strict';
 
-alertify.set({
-  delay: 10000
-});
-
 function sucesso(msg) {
-  alertify.success(msg);
+  alertify.success(msg, 0);
 }
 
 function erro(msg) {
-  alertify.error(msg);
+  alertify.error(msg, 0);
 }
 
 function alerta(msg) {
-  alertify.log(msg);
+  alertify.log(msg, '', 0);
 }
 
 function sucessoFn(msg) {
