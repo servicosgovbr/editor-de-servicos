@@ -43,8 +43,12 @@
                th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
 
         <label for="senha">Senha</label>
-        <input id="senha" name="senha" type="password" placeholder="Senha" required="required"
-               th:class="${#fields.hasErrors('senha')}? erroCampo"/>
+        <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
+               th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+
+        <label for="confirmar_senha">Confirmar Senha</label>
+        <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
+               th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
         <label for="siorg">SIORG</label>
         <input id="siorg" name="siorg" type="text" th:value="*{siorg}" placeholder="siorg" required="required"/>

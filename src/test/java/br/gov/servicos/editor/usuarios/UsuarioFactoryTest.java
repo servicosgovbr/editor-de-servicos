@@ -39,7 +39,7 @@ public class UsuarioFactoryTest {
         formularioUsuario = new FormularioUsuario().
                 withCpf(CPF).
                 withPapelId(PAPEL_ID.toString()).
-                withSenha(SENHA).
+                withCamposSenha(new CamposSenha().withSenha(SENHA)).
                 withSiorg(SIORG).
                 withCamposServidor(new CamposServidor().withServidor(SERVIDOR).withSiape(SIAPE)).
                 withEmailPrimario(EMAIL_PRIMARIO).

@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -29,8 +28,9 @@ public class FormularioUsuario {
     @CpfUnico
     String cpf;
 
-    @Size(min=8, max=50, message = "Senha: tamanho deve estar entre 8 e 50")
-    String senha;
+    @Valid
+    @ConfirmacaoSenha
+    CamposSenha camposSenha = new CamposSenha();
 
     String papelId;
 
@@ -47,4 +47,8 @@ public class FormularioUsuario {
 
     @Email(message = "Email Secundario: " + EMAIL_INVALIDO)
     String emailSecundario;
+
+    public String getSenha() {
+        return this.camposSenha.getSenha();
+    }
 }
