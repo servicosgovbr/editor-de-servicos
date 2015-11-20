@@ -38,6 +38,7 @@ public class FormularioUsuario {
     @SiapeUnico
     String siape;
 
+    @NotBlank(message = "Email Secundario: " + CAMPO_OBRIGATORIO)
     @Email(message = "Email Institucional: " + EMAIL_INVALIDO)
     String emailInstitucional;
 
