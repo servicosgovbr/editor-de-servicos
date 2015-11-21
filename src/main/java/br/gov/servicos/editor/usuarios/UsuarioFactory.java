@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ public class UsuarioFactory {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private CPFFormatter cpfFormatter = new CPFFormatter();
+
     public Usuario criarUsuario(FormularioUsuario formulario) {
         String senhaCodificada = passwordEncoder.encode(formulario.getSenha());
         Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
         return new Usuario()
-                .withCpf(formulario.getCpf())
+                .withCpf(cpfFormatter.unformat(formulario.getCpf()))
                 .withSenha(senhaCodificada)
                 .withPapel(papel)
                 .withSiorg(formulario.getSiorg())
