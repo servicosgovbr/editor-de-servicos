@@ -44,7 +44,7 @@ module.exports = {
     if (ctrl.temCusto()) {
       return m('.subtitulo-etapa', [
                     m('p.titulo-documento', 'Custos'),
-                    m('p.info-etapa', 'Custos padrão'),
+                    m('p.info-etapa', ''),
                     custoPadraoView(ctrl.custos.casoPadrao()),
                     outrosCustosView(ctrl.custos.outrosCasos())
                 ]);

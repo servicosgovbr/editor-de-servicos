@@ -50,7 +50,7 @@ module.exports = {
     if (ctrl.temCanalDePrestacao()) {
       return m('.subtitulo-etapa', [
                     m('p.titulo-documento', 'Canais de prestação'),
-                    m('p.info-etapa', 'Canais de prestação padrão'),
+                    m('p.info-etapa', ''),
                     canalPadraoView(ctrl.canaisDePrestacao.casoPadrao()),
                     outrosCanaisView(ctrl.canaisDePrestacao.outrosCasos())
                 ]);

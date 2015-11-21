@@ -34,7 +34,7 @@ module.exports = {
     if (ctrl.temDocumento()) {
       return m('.subtitulo-etapa', [
                 m('p.titulo-documento', 'Documentação'),
-                m('p.info-etapa', 'Documentação necessária'),
+                m('p.info-etapa', ''),
                 casoPadraoView(ctrl.documentos.casoPadrao()),
                 outrosCasosView(ctrl.documentos.outrosCasos())
             ]);
