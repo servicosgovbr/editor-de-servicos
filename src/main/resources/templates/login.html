@@ -42,8 +42,8 @@
         </p>
 
         <div class="borda">
-            <label for="usuario">E-mail</label>
-            <input id="usuario" name="username" type="text" placeholder="Nome de usuário" required="required"
+            <label for="usuario">CPF</label>
+            <input id="usuario" name="username" type="text" placeholder="XXX.XXX.XXX-XX" required="required"
                    autofocus="true"/>
 
             <label for="senha">Senha</label>
@@ -59,6 +59,10 @@
 
     </form>
 </div>
-
+<script src="/editar/assets/vendor.js"></script>
+<script src="/editar/assets/app.js"></script>
+<script>
+    require('usuarios/cpf-mask')('usuario')
+</script>
 </body>
 </html>

@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class UsuarioFactoryTest {
 
-    private static final String CPF = "123123123-18";
+    private static final String CPF = "12312312318";
     private static final Long PAPEL_ID = 1l;
     private static final String SENHA = "senha";
     private static final String SENHA_CODIFICADA = "encoded";
@@ -87,6 +87,13 @@ public class UsuarioFactoryTest {
         CamposServidor camposSerividorSemSiape = formularioUsuario.getCamposServidor().withSiape("");
         Usuario usuario = factory.criarUsuario(formularioUsuario.withCamposServidor(camposSerividorSemSiape));
         assertNull(usuario.getSiape());
+    }
+
+    @Test
+    public void desformataCpf() {
+        String cpfFormatado = "123.123.123-12";
+        Usuario usuario = factory.criarUsuario(formularioUsuario.withCpf(cpfFormatado));
+        assertThat(usuario.getCpf(), equalTo("12312312312"));
     }
 
 
