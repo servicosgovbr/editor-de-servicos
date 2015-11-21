@@ -1,5 +1,5 @@
-DROP table papeis;
 DROP table usuarios;
+DROP table papeis;
 
 create table papeis (
   id SERIAL primary key,
