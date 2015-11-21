@@ -1,5 +1,7 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.cadastro;
 
+import br.gov.servicos.editor.usuarios.Usuario;
+import br.gov.servicos.editor.usuarios.UsuarioRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

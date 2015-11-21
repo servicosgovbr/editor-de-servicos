@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

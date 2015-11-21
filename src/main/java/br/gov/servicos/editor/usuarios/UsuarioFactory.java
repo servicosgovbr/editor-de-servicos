@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,10 +19,10 @@ public class UsuarioFactory {
                 .withSenha(senhaCodificada)
                 .withPapel(papel)
                 .withSiorg(formulario.getSiorg())
-                .withSiape(StringUtils.defaultIfEmpty(formulario.getSiape(), null))
-                .withEmailInstitucional(formulario.getEmailInstitucional())
+                .withSiape(StringUtils.defaultIfEmpty(formulario.getCamposServidor().getSiape(), null))
+                .withEmailPrimario(formulario.getEmailPrimario())
                 .withEmailSecundario(formulario.getEmailSecundario())
-                .withServidor(formulario.isServidor())
+                .withServidor(formulario.getCamposServidor().isServidor())
                 .withHabilitado(true);
     }
 }

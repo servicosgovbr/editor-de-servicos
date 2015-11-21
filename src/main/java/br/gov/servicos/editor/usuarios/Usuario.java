@@ -41,7 +41,7 @@ public class Usuario implements Serializable, UserDetails{
     private String siape;
 
     @Column
-    private String emailInstitucional;
+    private String emailPrimario;
 
     @Column
     private String emailSecundario;

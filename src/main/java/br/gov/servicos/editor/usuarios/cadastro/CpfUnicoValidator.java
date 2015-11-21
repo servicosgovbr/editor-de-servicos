@@ -1,21 +1,23 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.cadastro;
 
 
+import br.gov.servicos.editor.usuarios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class SiapeUnicoValidator implements ConstraintValidator<SiapeUnico, String> {
+public class CpfUnicoValidator implements ConstraintValidator<CpfUnico, String> {
     @Autowired
     private UsuarioRepository repository;
 
     @Override
-    public void initialize(SiapeUnico constraintAnnotation) {
+    public void initialize(CpfUnico constraintAnnotation) {
+
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value.isEmpty() || repository.findBySiape(value) == null;
+        return !repository.exists(value);
     }
 }
