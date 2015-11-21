@@ -15,3 +15,4 @@ module.exports = function (m) {
     '/editar/visualizar/servico/:id': require('servico/visualizar')
   });
 };
+

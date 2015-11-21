@@ -39,6 +39,7 @@ public class FormularioUsuario {
     @Valid
     CamposServidor camposServidor = new CamposServidor();
 
+    @NotBlank(message = "SIORG: " + CAMPO_OBRIGATORIO)
     String siorg;
 
     @NotBlank(message = "Email Primario: " + CAMPO_OBRIGATORIO)

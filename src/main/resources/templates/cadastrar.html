@@ -50,8 +50,7 @@
         <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
                th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
-        <label for="siorg">SIORG</label>
-        <input id="siorg" name="siorg" type="text" th:value="*{siorg}" placeholder="siorg" required="required"/>
+        <div id="siorg-select"></div>
 
         <label for="email_primario">Email Primário</label>
         <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
@@ -80,5 +79,11 @@
     </form>
 </div>
 
+<script src="/editar/assets/vendor.js"></script>
+<script src="/editar/assets/app.js"></script>
+<script th:inline="javascript">
+    var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
+    require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
+</script>
 </body>
 </html>
