@@ -84,6 +84,7 @@
 <script th:inline="javascript">
     var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
     require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
+    require('usuarios/cpf-mask')('cpf')
 </script>
 </body>
 </html>
