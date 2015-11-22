@@ -26,6 +26,7 @@ public class UsuarioFactory {
                 .withEmailPrimario(formulario.getEmailPrimario())
                 .withEmailSecundario(formulario.getEmailSecundario())
                 .withServidor(formulario.getCamposServidor().isServidor())
-                .withHabilitado(true);
+                .withHabilitado(true)
+                .withNome(formulario.getNome());
     }
 }
