@@ -5,6 +5,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import static org.springframework.http.HttpMethod.*;
@@ -13,9 +14,12 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     public static final String LOGIN_URL = "/editar/autenticar";
     private DaoAuthenticationProvider daoAuthenticationProvider;
+    private AuthenticationSuccessHandler successHandler;
 
-    public SecurityWebAppInitializer(DaoAuthenticationProvider daoAuthenticationProvider) {
+    public SecurityWebAppInitializer(DaoAuthenticationProvider daoAuthenticationProvider,
+                                     AuthenticationSuccessHandler successHandler) {
         this.daoAuthenticationProvider = daoAuthenticationProvider;
+        this.successHandler = successHandler;
     }
 
     @Override
@@ -27,6 +31,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .formLogin()
                     .loginPage("/editar/autenticar")
+                    .successHandler(successHandler)
                     .permitAll()
                 .and()
 
