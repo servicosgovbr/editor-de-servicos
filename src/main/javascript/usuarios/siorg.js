@@ -1,6 +1,6 @@
 'use strict';
 
-var selectOrgao = require('orgao/select-orgao');
+var selectOrgao = require('pagina/orgao/select-orgao');
 
 module.exports = function (m, siorgInicial, element) {
   var siorg = {};
