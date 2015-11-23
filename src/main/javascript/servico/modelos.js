@@ -2,11 +2,6 @@
 
 var id = require('utils/id');
 var v = require('utils/validacoes');
-var idUnico = require('utils/id-unico');
-
-var validaIdServico = function (unsafeId) {
-  return idUnico(unsafeId) ? undefined : 'erro-nome-servico-existente';
-};
 
 var Caso = function (parentId, config) {
   var data = (config || {});
@@ -104,7 +99,7 @@ var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
 
-  var validaIdJaExistente = _.trim(data.nome) ? _.noop : validaIdServico;
+  var validaIdJaExistente = _.trim(data.nome) ? _.noop : v.idUnico;
 
   this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto, validaIdJaExistente);
   this.sigla = v.prop(data.sigla || '', v.maximo(15));

@@ -3,12 +3,21 @@
 var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 var atributosCsrf = require('utils/atributos-csrf');
+var slugify = require('slugify');
 
 function request(opts) {
-  return m.request(_.merge({
+  return m.request(_.assign({
       deserialize: _.identity
     }, opts))
-    .then(_.identity, erro);
+    .then(null, erro);
+}
+
+function serializeXml(svc) {
+  return new XMLSerializer().serializeToString(svc);
+}
+
+function deserializeXml(svc) {
+  return new DOMParser().parseFromString(svc, 'application/xml');
 }
 
 function configCsrf(xhr) {
@@ -16,6 +25,37 @@ function configCsrf(xhr) {
 }
 
 module.exports = {
+  salvar: function (tipo, nome, xml, metadados) {
+    var id = slugify(nome);
+
+    return request({
+      method: 'POST',
+      url: '/editar/api/pagina/' + tipo + '/' + id,
+      data: xml,
+      config: function (xhr) {
+        xhr.setRequestHeader('Accepts', 'application/xml');
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+        xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
+      },
+      serialize: serializeXml,
+      extract: extrairMetadados(metadados),
+      deserialize: deserializeXml,
+      background: true
+    });
+  },
+
+  carregar: function (tipo, nome, metadados) {
+    return request({
+      method: 'GET',
+      url: '/editar/api/pagina/' + tipo + '/' + slugify(nome),
+      config: function (xhr) {
+        xhr.setRequestHeader('Accept', 'application/xml');
+      },
+      extract: extrairMetadados(metadados),
+      deserialize: deserializeXml
+    });
+  },
+
   publicar: function (id, metadados) {
     return request({
       method: 'PUT',
@@ -41,7 +81,7 @@ module.exports = {
       extract: extrairMetadados(metadados),
       deserialize: function (str) {
         return new DOMParser().parseFromString(str, 'application/xml');
-      },
+      }
     });
   },
 
@@ -56,6 +96,14 @@ module.exports = {
     });
   },
 
+  remover: function (id) {
+    return request({
+      method: 'DELETE',
+      url: '/editar/api/pagina/servico/' + slugify(id),
+      config: configCsrf
+    });
+  },
+
   importarXml: function (urlParam) {
     return request({
       method: 'GET',
@@ -66,9 +114,17 @@ module.exports = {
       data: {
         url: urlParam
       }
-    }).then(function (str) {
-      //retorno com erro não usa xml, por isso não usamos função "deserialize", e fazemos isso aqui
-      return new DOMParser().parseFromString(str, 'application/xml');
+    }).then(deserializeXml);
+    //retorno com erro não usa xml, por isso não usamos função "deserialize", e fazemos isso aqui
+  },
+
+  obterNomeOrgao: function (urlOrgao) {
+    return request({
+      method: 'GET',
+      url: '/editar/api/orgao',
+      data: {
+        urlOrgao: urlOrgao
+      },
     });
   }
 };

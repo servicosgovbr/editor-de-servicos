@@ -1,34 +1,36 @@
 'use strict';
 
-var slugify = require('slugify');
 var domParaServico = require('xml/servico-factory').domParaServico;
-var erro = require('utils/erro-ajax');
-var extrairMetadados = require('utils/extrair-metadados');
+var domParaPaginaTematica = require('xml/pagina-tematica-factory').domParaPaginaTematica;
+var domParaOrgao = require('xml/orgao-factory').domParaOrgao;
+var api = require('api');
 
-var config = function (id, metadados) {
-  return {
-    method: 'GET',
+function carregarServico(id, cabecalho) {
+  return api.carregar('servico', id, cabecalho.metadados)
+    .then(function (xml) {
+      cabecalho.limparErro();
+      return domParaServico(xml);
+    });
+}
 
-    url: '/editar/api/pagina/servico/' + slugify(id),
+function carregarPaginaTematica(id, cabecalho) {
+  return api.carregar('pagina-tematica', id, cabecalho.metadados)
+    .then(function (xml) {
+      cabecalho.limparErro();
+      return domParaPaginaTematica(xml);
+    });
+}
 
-    config: function (xhr) {
-      xhr.setRequestHeader('Accept', 'application/xml');
-    },
+function carregarOrgao(id, cabecalho) {
+  return api.carregar('orgao', id, cabecalho.metadados)
+    .then(function (xml) {
+      cabecalho.limparErro();
+      return domParaOrgao(xml);
+    });
+}
 
-    extract: extrairMetadados(metadados),
-
-    deserialize: function (str) {
-      return new DOMParser().parseFromString(str, 'application/xml');
-    },
-  };
-};
-
-var carregar = function (cabecalho, xml) {
-  cabecalho.limparErro();
-  return domParaServico(xml);
-};
-
-module.exports = function (id, cabecalho) {
-  return m.request(config(id, cabecalho.metadados))
-    .then(_.bind(carregar, this, cabecalho), erro);
+module.exports = {
+  carregarServico: carregarServico,
+  carregarPaginaTematica: carregarPaginaTematica,
+  carregarOrgao: carregarOrgao
 };

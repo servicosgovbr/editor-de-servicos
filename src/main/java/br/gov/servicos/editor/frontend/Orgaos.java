@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
 
+import static br.gov.servicos.editor.frontend.Siorg.Unidade;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
@@ -58,13 +59,13 @@ public class Orgaos implements InitializingBean {
     }
 
     @Cacheable("orgaos")
-    public List<Orgao> get(String termo) {
-        List<Orgao> busca = estruturaOrganizacional.getUnidades()
+    public List<OrgaoDTO> get(String termo) {
+        List<OrgaoDTO> busca = estruturaOrganizacional.getUnidades()
                 .stream()
                 .filter(new FiltroDeOrgaos(termo))
-                .map(u -> new Orgao().withNome(String.format("%s (%s)", u.getNome().trim(), u.getSigla().trim()))
+                .map(u -> new OrgaoDTO().withNome(String.format("%s (%s)", u.getNome().trim(), u.getSigla().trim()))
                         .withId(u.getCodigoUnidade()))
-                .sorted(comparing(Orgao::getNome))
+                .sorted(comparing(OrgaoDTO::getNome))
                 .collect(toList());
 
         log.info(append("orgaos.termo", termo).and(append("orgaos.resultados", busca.size())),
@@ -81,15 +82,6 @@ public class Orgaos implements InitializingBean {
         List<Unidade> unidades;
     }
 
-    @Data
-    @Wither
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Unidade {
-        String codigoUnidade;
-        String nome;
-        String sigla;
-    }
 
     @FieldDefaults(level = PRIVATE, makeFinal = true)
     private class FiltroDeOrgaos implements Predicate<Unidade> {

@@ -9,7 +9,7 @@ import lombok.experimental.Wither;
 @Wither
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orgao {
+public class OrgaoDTO {
     String id;
     String nome;
 }

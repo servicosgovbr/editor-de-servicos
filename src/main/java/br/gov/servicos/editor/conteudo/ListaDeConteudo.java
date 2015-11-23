@@ -1,7 +1,5 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
@@ -23,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
@@ -65,7 +63,7 @@ public class ListaDeConteudo {
 
         if (importador.isImportadoComSucesso()) {
             @SuppressWarnings("unchecked")
-            Cache<String, Metadados<?>> metadados =
+            Cache<String, Metadados> metadados =
                     (Cache) cacheManager.getCache(METADADOS).getNativeCache();
 
             listar().forEach(c -> metadados.put(c.getId(), c));
@@ -83,24 +81,23 @@ public class ListaDeConteudo {
 
     public Set<Metadados> listar() throws FileNotFoundException {
         Stream<Metadados> orgaos = listarMetadados(ORGAO);
-        Stream<Metadados> areas = listarMetadados(AREA_DE_INTERESSE);
-        Stream<Metadados> paginas = listarMetadados(PAGINA_ESPECIAL);
+        Stream<Metadados> paginas = listarMetadados(PAGINA_TEMATICA);
         Stream<Metadados> servicos = listarMetadados(SERVICO);
 
-        Stream<Metadados> todos = concat(orgaos, areas);
-        todos = concat(todos, paginas);
+        Stream<Metadados> todos = concat(orgaos, paginas);
         todos = concat(todos, servicos);
         return todos.collect(toSet());
     }
 
     private Stream<Metadados> listarMetadados(TipoPagina tipo) throws FileNotFoundException {
-        return concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
+        Stream<Metadados> lista = concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
                 repositorioGit.branches()
                         .filter(n -> !n.equals(MASTER))
                         .filter(n -> n.startsWith(tipo.prefixo()))
                         .map(n -> n.replaceFirst(tipo.prefixo(), "")))
                 .map(uncheckedFunction(id -> conteudoVersionadoFactory.pagina(id, tipo)))
                 .map(ConteudoVersionado::getMetadados);
+        return lista;
     }
 
     private Stream<String> listar(Path caminho, String ext) throws FileNotFoundException {

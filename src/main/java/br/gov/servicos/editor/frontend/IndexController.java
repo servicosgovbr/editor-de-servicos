@@ -23,8 +23,7 @@ class IndexController {
             "/editar/servico/**",
             "/editar/pagina/**",
             "/editar/orgao/**",
-            "/editar/pagina-especial/**",
-            "/editar/area-de-interesse/**",
+            "/editar/pagina-tematica/**",
             "/editar/importar-xml/**",
             "/editar/visualizar/**"})
     ModelAndView index() {

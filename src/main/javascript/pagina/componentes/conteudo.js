@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = {
-
   controller: function (args) {
     this.pagina = args.pagina;
   },
@@ -25,5 +24,4 @@ module.exports = {
       ])
     ]);
   }
-
 };

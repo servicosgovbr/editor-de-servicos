@@ -21,7 +21,7 @@ public class CacheConfig {
 
     @Bean
     public KeyGenerator geradorDeChavesParaCacheDeCommitsRecentes() {
-        return (target, method, params) -> ((ConteudoVersionado<?>) target).getId();
+        return (target, method, params) -> ((ConteudoVersionado) target).getId();
     }
 
 }

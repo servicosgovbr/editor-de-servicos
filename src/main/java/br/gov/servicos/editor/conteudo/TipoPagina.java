@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo.paginas;
+package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.config.SlugifyConfig;
 import lombok.Getter;
@@ -8,9 +8,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 public enum TipoPagina {
-    ORGAO("conteudo/orgaos", "md"),
-    AREA_DE_INTERESSE("conteudo/areas-de-interesse", "md"),
-    PAGINA_ESPECIAL("conteudo/paginas-especiais", "md"),
+    ORGAO("conteudo/orgaos", "xml"),
+    PAGINA_TEMATICA("conteudo/paginas-tematicas", "xml"),
     SERVICO("cartas-servico/v3/servicos", "xml");
 
     @Getter
@@ -44,5 +43,4 @@ public enum TipoPagina {
     public String prefixo() {
         return getNome() + "-";
     }
-
 }

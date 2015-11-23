@@ -1,15 +1,11 @@
 package br.gov.servicos.editor.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.csrf.InvalidCsrfTokenException;
 import org.springframework.security.web.csrf.MissingCsrfTokenException;
-import org.springframework.security.web.session.InvalidSessionStrategy;
-import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;

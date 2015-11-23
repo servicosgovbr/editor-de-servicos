@@ -1,8 +1,8 @@
 'use strict';
 
-var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
 var referencia = require('referencia');
+var api = require('api');
 
 module.exports = function (args) {
   this.publicarConteudo = _.noop;
@@ -15,11 +15,6 @@ module.exports = function (args) {
     if (filtro.publicados) {
       filtroFn = _.flow(_.property('temAlteracoesNaoPublicadas'));
     }
-    if (filtro.orgao) {
-      filtroFn = _.flow(function (pg) {
-        return filtro.orgao === _.get(pg, 'conteudo.orgao.id');
-      });
-    }
 
     var filtroTipos = [];
     if (filtro.filtroServicos) {
@@ -28,11 +23,8 @@ module.exports = function (args) {
     if (filtro.filtroOrgaos) {
       filtroTipos.push('orgao');
     }
-    if (filtro.filtroPaginasEspeciais) {
-      filtroTipos.push('pagina-especial');
-    }
-    if (filtro.filtroAreasDeInteresse) {
-      filtroTipos.push('area-de-interesse');
+    if (filtro.filtroPaginasTematicas) {
+      filtroTipos.push('pagina-tematica');
     }
 
     if (filtroTipos.length > 0) {
@@ -72,10 +64,8 @@ module.exports = function (args) {
       if (result) {
         s.excluindo = m.prop(true);
         m.redraw();
-        m.request({
-            method: 'DELETE',
-            url: '/editar/api/pagina/servico/' + slugify(id),
-          }).then(this.listarConteudos, erro)
+        api.remover(id)
+          .then(this.listarConteudos, erro)
           .then(function () {
             alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!', 0);
             s.excluindo(false);

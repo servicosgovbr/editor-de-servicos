@@ -3,7 +3,7 @@
 var focus = require('focus');
 
 module.exports = {
-  controller: function(args) {
+  controller: function (args) {
     this.adicionado = false;
   },
 

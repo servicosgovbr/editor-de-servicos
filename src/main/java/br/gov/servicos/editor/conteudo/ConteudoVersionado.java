@@ -1,6 +1,7 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
+import br.gov.servicos.editor.frontend.Siorg;
+import br.gov.servicos.editor.git.ConteudoMetadados;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.git.Revisao;
@@ -9,6 +10,7 @@ import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import com.github.slugify.Slugify;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -36,34 +38,21 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @CacheConfig(cacheNames = METADADOS, keyGenerator = "geradorDeChavesParaCacheDeCommitsRecentes")
-public abstract class ConteudoVersionado<T> {
+@AllArgsConstructor
+public class ConteudoVersionado {
 
     @Getter
     private String id;
-
-    @Getter(PROTECTED)
-    RepositorioGit repositorio;
-
     @Getter
     TipoPagina tipo;
-
+    @Getter(PROTECTED)
+    RepositorioGit repositorio;
     LeitorDeArquivos leitorDeArquivos;
-
     EscritorDeArquivos escritorDeArquivos;
-
     Slugify slugify;
-
     ReformatadorXml reformatadorXml;
-
-    public ConteudoVersionado(String id, RepositorioGit repositorio, TipoPagina tipo, LeitorDeArquivos leitorDeArquivos, EscritorDeArquivos escritorDeArquivos, Slugify slugify, ReformatadorXml reformatadorXml) {
-        this.id = id;
-        this.repositorio = repositorio;
-        this.tipo = tipo;
-        this.leitorDeArquivos = leitorDeArquivos;
-        this.escritorDeArquivos = escritorDeArquivos;
-        this.slugify = slugify;
-        this.reformatadorXml = reformatadorXml;
-    }
+    Siorg siorg;
+    DeserializadorConteudoXML deserializadorConteudoXML;
 
     public Path getCaminho() {
         return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
@@ -103,7 +92,7 @@ public abstract class ConteudoVersionado<T> {
     }
 
     @Cacheable
-    public Metadados<T> getMetadados() {
+    public Metadados getMetadados() {
         synchronized (RepositorioGit.class) {
             return internalGetMetadados();
         }
@@ -228,14 +217,18 @@ public abstract class ConteudoVersionado<T> {
         }
     }
 
+    @SneakyThrows
+    protected ConteudoMetadados getConteudoParaMetadados() {
+        return deserializadorConteudoXML.deserializaConteudo(getConteudoRaw())
+                .toConteudoMetadados(siorg);
+    }
+
     protected Optional<Revisao> getRevisaoMaisRecenteDoMaster() {
         if (!existeNoMaster()) {
             return Optional.empty();
         }
         return repositorio.getRevisaoMaisRecenteDoBranch(getBranchMasterRef(), getCaminhoRelativo());
     }
-
-    protected abstract T getMetadadosConteudo();
 
     protected Optional<Revisao> getRevisaoMaisRecenteDoBranch() {
         if (!existeNoBranch()) {
@@ -244,12 +237,12 @@ public abstract class ConteudoVersionado<T> {
         return repositorio.getRevisaoMaisRecenteDoBranch(getBranchRef(), getCaminhoRelativo());
     }
 
-    protected Metadados<T> internalGetMetadados() {
-        return new Metadados<T>()
+    protected Metadados internalGetMetadados() {
+        return new Metadados()
                 .withId(getId())
                 .withPublicado(getRevisaoMaisRecenteDoMaster().orElse(null))
                 .withEditado(getRevisaoMaisRecenteDoBranch().orElse(null))
-                .withConteudo(getMetadadosConteudo());
+                .withConteudo(getConteudoParaMetadados());
     }
 
     private boolean isPublicado() {
@@ -263,7 +256,7 @@ public abstract class ConteudoVersionado<T> {
     private void despublicar(UserProfile profile) {
         repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
             repositorio.remove(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+            repositorio.commit(getCaminhoRelativo(), "Despublica '" + getId() + "'", profile);
             repositorio.push(getBranchMasterRef());
 
             return null;
@@ -311,4 +304,6 @@ public abstract class ConteudoVersionado<T> {
         String conteudo = mudarNomeConteudo(novoNome);
         salvarConteudo(profile, branch, conteudo);
     }
+
 }
+

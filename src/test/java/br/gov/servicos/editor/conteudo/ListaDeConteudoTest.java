@@ -1,16 +1,10 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.cartas.Carta;
-import br.gov.servicos.editor.conteudo.paginas.Pagina;
-import br.gov.servicos.editor.conteudo.paginas.PaginaVersionada;
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
-import br.gov.servicos.editor.conteudo.paginas.TipoPagina;
 import br.gov.servicos.editor.fixtures.RepositorioCartasBuilder;
 import br.gov.servicos.editor.fixtures.RepositorioConfigParaTeste;
 import br.gov.servicos.editor.git.Importador;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.RepositorioGit;
-import com.github.slugify.Slugify;
 import com.google.common.cache.Cache;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
@@ -19,20 +13,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.guava.GuavaCache;
-import org.springframework.format.Formatter;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static java.util.Locale.getDefault;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -60,10 +50,10 @@ public class ListaDeConteudoTest {
     Importador importador;
 
     @Mock
-    Carta carta;
+    ConteudoVersionado carta;
 
     @Mock
-    PaginaVersionada paginaVersionada;
+    ConteudoVersionado paginaVersionada;
 
     @Mock
     CacheManager cacheManager;
@@ -77,8 +67,7 @@ public class ListaDeConteudoTest {
         new RepositorioCartasBuilder(repo.getLocalCloneRepositorio())
                 .touchCarta("id-qualquer")
                 .touchOrgao("outro-id-qualquer")
-                .touchAreaDeInteresse("area")
-                .touchPaginaEspecial("pg-especial")
+                .touchPaginaTematica("pg-tematica")
                 .buildSemGit();
 
         given(repositorioGit.getCaminhoAbsoluto()).willReturn(repo.getLocalCloneRepositorio());
@@ -91,10 +80,10 @@ public class ListaDeConteudoTest {
 
     @Test
     public void deveListarDiretorioDeCartas() throws Exception {
-        Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
+        Metadados m1 = new Metadados().withId("id-qualquer");
 
         given(repositorioGit.branches()).will(i -> Stream.empty());
-        given(paginaVersionada.getMetadados()).willReturn(new Metadados<>());
+        given(paginaVersionada.getMetadados()).willReturn(new Metadados());
         given(carta.getMetadados()).willReturn(m1);
 
         Collection<Metadados> metadados = listaDeConteudo.listar();
@@ -114,8 +103,8 @@ public class ListaDeConteudoTest {
     public void forcaAtualizacaoDoCacheAoInicializar() throws Exception {
         Cache cache = mock(Cache.class);
 
-        Metadados<Carta.Servico> m1 = new Metadados<Carta.Servico>().withId("id-qualquer");
-        Metadados<Pagina> m2 = new Metadados<Pagina>().withId("outro-id-qualquer");
+        Metadados m1 = new Metadados().withId("id-qualquer");
+        Metadados m2 = new Metadados().withId("outro-id-qualquer");
 
         given(importador.isImportadoComSucesso()).willReturn(true);
         given(repositorioGit.branches()).will(i -> Stream.empty());

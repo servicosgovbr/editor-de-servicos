@@ -1,5 +1,7 @@
 'use strict';
 
+var idUnico = require('utils/id-unico');
+
 var primeiroErroPara = _.curry(function (validacoes, valor) {
   return _.reduce(validacoes, function (erro, validador) {
     return erro || validador(valor);
@@ -81,6 +83,10 @@ var obrigatorio = function (v) {
   }
 };
 
+var validaIdUnico = function (unsafeId) {
+  return idUnico(unsafeId) ? undefined : 'erro-nome-servico-existente';
+};
+
 var cada = function () {
   var validacoes = arguments;
 
@@ -112,5 +118,6 @@ module.exports = {
   minimo: minimo,
   numerico: numerico,
   textoCurto: maximo(150),
-  textoLongo: maximo(500)
+  textoLongo: maximo(500),
+  idUnico: validaIdUnico
 };

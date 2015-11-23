@@ -15,14 +15,11 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Metadados<T> implements Serializable {
-
+public class Metadados implements Serializable {
     String id;
-    String nomeOrgao = " — — ";
     Revisao publicado;
     Revisao editado;
-
-    T conteudo;
+    ConteudoMetadados conteudo;
 
     public boolean getTemAlteracoesNaoPublicadas() {
         if (editado == null) {

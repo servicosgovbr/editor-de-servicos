@@ -1,7 +1,6 @@
 package br.gov.servicos.editor.conteudo;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -58,4 +57,13 @@ public class MockMvcEditorAPI {
                 .accept(ALL));
     }
 
+    public ResultActions editarPagina(String id, TipoPagina tipo) throws Exception {
+        return mvc.perform(get("/editar/api/pagina/" + tipo.getNome() + "/" + id)
+                .accept(ALL));
+    }
+
+    public ResultActions editarPaginaNova(TipoPagina tipo) throws Exception {
+        return mvc.perform(get("/editar/api/pagina/" + tipo.getNome() + "/novo")
+                .accept(ALL));
+    }
 }

@@ -13,7 +13,6 @@ module.exports = {
       return this.salvar().then(_.bind(function (resp) {
         this.salvando(false);
         alertify.success('Rascunho salvo com sucesso!', 0);
-        m.redraw();
         return resp;
       }, this), _.bind(function () {
         this.salvando(false);

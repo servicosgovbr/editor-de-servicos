@@ -2,7 +2,6 @@
 
 var safeGet = require('utils/code-checks').safeGet;
 var promise = require('utils/promise');
-
 var confirmacao = require('componentes/menu/despublicar-confirmacao');
 
 function botaoQueEspera(opts) {
@@ -28,7 +27,6 @@ module.exports = {
 
     this.onClick = function () {
       this.despublicando(true);
-      m.redraw();
       return promise.onSuccOrError(this.despublicar(), _.bind(function () {
         this.despublicando(false);
         m.redraw();

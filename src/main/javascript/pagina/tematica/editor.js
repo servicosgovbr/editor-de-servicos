@@ -1,42 +1,41 @@
 'use strict';
 
-var safeGet = require('utils/code-checks').safeGet;
+var Tooltips = require('tooltips');
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var EditorBase = require('componentes/editor-base');
-var carregarPagina = require('pagina/carregar');
-var salvarOrgao = require('pagina/salvar');
+
+var carregarPagina = require('xml/carregar').carregarPaginaTematica;
+var salvarPagina = require('xml/salvar').salvarPaginaTematica;
+var redirecionarNovaPagina = require('redirecionador');
 
 module.exports = {
   controller: function (args) {
-    var tipo = safeGet(args, 'tipo');
+    this.tipo = m.prop('pagina-tematica');
 
     this.modificado = m.prop(false);
     this.cabecalho = new CabecalhoModel();
-
-    this.pagina = carregarPagina({
-      tipo: tipo,
-      id: m.route.param('id')
-    }, this.cabecalho);
+    this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
     this.salvar = _.bind(function () {
-      return salvarOrgao(tipo, this.pagina());
+      return salvarPagina(this.pagina(), this.cabecalho.metadados)
+        .then(this.pagina)
+        .then(_.bind(function (pagina) {
+          redirecionarNovaPagina(this.tipo(), pagina.nome());
+        }, this));
     }, this);
   },
 
   view: function (ctrl, args) {
-    var tipo = safeGet(args, 'tipo');
-    var tituloNome = safeGet(args, 'tituloNome');
-    var componenteNome = safeGet(args, 'componenteNome');
-    var tamanhoConteudo = safeGet(args, 'tamanhoConteudo');
+    if (!ctrl.pagina()) {
+      return m('');
+    }
 
+    var tamanhoConteudo = 10000;
     var tooltips = {
-      tipo: safeGet(args, 'tooltips.tipo'),
-      nome: safeGet(args, 'tooltips.nome'),
-      conteudo: safeGet(args, 'tooltips.conteudo')
+      tipo: Tooltips.tipoPagina,
+      nome: Tooltips.nomePaginaTematica,
+      conteudo: Tooltips.conteudoPaginaTematica
     };
-
-    ctrl.pagina().tipo(tipo);
-    ctrl.pagina().tamanhoConteudo(tamanhoConteudo);
 
     var binding = {
       pagina: ctrl.pagina,
@@ -68,14 +67,17 @@ module.exports = {
 
       componentes: [
         m.component(require('pagina/componentes/tipo-de-pagina'), {
-          tipo: ctrl.pagina().tipo,
+          tipo: ctrl.tipo,
           tooltipTipo: tooltips.tipo
         }),
+
         m.component(require('pagina/componentes/nome'), _.assign(binding, {
-          titulo: tituloNome,
-          componente: componenteNome,
-          tooltipNome: tooltips.nome
+          titulo: 'Nome da página temática',
+          componente: require('componentes/input'),
+          tooltipNome: tooltips.nome,
+          nomeFn: _.identity
         })),
+
         m.component(require('pagina/componentes/conteudo'), _.assign(binding, {
           maximo: tamanhoConteudo,
           tooltipConteudo: tooltips.conteudo

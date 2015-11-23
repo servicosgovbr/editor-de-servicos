@@ -39,8 +39,8 @@ public class Siorg {
         }
 
         try {
-            ResponseEntity<Orgao> entity = restTemplate.getForEntity(urlOrgao, Orgao.class);
-            Orgao body = entity.getBody();
+            ResponseEntity<ConsultaUnidadeResumida> entity = restTemplate.getForEntity(urlOrgao, ConsultaUnidadeResumida.class);
+            ConsultaUnidadeResumida body = entity.getBody();
 
             if (body.getServico().getCodigoErro() > 0) {
                 log.warn("Erro ao acessar Siorg: {}", body.getServico().getMensagem());
@@ -59,7 +59,7 @@ public class Siorg {
     @Wither
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Orgao {
+    public static class ConsultaUnidadeResumida {
         Servico servico;
         Unidade unidade;
     }
@@ -78,6 +78,7 @@ public class Siorg {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Unidade {
+        String codigoUnidade;
         String nome;
         String sigla;
     }

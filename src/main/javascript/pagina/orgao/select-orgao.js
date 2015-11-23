@@ -2,6 +2,7 @@
 
 var safeGet = require('utils/code-checks').safeGet;
 var erro = require('utils/erro-ajax');
+var api = require('api');
 
 module.exports = {
 
@@ -37,21 +38,13 @@ module.exports = {
       minimumResultsForSearch: 1,
       minimumInputLength: 3,
       initSelection: function (element, callback) {
-        m.request({
-          method: 'GET',
-          url: '/editar/api/orgao',
-          data: {
-            urlOrgao: orgao()
-          },
-          deserialize: function (data) {
-            return data;
-          }
-        }).then(function (orgaoNome) {
-          callback({
-            id: orgao(),
-            text: orgaoNome
-          });
-        }, erro);
+        api.obterNomeOrgao(orgao())
+          .then(function (orgaoNome) {
+            callback({
+              id: orgao(),
+              text: orgaoNome
+            });
+          }, erro);
       }
     }));
   }

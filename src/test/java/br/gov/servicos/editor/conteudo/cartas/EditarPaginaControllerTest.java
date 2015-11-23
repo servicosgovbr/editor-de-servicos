@@ -1,6 +1,8 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.conteudo.paginas.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.ConteudoVersionado;
+import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.EditarPaginaController;
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
 import org.junit.Before;
@@ -9,12 +11,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.util.Date;
 
-import static br.gov.servicos.editor.conteudo.paginas.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static java.lang.String.valueOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -23,7 +23,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EditarCartaControllerTest {
+public class EditarPaginaControllerTest {
 
     static final Date HORARIO = new Date();
 
@@ -31,7 +31,7 @@ public class EditarCartaControllerTest {
             .withAutor("Fulano de Tal")
             .withHorario(HORARIO);
 
-    static final Metadados<Carta.Servico> METADADOS = new Metadados<Carta.Servico>()
+    static final Metadados METADADOS = new Metadados()
             .withEditado(REVISAO)
             .withPublicado(REVISAO);
 
@@ -39,9 +39,9 @@ public class EditarCartaControllerTest {
     ConteudoVersionadoFactory factory;
 
     @Mock
-    Carta carta;
+    ConteudoVersionado carta;
 
-    EditarCartaController controller;
+    EditarPaginaController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -56,13 +56,12 @@ public class EditarCartaControllerTest {
         given(factory.pagina(anyString(), eq(SERVICO)))
                 .willReturn(carta);
 
-        controller = new EditarCartaController(factory);
+        controller = new EditarPaginaController(factory);
     }
 
     @Test
     public void adicionaHeadersDosMetadados() throws Exception {
-
-        HttpHeaders response = controller.editar("").getHeaders();
+        HttpHeaders response = controller.editar("servico", "").getHeaders();
 
         assertThat(response.get("X-Git-Commit-Publicado").get(0), is("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
         assertThat(response.get("X-Git-Autor-Publicado").get(0), is("Fulano de Tal"));

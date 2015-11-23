@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class EditarCartaControllerIntegrationTest extends RepositorioGitIntegrationTest {
+public class EditarPaginaControllerIntegrationTest extends RepositorioGitIntegrationTest {
 
     @Before
     public void setup() {

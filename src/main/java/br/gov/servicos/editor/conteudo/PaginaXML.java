@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.conteudo.paginas;
+package br.gov.servicos.editor.conteudo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class Pagina {
-    String tipo;
-    String nome;
+public class PaginaXML {
+    String id;
     String conteudo;
 }

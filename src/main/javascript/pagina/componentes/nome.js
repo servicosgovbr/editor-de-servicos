@@ -2,12 +2,12 @@
 
 module.exports = {
   view: function (ctrl, args) {
-    var pagina = args.pagina();
+    var nomeProp = args.nome;
     var tooltipNome = args.tooltipNome;
 
     var componenteNome = args.novo ? m.component(args.componente, {
-      prop: args.nome
-    }) : pagina.nome();
+      prop: nomeProp
+    }) : nomeProp();
 
     return m('fieldset#nome', [
       m('h3', [

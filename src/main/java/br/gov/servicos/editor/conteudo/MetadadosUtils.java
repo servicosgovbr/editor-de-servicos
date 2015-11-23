@@ -2,12 +2,7 @@ package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.git.Metadados;
 import br.gov.servicos.editor.git.Revisao;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import org.springframework.http.HttpHeaders;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.util.Optional.ofNullable;
 

@@ -72,8 +72,7 @@ public class IndexControllerIntegrationTest extends TestCase {
                 "/editar/erro",
                 "/editar/servico/:id",
                 "/editar/orgao/:id",
-                "/editar/area-de-interesse/:id",
-                "/editar/pagina-especial/:id",
+                "/editar/pagina-tematica/:id",
                 "/editar/pagina/nova",
                 "/editar/visualizar/servico/:id")
                 .stream()

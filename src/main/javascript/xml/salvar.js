@@ -1,59 +1,59 @@
 'use strict';
 
-var slugify = require('slugify');
-var extrairMetadados = require('utils/extrair-metadados');
 var domParaServico = require('xml/servico-factory').domParaServico;
-var exportarXml = require('xml/exportar');
+var domParaPaginaTematica = require('xml/pagina-tematica-factory').domParaPaginaTematica;
+var domParaOrgao = require('xml/orgao-factory').domParaOrgao;
+var exportarXmlServico = require('xml/exportar-servico-xml');
+var exportarXmlPaginaTematica = require('xml/exportar-pagina-tematica-xml');
+var exportarXmlOrgao = require('xml/exportar-orgao-xml');
 var validacoes = require('utils/validacoes');
 var promiseUtil = require('utils/promise');
 var limparModelo = require('limpar-modelo');
-var atributosCsrf = require('utils/atributos-csrf');
+var api = require('api');
 
-function postarServico(nome, xml, metadados) {
-  var id = slugify(nome);
-
-  return m.request({
-
-    method: 'POST',
-    url: '/editar/api/pagina/servico/' + id,
-    data: xml,
-    background: true,
-
-    config: function (xhr) {
-      xhr.setRequestHeader('Accepts', 'application/xml');
-      xhr.setRequestHeader('Content-Type', 'application/xml');
-      xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
-    },
-
-    serialize: function (svc) {
-      return new XMLSerializer().serializeToString(svc);
-    },
-
-    extract: extrairMetadados(metadados),
-
-    deserialize: function (str) {
-      return new DOMParser().parseFromString(str, 'application/xml');
-    },
-
-  });
-}
-
-function validaNome(servico) {
-  if (validacoes.valida(servico.nome)) {
-    return servico;
+var valida = _.curry(function (nome, doc) {
+  if (validacoes.valida(_.get(doc, nome))) {
+    return doc;
   }
-  throw 'Erro na validação do nome do serviço';
-}
+  throw 'Erro na validação do nome';
+});
 
-module.exports = function (servico, metadados) {
-  var onAjaxError = require('utils/erro-ajax');
+var validaNome = valida('nome');
+var validaUrl = valida('url');
 
+function salvarServico(servico, metadados) {
   return promiseUtil.resolved(servico)
     .then(limparModelo)
     .then(validaNome)
-    .then(exportarXml)
+    .then(exportarXmlServico)
     .then(function (xml) {
-      return postarServico(servico.nome(), xml, metadados);
+      return api.salvar('servico', servico.nome(), xml, metadados);
     })
-    .then(domParaServico, onAjaxError);
+    .then(domParaServico);
+}
+
+function salvarPaginaTematica(pagina, metadados) {
+  return promiseUtil.resolved(pagina)
+    .then(validaNome)
+    .then(exportarXmlPaginaTematica)
+    .then(function (xml) {
+      return api.salvar('pagina-tematica', pagina.nome(), xml, metadados);
+    })
+    .then(domParaPaginaTematica);
+}
+
+function salvarOrgao(orgao, metadados) {
+  return promiseUtil.resolved(orgao)
+    .then(validaUrl)
+    .then(exportarXmlOrgao)
+    .then(function (xml) {
+      return api.salvar('orgao', orgao.url(), xml, metadados);
+    })
+    .then(domParaOrgao);
+}
+
+module.exports = {
+  salvarServico: salvarServico,
+  salvarPaginaTematica: salvarPaginaTematica,
+  salvarOrgao: salvarOrgao
 };
