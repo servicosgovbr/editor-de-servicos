@@ -28,12 +28,13 @@ public class PublicarPaginaControllerTest {
 
     UserProfileConfigParaTeste userProfiles = new UserProfileConfigParaTeste();
 
-
     @Before
     public void setUp() throws Exception {
         controller = new PublicarPaginaController(factory, userProfiles);
         given(carta.getMetadados())
                 .willReturn(new Metadados());
+        given(carta.existe())
+                .willReturn(true);
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
     }
