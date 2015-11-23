@@ -37,11 +37,14 @@ public class Usuario implements Serializable, UserDetails{
     @Column(nullable = false)
     private String siorg;
 
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
+    private String emailPrimario;
+
     @Column(unique = true)
     private String siape;
-
-    @Column
-    private String emailPrimario;
 
     @Column
     private String emailSecundario;

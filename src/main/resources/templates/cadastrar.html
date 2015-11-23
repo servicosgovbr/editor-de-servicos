@@ -50,6 +50,10 @@
         <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
                th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
+        <label for="nome_completo">Nome Completo</label>
+        <input id="nome_completo" name="nome" type="text" th:value="*{nome}" required="required"
+               th:class="${#fields.hasErrors('nome')}? erroCampo" />
+
         <div id="siorg-select"></div>
 
         <label for="email_primario">Email Primário</label>

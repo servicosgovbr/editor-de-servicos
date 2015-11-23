@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.usuarios.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Profile("!teste")
-public class LoginUserProfile implements UserProfiles {
+public class LoginUserProfiles implements UserProfiles {
 
     private GerenciadorPermissoes gerenciadorPermissoes;
 
     @Autowired
-    public LoginUserProfile(GerenciadorPermissoes gerenciadorPermissoes, HttpServletRequest httpServletRequest) {
+    public LoginUserProfiles(GerenciadorPermissoes gerenciadorPermissoes, HttpServletRequest httpServletRequest) {
         this.gerenciadorPermissoes = gerenciadorPermissoes;
     }
 
@@ -23,12 +24,12 @@ public class LoginUserProfile implements UserProfiles {
     public UserProfile get() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
+            Usuario usuario = (Usuario) principal;
             return new UserProfile()
-                    .withId(username)
-                    .withEmail(username)
-                    .withName(username)
-                    .withPermissao(gerenciadorPermissoes.permissao(username));
+                    .withId(usuario.getEmailPrimario())
+                    .withEmail(usuario.getEmailPrimario())
+                    .withName(usuario.getNome())
+                    .withPermissao(gerenciadorPermissoes.permissao(usuario.getCpf()));
         } else {
             return new UserProfile();
         }

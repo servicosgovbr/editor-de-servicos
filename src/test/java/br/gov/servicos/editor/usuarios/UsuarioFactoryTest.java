@@ -29,6 +29,7 @@ public class UsuarioFactoryTest {
     private static final String EMAIL_PRIMARIO = "email@institucional.gov.br";
     private static final String EMAIL_SECUNDARIO = "email@secundario.org";
     private static final boolean SERVIDOR = true;
+    private static final String NOME = "Nome completo";
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -46,7 +47,8 @@ public class UsuarioFactoryTest {
                 withSiorg(SIORG).
                 withCamposServidor(new CamposServidor().withServidor(SERVIDOR).withSiape(SIAPE)).
                 withEmailPrimario(EMAIL_PRIMARIO).
-                withEmailSecundario(EMAIL_SECUNDARIO);
+                withEmailSecundario(EMAIL_SECUNDARIO).
+                withNome(NOME);
     }
 
     @Test
@@ -59,6 +61,7 @@ public class UsuarioFactoryTest {
         assertThat(usuario.getEmailSecundario(), equalTo(EMAIL_SECUNDARIO));
         assertThat(usuario.getSiape(), equalTo(SIAPE));
         assertThat(usuario.isServidor(), equalTo(SERVIDOR));
+        assertThat(usuario.getNome(), equalTo(NOME));
     }
 
     @Test

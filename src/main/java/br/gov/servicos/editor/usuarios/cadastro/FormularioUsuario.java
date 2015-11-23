@@ -42,6 +42,9 @@ public class FormularioUsuario {
     @NotBlank(message = "SIORG: " + CAMPO_OBRIGATORIO)
     String siorg;
 
+    @NotBlank(message = "Nome Completo: " + CAMPO_OBRIGATORIO)
+    String nome;
+
     @NotBlank(message = "Email Primario: " + CAMPO_OBRIGATORIO)
     @Email(message = "Email Primario: " + EMAIL_INVALIDO)
     String emailPrimario;
