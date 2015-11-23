@@ -16,8 +16,6 @@ function serializeXml(svc) {
   return new XMLSerializer().serializeToString(svc);
 }
 
-
-
 function deserializeXml(svc) {
   return new DOMParser().parseFromString(svc, 'application/xml');
 }
@@ -94,6 +92,14 @@ module.exports = {
       background: true,
       url: url,
       extract: extrairMetadados(metadados),
+      config: configCsrf
+    });
+  },
+
+  remover: function (id) {
+    return request({
+      method: 'DELETE',
+      url: '/editar/api/pagina/servico/' + slugify(id),
       config: configCsrf
     });
   },

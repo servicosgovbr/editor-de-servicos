@@ -1,8 +1,8 @@
 'use strict';
 
-var slugify = require('slugify');
 var erro = require('utils/erro-ajax');
 var referencia = require('referencia');
+var api = require('api');
 
 module.exports = function (args) {
   this.publicarConteudo = _.noop;
@@ -64,10 +64,8 @@ module.exports = function (args) {
       if (result) {
         s.excluindo = m.prop(true);
         m.redraw();
-        m.request({
-            method: 'DELETE',
-            url: '/editar/api/pagina/servico/' + slugify(id),
-          }).then(this.listarConteudos, erro)
+        api.remover(id)
+          .then(this.listarConteudos, erro)
           .then(function () {
             alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!', 0);
             s.excluindo(false);
