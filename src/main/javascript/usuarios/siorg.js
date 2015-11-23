@@ -7,7 +7,7 @@ module.exports = function (m, siorgInicial, element) {
   siorg.nome = m.prop(siorgInicial);
   siorg.view = function () {
     return m('label', [
-            'SIORG',
+            m('h3', 'SIORG'),
             m.component(selectOrgao, {
         prop: siorg.nome
       }),
