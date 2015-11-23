@@ -28,6 +28,9 @@ public class GerenciarUsuarioController {
     @Autowired
     private PapelRepository papelRepository;
 
+    @Autowired
+    private TokenRecuperacaoSenhaService tokenService;
+
     @ModelAttribute("papeis")
     public Iterable<Papel> papularPapeis() {
         return this.papelRepository.findAll();
@@ -63,6 +66,7 @@ public class GerenciarUsuarioController {
         Usuario usuario = usuarioService.findByCpf(cpf);
         ModelMap model = new ModelMap();
         model.addAttribute("usuario", usuario);
+        model.addAttribute("token", tokenService.gerarParaUsuario(cpf));
         return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 

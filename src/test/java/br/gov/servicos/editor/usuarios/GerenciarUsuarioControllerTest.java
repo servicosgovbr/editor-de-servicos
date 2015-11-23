@@ -17,6 +17,7 @@ import static org.mockito.Mockito.*;
 public class GerenciarUsuarioControllerTest {
 
     public static final String CPF = "12312312319";
+    private static final String TOKEN = "token";
     private FormularioUsuario FORM_USUARIO = new FormularioUsuario();
     private Usuario USUARIO = new Usuario().withCpf(CPF);
 
@@ -28,6 +29,9 @@ public class GerenciarUsuarioControllerTest {
 
     @Mock
     private BindingResult bindingResult;
+
+    @Mock
+    private TokenRecuperacaoSenhaService tokenService;
 
     @InjectMocks
     private GerenciarUsuarioController controller;
@@ -70,6 +74,13 @@ public class GerenciarUsuarioControllerTest {
         when(usuarioService.findByCpf(CPF)).thenReturn(USUARIO);
         ModelAndView view = controller.recuperarSenha(CPF);
         assertThat(view.getModel().get("usuario"), equalTo(USUARIO));
+    }
+
+    @Test
+    public void mostrarTokenNasIntrucoesDeRecuperarSenhas() {
+        when(tokenService.gerarParaUsuario(CPF)).thenReturn(TOKEN);
+        ModelAndView view = controller.recuperarSenha(CPF);
+        assertThat(view.getModel().get("token"), equalTo(TOKEN));
     }
 
 }
