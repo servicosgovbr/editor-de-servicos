@@ -56,18 +56,18 @@ module.exports = {
     });
   },
 
-  publicar: function (id, metadados) {
+  publicar: function (tipo, id, metadados) {
     return request({
       method: 'PUT',
       background: true,
-      url: '/editar/api/pagina/servico/' + id,
+      url: '/editar/api/pagina/' + tipo + '/' + id,
       extract: extrairMetadados(metadados),
       config: configCsrf
     });
   },
 
-  descartar: function (id, metadados) {
-    var url = '/editar/api/pagina/servico/' + id + '/descartar';
+  descartar: function (tipo, id, metadados) {
+    var url = '/editar/api/pagina/' + tipo + '/' + id + '/descartar';
     var mimeType = 'application/xml';
 
     return request({

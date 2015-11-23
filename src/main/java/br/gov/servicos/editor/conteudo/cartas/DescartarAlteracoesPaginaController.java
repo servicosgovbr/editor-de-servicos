@@ -12,38 +12,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
-import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.fromNome;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class DescartarAlteracoesCartaController {
+class DescartarAlteracoesPaginaController {
 
     private ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
-    public DescartarAlteracoesCartaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
+    public DescartarAlteracoesPaginaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
         this.factory = factory;
         this.userProfiles = userProfiles;
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}/descartar", method = POST)
-    RedirectView descartar(@PathVariable("id") String id) throws ConteudoInexistenteException {
-        ConteudoVersionado carta = factory.pagina(id, SERVICO);
-
-        if (!carta.existe()) {
-            throw new ConteudoInexistenteException(carta);
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}/descartar", method = POST)
+    RedirectView descartar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException {
+        ConteudoVersionado conteudoVersionado = factory.pagina(id, fromNome(tipo));
+        if (!conteudoVersionado.existe()) {
+            throw new ConteudoInexistenteException(conteudoVersionado);
         }
-        if (!carta.existeNoMaster()) {
+        if (!conteudoVersionado.existeNoMaster()) {
             throw new IllegalStateException("Descartar um serviço que não foi publicado, seria o equivalente a excluir o serviço");
         }
-
-        carta.descartarAlteracoes();
-
-        return new RedirectView("/editar/api/pagina/servico/" + carta.getId());
+        conteudoVersionado.descartarAlteracoes();
+        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId());
     }
 
 }

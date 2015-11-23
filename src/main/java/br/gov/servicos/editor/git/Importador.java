@@ -50,6 +50,7 @@ public class Importador {
                 .setProgressMonitor(new LogstashProgressMonitor(log))
                 .setCloneAllBranches(true)
                 .call();
+
         importadoComSucesso = true;
     }
 

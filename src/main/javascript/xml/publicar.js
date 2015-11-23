@@ -5,25 +5,37 @@ var promise = require('utils/promise');
 var slugify = require('slugify');
 var validacoes = require('utils/validacoes');
 
-function publicar(servico, metadados) {
-  var idServico = slugify(servico.nome());
-  return api.publicar(idServico, metadados).then(function () {
-    return servico;
+function publicar(tipo, modelo, idUnsafe, metadados) {
+  var id = slugify(idUnsafe);
+  return api.publicar(tipo, id, metadados).then(function () {
+    return modelo;
   });
 }
 
-function validar(servico) {
-  if (validacoes.valida(servico)) {
-    return servico;
+function validar(modelo) {
+  if (validacoes.valida(modelo)) {
+    return modelo;
   } else {
-    throw 'Erros na validação dos campos de serviço';
+    throw 'Erros de validação';
   }
 }
 
-module.exports = function (servico, metadados) {
-  return promise.resolved(servico)
+function fluxoPublicar(tipo, modelo, id, metadados) {
+  return promise.resolved(modelo)
     .then(validar)
     .then(function (s) {
-      return publicar(s, metadados);
+      return publicar(tipo, s, id, metadados);
     });
+}
+
+module.exports = {
+  publicarServico: function (servico, metadados) {
+    return fluxoPublicar('servico', servico, servico.nome(), metadados);
+  },
+  publicarPaginaTematica: function (pagina, metadados) {
+    return fluxoPublicar('pagina-tematica', pagina, pagina.nome(), metadados);
+  },
+  publicarOrgao: function (pagina, metadados) {
+    return fluxoPublicar('orgao', pagina, pagina.url(), metadados);
+  }
 };

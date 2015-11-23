@@ -21,14 +21,14 @@ public class EditarPaginaControllerIntegrationTest extends RepositorioGitIntegra
 
     @Test
     public void editarPaginaTematica() throws Exception {
-        api.editarPagina("pagina-a", PAGINA_TEMATICA)
+        api.editarPagina(PAGINA_TEMATICA, "pagina-a")
                 .andExpect(status().isOk())
                 .andExpect(content().xml("<pagina-tematica><nome>Pagina A</nome></pagina-tematica>"));
     }
 
     @Test
     public void editarOrgao() throws Exception {
-        api.editarPagina("orgao-a", ORGAO)
+        api.editarPagina(ORGAO, "orgao-a")
                 .andExpect(status().isOk())
                 .andExpect(content().xml("<orgao><nome>Orgao a</nome></orgao>"));
     }
@@ -42,10 +42,10 @@ public class EditarPaginaControllerIntegrationTest extends RepositorioGitIntegra
 
     @Test
     public void editarServicoNaoExistenteDeveDeixarORepositorioEmEstadoLimpo() throws Exception {
-        api.editarPagina("pagina-que-nao-existe", ORGAO)
+        api.editarPagina(ORGAO, "pagina-que-nao-existe")
                 .andExpect(status().isNotFound());
 
-        api.editarPagina("orgao-a", ORGAO)
+        api.editarPagina(ORGAO, "orgao-a")
                 .andExpect(status().isOk())
                 .andExpect(content().xml("<orgao><nome>Orgao a</nome></orgao>"));
     }

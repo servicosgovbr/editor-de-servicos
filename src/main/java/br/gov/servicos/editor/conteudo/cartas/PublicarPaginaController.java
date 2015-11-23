@@ -12,29 +12,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.fromNome;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class PublicarCartaController {
+class PublicarPaginaController {
 
     private ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
-    public PublicarCartaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
+    public PublicarPaginaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
         this.factory = factory;
         this.userProfiles = userProfiles;
     }
 
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = PUT)
-    ResponseEntity publicar(@PathVariable("id") String id) {
-        ConteudoVersionado carta = factory.pagina(id, SERVICO);
-        carta.publicar(userProfiles.get());
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = PUT)
+    ResponseEntity publicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException {
+        ConteudoVersionado conteudoVersionado = factory.pagina(id, fromNome(tipo));
+        if (!conteudoVersionado.existe()) {
+            throw new ConteudoInexistenteException(conteudoVersionado);
+        }
+        conteudoVersionado.publicar(userProfiles.get());
 
-        return new ResponseEntity(MetadadosUtils.metadados(carta), HttpStatus.OK);
+        return new ResponseEntity(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
     }
 
 }

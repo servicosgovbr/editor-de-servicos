@@ -6,6 +6,8 @@ var EditorBase = require('componentes/editor-base');
 
 var carregarPagina = require('xml/carregar').carregarOrgao;
 var salvarOrgao = require('xml/salvar').salvarOrgao;
+var publicarOrgao = require('xml/publicar').publicarOrgao;
+var descartarOrgao = require('xml/descartar').descartarOrgao;
 var redirecionarNovaPagina = require('redirecionador');
 
 function ehNovo() {
@@ -20,13 +22,31 @@ module.exports = {
     this.cabecalho = new CabecalhoModel();
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
+    this._onOp = _.bind(function (pagina) {
+      this.pagina(pagina);
+      this.modificado(false);
+      redirecionarNovaPagina(this.tipo(), pagina.url());
+      return pagina;
+    }, this);
+
     this.salvar = _.bind(function () {
       return salvarOrgao(this.pagina(), this.cabecalho.metadados)
         .then(this.pagina)
-        .then(_.bind(function (pagina) {
-          redirecionarNovaPagina(this.tipo(), pagina.url());
-        }, this));
+        .then(this._onOp);
     }, this);
+
+    this.publicar = function () {
+      return this.salvar()
+        .then(_.bind(function (s) {
+          return publicarOrgao(s, this.cabecalho.metadados);
+        }, this))
+        .then(this._onOp);
+    };
+
+    this.descartar = function () {
+      return descartarOrgao(this.pagina(), this.cabecalho.metadados)
+        .then(this._onOp);
+    };
   },
 
   view: function (ctrl, args) {
@@ -66,6 +86,8 @@ module.exports = {
         metadados: true,
         logout: true,
         salvar: _.bind(ctrl.salvar, ctrl),
+        publicar: _.bind(ctrl.publicar, ctrl),
+        descartar: _.bind(ctrl.descartar, ctrl),
         cabecalho: ctrl.cabecalho
       },
 

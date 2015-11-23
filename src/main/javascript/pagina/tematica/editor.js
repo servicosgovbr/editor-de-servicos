@@ -6,6 +6,8 @@ var EditorBase = require('componentes/editor-base');
 
 var carregarPagina = require('xml/carregar').carregarPaginaTematica;
 var salvarPagina = require('xml/salvar').salvarPaginaTematica;
+var publicarPagina = require('xml/publicar').publicarPaginaTematica;
+var descartarPagina = require('xml/descartar').descartarPaginaTematica;
 var redirecionarNovaPagina = require('redirecionador');
 
 module.exports = {
@@ -16,13 +18,31 @@ module.exports = {
     this.cabecalho = new CabecalhoModel();
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
 
+    this._onOp = _.bind(function (pagina) {
+      this.pagina(pagina);
+      this.modificado(false);
+      redirecionarNovaPagina(this.tipo(), pagina.nome());
+      return pagina;
+    }, this);
+
     this.salvar = _.bind(function () {
       return salvarPagina(this.pagina(), this.cabecalho.metadados)
         .then(this.pagina)
-        .then(_.bind(function (pagina) {
-          redirecionarNovaPagina(this.tipo(), pagina.nome());
-        }, this));
+        .then(this._onOp);
     }, this);
+
+    this.publicar = function () {
+      return this.salvar()
+        .then(_.bind(function (s) {
+          return publicarPagina(s, this.cabecalho.metadados);
+        }, this))
+        .then(this._onOp);
+    };
+
+    this.descartar = function () {
+      return descartarPagina(this.pagina(), this.cabecalho.metadados)
+        .then(this._onOp);
+    };
   },
 
   view: function (ctrl, args) {
@@ -62,6 +82,8 @@ module.exports = {
         metadados: true,
         logout: true,
         salvar: _.bind(ctrl.salvar, ctrl),
+        publicar: _.bind(ctrl.publicar, ctrl),
+        descartar: _.bind(ctrl.descartar, ctrl),
         cabecalho: ctrl.cabecalho
       },
 

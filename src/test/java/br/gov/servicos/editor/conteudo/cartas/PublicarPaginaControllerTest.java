@@ -16,7 +16,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PublicarCartaControllerTest {
+public class PublicarPaginaControllerTest {
 
     @Mock
     ConteudoVersionado carta;
@@ -24,14 +24,14 @@ public class PublicarCartaControllerTest {
     @Mock
     ConteudoVersionadoFactory factory;
 
-    PublicarCartaController controller;
+    PublicarPaginaController controller;
 
     UserProfileConfigParaTeste userProfiles = new UserProfileConfigParaTeste();
 
 
     @Before
     public void setUp() throws Exception {
-        controller = new PublicarCartaController(factory, userProfiles);
+        controller = new PublicarPaginaController(factory, userProfiles);
         given(carta.getMetadados())
                 .willReturn(new Metadados());
         given(factory.pagina(anyString(), any()))
@@ -40,7 +40,7 @@ public class PublicarCartaControllerTest {
 
     @Test
     public void publicaCartaExistente() throws Exception {
-        controller.publicar("");
+        controller.publicar("servico", "");
         verify(carta).publicar(userProfiles.get());
     }
 
