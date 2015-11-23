@@ -36,25 +36,15 @@
             <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
         </div>
 
-        <h1>Cadastrar</h1>
-
-        <label for="cpf">CPF</label>
-        <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="XXX.XXX.XXX-XX" required="required" autofocus="true"
-               th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
-
-        <label for="senha">Senha</label>
-        <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
-               th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
-
-        <label for="confirmar_senha">Confirmar Senha</label>
-        <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
-               th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+        <h1>Cadastrar um novo usuário:</h1>
 
         <label for="nome_completo">Nome Completo</label>
         <input id="nome_completo" name="nome" type="text" th:value="*{nome}" required="required"
                th:class="${#fields.hasErrors('nome')}? erroCampo" />
 
-        <div id="siorg-select"></div>
+        <label for="cpf">CPF</label>
+        <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="___.___.___-__" required="required" autofocus="true"
+               th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
 
         <label for="email_primario">Email Primário</label>
         <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
@@ -63,6 +53,16 @@
         <label for="email_secundario">Email Secundário</label>
         <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email"
                placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
+
+        <label for="senha">Senha</label>
+        <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
+               th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+
+        <label for="confirmar_senha">Confirme a Senha</label>
+        <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
+               th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+
+        <div id="siorg-select"></div>
 
         <label for="servidor">É servidor?</label>
         <input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox"
