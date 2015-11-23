@@ -8,4 +8,5 @@ public interface UsuarioRepository extends Repository<Usuario, String> {
     Usuario save(Usuario usuario);
     boolean exists(String cpf);
     Usuario findBySiape(String value);
+    Iterable<Usuario> findAll();
 }

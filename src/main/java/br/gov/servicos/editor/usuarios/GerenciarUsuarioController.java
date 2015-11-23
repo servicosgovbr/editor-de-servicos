@@ -32,8 +32,16 @@ public class GerenciarUsuarioController {
         return this.papelRepository.findAll();
     }
 
+    @RequestMapping(value = "/editar/usuarios")
+    public ModelAndView usuarios() {
+        Iterable<Usuario> usuarios = usuarioRepository.findAll();
+        ModelMap model = new ModelMap();
+        model.addAttribute("usuarios", usuarios);
+        return new ModelAndView("usuarios", model);
+    }
+
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
-    String criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+    public String criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
             usuarioRepository.save(factory.criarUsuario(formularioUsuario));
             return "redirect:/editar/usuarios/usuario?sucesso";
@@ -43,7 +51,7 @@ public class GerenciarUsuarioController {
     }
 
     @RequestMapping("/editar/usuarios/usuario")
-    ModelAndView login(FormularioUsuario formularioUsuario) {
+    public ModelAndView login(FormularioUsuario formularioUsuario) {
         ModelMap model = new ModelMap();
         model.addAttribute("formularioUsuario", formularioUsuario);
         return new ModelAndView("cadastrar", model);
