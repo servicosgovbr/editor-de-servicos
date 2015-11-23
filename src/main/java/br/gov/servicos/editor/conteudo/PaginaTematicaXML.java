@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class PaginaMarkdownXML implements ConteudoMetadadosProvider {
+public class PaginaTematicaXML implements ConteudoMetadadosProvider {
     String nome;
     String conteudo;
 

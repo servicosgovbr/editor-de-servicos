@@ -50,7 +50,7 @@ public class ConteudoVersionadoFactory {
             case ORGAO:
                 return new DeserializadorConteudoXML(OrgaoXML.class);
             case PAGINA_TEMATICA:
-                return new DeserializadorConteudoXML(PaginaMarkdownXML.class);
+                return new DeserializadorConteudoXML(PaginaTematicaXML.class);
         }
         throw new IllegalArgumentException("Tipo inexistente: " + tipo);
     }
