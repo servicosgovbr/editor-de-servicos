@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +23,7 @@ public class GerenciarUsuarioController {
     private UsuarioFactory factory;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
     private PapelRepository papelRepository;
@@ -34,7 +35,7 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios")
     public ModelAndView usuarios() {
-        Iterable<Usuario> usuarios = usuarioRepository.findAll();
+        Iterable<Usuario> usuarios = usuarioService.findAll();
         ModelMap model = new ModelMap();
         model.addAttribute("usuarios", usuarios);
         return new ModelAndView("usuarios", model);
@@ -43,7 +44,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
     public String criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
-            usuarioRepository.save(factory.criarUsuario(formularioUsuario));
+            usuarioService.save(factory.criarUsuario(formularioUsuario));
             return "redirect:/editar/usuarios/usuario?sucesso";
         } else {
             return "cadastrar";
@@ -56,5 +57,15 @@ public class GerenciarUsuarioController {
         model.addAttribute("formularioUsuario", formularioUsuario);
         return new ModelAndView("cadastrar", model);
     }
+
+    @RequestMapping(value = "/editar/usuarios/usuario/{cpf}/recuperar-senha", method = POST)
+    public ModelAndView recuperarSenha(@PathVariable("cpf") String cpf) {
+        Usuario usuario = usuarioService.findByCpf(cpf);
+        ModelMap model = new ModelMap();
+        model.addAttribute("usuario", usuario);
+        return new ModelAndView("instrucoes-recuperar-senha", model);
+    }
+
+
 
 }

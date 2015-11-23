@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,11 +16,12 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class GerenciarUsuarioControllerTest {
 
-    private FormularioUsuario FORM_USUARIO = new FormularioUsuario().withCpf("12312312319");
-    private Usuario USUARIO = new Usuario();
+    public static final String CPF = "12312312319";
+    private FormularioUsuario FORM_USUARIO = new FormularioUsuario();
+    private Usuario USUARIO = new Usuario().withCpf(CPF);
 
     @Mock
-    private UsuarioRepository repository;
+    private UsuarioService usuarioService;
 
     @Mock
     private UsuarioFactory factory;
@@ -35,7 +37,7 @@ public class GerenciarUsuarioControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         controller.criar(FORM_USUARIO, bindingResult);
-        verify(repository).save(USUARIO);
+        verify(usuarioService).save(USUARIO);
     }
 
     @Test
@@ -47,13 +49,12 @@ public class GerenciarUsuarioControllerTest {
 
     }
 
-
     @Test
     public void naoSalvaSeFormularioPossuiErros() {
         when(bindingResult.hasErrors()).thenReturn(true);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         controller.criar(FORM_USUARIO, bindingResult);
-        verify(repository, never()).save(USUARIO);
+        verify(usuarioService, never()).save(USUARIO);
     }
 
     @Test
@@ -62,6 +63,13 @@ public class GerenciarUsuarioControllerTest {
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         String endereco = controller.criar(FORM_USUARIO, bindingResult);
         assertThat(endereco, equalTo("cadastrar"));
+    }
+
+    @Test
+    public void mostraInformacoesDoUsuarioNasIntrucoesDeRecuperarSenhas() {
+        when(usuarioService.findByCpf(CPF)).thenReturn(USUARIO);
+        ModelAndView view = controller.recuperarSenha(CPF);
+        assertThat(view.getModel().get("usuario"), equalTo(USUARIO));
     }
 
 }

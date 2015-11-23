@@ -2,6 +2,7 @@ package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.conteudo.cartas.ConteudoInexistenteException;
 import br.gov.servicos.editor.conteudo.cartas.ImportacaoXmlException;
+import br.gov.servicos.editor.usuarios.UsuarioInexistenteException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +38,13 @@ public class ExceptionHandlerController {
     @ResponseStatus(NOT_ACCEPTABLE)
     @ResponseBody
     public String erroImportacaoXml(ImportacaoXmlException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(UsuarioInexistenteException.class)
+    @ResponseStatus(NOT_FOUND)
+    @ResponseBody
+    public String conteudoInexistente(UsuarioInexistenteException e) {
         return e.getMessage();
     }
 }
