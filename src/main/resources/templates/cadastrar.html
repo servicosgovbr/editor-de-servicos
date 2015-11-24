@@ -51,10 +51,10 @@
                    placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 
             <h3 for="senha">Senha</h3>
-            <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+            <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha.senha')}? erroCampo"/>
 
             <h3 for="confirmar_senha">Confirme a Senha</h3>
-            <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+            <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha.confirmacaoSenha')}? erroCampo"/>
 
             <div id="siorg-select"></div>
 
