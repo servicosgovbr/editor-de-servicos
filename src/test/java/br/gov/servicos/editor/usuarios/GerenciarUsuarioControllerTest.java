@@ -31,7 +31,7 @@ public class GerenciarUsuarioControllerTest {
     private BindingResult bindingResult;
 
     @Mock
-    private TokenRecuperacaoSenhaService tokenService;
+    private RecuperacaoSenhaService tokenService;
 
     @InjectMocks
     private GerenciarUsuarioController controller;
@@ -78,7 +78,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void mostrarTokenNasIntrucoesDeRecuperarSenhas() {
-        when(tokenService.gerarParaUsuario(CPF)).thenReturn(TOKEN);
+        when(tokenService.gerarTokenParaUsuario(CPF)).thenReturn(TOKEN);
         ModelAndView view = controller.requisitarTrocaSenha(CPF);
         assertThat(view.getModel().get("token"), equalTo(TOKEN));
     }

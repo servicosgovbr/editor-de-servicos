@@ -5,4 +5,5 @@ import org.springframework.data.repository.Repository;
 
 public interface TokenRecuperacaoSenhaRepository extends Repository<TokenRecuperacaoSenha, String> {
     void save(TokenRecuperacaoSenha tokenRecuperacaoSenha);
+    TokenRecuperacaoSenha findByUsuarioId(Long usuarioId);
 }

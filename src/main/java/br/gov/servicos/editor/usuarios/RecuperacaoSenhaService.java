@@ -11,9 +11,7 @@ import java.time.LocalDateTime;
 import static java.lang.Long.valueOf;
 
 @Component
-public class TokenRecuperacaoSenhaService {
-
-    public static final int TOKEN_LENGHT = 50;
+public class RecuperacaoSenhaService {
 
     @Autowired
     private GeradorToken geradorToken;
@@ -24,9 +22,14 @@ public class TokenRecuperacaoSenhaService {
     @Autowired
     private TokenRecuperacaoSenhaRepository repository;
 
-    private Clock clock = Clock.systemUTC();
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public String gerarParaUsuario(String usuarioId) {
+    private Clock clock = Clock.systemUTC();
+    private RecuperacaoSenhaValidator validator;
+
+
+    public String gerarTokenParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
                                                             .withUsuarioId(valueOf(usuarioId))
@@ -34,5 +37,18 @@ public class TokenRecuperacaoSenhaService {
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
         return token;
+    }
+
+    public boolean trocarSenha(FormularioRecuperarSenha formulario) {
+        Long usuarioId = valueOf(formulario.getUsuarioId());
+        TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
+        Usuario usuario = usuarioRepository.findById(usuarioId);
+
+        if(validator.isValid(formulario, token, usuario)) {
+            usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
+            return true;
+        } else {
+            return false;
+        }
     }
 }

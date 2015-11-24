@@ -30,7 +30,7 @@ public class GerenciarUsuarioController {
     private PapelRepository papelRepository;
 
     @Autowired
-    private TokenRecuperacaoSenhaService tokenService;
+    private RecuperacaoSenhaService tokenService;
 
     @ModelAttribute("papeis")
     public Iterable<Papel> papularPapeis() {
@@ -88,7 +88,7 @@ public class GerenciarUsuarioController {
     }
 
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {
-        String token = tokenService.gerarParaUsuario(usuarioId);
+        String token = tokenService.gerarTokenParaUsuario(usuarioId);
         return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId;
     }
 
