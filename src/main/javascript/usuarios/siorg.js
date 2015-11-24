@@ -9,12 +9,12 @@ module.exports = function (m, siorgInicial, element) {
     return m('label', [
         m('h3', 'Orgão'),
         m.component(selectOrgao, {
-          prop: siorg.nome
-        }),
+        prop: siorg.nome
+      }),
         m('input[type=hidden]#siorg', {
-          name: 'siorg',
-          value: siorg.nome()
-        })
+        name: 'siorg',
+        value: siorg.nome()
+      })
     ]);
   };
 

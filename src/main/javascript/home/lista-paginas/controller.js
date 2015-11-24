@@ -57,18 +57,18 @@ module.exports = function (args) {
       .then(paginasProp, erro);
   }.bind(this), 500);
 
-  this.excluirConteudo = function (id, tipo, s) {
+  this.excluirConteudo = function (id, tipo, pagina) {
     alertify.labels.cancel = 'Cancelar';
     alertify.labels.ok = 'Remover';
     alertify.confirm('Você tem certeza que deseja remover o(a) ' + referencia.tipoDePagina(tipo) + '?', function (result) {
       if (result) {
-        s.excluindo = m.prop(true);
+        pagina.excluindo = m.prop(true);
         m.redraw();
-        api.remover(id)
-          .then(this.listarConteudos, erro)
+        api.excluir(tipo, id)
+          .then(this.listarConteudos)
           .then(function () {
             alertify.success(referencia.tipoDePagina(tipo) + ' excluído(a) com sucesso!', 0);
-            s.excluindo(false);
+            pagina.excluindo(false);
           });
       }
     }.bind(this));

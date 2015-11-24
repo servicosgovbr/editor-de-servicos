@@ -26,6 +26,13 @@ public class ExceptionHandlerController {
         return e.getMessage();
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(NOT_ACCEPTABLE)
+    @ResponseBody
+    public String argumentInvalido(IllegalArgumentException e) {
+        return e.getMessage();
+    }
+
     @ExceptionHandler(ImportacaoXmlException.class)
     @ResponseStatus(NOT_ACCEPTABLE)
     @ResponseBody

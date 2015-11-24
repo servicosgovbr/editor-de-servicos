@@ -74,6 +74,11 @@ public class MockMvcEditorAPI {
                 .accept(ALL));
     }
 
+    public ResultActions excluirPagina(TipoPagina tipo, String id) throws Exception {
+        return mvc.perform(delete("/editar/api/pagina/" + tipo.getNome() + "/" + id)
+                .accept(ALL));
+    }
+
     public ResultActions editarPagina(TipoPagina tipo, String id) throws Exception {
         return mvc.perform(get("/editar/api/pagina/" + tipo.getNome() + "/" + id)
                 .accept(ALL));
@@ -83,5 +88,4 @@ public class MockMvcEditorAPI {
         return mvc.perform(get("/editar/api/pagina/" + tipo.getNome() + "/novo")
                 .accept(ALL));
     }
-
 }

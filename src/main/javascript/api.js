@@ -98,10 +98,12 @@ module.exports = {
     });
   },
 
-  remover: function (id) {
+  excluir: function (tipo, id) {
+    var url = '/editar/api/pagina/' + tipo + '/' + slugify(id);
+
     return request({
       method: 'DELETE',
-      url: '/editar/api/pagina/servico/' + slugify(id),
+      url: url,
       config: configCsrf
     });
   },

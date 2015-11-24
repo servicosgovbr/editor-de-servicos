@@ -21,7 +21,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RemoverCartaControllerTest {
+public class ExcluirPaginaControllerTest {
 
     @Mock
     ConteudoVersionado carta;
@@ -35,13 +35,16 @@ public class RemoverCartaControllerTest {
     @Captor
     ArgumentCaptor<Supplier<Void>> captor;
 
-    RemoverCartaController controller;
+    ExcluirPaginaController controller;
 
     @Before
     public void setUp() throws Exception {
         given(factory.pagina(anyString(), eq(SERVICO)))
                 .willReturn(carta);
-        controller = new RemoverCartaController(userProfiles, factory);
+        given(carta.existe())
+                .willReturn(true);
+
+        controller = new ExcluirPaginaController(userProfiles, factory);
     }
 
     @Test
@@ -49,7 +52,7 @@ public class RemoverCartaControllerTest {
         given(userProfiles.get())
                 .willReturn(PROFILE);
 
-        controller.remover("");
+        controller.remover("servico", "");
         verify(carta).remover(PROFILE);
     }
 

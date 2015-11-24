@@ -94,7 +94,7 @@ public class RepositorioCartasBuilder {
     }
 
     private boolean criarEstruturaRepositorioCartas() {
-        return asList(values())
+        return asList(TipoPagina.values())
                 .stream()
                 .map(t -> localRepositorio.resolve(t.getCaminhoPasta()))
                 .map(Path::toFile)

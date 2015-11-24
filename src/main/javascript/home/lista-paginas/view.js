@@ -6,20 +6,21 @@ function isServico(p) {
   return p.conteudo.tipo === 'servico';
 }
 
+function isOrgao(p) {
+  return p.conteudo.tipo === 'orgao';
+}
+
 function excluirView(ctrl, pagina) {
-  if (!isServico(pagina)) {
+  if (isOrgao(pagina)) {
     return '';
   }
-
   if (pagina.excluindo && pagina.excluindo()) {
     return m('i.fa.fa-spin.fa-spinner');
   }
-
   return m('button.remover', {
     title: 'Remover este conteúdo',
     onclick: _.bind(ctrl.excluirConteudo, ctrl, pagina.id, pagina.conteudo.tipo, pagina)
   }, m('i.fa.fa-trash-o'));
-
 }
 
 function visualizarView(ctrl, pagina) {
