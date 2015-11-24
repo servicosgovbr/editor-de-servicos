@@ -54,7 +54,7 @@ module.exports = {
       return m('');
     }
 
-    var tamanhoConteudo = 1500;
+    var tamanhoConteudo = 10000;
     var tooltips = {
       tipo: Tooltips.tipoPagina,
       nome: Tooltips.escolhaOrgao,

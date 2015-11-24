@@ -130,6 +130,7 @@ module.exports = function (servico) {
   XML.cdata(doc, 'descricao');
   XML.cdata(doc, 'requisitos');
   XML.cdata(doc, 'contato');
+  XML.cdata(doc, 'legislacoes item')
 
   return doc;
 };
