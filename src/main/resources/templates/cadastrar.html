@@ -58,9 +58,6 @@
 
             <div id="siorg-select"></div>
 
-            <h3 for="servidor">É servidor?</h3>
-            <input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
-
             <h3 for="siape">SIAPE</h3>
             <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
 
@@ -68,6 +65,8 @@
             <select id="papel" name="papelId" th:field="*{papelId}">
                 <option th:each="papel : ${papeis}" th:value="${papel.id}" th:text="${papel.nome}"></option>
             </select>
+
+            <label for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
 
             <button type="submit">
                 Cadastrar
