@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
@@ -66,11 +67,11 @@ public class GerenciarUsuarioController {
         Usuario usuario = usuarioService.findById(usuarioId);
         ModelMap model = new ModelMap();
         model.addAttribute("usuario", usuario);
-        model.addAttribute("token", tokenService.gerarParaUsuario(usuarioId));
+        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuarioId));
         return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
-    @RequestMapping("/editar/recuperar-senha")
+    @RequestMapping(value = "/editar/recuperar-senha", method = GET)
     public ModelAndView recuperacaoSenha(FormularioRecuperarSenha formularioRecuperarSenha) {
         ModelMap model = new ModelMap();
         model.addAttribute("formularioRecuperarSenha", formularioRecuperarSenha);
@@ -84,6 +85,11 @@ public class GerenciarUsuarioController {
         } else {
             return "recuperar-senha";
         }
+    }
+
+    private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {
+        String token = tokenService.gerarParaUsuario(usuarioId);
+        return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId;
     }
 
 }

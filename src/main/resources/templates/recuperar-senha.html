@@ -40,8 +40,8 @@
             <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
                    th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
-            <input type="hidden" name="token" th:value="${param.usuarioId}"/>
-            <input type="hidden" name="token" th:value="${param.token}"/>
+            <input type="hidden" name="usuarioId" th:value="${param.usuarioId[0]}"/>
+            <input type="hidden" name="token" th:value="${param.token[0]}"/>
             <button type="submit">
                 <i class="fa fa-sign-in"></i>&nbsp;
                 Salvar nova senha
