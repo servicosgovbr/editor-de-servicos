@@ -44,7 +44,7 @@ module.exports = {
     };
 
     this.despublicar = function () {
-      return despublicarServico('servico', routeUtils.paramId(), this.cabecalho.metadados);
+      return despublicarServico('servico', routeUtils.id(), this.cabecalho.metadados);
     };
 
     this.visualizar = function () {
