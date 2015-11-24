@@ -17,9 +17,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TokenRecuperacaoSenhaServiceTest {
 
-    public static final String CPF = "12312312312";
     private static final String TOKEN = "token";
     private static final java.lang.String ENCRYPTED_TOKEN = "encrypted";
+    private static final Long USUARIO_ID = 12341234l;
 
     @Mock
     private GeradorToken geradorToken;
@@ -37,11 +37,11 @@ public class TokenRecuperacaoSenhaServiceTest {
     public void deveGerarTokenAleatorioEGuardarEncryptadoNoBanco() {
         when(geradorToken.gerar()).thenReturn(TOKEN);
         when(passwordEncoder.encode(TOKEN)).thenReturn(ENCRYPTED_TOKEN);
-        String token = tokenRecuperacaoSenhaService.gerarParaUsuario(CPF);
+        String token = tokenRecuperacaoSenhaService.gerarParaUsuario(USUARIO_ID.toString());
 
         TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha().
                 withToken(ENCRYPTED_TOKEN).
-                withCpf(CPF);
+                withUsuarioId(USUARIO_ID);
         verify(repository).save(refEq(expectedTokenRecuperacaoSenha, "dataCriacao"));
         assertThat(token, equalTo(TOKEN));
     }

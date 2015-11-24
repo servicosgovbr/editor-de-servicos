@@ -22,6 +22,10 @@ import java.util.Collection;
 public class Usuario implements Serializable, UserDetails{
 
     @Id
+    @Column(unique = true)
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+
     @Column(nullable = false)
     private String cpf;
 

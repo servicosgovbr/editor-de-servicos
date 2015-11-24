@@ -24,13 +24,16 @@ public class FormularioRecuperarSenha {
     public static final String CAMPO_OBRIGATORIO = "campo obrigatório";
 
     @NotBlank(message = "CPF: " + CAMPO_OBRIGATORIO)
-    @CPF(message = "CPF: não é valido")
     String cpf;
 
     @Valid
     @ConfirmacaoSenha
     CamposSenha camposSenha = new CamposSenha();
 
+    @NotBlank(message = "Token invalido")
     String token;
+
+    @NotBlank(message = "Token invalido")
+    String usuarioId;
 
 }

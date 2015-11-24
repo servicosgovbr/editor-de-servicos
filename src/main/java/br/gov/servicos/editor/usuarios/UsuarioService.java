@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import static java.lang.Long.valueOf;
+
 @Component
 public class UsuarioService {
 
@@ -25,5 +27,9 @@ public class UsuarioService {
 
     public void save(Usuario usuario) {
         usuarioRepository.save(usuario);
+    }
+
+    public Usuario findById(String usuarioId) {
+        return usuarioRepository.findById(valueOf(usuarioId));
     }
 }

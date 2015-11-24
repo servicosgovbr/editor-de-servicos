@@ -7,7 +7,8 @@ create table papeis (
 );
 
 create table usuarios(
-  cpf varchar(50) not null primary key,
+  id SERIAL primary key,
+  cpf varchar(50) not null,
   senha varchar(100) not null,
   papel_id INTEGER not null,
   servidor boolean not null,
@@ -21,10 +22,10 @@ create table usuarios(
 );
 
 create table tokens(
-  cpf varchar(50) not null primary key,
+  usuario_id INTEGER not null primary key,
   token varchar(100) not null,
   data_criacao timestamp not null
 );
 
 INSERT INTO public.papeis (nome) VALUES ('ROLE_ADMIN');
-INSERT INTO public.usuarios (cpf, senha, papel_id, servidor, habilitado, siorg, email_primario, nome) VALUES ('12312312312', '$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm', 1, true, true, '1934', 'email@email', 'Editor de Serviços');
+INSERT INTO public.usuarios (cpf, senha, papel_id, servidor, habilitado, siorg, email_primario, nome) VALUES ('12312312312', '$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm', 1, true, true, '1934', 'jeank@thoughtworks.com', 'Editor de Serviços');

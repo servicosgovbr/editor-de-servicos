@@ -27,7 +27,7 @@
 
     <div id="usuarios" style="padding-top: 100px">
         <div th:each="usuario : ${usuarios}">
-            <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.cpf})}" method="post">
+            <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
                 <div th:text="${usuario.nome}"></div>
                 <button type="submit">recuperar senha</button>
             </form>

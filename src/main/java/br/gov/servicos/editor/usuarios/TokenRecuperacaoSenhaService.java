@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
+import static java.lang.Long.valueOf;
+
 @Component
 public class TokenRecuperacaoSenhaService {
 
@@ -24,10 +26,10 @@ public class TokenRecuperacaoSenhaService {
 
     private Clock clock = Clock.systemUTC();
 
-    public String gerarParaUsuario(String cpf) {
+    public String gerarParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
-                                                            .withCpf(cpf)
+                                                            .withUsuarioId(valueOf(usuarioId))
                                                             .withDataCriacao(LocalDateTime.now(clock))
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);

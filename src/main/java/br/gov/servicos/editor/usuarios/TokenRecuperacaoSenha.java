@@ -25,7 +25,7 @@ public class TokenRecuperacaoSenha implements Serializable {
 
     @Id
     @Column(nullable = false)
-    private String cpf;
+    private Long usuarioId;
 
     @Column(nullable = false)
     private String token;

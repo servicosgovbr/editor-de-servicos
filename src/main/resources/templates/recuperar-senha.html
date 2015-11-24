@@ -40,6 +40,7 @@
             <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
                    th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
+            <input type="hidden" name="token" th:value="${param.usuarioId}"/>
             <input type="hidden" name="token" th:value="${param.token}"/>
             <button type="submit">
                 <i class="fa fa-sign-in"></i>&nbsp;

@@ -61,12 +61,12 @@ public class GerenciarUsuarioController {
         return new ModelAndView("cadastrar", model);
     }
 
-    @RequestMapping(value = "/editar/usuarios/usuario/{cpf}/recuperar-senha", method = POST)
-    public ModelAndView requisitarTrocaSenha(@PathVariable("cpf") String cpf) {
-        Usuario usuario = usuarioService.findByCpf(cpf);
+    @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/recuperar-senha", method = POST)
+    public ModelAndView requisitarTrocaSenha(@PathVariable("usuarioId") String usuarioId) {
+        Usuario usuario = usuarioService.findById(usuarioId);
         ModelMap model = new ModelMap();
         model.addAttribute("usuario", usuario);
-        model.addAttribute("token", tokenService.gerarParaUsuario(cpf));
+        model.addAttribute("token", tokenService.gerarParaUsuario(usuarioId));
         return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
