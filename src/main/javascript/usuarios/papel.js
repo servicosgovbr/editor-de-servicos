@@ -7,7 +7,7 @@ module.exports = function (m, papeis, element) {
   function convertToSelect2Data(originalArray) {
     var newArray = [];
 
-    for(var i = 0; i < originalArray.length; i++) {
+    for (var i = 0; i < originalArray.length; i++) {
       newArray.push({
         id: originalArray[i].id,
         text: originalArray[i].nome
@@ -20,14 +20,14 @@ module.exports = function (m, papeis, element) {
   papel.view = function () {
     return m('label', [
         m.component(require('componentes/select2'), {
-          prop: papel.id,
-          tte: {},
-          data: convertToSelect2Data(papeis)
-        }),
+        prop: papel.id,
+        tte: {},
+        data: convertToSelect2Data(papeis)
+      }),
         m('input[type=hidden]#papelId', {
-          name: 'papelId',
-          value: papel.id()
-        })
+        name: 'papelId',
+        value: papel.id()
+      })
     ]);
   };
 

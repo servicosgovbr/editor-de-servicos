@@ -15,7 +15,8 @@ module.exports = {
         alertify.success('Rascunho salvo com sucesso!', 0);
         m.redraw();
         return resp;
-      }, this), _.bind(function () {
+      }, this), _.bind(function (msg) {
+        alertify.error(msg, 0);
         this.salvando(false);
         m.redraw();
       }, this));

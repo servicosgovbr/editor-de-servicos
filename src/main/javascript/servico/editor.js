@@ -7,17 +7,10 @@ var publicarServico = require('xml/publicar').publicarServico;
 var descartarServico = require('xml/descartar').descartarServico;
 var despublicarServico = require('api').despublicar;
 var servicoEmEdicao = require('servico/servico-em-edicao');
-
 var redirecionarNovoServico = require('redirecionador');
+var routeUtils = require('utils/route-utils');
+
 var modificado = m.prop(false);
-
-function idServico() {
-  return m.route.param('id');
-}
-
-function ehNovo() {
-  return idServico() === 'novo';
-}
 
 module.exports = {
   controller: function () {
@@ -51,7 +44,7 @@ module.exports = {
     };
 
     this.despublicar = function () {
-      return despublicarServico('servico', idServico(), this.cabecalho.metadados);
+      return despublicarServico('servico', routeUtils.paramId(), this.cabecalho.metadados);
     };
 
     this.visualizar = function () {
@@ -65,7 +58,7 @@ module.exports = {
   view: function (ctrl) {
     var binding = {
       servico: ctrl.servico,
-      novo: ehNovo()
+      novo: routeUtils.ehNovo()
     };
 
     return m('#conteudo', {

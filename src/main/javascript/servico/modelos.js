@@ -1,6 +1,7 @@
 'use strict';
 
 var id = require('utils/id');
+var routeUtils = require('utils/route-utils');
 var v = require('utils/validacoes');
 
 var Caso = function (parentId, config) {
@@ -99,7 +100,7 @@ var Servico = function (config) {
   var data = (config || {});
   this.id = id('servico');
 
-  var validaIdJaExistente = _.trim(data.nome) ? _.noop : v.idUnico;
+  var validaIdJaExistente = routeUtils.ehNovo() ? v.idUnico : _.noop;
 
   this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto, validaIdJaExistente);
   this.sigla = v.prop(data.sigla || '', v.maximo(15));

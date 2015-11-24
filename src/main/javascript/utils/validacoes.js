@@ -52,7 +52,6 @@ var valida = function (obj) {
       var erro = obj.valida();
       return (_.isUndefined(erro) || _.compact(erro).length === 0) && valida(obj());
     }
-
     return valida(obj());
   }
 
