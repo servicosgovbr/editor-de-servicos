@@ -39,17 +39,17 @@ public class FormularioUsuario {
     @Valid
     CamposServidor camposServidor = new CamposServidor();
 
-    @NotBlank(message = "SIORG: " + CAMPO_OBRIGATORIO)
+    @NotBlank(message = "Orgão: " + CAMPO_OBRIGATORIO)
     String siorg;
 
     @NotBlank(message = "Nome Completo: " + CAMPO_OBRIGATORIO)
     String nome;
 
-    @NotBlank(message = "Email Primario: " + CAMPO_OBRIGATORIO)
-    @Email(message = "Email Primario: " + EMAIL_INVALIDO)
+    @NotBlank(message = "Email Primário: " + CAMPO_OBRIGATORIO)
+    @Email(message = "Email Primário: " + EMAIL_INVALIDO)
     String emailPrimario;
 
-    @Email(message = "Email Secundario: " + EMAIL_INVALIDO)
+    @Email(message = "Email Secundário: " + EMAIL_INVALIDO)
     String emailSecundario;
 
     public String getSenha() {

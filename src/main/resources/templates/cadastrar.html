@@ -46,7 +46,7 @@
             <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
                    placeholder="email@instituicional.gov.br" th:class="${#fields.hasErrors('emailPrimario')}? erroCampo"/>
 
-            <h3 for="email_secundario">Email Secundário</h3>
+            <h3 class="opcional" for="email_secundario">Email Secundário</h3>
             <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email"
                    placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 
@@ -58,7 +58,7 @@
 
             <div id="siorg-select"></div>
 
-            <h3 for="siape">SIAPE</h3>
+            <h3 for="siape" class="opcional">SIAPE</h3>
             <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
 
             <h3 for="papel">Papel</h3>
