@@ -27,6 +27,7 @@ module.exports = {
 
     this.onClick = function () {
       this.despublicando(true);
+      m.redraw();
       return promise.onSuccOrError(this.despublicar(), _.bind(function () {
         this.despublicando(false);
         m.redraw();
