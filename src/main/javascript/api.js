@@ -57,6 +57,7 @@ module.exports = {
   },
 
   publicar: function (tipo, id, metadados) {
+    id = slugify(id);
     return request({
       method: 'PUT',
       background: true,
@@ -85,8 +86,9 @@ module.exports = {
     });
   },
 
-  despublicar: function (id, metadados) {
-    var url = '/editar/api/pagina/servico/' + id + '/despublicar';
+  despublicar: function (tipo, id, metadados) {
+    id = slugify(id);
+    var url = '/editar/api/pagina/' + tipo + '/' + id + '/despublicar';
     return request({
       method: 'POST',
       background: true,

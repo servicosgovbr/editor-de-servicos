@@ -41,8 +41,7 @@ var etapas = function (lista, ctrl) {
   });
 };
 
-
-module.exports = {
+var menu = {
   controller: function (args) {
     this.servico = args.servico;
     this.remover = function (i) {
@@ -58,16 +57,27 @@ module.exports = {
       }.bind(this));
     };
   },
-
   view: function (ctrl, args) {
+    return m('ul', [
+      item('Dados básicos'),
+      item('Solicitantes'),
+      item('Etapas do Serviço', m('ul', etapas(ctrl.servico().etapas(), ctrl))),
+      item('Outras Informações')
+    ]);
+  }
+};
+
+module.exports = {
+  view: function (ctrl, args) {
+    var menuConfig = args.menuConfig;
+    var menuComponente = menuConfig ? m.component(menu, menuConfig) : '';
+
+    var despublicarConfig = args.despublicarConfig;
+    var despublicarComponente = despublicarConfig ? m.component(require('componentes/menu/despublicar-button'), despublicarConfig) : '';
+
     return m('nav#menu-lateral', [
-      m('ul', [
-        item('Dados básicos'),
-        item('Solicitantes'),
-        item('Etapas do Serviço', m('ul', etapas(ctrl.servico().etapas(), ctrl))),
-        item('Outras Informações'),
-        m.component(require('componentes/menu/despublicar-button'), args),
-      ]),
+      menuComponente,
+      despublicarComponente
     ]);
   }
 };

@@ -8,6 +8,7 @@ var carregarPagina = require('xml/carregar').carregarOrgao;
 var salvarOrgao = require('xml/salvar').salvarOrgao;
 var publicarOrgao = require('xml/publicar').publicarOrgao;
 var descartarOrgao = require('xml/descartar').descartarOrgao;
+var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
 
 function ehNovo() {
@@ -46,6 +47,10 @@ module.exports = {
     this.descartar = function () {
       return descartarOrgao(this.pagina(), this.cabecalho.metadados)
         .then(this._onOp);
+    };
+
+    this.despublicar = function () {
+      return despublicar('orgao', this.pagina().url(), this.cabecalho.metadados);
     };
   },
 
@@ -89,6 +94,14 @@ module.exports = {
         publicar: _.bind(ctrl.publicar, ctrl),
         descartar: _.bind(ctrl.descartar, ctrl),
         cabecalho: ctrl.cabecalho
+      },
+
+      menuLateralConfig: {
+        despublicarConfig: {
+          tipo: 'orgao',
+          despublicar: _.bind(ctrl.despublicar, ctrl),
+          metadados: ctrl.cabecalho.metadados()
+        }
       },
 
       componentes: [

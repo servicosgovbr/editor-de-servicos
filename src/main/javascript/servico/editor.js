@@ -4,7 +4,7 @@ var CabecalhoModel = require('cabecalho/cabecalho-model');
 var slugify = require('slugify');
 var salvarServico = require('xml/salvar').salvarServico;
 var publicarServico = require('xml/publicar').publicarServico;
-var descartarServico = require('xml/descartar');
+var descartarServico = require('xml/descartar').descartarServico;
 var despublicarServico = require('api').despublicar;
 var servicoEmEdicao = require('servico/servico-em-edicao');
 
@@ -51,7 +51,7 @@ module.exports = {
     };
 
     this.despublicar = function () {
-      return despublicarServico(idServico(), this.cabecalho.metadados);
+      return despublicarServico('servico', idServico(), this.cabecalho.metadados);
     };
 
     this.visualizar = function () {
@@ -96,11 +96,14 @@ module.exports = {
           descartar: _.bind(ctrl.descartar, ctrl),
           cabecalho: ctrl.cabecalho
         }),
-        m.component(require('componentes/menu/menu-lateral'), _.merge(binding, {
-          despublicar: _.bind(ctrl.despublicar, ctrl),
-          metadados: ctrl.cabecalho.metadados()
-        })),
-
+        m.component(require('componentes/menu/menu-lateral'), {
+          menuConfig: binding,
+          despublicarConfig: {
+            tipo: 'servico',
+            despublicar: _.bind(ctrl.despublicar, ctrl),
+            metadados: ctrl.cabecalho.metadados()
+          }
+        }),
         m('#servico', m('.scroll', [
           m.component(require('servico/dados-basicos/dados-basicos'), binding),
           m.component(require('servico/solicitantes/solicitantes'), binding),

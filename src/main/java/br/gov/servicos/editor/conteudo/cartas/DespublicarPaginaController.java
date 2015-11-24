@@ -13,31 +13,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.conteudo.TipoPagina.fromNome;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class DespublicarCartaController {
+class DespublicarPaginaController {
 
-    private ConteudoVersionadoFactory factory;
+    ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
-    public DespublicarCartaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
+    public DespublicarPaginaController(ConteudoVersionadoFactory factory, UserProfiles userProfiles) {
         this.factory = factory;
         this.userProfiles = userProfiles;
     }
 
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}/despublicar", method = POST)
-    ResponseEntity despublicar(@PathVariable("id") String id) throws ConteudoInexistenteException {
-        ConteudoVersionado carta = factory.pagina(id, SERVICO);
-        if (!carta.existe()) {
-            throw new ConteudoInexistenteException(carta);
+    @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}/despublicar", method = POST)
+    ResponseEntity despublicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException {
+        ConteudoVersionado conteudoVersionado = factory.pagina(id, fromNome(tipo));
+        if (!conteudoVersionado.existe()) {
+            throw new ConteudoInexistenteException(conteudoVersionado);
         }
-        carta.despublicarAlteracoes(userProfiles.get());
+        conteudoVersionado.despublicarAlteracoes(userProfiles.get());
 
-        return new ResponseEntity(MetadadosUtils.metadados(carta), HttpStatus.OK);
+        return new ResponseEntity(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
     }
-
 }

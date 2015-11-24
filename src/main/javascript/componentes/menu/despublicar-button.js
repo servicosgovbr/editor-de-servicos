@@ -11,10 +11,10 @@ function botaoQueEspera(opts) {
   }, opts.espera ? [m('i.fa.fa-spin.fa-spinner'), m.trust('&nbsp;Despublicando...')] : [m('i.fa.fa-' + opts.icon), 'Despublicar']);
 }
 
-function urlInNewContext(contexto) {
+function urlInNewContext(tipo, contexto) {
   var parser = document.createElement('a');
   parser.href = window.location.href;
-  parser.pathname = '/servico/' + contexto;
+  parser.pathname = '/' + tipo + '/' + contexto;
   parser.search = '';
   parser.hash = '';
   return parser.href;
@@ -35,7 +35,9 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
+    var tipo = _.get(args, 'tipo');
     var publicado = _.get(args, 'metadados.publicado.revisao');
+
     return m('#secao-despublicar', [
       m('hr'),
       m('label', [
@@ -44,7 +46,7 @@ module.exports = {
           publicado ? m('span.publicado', 'publicado') : m('span.npublicado', 'despublicado')
         ]),
         publicado ? m('a', {
-          href: urlInNewContext(m.route.param('id')),
+          href: urlInNewContext(tipo, m.route.param('id')),
           target: '_blank'
         }, 'Acesse a versão no Portal') : ''
      ]),

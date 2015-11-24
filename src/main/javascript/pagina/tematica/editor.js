@@ -8,6 +8,7 @@ var carregarPagina = require('xml/carregar').carregarPaginaTematica;
 var salvarPagina = require('xml/salvar').salvarPaginaTematica;
 var publicarPagina = require('xml/publicar').publicarPaginaTematica;
 var descartarPagina = require('xml/descartar').descartarPaginaTematica;
+var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
 
 module.exports = {
@@ -42,6 +43,10 @@ module.exports = {
     this.descartar = function () {
       return descartarPagina(this.pagina(), this.cabecalho.metadados)
         .then(this._onOp);
+    };
+
+    this.despublicar = function () {
+      return despublicar('pagina-tematica', this.pagina().nome(), this.cabecalho.metadados);
     };
   },
 
@@ -85,6 +90,14 @@ module.exports = {
         publicar: _.bind(ctrl.publicar, ctrl),
         descartar: _.bind(ctrl.descartar, ctrl),
         cabecalho: ctrl.cabecalho
+      },
+
+      menuLateralConfig: {
+        despublicarConfig: {
+          tipo: 'pagina-tematica',
+          despublicar: _.bind(ctrl.despublicar, ctrl),
+          metadados: ctrl.cabecalho.metadados()
+        }
       },
 
       componentes: [
