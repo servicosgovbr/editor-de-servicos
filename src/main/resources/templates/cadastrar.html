@@ -61,12 +61,10 @@
             <h3 for="siape" class="opcional">SIAPE</h3>
             <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
 
-            <h3 for="papel">Papel</h3>
-            <select id="papel" name="papelId" th:field="*{papelId}">
-                <option th:each="papel : ${papeis}" th:value="${papel.id}" th:text="${papel.nome}"></option>
-            </select>
+            <h3 for="papel-select">Papel</h3>
+            <div id="papel-select"></div>
 
-            <label for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
+            <label class="checkbox" for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
 
             <button type="submit">
                 Cadastrar
@@ -79,7 +77,9 @@
 <script src="/editar/assets/app.js"></script>
 <script th:inline="javascript">
     var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
+    var papeis = /*[[${papeis}]]*/;
     require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
+    require('usuarios/papel')(m, papeis, 'papel-select');
     require('usuarios/cpf-mask')('cpf')
 </script>
 </body>
