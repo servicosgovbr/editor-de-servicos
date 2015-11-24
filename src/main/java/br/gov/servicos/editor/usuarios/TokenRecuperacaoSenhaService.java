@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 @Component
 public class TokenRecuperacaoSenhaService {
 
@@ -19,10 +22,13 @@ public class TokenRecuperacaoSenhaService {
     @Autowired
     private TokenRecuperacaoSenhaRepository repository;
 
+    private Clock clock = Clock.systemUTC();
+
     public String gerarParaUsuario(String cpf) {
         String token = geradorToken.gerar();
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
                                                             .withCpf(cpf)
+                                                            .withDataCriacao(LocalDateTime.now(clock))
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
         return token;

@@ -10,11 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TokenRecuperacaoSenhaRecuperacaoSenhaServiceTest {
+public class TokenRecuperacaoSenhaServiceTest {
 
     public static final String CPF = "12312312312";
     private static final String TOKEN = "token";
@@ -38,8 +39,10 @@ public class TokenRecuperacaoSenhaRecuperacaoSenhaServiceTest {
         when(passwordEncoder.encode(TOKEN)).thenReturn(ENCRYPTED_TOKEN);
         String token = tokenRecuperacaoSenhaService.gerarParaUsuario(CPF);
 
-        TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha().withToken(ENCRYPTED_TOKEN).withCpf(CPF);
-        verify(repository).save(expectedTokenRecuperacaoSenha);
+        TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha().
+                withToken(ENCRYPTED_TOKEN).
+                withCpf(CPF);
+        verify(repository).save(refEq(expectedTokenRecuperacaoSenha, "dataCriacao"));
         assertThat(token, equalTo(TOKEN));
     }
 

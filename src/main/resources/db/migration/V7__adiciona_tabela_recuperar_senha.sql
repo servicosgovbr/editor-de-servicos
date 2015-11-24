@@ -23,7 +23,7 @@ create table usuarios(
 create table tokens(
   cpf varchar(50) not null primary key,
   token varchar(100) not null,
-  data_criacao timestamp DEFAULT current_timestamp
+  data_criacao timestamp not null
 );
 
 INSERT INTO public.papeis (nome) VALUES ('ROLE_ADMIN');
