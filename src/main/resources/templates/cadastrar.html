@@ -56,7 +56,9 @@
             <h3 for="confirmar_senha">Confirme a Senha</h3>
             <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha.confirmacaoSenha')}? erroCampo"/>
 
-            <div id="siorg-select"></div>
+            <div th:class="${#fields.hasErrors('siorg')}? select2Erro">
+                <div id="siorg-select"></div>
+            </div>
 
             <h3 for="siape" class="opcional">SIAPE</h3>
             <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
