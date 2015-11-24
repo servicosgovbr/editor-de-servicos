@@ -79,7 +79,19 @@
   } 
 
   .erro {
-    color: #d00;
+    background: #ff5151;
+    padding: 10px 15px;
+    border-radius: 3px;
+  }
+
+  .erro p {
+    color: white;
+    text-align: left;
+    font-family: $openSansBold;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .info {
