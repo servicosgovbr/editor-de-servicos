@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Gerar Nova Senha</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+    </header>
+
+    <div style="padding-top: 100px">
+        <form th:action="@{/editar/recuperar-senha}" th:object="${formularioRecuperarSenha}" method="post">
+            <div th:if="${#fields.hasAnyErrors()}" class="erro">
+                <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+            </div>
+
+            <label for="cpf">CPF</label>
+            <input id="cpf" name="cpf" type="text" placeholder="___.___.___-__" required="required" autofocus="true"
+                   th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
+
+            <label for="senha">Senha</label>
+            <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
+                   th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+
+            <label for="confirmar_senha">Confirme a Senha</label>
+            <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
+                   th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+
+            <input type="hidden" name="token" th:value="${param.token}"/>
+            <button type="submit">
+                <i class="fa fa-sign-in"></i>&nbsp;
+                Salvar nova senha
+            </button>
+        </form>
+    </div>
+</div>
+<script src="/editar/assets/vendor.js"></script>
+<script src="/editar/assets/app.js"></script>
+<script th:inline="javascript">
+    require('usuarios/cpf-mask')('cpf')
+</script>
+</body>
+</html>

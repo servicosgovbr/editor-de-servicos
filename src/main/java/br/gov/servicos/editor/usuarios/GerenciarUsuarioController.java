@@ -62,7 +62,7 @@ public class GerenciarUsuarioController {
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario/{cpf}/recuperar-senha", method = POST)
-    public ModelAndView recuperarSenha(@PathVariable("cpf") String cpf) {
+    public ModelAndView requisitarTrocaSenha(@PathVariable("cpf") String cpf) {
         Usuario usuario = usuarioService.findByCpf(cpf);
         ModelMap model = new ModelMap();
         model.addAttribute("usuario", usuario);
@@ -70,6 +70,20 @@ public class GerenciarUsuarioController {
         return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
+    @RequestMapping("/editar/recuperar-senha")
+    public ModelAndView recuperacaoSenha(FormularioRecuperarSenha formularioRecuperarSenha) {
+        ModelMap model = new ModelMap();
+        model.addAttribute("formularioRecuperarSenha", formularioRecuperarSenha);
+        return new ModelAndView("recuperar-senha");
+    }
 
+    @RequestMapping(value = "/editar/recuperar-senha", method = POST)
+    public String recuperarSenha(@Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
+        if (!result.hasErrors()) {
+            return "redirect:/editar/autenticar?senhaAlterada";
+        } else {
+            return "recuperar-senha";
+        }
+    }
 
 }
