@@ -37,12 +37,10 @@
             </div>
 
             <h3 for="nome_completo">Nome Completo</h3>
-            <input id="nome_completo" name="nome" type="text" th:value="*{nome}" required="required"
-                   th:class="${#fields.hasErrors('nome')}? erroCampo" />
+            <input id="nome_completo" name="nome" type="text" th:value="*{nome}" autofocus="true" th:class="${#fields.hasErrors('nome')}? erroCampo" />
 
             <h3 for="cpf">CPF</h3>
-            <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="___.___.___-__" required="required" autofocus="true"
-                   th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
+            <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="___.___.___-__" th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
 
             <h3 for="email_primario">Email Primário</h3>
             <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
@@ -53,22 +51,18 @@
                    placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 
             <h3 for="senha">Senha</h3>
-            <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
-                   th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+            <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
             <h3 for="confirmar_senha">Confirme a Senha</h3>
-            <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
-                   th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+            <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
             <div id="siorg-select"></div>
 
             <h3 for="servidor">É servidor?</h3>
-            <input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox"
-                   th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
+            <input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
 
             <h3 for="siape">SIAPE</h3>
-            <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape"
-                   th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
+            <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
 
             <h3 for="papel">Papel</h3>
             <select id="papel" name="papelId" th:field="*{papelId}">
