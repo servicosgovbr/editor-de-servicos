@@ -50,6 +50,7 @@ public class RecuperacaoSenhaService {
 
         if(validator.isValid(formulario, token)) {
             usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
+            repository.delete(token.getId());
             return true;
         } else {
             return false;
