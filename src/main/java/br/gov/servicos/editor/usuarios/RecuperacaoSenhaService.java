@@ -25,9 +25,6 @@ public class RecuperacaoSenhaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private RecuperacaoSenhaValidator validator;
-
     private Clock clock = Clock.systemUTC();
 
     public String gerarTokenParaUsuario(String usuarioId) {
@@ -40,17 +37,12 @@ public class RecuperacaoSenhaService {
         return token;
     }
 
-    public boolean trocarSenha(FormularioRecuperarSenha formulario) {
+    public void trocarSenha(FormularioRecuperarSenha formulario) {
         Long usuarioId = formulario.getUsuarioId();
         TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
 
-        if(validator.isValid(formulario, token)) {
-            usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
-            repository.delete(token.getId());
-            return true;
-        } else {
-            return false;
-        }
+        usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
+        repository.delete(token.getId());
     }
 }
