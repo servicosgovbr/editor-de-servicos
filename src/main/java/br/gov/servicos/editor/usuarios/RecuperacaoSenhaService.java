@@ -30,9 +30,6 @@ public class RecuperacaoSenhaService {
 
     private Clock clock = Clock.systemUTC();
 
-
-
-
     public String gerarTokenParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
@@ -44,7 +41,7 @@ public class RecuperacaoSenhaService {
     }
 
     public boolean trocarSenha(FormularioRecuperarSenha formulario) {
-        Long usuarioId = valueOf(formulario.getUsuarioId());
+        Long usuarioId = formulario.getUsuarioId();
         TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
 

@@ -38,10 +38,13 @@ private static final String TOKEN = "token";
         token = new TokenRecuperacaoSenha()
                 .withToken(ENCRYPTED_TOKEN)
                 .withUsuario(usuario);
-        formulario = new FormularioRecuperarSenha()
+
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withCpf(CPF_FORMATADO)
-                .withToken(TOKEN)
-                .withUsuarioId(USUARIO_ID.toString());
+                .withUsuarioId(USUARIO_ID.toString())
+                .withToken(TOKEN);
+        formulario = new FormularioRecuperarSenha()
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
     }
 
     @Test

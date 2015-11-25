@@ -86,7 +86,10 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErros() {
-        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha().withUsuarioId(USUARIO_ID);
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
+                .withUsuarioId(USUARIO_ID);
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
         when(bindingResult.hasErrors()).thenReturn(false);
         controller.recuperarSenha(formulario, bindingResult);
         verify(tokenService).trocarSenha(formulario);

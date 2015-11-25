@@ -106,8 +106,10 @@ public class RecuperacaoSenhaServiceTest {
     }
 
     private FormularioRecuperarSenha criarFormulario(Long usuarioId, String senha) {
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
+                .withUsuarioId(usuarioId.toString());
         return new FormularioRecuperarSenha()
-                    .withUsuarioId(usuarioId.toString())
+                    .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha)
                     .withCamposSenha(new CamposSenha().withSenha(senha));
     }
 
