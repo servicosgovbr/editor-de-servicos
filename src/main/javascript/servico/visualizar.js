@@ -25,6 +25,7 @@ module.exports = {
                 m('#wrapper', [
                 m.component(require('cabecalho/cabecalho'), {
           metadados: true,
+          nomeDaPagina: ctrl.servico().nome(),
           logout: true,
           editar: _.bind(ctrl.editar, ctrl),
           cabecalho: ctrl.cabecalho

@@ -41,7 +41,7 @@ module.exports = {
     var setaVoltar = args.metadados || _.contains(paginasComVoltar, m.route()) ? m('i.fa.fa-arrow-left') : '';
 
     return m('header', [
-      m('', m('a[href=/editar]', m('h1', [setaVoltar, ' Editor de Serviços']))),
+      m('', m('a[href=/editar]', m('h1', [setaVoltar, ' Editor de Serviços'], m('span.nome-pagina', args.nomeDaPagina)))),
       logout(),
       metadados()
     ]);

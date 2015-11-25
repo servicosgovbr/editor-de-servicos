@@ -86,6 +86,7 @@ module.exports = {
       cabecalhoConfig: {
         metadados: true,
         logout: true,
+        nomeDaPagina: ctrl.pagina().nome() || 'Nova página temática',
         salvar: _.bind(ctrl.salvar, ctrl),
         publicar: _.bind(ctrl.publicar, ctrl),
         descartar: _.bind(ctrl.descartar, ctrl),

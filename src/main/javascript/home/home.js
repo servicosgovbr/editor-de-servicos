@@ -20,6 +20,7 @@ module.exports = {
       m('#wrapper', [
         m.component(require('cabecalho/cabecalho'), {
           metadados: false,
+          nomeDaPagina: 'Lista de páginas',
           logout: true
         }),
 

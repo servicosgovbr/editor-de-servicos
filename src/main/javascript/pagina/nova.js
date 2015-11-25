@@ -21,6 +21,7 @@ module.exports = {
 
       cabecalhoConfig: {
         metadados: false,
+        nomeDaPagina: 'Nova página',
         logout: true,
         salvar: _.noop,
         cabecalho: args.cabecalho

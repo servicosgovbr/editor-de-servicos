@@ -83,6 +83,7 @@ module.exports = {
         m.component(require('cabecalho/cabecalho'), {
           metadados: true,
           logout: true,
+          nomeDaPagina: ctrl.servico().nome() || 'Novo serviço',
           salvar: _.bind(ctrl.salvar, ctrl),
           publicar: _.bind(ctrl.publicar, ctrl),
           visualizar: _.bind(ctrl.visualizar, ctrl),

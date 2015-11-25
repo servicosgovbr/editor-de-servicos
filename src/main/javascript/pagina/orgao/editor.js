@@ -90,6 +90,7 @@ module.exports = {
       cabecalhoConfig: {
         metadados: true,
         logout: true,
+        nomeDaPagina: ctrl.pagina().nome() || 'Novo orgão',
         salvar: _.bind(ctrl.salvar, ctrl),
         publicar: _.bind(ctrl.publicar, ctrl),
         descartar: _.bind(ctrl.descartar, ctrl),
