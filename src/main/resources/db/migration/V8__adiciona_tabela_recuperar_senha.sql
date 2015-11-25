@@ -22,7 +22,8 @@ create table usuarios(
 );
 
 create table tokens(
-  usuario_id INTEGER not null primary key,
+  id SERIAL PRIMARY KEY,
+  usuario_id INTEGER not null,
   token varchar(100) not null,
   data_criacao timestamp not null
 );

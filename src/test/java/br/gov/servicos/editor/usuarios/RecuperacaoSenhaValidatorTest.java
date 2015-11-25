@@ -26,16 +26,18 @@ private static final String TOKEN = "token";
 
     @InjectMocks
     RecuperacaoSenhaValidator validator;
-    private Usuario usuario;
     private TokenRecuperacaoSenha token;
     private FormularioRecuperarSenha formulario;
+    private Usuario usuario;
 
     @Before
     public void setUp() {
-        usuario = new Usuario().withCpf(CPF);
-        token = new TokenRecuperacaoSenha().
-                withToken(ENCRYPTED_TOKEN).
-                withUsuarioId(USUARIO_ID);
+        usuario = new Usuario()
+                .withCpf(CPF)
+                .withId(USUARIO_ID);
+        token = new TokenRecuperacaoSenha()
+                .withToken(ENCRYPTED_TOKEN)
+                .withUsuario(usuario);
         formulario = new FormularioRecuperarSenha()
                 .withCpf(CPF_FORMATADO)
                 .withToken(TOKEN)
@@ -45,19 +47,20 @@ private static final String TOKEN = "token";
     @Test
     public void deveValidarSeUsuarioIdCpfETokenForemCompativeis() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
-        assertTrue(validator.isValid(formulario, token, usuario));
+        assertTrue(validator.isValid(formulario, token));
     }
 
     @Test
     public void deveInvalidarSeCpfEstiverIncorreto() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
         Usuario usuarioComCpfDiferente = usuario.withCpf(OUTRO_CPF);
-        assertFalse(validator.isValid(formulario, token, usuarioComCpfDiferente));
+        TokenRecuperacaoSenha tokenComUsuarioDeCpfDiferente = token.withUsuario(usuarioComCpfDiferente);
+        assertFalse(validator.isValid(formulario, tokenComUsuarioDeCpfDiferente));
     }
 
     @Test
     public void deveInvalidarSeTokenEstiverIncorreto() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(false);
-        assertFalse(validator.isValid(formulario, token, usuario));
+        assertFalse(validator.isValid(formulario, token));
     }
 }

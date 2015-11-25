@@ -58,7 +58,7 @@ public class RecuperacaoSenhaServiceTest {
 
         TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha().
                 withToken(ENCRYPTED_TOKEN).
-                withUsuarioId(USUARIO_ID);
+                withUsuario(new Usuario().withId(USUARIO_ID));
         verify(repository).save(refEq(expectedTokenRecuperacaoSenha, "dataCriacao"));
         assertThat(token, equalTo(TOKEN));
     }
@@ -66,13 +66,12 @@ public class RecuperacaoSenhaServiceTest {
     @Test
     public void deveSalvarSenhaSeTokenForValido() {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha();
         Usuario usuario = new Usuario();
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario);
 
-        when(usuarioRepository.findById(USUARIO_ID)).thenReturn(usuario);
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
 
-        when(validator.isValid(formulario, token, usuario)).thenReturn(true);
+        when(validator.isValid(formulario, token)).thenReturn(true);
 
         assertTrue(recuperacaoSenhaService.trocarSenha(formulario));
         verify(usuarioRepository).save(usuario.withSenha(ENCRYPTED_SENHA));
@@ -81,13 +80,12 @@ public class RecuperacaoSenhaServiceTest {
     @Test
     public void naoDeveSalvarSenhaSeTokenForValido() {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha();
         Usuario usuario = new Usuario();
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario);
 
-        when(usuarioRepository.findById(USUARIO_ID)).thenReturn(usuario);
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
 
-        when(validator.isValid(formulario, token, usuario)).thenReturn(false);
+        when(validator.isValid(formulario, token)).thenReturn(false);
 
         assertFalse(recuperacaoSenhaService.trocarSenha(formulario));
         verify(usuarioRepository, never()).save(usuario.withSenha(ENCRYPTED_SENHA));

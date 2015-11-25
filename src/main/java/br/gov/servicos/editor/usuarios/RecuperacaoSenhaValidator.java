@@ -13,7 +13,8 @@ public class RecuperacaoSenhaValidator {
 
     private CPFFormatter cpfFormatter = new CPFFormatter();
 
-    public boolean isValid(FormularioRecuperarSenha formulario, TokenRecuperacaoSenha token, Usuario usuario) {
+    public boolean isValid(FormularioRecuperarSenha formulario, TokenRecuperacaoSenha token) {
+        Usuario usuario = token.getUsuario();
         return usuario.getCpf().equals(cpfFormatter.unformat(formulario.getCpf())) &&
                 passwordEncoder.matches(formulario.getToken(), token.getToken());
     }

@@ -36,7 +36,7 @@ public class RecuperacaoSenhaService {
     public String gerarTokenParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
-                                                            .withUsuarioId(valueOf(usuarioId))
+                                                            .withUsuario(new Usuario().withId(valueOf(usuarioId)))
                                                             .withDataCriacao(LocalDateTime.now(clock))
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
@@ -46,9 +46,9 @@ public class RecuperacaoSenhaService {
     public boolean trocarSenha(FormularioRecuperarSenha formulario) {
         Long usuarioId = valueOf(formulario.getUsuarioId());
         TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
-        Usuario usuario = usuarioRepository.findById(usuarioId);
+        Usuario usuario = token.getUsuario();
 
-        if(validator.isValid(formulario, token, usuario)) {
+        if(validator.isValid(formulario, token)) {
             usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
             return true;
         } else {

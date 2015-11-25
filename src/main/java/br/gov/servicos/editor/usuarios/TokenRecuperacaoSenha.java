@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -24,13 +21,17 @@ import java.time.LocalDateTime;
 public class TokenRecuperacaoSenha implements Serializable {
 
     @Id
-    @Column(nullable = false)
-    private Long usuarioId;
+    @Column(unique = true)
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="usuario_id")
+    private Usuario usuario;
 
     @Column(nullable = false)
     private String token;
 
     @Column
     private LocalDateTime dataCriacao;
-
 }

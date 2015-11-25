@@ -72,16 +72,16 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void mostraInformacoesDoUsuarioNasIntrucoesDeRecuperarSenhas() {
-        when(usuarioService.findByCpf(CPF)).thenReturn(USUARIO);
-        ModelAndView view = controller.requisitarTrocaSenha(CPF);
+        when(usuarioService.findById(USUARIO_ID)).thenReturn(USUARIO);
+        ModelAndView view = controller.requisitarTrocaSenha(USUARIO_ID);
         assertThat(view.getModel().get("usuario"), equalTo(USUARIO));
     }
 
     @Test
-    public void mostrarTokenNasIntrucoesDeRecuperarSenhas() {
-        when(tokenService.gerarTokenParaUsuario(CPF)).thenReturn(TOKEN);
-        ModelAndView view = controller.requisitarTrocaSenha(CPF);
-        assertThat(view.getModel().get("token"), equalTo(TOKEN));
+    public void mostrarLinkComTokenNasIntrucoesDeRecuperarSenhas() {
+        when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
+        ModelAndView view = controller.requisitarTrocaSenha(USUARIO_ID);
+        assertThat(view.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+"&usuarioId="+USUARIO_ID));
     }
 
     @Test
