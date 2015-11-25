@@ -25,7 +25,7 @@ module.exports = {
 
         m('#bem-vindo', [
           m('div.busca', [
-            m('input[type=search][placeholder="Filtre os resultados por serviços, órgãos, áreas de interesse e palavras chave"]', {
+            m('input[type=search][placeholder="Filtre os resultados por serviços, órgãos e palavras chave"]', {
               oninput: m.withAttr('value', ctrl.filtro)
             }),
             m('label', [
