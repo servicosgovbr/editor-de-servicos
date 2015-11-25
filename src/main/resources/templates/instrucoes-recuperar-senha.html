@@ -25,10 +25,21 @@
         </form>
     </header>
 
-    <div id="informacoes" style="padding-top: 100px">
-        <p th:text="${usuario.nome}"></p>
-        <p th:text="${usuario.emailPrimario}"></p>
-        <p th:text="${link}"></p>
+    <div id="informacoes">
+        <a href="/editar/usuarios"><i class="fa fa-arrow-left"></i> Voltar para lista de usuários</a>
+        <fieldset>
+            <h3>Passo-a-passo para recuperação de senha</h3>
+            <p>1. Copie o link para que o usuário possa refazer sua senha</p>
+            <p>2. Envie um email para o usuário com o link abaixo, para que ele ou ela possa criar uma nova senha</p>
+        </fieldset>
+        <fieldset>
+            <h3>Nome</h3>
+            <p th:text="${usuario.nome}"></p>
+            <h3>E-Mail</h3>
+            <p th:text="${usuario.emailPrimario}"></p>
+            <h3>Link para recuperação de senha</h3>
+            <input type="text" th:value="${'http://www.servicos.gov.br' + link}"></input>
+        </fieldset>
     </div>
 </div>
 </body>
