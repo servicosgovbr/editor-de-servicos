@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TokenCpfValido {
-    String message() default "O CPF informado não é compatível com o cadastrado";
+    String message() default "O CPF informado não é compatível com o cadastrado.";
 
     Class<?>[] groups() default {};
 

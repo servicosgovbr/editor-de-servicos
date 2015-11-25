@@ -9,11 +9,14 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
 
 import static java.lang.Long.valueOf;
 
 @Component
 public class RecuperacaoSenhaValidator implements ConstraintValidator<TokenCpfValido, CamposVerificacaoRecuperarSenha> {
+
+    public final static String NOME = "TokenCpfValido";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -31,6 +34,7 @@ public class RecuperacaoSenhaValidator implements ConstraintValidator<TokenCpfVa
     public boolean isValid(CamposVerificacaoRecuperarSenha value, ConstraintValidatorContext context) {
         TokenRecuperacaoSenha token = repository.findByUsuarioId(valueOf(value.getUsuarioId()));
         Usuario usuario = token.getUsuario();
+
         return usuario.getCpf().equals(cpfFormatter.unformat(value.getCpf())) &&
                 passwordEncoder.matches(value.getToken(), token.getToken());
     }

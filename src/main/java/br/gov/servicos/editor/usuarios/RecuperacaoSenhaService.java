@@ -32,6 +32,7 @@ public class RecuperacaoSenhaService {
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
                                                             .withUsuario(new Usuario().withId(valueOf(usuarioId)))
                                                             .withDataCriacao(LocalDateTime.now(clock))
+                                                            .withTentativas(0)
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
         return token;
@@ -44,5 +45,10 @@ public class RecuperacaoSenhaService {
 
         usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
         repository.delete(token.getId());
+    }
+
+    public void falhaNaVerificacao(Long usuarioId) {
+        TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
+        repository.save(token.withTentativas(token.getTentativas() + 1));
     }
 }

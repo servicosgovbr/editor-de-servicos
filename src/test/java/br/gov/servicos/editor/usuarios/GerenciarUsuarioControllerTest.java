@@ -7,8 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
 
+import static java.lang.Long.valueOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
@@ -85,7 +87,7 @@ public class GerenciarUsuarioControllerTest {
     }
 
     @Test
-    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErros() {
+    public void deveSalvarNovaSenhaSeFormularioNãoPossuirErros() {
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withUsuarioId(USUARIO_ID);
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
@@ -93,6 +95,31 @@ public class GerenciarUsuarioControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         controller.recuperarSenha(formulario, bindingResult);
         verify(tokenService).trocarSenha(formulario);
+    }
+
+    @Test
+    public void deveNotificarTokenDeFalhaNaTentativaDeTrocarSenha() {
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
+                .withUsuarioId(USUARIO_ID);
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        controller.recuperarSenha(formulario, bindingResult);
+        verify(tokenService).falhaNaVerificacao(valueOf(USUARIO_ID));
+    }
+
+    @Test
+    public void naoDeveNotificarTokenSeErroNaoForRelactionadoAVerificacaoCpfToken() {
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
+                .withUsuarioId(USUARIO_ID);
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+        when(bindingResult.hasErrors()).thenReturn(true);
+        FieldError fieldError = mock(FieldError.class);
+        when(fieldError.getCode()).thenReturn("OutraValidacao");
+        when(bindingResult.getFieldError(any())).thenReturn(fieldError);
+        controller.recuperarSenha(formulario, bindingResult);
+        verify(tokenService, never()).falhaNaVerificacao(valueOf(USUARIO_ID));
     }
 
 }

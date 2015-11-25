@@ -84,8 +84,16 @@ public class GerenciarUsuarioController {
             tokenService.trocarSenha(formularioRecuperarSenha);
             return "redirect:/editar/autenticar?senhaAlterada";
         } else {
+            if(existefalhaNaVerificacaoDoCpfEToken(result)) {
+                tokenService.falhaNaVerificacao(formularioRecuperarSenha.getUsuarioId());
+            }
             return "recuperar-senha";
         }
+    }
+
+    private boolean existefalhaNaVerificacaoDoCpfEToken(BindingResult result) {
+        return result.hasFieldErrors(CamposVerificacaoRecuperarSenha.NOME) &&
+                result.getFieldError(CamposVerificacaoRecuperarSenha.NOME).getCode().equals(RecuperacaoSenhaValidator.NOME);
     }
 
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {

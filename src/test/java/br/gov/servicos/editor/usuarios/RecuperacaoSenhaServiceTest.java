@@ -53,9 +53,10 @@ public class RecuperacaoSenhaServiceTest {
         when(geradorToken.gerar()).thenReturn(TOKEN);
         String token = recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
 
-        TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha().
-                withToken(ENCRYPTED_TOKEN).
-                withUsuario(new Usuario().withId(USUARIO_ID));
+        TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha()
+                .withToken(ENCRYPTED_TOKEN)
+                .withUsuario(new Usuario().withId(USUARIO_ID))
+                .withTentativas(0);
         verify(repository).save(refEq(expectedTokenRecuperacaoSenha, "dataCriacao"));
         assertThat(token, equalTo(TOKEN));
     }
@@ -73,6 +74,23 @@ public class RecuperacaoSenhaServiceTest {
 
         verify(usuarioRepository).save(usuario.withSenha(ENCRYPTED_SENHA));
         verify(repository).delete(TOKEN_ID);
+    }
+
+    @Test
+    public void deveIncrementarNumeroDeTentativasAposFalha() {
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
+                .withUsuario(new Usuario().withId(USUARIO_ID))
+                .withTentativas(0);
+
+        TokenRecuperacaoSenha expectedToken = new TokenRecuperacaoSenha()
+                .withUsuario(new Usuario().withId(USUARIO_ID))
+                .withTentativas(1);
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
+
+        recuperacaoSenhaService.falhaNaVerificacao(USUARIO_ID);
+
+        verify(repository).save(expectedToken);
+
     }
 
 

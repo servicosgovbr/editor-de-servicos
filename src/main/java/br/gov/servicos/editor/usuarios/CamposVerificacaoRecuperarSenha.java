@@ -16,7 +16,8 @@ import static lombok.AccessLevel.PRIVATE;
 @EqualsAndHashCode
 
 public class CamposVerificacaoRecuperarSenha {
-    public static final String CAMPO_OBRIGATORIO = "campo obrigatório";
+    public static final String NOME = "camposVerificacaoRecuperarSenha";
+    private static final String CAMPO_OBRIGATORIO = "campo obrigatório";
 
     @NotBlank(message = "CPF: " + CAMPO_OBRIGATORIO)
     String cpf;

@@ -34,4 +34,7 @@ public class TokenRecuperacaoSenha implements Serializable {
 
     @Column
     private LocalDateTime dataCriacao;
+
+    @Column
+    private Integer tentativas;
 }
