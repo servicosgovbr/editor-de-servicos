@@ -15,13 +15,18 @@
     <header>
         <div>
             <a href="/editar">
-                <h1>Editor de Serviços</h1>
+                <h1>
+                    <i class="fa fa-arrow-left"></i>
+                    Editor de Serviços
+                    <span class="nome-pagina">Lista usuários</span>
+                </h1>
             </a>
         </div>
         <div class="metadados">&nbsp;</div>
         <span></span>
         <form id="logout" th:action="@{/editar/sair}" method="post">
-            <button type="submit">Sair</button>
+            <button type="submit">&nbsp; Sair &nbsp;
+            <i class="fa fa-sign-out"></i></button>
         </form>
     </header>
 
