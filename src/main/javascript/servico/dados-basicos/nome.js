@@ -22,6 +22,7 @@ module.exports = {
 
     this.renomearServico = function (novoNome) {
       this.renomeando(true);
+      m.redraw();
       var servico = this.servico();
       var idAtual = slugify(servico.nome());
       m.request({
@@ -55,6 +56,7 @@ module.exports = {
     })) : m('div', [
             m('span', servico.nome()),
             m('button.renomear', {
+        disabled: ctrl.renomeando(),
         style: {
           float: 'right'
         },
@@ -82,8 +84,7 @@ module.exports = {
           };
           renomear();
         }
-      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner'), ' Alterando nome...'] : [m('i.fa.fa-pencil'),
-                ' Alterar nome'])
+      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner'), ' Alterando nome...'] : [m('i.fa.fa-pencil'), ' Alterar nome'])
         ]);
 
     return m('fieldset#nome', [
