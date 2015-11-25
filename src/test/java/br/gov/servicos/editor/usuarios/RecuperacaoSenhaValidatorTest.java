@@ -14,10 +14,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecuperacaoSenhaValidatorTest {
-    private static final String TOKEN = "token";
+private static final String TOKEN = "token";
     private static final java.lang.String ENCRYPTED_TOKEN = "encrypted";
     private static final Long USUARIO_ID = 12341234L;
     private static final String CPF = "12312312312";
+    private static final String CPF_FORMATADO = "123.123.123-12";
     private static final String OUTRO_CPF = "9999999999";
 
     @Mock
@@ -36,7 +37,7 @@ public class RecuperacaoSenhaValidatorTest {
                 withToken(ENCRYPTED_TOKEN).
                 withUsuarioId(USUARIO_ID);
         formulario = new FormularioRecuperarSenha()
-                .withCpf(CPF)
+                .withCpf(CPF_FORMATADO)
                 .withToken(TOKEN)
                 .withUsuarioId(USUARIO_ID.toString());
     }

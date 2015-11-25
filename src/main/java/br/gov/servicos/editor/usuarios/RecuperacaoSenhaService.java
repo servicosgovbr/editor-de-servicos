@@ -25,8 +25,12 @@ public class RecuperacaoSenhaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    private Clock clock = Clock.systemUTC();
+    @Autowired
     private RecuperacaoSenhaValidator validator;
+
+    private Clock clock = Clock.systemUTC();
+
+
 
 
     public String gerarTokenParaUsuario(String usuarioId) {

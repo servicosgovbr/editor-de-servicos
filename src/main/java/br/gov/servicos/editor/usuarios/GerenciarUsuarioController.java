@@ -81,6 +81,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/recuperar-senha", method = POST)
     public String recuperarSenha(@Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
         if (!result.hasErrors()) {
+            tokenService.trocarSenha(formularioRecuperarSenha);
             return "redirect:/editar/autenticar?senhaAlterada";
         } else {
             return "recuperar-senha";

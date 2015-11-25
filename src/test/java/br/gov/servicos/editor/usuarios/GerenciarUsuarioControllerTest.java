@@ -18,6 +18,7 @@ public class GerenciarUsuarioControllerTest {
 
     public static final String CPF = "12312312319";
     private static final String TOKEN = "token";
+    private static final String USUARIO_ID = "123412341234";
     private FormularioUsuario FORM_USUARIO = new FormularioUsuario();
     private Usuario USUARIO = new Usuario().withCpf(CPF);
 
@@ -81,6 +82,14 @@ public class GerenciarUsuarioControllerTest {
         when(tokenService.gerarTokenParaUsuario(CPF)).thenReturn(TOKEN);
         ModelAndView view = controller.requisitarTrocaSenha(CPF);
         assertThat(view.getModel().get("token"), equalTo(TOKEN));
+    }
+
+    @Test
+    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErros() {
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha().withUsuarioId(USUARIO_ID);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        controller.recuperarSenha(formulario, bindingResult);
+        verify(tokenService).trocarSenha(formulario);
     }
 
 }
