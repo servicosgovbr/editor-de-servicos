@@ -18,6 +18,6 @@ public class CpfUnicoValidator implements ConstraintValidator<CpfUnico, String> 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return !repository.exists(value);
+        return repository.findByCpf(value) == null;
     }
 }

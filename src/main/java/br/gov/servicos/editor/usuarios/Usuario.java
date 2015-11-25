@@ -3,6 +3,7 @@ package br.gov.servicos.editor.usuarios;
 
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
@@ -19,9 +20,14 @@ import java.util.Collection;
 @AllArgsConstructor
 @Wither
 @Table(name="USUARIOS")
+@EqualsAndHashCode
 public class Usuario implements Serializable, UserDetails{
 
     @Id
+    @Column(unique = true)
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+
     @Column(nullable = false)
     private String cpf;
 

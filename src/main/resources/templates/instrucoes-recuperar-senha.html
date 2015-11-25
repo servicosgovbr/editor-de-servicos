@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Intruções Recuperação de Senha</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+        <form id="logout" th:action="@{/editar/sair}" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </header>
+
+    <div id="informacoes" style="padding-top: 100px">
+        <p th:text="${usuario.nome}"></p>
+        <p th:text="${usuario.emailPrimario}"></p>
+        <p th:text="${link}"></p>
+    </div>
+</div>
+</body>
+</html>

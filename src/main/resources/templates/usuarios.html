@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Gerenciar Usuarios</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+        <form id="logout" th:action="@{/editar/sair}" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </header>
+
+    <div id="usuarios" style="padding-top: 100px">
+        <div th:each="usuario : ${usuarios}">
+            <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
+                <div th:text="${usuario.nome}"></div>
+                <button type="submit">recuperar senha</button>
+            </form>
+        </div>
+        <a href="/editar/usuarios/usuario">criar</a>
+    </div>
+</div>
+</body>
+</html>
