@@ -32,6 +32,13 @@ public class TokenRecuperacaoSenha implements Serializable {
     @Column(nullable = false)
     private String token;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime dataCriacao;
+
+    @Column(nullable = false)
+    private Integer tentativasSobrando;
+
+    public TokenRecuperacaoSenha decrementarTentativasSobrando() {
+        return this.tentativasSobrando == 0 ? this : this.withTentativasSobrando(this.tentativasSobrando-1);
+    }
 }

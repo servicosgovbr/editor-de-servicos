@@ -33,7 +33,7 @@
             </div>
 
             <label for="cpf">CPF</label>
-            <input id="cpf" name="cpf" type="text" placeholder="___.___.___-__" required="required" autofocus="true"
+            <input id="cpf" name="camposVerificacaoRecuperarSenha.cpf" type="text" placeholder="___.___.___-__" required="required" autofocus="true"
                    th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
 
             <label for="senha">Senha</label>
@@ -44,8 +44,8 @@
             <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
                    th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
-            <input type="hidden" name="usuarioId" th:value="${param.usuarioId[0]}"/>
-            <input type="hidden" name="token" th:value="${param.token[0]}"/>
+            <input type="hidden" name="camposVerificacaoRecuperarSenha.usuarioId" th:value="${param.usuarioId} ? ${param.usuarioId[0]} : *{camposVerificacaoRecuperarSenha.usuarioId}"/>
+            <input type="hidden" name="camposVerificacaoRecuperarSenha.token" th:value="${param.token} ? ${param.token[0]} : *{camposVerificacaoRecuperarSenha.token}"/>
             <button type="submit">
                 <i class="fa fa-sign-in"></i>&nbsp;
                 Salvar nova senha

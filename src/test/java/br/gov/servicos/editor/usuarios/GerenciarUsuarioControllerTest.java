@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -85,11 +86,58 @@ public class GerenciarUsuarioControllerTest {
     }
 
     @Test
-    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErros() {
-        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha().withUsuarioId(USUARIO_ID);
+    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErrosBasicos() throws TokenInvalido {
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
+                .withUsuarioId(USUARIO_ID);
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+
         when(bindingResult.hasErrors()).thenReturn(false);
         controller.recuperarSenha(formulario, bindingResult);
         verify(tokenService).trocarSenha(formulario);
+    }
+
+    @Test
+    public void deveAdicionarErroAResultBidingCasoTokenEstejaInvalido() throws TokenInvalido {
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        int tentativasSobrando = 3;
+        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+
+        String endereco = controller.recuperarSenha(formulario, bindingResult);
+
+        FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                "O CPF informado não é compatível com o cadastrado. Você possui mais "+tentativasSobrando+" tentativas.");
+        verify(bindingResult).addError(fieldError);
+        assertThat(endereco, equalTo("recuperar-senha"));
+    }
+
+    @Test
+    public void deveAdicionarErroDeTokenBloqueadoAoResultBidingCasoTokenEstejaUltrapassadoNumeroDeTentativas() throws TokenInvalido {
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        int tentativasSobrando = 0;
+        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+
+        controller.recuperarSenha(formulario, bindingResult);
+
+        FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
+                        "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..");
+        verify(bindingResult).addError(fieldError);
+    }
+
+    @Test
+    public void deveAdicionarErroDeTokenExpiraCasoTokenEstejaExpirado() throws TokenInvalido {
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new TokenExpirado()).when(tokenService).trocarSenha(formulario);
+
+        controller.recuperarSenha(formulario, bindingResult);
+
+        FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                "Este link não é válido. Solicite um novo link para alterar sua senha.");
+        verify(bindingResult).addError(fieldError);
     }
 
 }

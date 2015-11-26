@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,10 +82,37 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/recuperar-senha", method = POST)
     public String recuperarSenha(@Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
         if (!result.hasErrors()) {
-            tokenService.trocarSenha(formularioRecuperarSenha);
-            return "redirect:/editar/autenticar?senhaAlterada";
+            try {
+                tokenService.trocarSenha(formularioRecuperarSenha);
+                return "redirect:/editar/autenticar?senhaAlterada";
+            } catch(TokenInvalido e) {
+                result.addError(criarErroTokenInvalido(e));
+                return "recuperar-senha";
+            }
         } else {
             return "recuperar-senha";
+        }
+    }
+
+    private FieldError criarErroTokenInvalido(TokenInvalido e) {
+        String message;
+        if(e instanceof CpfTokenInvalido) {
+            CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
+            int tentativasSobrando = cpfTokenInvalido.getTentativasSobrando();
+            message = criarMensagemTentativasSobrando(tentativasSobrando);
+        } else {
+            message = "Este link não é válido. Solicite um novo link para alterar sua senha.";
+        }
+        return new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                    message);
+    }
+
+    private String criarMensagemTentativasSobrando(int tentativasSobrando) {
+        if(tentativasSobrando > 0) {
+            return "O CPF informado não é compatível com o cadastrado. Você possui mais " + tentativasSobrando + " tentativas.";
+        } else {
+            return  "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
+                    "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..";
         }
     }
 

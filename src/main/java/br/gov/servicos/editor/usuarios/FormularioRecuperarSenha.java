@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.Valid;
 
+import static java.lang.Long.valueOf;
 import static lombok.AccessLevel.PRIVATE;
 
 @Getter
@@ -21,19 +22,25 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode
 public class FormularioRecuperarSenha {
-    public static final String CAMPO_OBRIGATORIO = "campo obrigatório";
 
-    @NotBlank(message = "CPF: " + CAMPO_OBRIGATORIO)
-    String cpf;
+    public final static String NOME_CAMPO = "formularioRecuperarSenha";
+
+    @Valid
+    CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha();
 
     @Valid
     @ConfirmacaoSenha
     CamposSenha camposSenha = new CamposSenha();
 
-    @NotBlank(message = "Token invalido")
-    String token;
+    public Long getUsuarioId() {
+        return valueOf(camposVerificacaoRecuperarSenha.getUsuarioId());
+    }
 
-    @NotBlank(message = "Token invalido")
-    String usuarioId;
+    public String getCpf() {
+        return camposVerificacaoRecuperarSenha.getCpf();
+    }
 
+    public String getToken() {
+        return camposVerificacaoRecuperarSenha.getToken();
+    }
 }
