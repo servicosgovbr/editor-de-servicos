@@ -26,30 +26,37 @@
         <span></span>
     </header>
 
-    <div style="padding-top: 100px">
+    <div id="informacoes">
         <form th:action="@{/editar/recuperar-senha}" th:object="${formularioRecuperarSenha}" method="post">
-            <div th:if="${#fields.hasAnyErrors()}" class="erro">
-                <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
-            </div>
+            <fieldset>
+                <h3>Crie uma nova senha:</h3>
+                <p>1. Sua senha deve conter pelo menos 8 caracteres</p>
+                <p>2. Crie uma senha segura e não esqueça de grava-la para seu uso posterior</p>
+            </fieldset>
+            <fieldset>
+                <div th:if="${#fields.hasAnyErrors()}" class="erro">
+                    <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+                </div>
 
-            <label for="cpf">CPF</label>
-            <input id="cpf" name="camposVerificacaoRecuperarSenha.cpf" type="text" placeholder="___.___.___-__" required="required" autofocus="true"
-                   th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
+                <label for="cpf"><h3>CPF</h3></label>
+                <input id="cpf" name="camposVerificacaoRecuperarSenha.cpf" type="text" placeholder="___.___.___-__" required="required" autofocus="true"
+                       th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
 
-            <label for="senha">Senha</label>
-            <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
-                   th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+                <label for="senha"><h3>Nova senha</h3></label>
+                <input id="senha" name="camposSenha.senha" type="password" placeholder="Senha" required="required"
+                       th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
-            <label for="confirmar_senha">Confirme a Senha</label>
-            <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
-                   th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
+                <label for="confirmar_senha"><h3>Repita a nova senha</h3></label>
+                <input id="confirmar_senha" name="camposSenha.confirmacaoSenha" type="password" placeholder="Senha" required="required"
+                       th:class="${#fields.hasErrors('camposSenha')}? erroCampo"/>
 
-            <input type="hidden" name="camposVerificacaoRecuperarSenha.usuarioId" th:value="${param.usuarioId} ? ${param.usuarioId[0]} : *{camposVerificacaoRecuperarSenha.usuarioId}"/>
-            <input type="hidden" name="camposVerificacaoRecuperarSenha.token" th:value="${param.token} ? ${param.token[0]} : *{camposVerificacaoRecuperarSenha.token}"/>
-            <button type="submit">
-                <i class="fa fa-sign-in"></i>&nbsp;
-                Salvar nova senha
-            </button>
+                <input type="hidden" name="camposVerificacaoRecuperarSenha.usuarioId" th:value="${param.usuarioId} ? ${param.usuarioId[0]} : *{camposVerificacaoRecuperarSenha.usuarioId}"/>
+                <input type="hidden" name="camposVerificacaoRecuperarSenha.token" th:value="${param.token} ? ${param.token[0]} : *{camposVerificacaoRecuperarSenha.token}"/>
+                <button type="submit" class="botao-sucesso">
+                    <i class="fa fa-save"></i>&nbsp;
+                    Salvar nova senha
+                </button>
+            </fieldset>
         </form>
     </div>
 </div>
