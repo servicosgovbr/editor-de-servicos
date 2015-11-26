@@ -87,7 +87,7 @@ public class GerenciarUsuarioControllerTest {
     }
 
     @Test
-    public void deveSalvarNovaSenhaSeFormularioNãoPossuirErros() {
+    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErrosBasicos() {
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withUsuarioId(USUARIO_ID);
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
@@ -95,31 +95,6 @@ public class GerenciarUsuarioControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         controller.recuperarSenha(formulario, bindingResult);
         verify(tokenService).trocarSenha(formulario);
-    }
-
-    @Test
-    public void deveNotificarTokenDeFalhaNaTentativaDeTrocarSenha() {
-        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
-                .withUsuarioId(USUARIO_ID);
-        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
-                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
-        when(bindingResult.hasErrors()).thenReturn(true);
-        controller.recuperarSenha(formulario, bindingResult);
-        verify(tokenService).falhaNaVerificacao(valueOf(USUARIO_ID));
-    }
-
-    @Test
-    public void naoDeveNotificarTokenSeErroNaoForRelactionadoAVerificacaoCpfToken() {
-        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
-                .withUsuarioId(USUARIO_ID);
-        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
-                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
-        when(bindingResult.hasErrors()).thenReturn(true);
-        FieldError fieldError = mock(FieldError.class);
-        when(fieldError.getCode()).thenReturn("OutraValidacao");
-        when(bindingResult.getFieldError(any())).thenReturn(fieldError);
-        controller.recuperarSenha(formulario, bindingResult);
-        verify(tokenService, never()).falhaNaVerificacao(valueOf(USUARIO_ID));
     }
 
 }

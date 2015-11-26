@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.usuarios;
 
-import br.gov.servicos.editor.usuarios.cadastro.TokenRecuperacaoSenhaRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,8 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.validation.ConstraintValidatorContext;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -27,17 +24,11 @@ private static final String TOKEN = "token";
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    @Mock
-    private TokenRecuperacaoSenhaRepository repository;
-
-    @Mock
-    private ConstraintValidatorContext context;
-
     @InjectMocks
     RecuperacaoSenhaValidator validator;
     private TokenRecuperacaoSenha token;
+    private FormularioRecuperarSenha formulario;
     private Usuario usuario;
-    private CamposVerificacaoRecuperarSenha formulario;
 
     @Before
     public void setUp() {
@@ -48,17 +39,18 @@ private static final String TOKEN = "token";
                 .withToken(ENCRYPTED_TOKEN)
                 .withUsuario(usuario);
 
-        formulario = new CamposVerificacaoRecuperarSenha()
+        CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withCpf(CPF_FORMATADO)
                 .withUsuarioId(USUARIO_ID.toString())
                 .withToken(TOKEN);
+        formulario = new FormularioRecuperarSenha()
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
     }
 
     @Test
     public void deveValidarSeUsuarioIdCpfETokenForemCompativeis() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
-        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
-        assertTrue(validator.isValid(formulario, context));
+        assertTrue(validator.isValid(formulario, token));
     }
 
     @Test
@@ -66,14 +58,12 @@ private static final String TOKEN = "token";
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
         Usuario usuarioComCpfDiferente = usuario.withCpf(OUTRO_CPF);
         TokenRecuperacaoSenha tokenComUsuarioDeCpfDiferente = token.withUsuario(usuarioComCpfDiferente);
-        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(tokenComUsuarioDeCpfDiferente);
-        assertFalse(validator.isValid(formulario, context));
+        assertFalse(validator.isValid(formulario, tokenComUsuarioDeCpfDiferente));
     }
 
     @Test
     public void deveInvalidarSeTokenEstiverIncorreto() {
-        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(false);
-        assertFalse(validator.isValid(formulario, context));
+        assertFalse(validator.isValid(formulario, token));
     }
 }

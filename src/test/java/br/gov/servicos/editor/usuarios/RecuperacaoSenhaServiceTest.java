@@ -12,9 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.refEq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecuperacaoSenhaServiceTest {
@@ -34,6 +35,9 @@ public class RecuperacaoSenhaServiceTest {
 
     @Mock
     private TokenRecuperacaoSenhaRepository repository;
+
+    @Mock
+    private RecuperacaoSenhaValidator validator;
 
     @Mock
     private UsuarioRepository usuarioRepository;
@@ -62,17 +66,43 @@ public class RecuperacaoSenhaServiceTest {
     }
 
     @Test
-    public void deveSalvarSenhaEDeletarToken() {
+    public void deveSalvarSenhaSeTokenForValido() {
+        FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
+        Usuario usuario = new Usuario();
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario);
+
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
+
+        when(validator.isValid(formulario, token)).thenReturn(true);
+
+        assertTrue(recuperacaoSenhaService.trocarSenha(formulario));
+        verify(usuarioRepository).save(usuario.withSenha(ENCRYPTED_SENHA));
+    }
+
+    @Test
+    public void naoDeveSalvarSenhaSeTokenForValido() {
+        FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
+        Usuario usuario = new Usuario();
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario);
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
+        when(validator.isValid(formulario, token)).thenReturn(false);
+
+        assertFalse(recuperacaoSenhaService.trocarSenha(formulario));
+        verify(usuarioRepository, never()).save(usuario.withSenha(ENCRYPTED_SENHA));
+    }
+    
+    @Test
+    public void deveDeletarTokenCasoSenhaTenhaSidoTrocada() {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
                 .withUsuario(usuario)
                 .withId(TOKEN_ID);
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
+        when(validator.isValid(formulario, token)).thenReturn(true);
 
         recuperacaoSenhaService.trocarSenha(formulario);
 
-        verify(usuarioRepository).save(usuario.withSenha(ENCRYPTED_SENHA));
         verify(repository).delete(TOKEN_ID);
     }
 
@@ -92,7 +122,6 @@ public class RecuperacaoSenhaServiceTest {
         verify(repository).save(expectedToken);
 
     }
-
 
     private FormularioRecuperarSenha criarFormulario(Long usuarioId, String senha) {
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()

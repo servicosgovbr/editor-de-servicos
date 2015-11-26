@@ -24,7 +24,6 @@ import static lombok.AccessLevel.PRIVATE;
 public class FormularioRecuperarSenha {
 
     @Valid
-    @TokenCpfValido
     CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha();
 
     @Valid
