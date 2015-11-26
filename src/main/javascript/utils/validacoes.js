@@ -86,6 +86,14 @@ var validaIdUnico = function (unsafeId) {
   return idUnico(unsafeId) ? undefined : 'erro-nome-servico-existente';
 };
 
+var validaIdUnicoTematica = function (unsafeId) {
+  return idUnico(unsafeId) ? undefined : 'erro-nome-tematica-existente';
+};
+
+var validaIdUnicoOrgao = function (unsafeId) {
+  return idUnico(unsafeId) ? undefined : 'erro-nome-orgao-existente';
+};
+
 var cada = function () {
   var validacoes = arguments;
 
@@ -118,5 +126,7 @@ module.exports = {
   numerico: numerico,
   textoCurto: maximo(150),
   textoLongo: maximo(500),
-  idUnico: validaIdUnico
+  idUnico: validaIdUnico,
+  idUnicoTematica: validaIdUnicoTematica,
+  idUnicoOrgao: validaIdUnicoOrgao
 };

@@ -8,7 +8,7 @@ module.exports = function (config) {
   var data = (config || {});
   var tamanho = safeGet(data, 'tamanho');
 
-  var validaIdJaExistente = _.trim(data.nome) ? _.noop : v.idUnico;
+  var validaIdJaExistente = _.trim(data.nome) ? _.noop : v.idUnicoTematica;
   this.id = id('pagina-tematica');
   this.nome = v.prop(data.nome || '', v.obrigatorio, v.textoCurto, validaIdJaExistente);
   this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(tamanho));

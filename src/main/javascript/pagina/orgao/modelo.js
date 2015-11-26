@@ -13,7 +13,7 @@ function urlToNome(url, nomeProp) {
 }
 
 function createUrl(initial, nomeProp) {
-  var validaIdJaExistente = _.trim(initial) ? _.noop : v.idUnico;
+  var validaIdJaExistente = _.trim(initial) ? _.noop : v.idUnicoOrgao;
   var urlProp = v.prop(initial, v.obrigatorio, validaIdJaExistente);
   urlToNome(initial, nomeProp);
   var url = function () {
