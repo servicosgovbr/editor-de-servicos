@@ -1,6 +1,9 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
+import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.token.TokenExpirado;
+import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -111,8 +114,8 @@ public class GerenciarUsuarioController {
 
     private FieldError criarErroTokenInvalido(TokenInvalido e) {
         String message;
-        if(e instanceof CpfTokenInvalido) {
-            CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
+        if(e instanceof TokenExpirado.CpfTokenInvalido) {
+            TokenExpirado.CpfTokenInvalido cpfTokenInvalido = (TokenExpirado.CpfTokenInvalido) e;
             int tentativasSobrando = cpfTokenInvalido.getTentativasSobrando();
             message = criarMensagemTentativasSobrando(tentativasSobrando);
         } else {

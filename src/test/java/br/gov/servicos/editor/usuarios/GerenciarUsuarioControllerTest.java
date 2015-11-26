@@ -1,6 +1,9 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
+import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.token.TokenExpirado;
+import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -102,7 +105,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 3;
-        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         String endereco = controller.recuperarSenha(formulario, bindingResult);
 
@@ -117,7 +120,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 0;
-        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         controller.recuperarSenha(formulario, bindingResult);
 

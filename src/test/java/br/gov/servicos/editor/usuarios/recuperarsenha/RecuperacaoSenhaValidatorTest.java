@@ -1,5 +1,8 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.recuperarsenha;
 
+import br.gov.servicos.editor.usuarios.Usuario;
+import br.gov.servicos.editor.usuarios.token.Token;
+import br.gov.servicos.editor.usuarios.token.TokenError;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +34,7 @@ private static final String TOKEN = "token";
 
     @InjectMocks
     private RecuperacaoSenhaValidator validator;
-    private TokenRecuperacaoSenha token;
+    private Token token;
     private FormularioRecuperarSenha formulario;
     private Usuario usuario;
 
@@ -40,7 +43,7 @@ private static final String TOKEN = "token";
         usuario = new Usuario()
                 .withCpf(CPF)
                 .withId(USUARIO_ID);
-        token = new TokenRecuperacaoSenha()
+        token = new Token()
                 .withToken(ENCRYPTED_TOKEN)
                 .withUsuario(usuario)
                 .withDataCriacao(now(systemUTC()));
@@ -65,7 +68,7 @@ private static final String TOKEN = "token";
     public void deveInvalidarSeCpfEstiverIncorreto() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
         Usuario usuarioComCpfDiferente = usuario.withCpf(OUTRO_CPF);
-        TokenRecuperacaoSenha tokenComUsuarioDeCpfDiferente = token.withUsuario(usuarioComCpfDiferente);
+        Token tokenComUsuarioDeCpfDiferente = token.withUsuario(usuarioComCpfDiferente);
         assertTrue(validator.hasError(formulario, tokenComUsuarioDeCpfDiferente).isPresent());
     }
 
@@ -78,7 +81,7 @@ private static final String TOKEN = "token";
     @Test
     public void deveInvalidarSeTokenEstiverExpirado() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
-        TokenRecuperacaoSenha tokenExpirado = token.withDataCriacao(now(systemUTC()).minusHours(MAX_HORAS + 1));
+        Token tokenExpirado = token.withDataCriacao(now(systemUTC()).minusHours(MAX_HORAS + 1));
         assertThat(validator.hasError(formulario, tokenExpirado).get(), equalTo(TokenError.EXPIRADO));
     }
 }

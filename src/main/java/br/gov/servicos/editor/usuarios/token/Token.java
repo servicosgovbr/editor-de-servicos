@@ -1,6 +1,7 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.token;
 
 
+import br.gov.servicos.editor.usuarios.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Wither
 @Table(name="Tokens")
 @EqualsAndHashCode
-public class TokenRecuperacaoSenha implements Serializable {
+public class Token implements Serializable {
 
     @Id
     @Column(unique = true)
@@ -38,7 +39,7 @@ public class TokenRecuperacaoSenha implements Serializable {
     @Column(nullable = false)
     private Integer tentativasSobrando;
 
-    public TokenRecuperacaoSenha decrementarTentativasSobrando() {
+    public Token decrementarTentativasSobrando() {
         return this.tentativasSobrando == 0 ? this : this.withTentativasSobrando(this.tentativasSobrando-1);
     }
 }

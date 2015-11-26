@@ -1,23 +1,24 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.token;
 
+import br.gov.servicos.editor.usuarios.token.Token;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 
-public class TokenRecuperacaoSenhaTest {
+public class TokenTest {
     private static final Integer TENTATIVAS_SOBRANDO = 3;
 
     @Test
     public void deveDecrementarTentativasSobrando() {
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withTentativasSobrando(TENTATIVAS_SOBRANDO);
+        Token token = new Token().withTentativasSobrando(TENTATIVAS_SOBRANDO);
         assertThat(token.decrementarTentativasSobrando().getTentativasSobrando(), equalTo(TENTATIVAS_SOBRANDO - 1));
     }
 
     @Test
     public void quandoChegarNoZeroNaoDeveDiminuirTentativasSobrando() {
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withTentativasSobrando(0);
+        Token token = new Token().withTentativasSobrando(0);
         assertThat(token.decrementarTentativasSobrando().getTentativasSobrando(), equalTo(0));
     }
 

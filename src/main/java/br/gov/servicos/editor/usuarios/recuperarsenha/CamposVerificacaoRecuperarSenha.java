@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.recuperarsenha;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
