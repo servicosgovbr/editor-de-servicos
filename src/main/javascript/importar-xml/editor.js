@@ -45,6 +45,7 @@ module.exports = {
       cabecalhoConfig: {
         metadados: false,
         logout: true,
+        nomeDaPagina: 'Importar XML',
         cabecalho: ctrl.cabecalho
       },
       componentes: [
