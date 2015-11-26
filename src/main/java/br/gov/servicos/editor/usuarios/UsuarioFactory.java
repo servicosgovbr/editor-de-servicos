@@ -10,17 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UsuarioFactory {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     private CPFFormatter cpfFormatter = new CPFFormatter();
 
     public Usuario criarUsuario(FormularioUsuario formulario) {
-        String senhaCodificada = passwordEncoder.encode(formulario.getSenha());
         Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
         return new Usuario()
                 .withCpf(cpfFormatter.unformat(formulario.getCpf()))
-                .withSenha(senhaCodificada)
                 .withPapel(papel)
                 .withSiorg(formulario.getSiorg())
                 .withSiape(StringUtils.defaultIfEmpty(formulario.getCamposServidor().getSiape(), null))

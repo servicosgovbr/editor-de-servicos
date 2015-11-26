@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.usuarios;
 
-import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
 import br.gov.servicos.editor.usuarios.cadastro.CamposServidor;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import org.junit.Before;
@@ -15,15 +14,12 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UsuarioFactoryTest {
 
     private static final String CPF = "12312312318";
     private static final Long PAPEL_ID = 1l;
-    private static final String SENHA = "senha";
-    private static final String SENHA_CODIFICADA = "encoded";
     private static final String SIORG = "1234";
     private static final String SIAPE = "43214321";
     private static final String EMAIL_PRIMARIO = "email@institucional.gov.br";
@@ -43,7 +39,6 @@ public class UsuarioFactoryTest {
         formularioUsuario = new FormularioUsuario().
                 withCpf(CPF).
                 withPapelId(PAPEL_ID.toString()).
-                withCamposSenha(new CamposSenha().withSenha(SENHA)).
                 withSiorg(SIORG).
                 withCamposServidor(new CamposServidor().withServidor(SERVIDOR).withSiape(SIAPE)).
                 withEmailPrimario(EMAIL_PRIMARIO).
@@ -62,14 +57,6 @@ public class UsuarioFactoryTest {
         assertThat(usuario.getSiape(), equalTo(SIAPE));
         assertThat(usuario.isServidor(), equalTo(SERVIDOR));
         assertThat(usuario.getNome(), equalTo(NOME));
-    }
-
-    @Test
-    public void criaPasswordComPasswordEncoder() {
-        when(passwordEncoder.encode(SENHA)).thenReturn(SENHA_CODIFICADA);
-        Usuario usuario = factory.criarUsuario(formularioUsuario);
-
-        assertThat(usuario.getPassword(), equalTo(SENHA_CODIFICADA));
     }
 
     @Test
