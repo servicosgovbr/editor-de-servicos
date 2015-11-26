@@ -63,7 +63,8 @@ module.exports = {
     var tooltips = {
       tipo: Tooltips.tipoPagina,
       nome: Tooltips.escolhaOrgao,
-      conteudo: Tooltips.conteudoOrgao
+      conteudo: Tooltips.conteudoOrgao,
+      contato: Tooltips.contatoOrgao
     };
 
     var binding = {
@@ -117,10 +118,18 @@ module.exports = {
           tooltipNome: tooltips.nome,
         })),
 
-        m.component(require('pagina/componentes/conteudo'), _.assign(binding, {
+        m.component(require('pagina/componentes/conteudo'), {
+          prop: ctrl.pagina().conteudo,
           maximo: tamanhoConteudo,
           tooltipConteudo: tooltips.conteudo
-        }))
+        }),
+
+        m.component(require('pagina/componentes/conteudo'), {
+          label: 'Contato do órgão',
+          prop: ctrl.pagina().contato,
+          maximo: tamanhoConteudo,
+          tooltipConteudo: tooltips.contato
+        }),
       ]
     });
   }

@@ -1,25 +1,25 @@
 'use strict';
 
-module.exports = {
-  controller: function (args) {
-    this.pagina = args.pagina;
-  },
+var safeGet = require('utils/code-checks').safeGet;
 
+module.exports = {
   view: function (ctrl, args) {
-    var pagina = ctrl.pagina();
+    var label = args.label;
+    var conteudo = safeGet(args, 'prop');
+    var maximo = safeGet(args, 'maximo');
 
     return m('fieldset#conteudo-pagina', [
       m('h3', [
-        'Conteúdo da página',
+        label || 'Conteúdo da página',
         m.component(args.tooltipConteudo)
       ]),
       m('.input-container', [
         m.component(require('componentes/editor-markdown'), {
           rows: 10,
-          onchange: m.withAttr('value', pagina.conteudo),
-          value: ctrl.pagina().conteudo(),
-          erro: ctrl.pagina().conteudo.erro(),
-          maximo: args.maximo
+          onchange: m.withAttr('value', conteudo),
+          value: conteudo(),
+          erro: conteudo.erro(),
+          maximo: maximo
         })
       ])
     ]);

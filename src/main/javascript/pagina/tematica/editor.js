@@ -114,10 +114,11 @@ module.exports = {
           nomeFn: _.identity
         })),
 
-        m.component(require('pagina/componentes/conteudo'), _.assign(binding, {
+        m.component(require('pagina/componentes/conteudo'), {
+          prop: ctrl.pagina().conteudo,
           maximo: tamanhoConteudo,
           tooltipConteudo: tooltips.conteudo
-        }))
+        })
       ]
     });
   }

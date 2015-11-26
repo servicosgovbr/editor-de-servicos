@@ -55,6 +55,9 @@ import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class RepositorioGit {
 
+    @NonFinal
+    private String currentBranch;
+
     File raiz;
     boolean fazerPush;
 
@@ -133,6 +136,11 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkoutMaster() {
+        if ("master".equals(currentBranch)) {
+            return;
+        }
+        currentBranch = "master";
+
         Ref result = git.checkout()
                 .setName(R_HEADS + MASTER)
                 .call();
@@ -161,6 +169,11 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkout(String branch) {
+        if (branch.equals(currentBranch)) {
+            return;
+        }
+        currentBranch = branch;
+
         Repository repository = git.getRepository();
         String novoBranch = branch.replaceAll("^" + R_HEADS, "");
         String branchRemoto = DEFAULT_REMOTE_NAME + "/" + novoBranch;
@@ -386,6 +399,5 @@ public class RepositorioGit {
         config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
         config.save();
     }
-
 
 }

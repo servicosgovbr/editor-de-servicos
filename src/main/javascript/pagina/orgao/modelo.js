@@ -33,5 +33,5 @@ module.exports = function (config) {
   this.nome = m.prop(data.nome || '');
   this.url = createUrl(data.url || '', this.nome);
   this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(tamanho));
-  this.contato = m.prop(data.nome || '');
+  this.contato = v.prop(data.contato || '', v.obrigatorio);
 };
