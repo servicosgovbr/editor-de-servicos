@@ -1,5 +1,6 @@
 'use strict';
 
+var v = require('utils/validacoes');
 var EditorBase = require('componentes/editor-base');
 var CabecalhoModel = require('cabecalho/cabecalho-model');
 var input = require('componentes/input');
@@ -19,7 +20,7 @@ function botaoQueEspera(opts) {
 module.exports = {
   controller: function () {
     this.cabecalho = new CabecalhoModel();
-    this.url = m.prop('');
+    this.url = v.prop('');
     this.importando = m.prop(false);
 
     this.ok = function () {
