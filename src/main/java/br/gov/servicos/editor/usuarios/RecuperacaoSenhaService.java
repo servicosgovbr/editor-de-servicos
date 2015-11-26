@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static java.lang.Long.valueOf;
 
@@ -50,13 +51,16 @@ public class RecuperacaoSenhaService {
         TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
 
-        if(validator.isValid(formulario, token)) {
+        Optional<TokenError> tokenError = validator.hasError(formulario, token);
+        if(!tokenError.isPresent()) {
             usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
             repository.delete(token.getId());
-        } else {
+        } else if(tokenError.get().equals(TokenError.INVALIDO)){
             TokenRecuperacaoSenha novoToken = token.decrementarTentativasSobrando();
             repository.save(novoToken);
-            throw new TokenInvalido(novoToken.getTentativasSobrando());
+            throw new CpfTokenInvalido(novoToken.getTentativasSobrando());
+        } else {
+            throw new TokenExpirado();
         }
     }
 }

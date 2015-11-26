@@ -7,7 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import static java.time.Clock.systemUTC;
+import static java.time.LocalDateTime.now;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -20,12 +24,13 @@ private static final String TOKEN = "token";
     private static final String CPF = "12312312312";
     private static final String CPF_FORMATADO = "123.123.123-12";
     private static final String OUTRO_CPF = "9999999999";
+    private static final Integer MAX_HORAS = 24;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    RecuperacaoSenhaValidator validator;
+    private RecuperacaoSenhaValidator validator;
     private TokenRecuperacaoSenha token;
     private FormularioRecuperarSenha formulario;
     private Usuario usuario;
@@ -37,7 +42,8 @@ private static final String TOKEN = "token";
                 .withId(USUARIO_ID);
         token = new TokenRecuperacaoSenha()
                 .withToken(ENCRYPTED_TOKEN)
-                .withUsuario(usuario);
+                .withUsuario(usuario)
+                .withDataCriacao(now(systemUTC()));
 
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withCpf(CPF_FORMATADO)
@@ -45,12 +51,14 @@ private static final String TOKEN = "token";
                 .withToken(TOKEN);
         formulario = new FormularioRecuperarSenha()
                 .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+
+        ReflectionTestUtils.setField(validator, "maxHorasToken", MAX_HORAS);
     }
 
     @Test
     public void deveValidarSeUsuarioIdCpfETokenForemCompativeis() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
-        assertTrue(validator.isValid(formulario, token));
+        assertFalse(validator.hasError(formulario, token).isPresent());
     }
 
     @Test
@@ -58,12 +66,19 @@ private static final String TOKEN = "token";
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
         Usuario usuarioComCpfDiferente = usuario.withCpf(OUTRO_CPF);
         TokenRecuperacaoSenha tokenComUsuarioDeCpfDiferente = token.withUsuario(usuarioComCpfDiferente);
-        assertFalse(validator.isValid(formulario, tokenComUsuarioDeCpfDiferente));
+        assertTrue(validator.hasError(formulario, tokenComUsuarioDeCpfDiferente).isPresent());
     }
 
     @Test
     public void deveInvalidarSeTokenEstiverIncorreto() {
         when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(false);
-        assertFalse(validator.isValid(formulario, token));
+        assertTrue(validator.hasError(formulario, token).isPresent());
+    }
+
+    @Test
+    public void deveInvalidarSeTokenEstiverExpirado() {
+        when(passwordEncoder.matches(TOKEN, ENCRYPTED_TOKEN)).thenReturn(true);
+        TokenRecuperacaoSenha tokenExpirado = token.withDataCriacao(now(systemUTC()).minusHours(MAX_HORAS + 1));
+        assertThat(validator.hasError(formulario, tokenExpirado).get(), equalTo(TokenError.EXPIRADO));
     }
 }

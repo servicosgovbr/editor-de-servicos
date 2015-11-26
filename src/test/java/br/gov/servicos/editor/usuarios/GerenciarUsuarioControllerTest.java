@@ -8,10 +8,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
-import static java.lang.Long.valueOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
@@ -104,7 +102,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 3;
-        doThrow(new TokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         String endereco = controller.recuperarSenha(formulario, bindingResult);
 
@@ -115,17 +113,30 @@ public class GerenciarUsuarioControllerTest {
     }
 
     @Test
-    public void deveAdicionarErroDeLinkBloqueadoAoResultBidingCasoTokenEstejaUltrapassadoNumeroDeTentativas() throws TokenInvalido {
+    public void deveAdicionarErroDeTokenBloqueadoAoResultBidingCasoTokenEstejaUltrapassadoNumeroDeTentativas() throws TokenInvalido {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 0;
-        doThrow(new TokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         controller.recuperarSenha(formulario, bindingResult);
 
         FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
                 "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
                         "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..");
+        verify(bindingResult).addError(fieldError);
+    }
+
+    @Test
+    public void deveAdicionarErroDeTokenExpiraCasoTokenEstejaExpirado() throws TokenInvalido {
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(new TokenExpirado()).when(tokenService).trocarSenha(formulario);
+
+        controller.recuperarSenha(formulario, bindingResult);
+
+        FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                "Este link não é válido. Solicite um novo link para alterar sua senha.");
         verify(bindingResult).addError(fieldError);
     }
 

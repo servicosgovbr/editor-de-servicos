@@ -95,9 +95,16 @@ public class GerenciarUsuarioController {
     }
 
     private FieldError criarErroTokenInvalido(TokenInvalido e) {
-        int tentativasSobrando = e.getTentativasSobrando();
+        String message;
+        if(e instanceof CpfTokenInvalido) {
+            CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
+            int tentativasSobrando = cpfTokenInvalido.getTentativasSobrando();
+            message = criarMensagemTentativasSobrando(tentativasSobrando);
+        } else {
+            message = "Este link não é válido. Solicite um novo link para alterar sua senha.";
+        }
         return new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
-                criarMensagemTentativasSobrando(tentativasSobrando));
+                    message);
     }
 
     private String criarMensagemTentativasSobrando(int tentativasSobrando) {

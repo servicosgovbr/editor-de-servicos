@@ -11,6 +11,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
+
+import static br.gov.servicos.editor.usuarios.TokenError.EXPIRADO;
+import static br.gov.servicos.editor.usuarios.TokenError.INVALIDO;
+import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
@@ -75,10 +80,25 @@ public class RecuperacaoSenhaServiceTest {
 
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
 
-        when(validator.isValid(formulario, token)).thenReturn(true);
+        when(validator.hasError(formulario, token)).thenReturn(empty());
 
         recuperacaoSenhaService.trocarSenha(formulario);
         verify(usuarioRepository).save(usuario.withSenha(ENCRYPTED_SENHA));
+    }
+
+    @Test
+    public void deveDeletarTokenCasoSenhaTenhaSidoTrocada() throws TokenInvalido {
+        FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
+        Usuario usuario = new Usuario();
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
+                .withUsuario(usuario)
+                .withId(TOKEN_ID);
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
+        when(validator.hasError(formulario, token)).thenReturn(empty());
+
+        recuperacaoSenhaService.trocarSenha(formulario);
+
+        verify(repository).delete(TOKEN_ID);
     }
 
     @Test
@@ -87,7 +107,7 @@ public class RecuperacaoSenhaServiceTest {
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario).withTentativasSobrando(0);
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
-        when(validator.isValid(formulario, token)).thenReturn(false);
+        when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
@@ -98,7 +118,7 @@ public class RecuperacaoSenhaServiceTest {
     }
 
     @Test
-    public void deveIncrementarNumeroDeTentativasSeTokenForInvalido() {
+    public void deveIncrementarNumeroDeTentativasSeTokenForInvalido() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
@@ -109,17 +129,18 @@ public class RecuperacaoSenhaServiceTest {
                 .withTentativasSobrando(MAX-1);
 
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
-        when(validator.isValid(formulario, token)).thenReturn(false);
+        when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
-        } catch (TokenInvalido e) {
+        } catch (CpfTokenInvalido e) {
             verify(repository).save(expectedToken);
         }
     }
 
+
     @Test
-    public void deveLancarExcecaoCasoTokenSejaInvalidoComMensagemDizendoQuantasTentativasEstaoFaltando() {
+    public void deveLancarExcecaoCasoTokenSejaInvalidoComMensagemDizendoQuantasTentativasEstaoFaltando() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
@@ -127,30 +148,28 @@ public class RecuperacaoSenhaServiceTest {
                 .withTentativasSobrando(MAX);
 
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
-        when(validator.isValid(formulario, token)).thenReturn(false);
+        when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
-        } catch(TokenInvalido e) {
+        } catch(CpfTokenInvalido e) {
             assertThat(e.getTentativasSobrando(), equalTo(MAX-1));
         }
     }
 
-
-    @Test
-    public void deveDeletarTokenCasoSenhaTenhaSidoTrocada() throws TokenInvalido {
+    @Test(expected = TokenExpirado.class)
+    public void deveLancarExcecaoDeTokenExpiradoCasoTokenEstejaExpirado() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
                 .withUsuario(usuario)
-                .withId(TOKEN_ID);
+                .withTentativasSobrando(MAX);
+
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
-        when(validator.isValid(formulario, token)).thenReturn(true);
+        when(validator.hasError(formulario, token)).thenReturn(Optional.of(EXPIRADO));
 
         recuperacaoSenhaService.trocarSenha(formulario);
-
-        verify(repository).delete(TOKEN_ID);
     }
 
 
