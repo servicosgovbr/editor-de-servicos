@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,19 +82,21 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/recuperar-senha", method = POST)
     public String recuperarSenha(@Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
         if (!result.hasErrors()) {
-            tokenService.trocarSenha(formularioRecuperarSenha);
-            return "redirect:/editar/autenticar?senhaAlterada";
-        } else {
-            if(existefalhaNaVerificacaoDoCpfEToken(result)) {
-                tokenService.falhaNaVerificacao(formularioRecuperarSenha.getUsuarioId());
+            try {
+                tokenService.trocarSenha(formularioRecuperarSenha);
+                return "redirect:/editar/autenticar?senhaAlterada";
+            } catch(TokenInvalido e) {
+                result.addError(criarErroTokenInvalido(e));
+                return "recuperar-senha";
             }
+        } else {
             return "recuperar-senha";
         }
     }
 
-    private boolean existefalhaNaVerificacaoDoCpfEToken(BindingResult result) {
-        return result.hasFieldErrors(CamposVerificacaoRecuperarSenha.NOME) &&
-                result.getFieldError(CamposVerificacaoRecuperarSenha.NOME).getCode().equals(RecuperacaoSenhaValidator.NOME);
+    private FieldError criarErroTokenInvalido(TokenInvalido e) {
+        return new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                "O CPF informado não é compatível com o cadastrado. Você possui mais "+e.getTentativasSobrando()+" tentativas.");
     }
 
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {

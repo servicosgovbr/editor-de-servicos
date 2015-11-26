@@ -35,6 +35,7 @@ flags:
   importar: true
 
 eds:
+  max-tentativas-token: 3
   cartas:
     repositorio: "git@github.com:servicosgovbr/cartas-de-teste.git"
 

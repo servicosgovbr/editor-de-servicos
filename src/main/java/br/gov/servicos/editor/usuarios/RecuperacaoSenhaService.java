@@ -2,6 +2,7 @@ package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.TokenRecuperacaoSenhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,9 @@ public class RecuperacaoSenhaService {
     @Autowired
     private RecuperacaoSenhaValidator validator;
 
+    @Value("${eds.max-tentativas-token}")
+    private int maxTentativasToken;
+
     private Clock clock = Clock.systemUTC();
 
     public String gerarTokenParaUsuario(String usuarioId) {
@@ -41,7 +45,7 @@ public class RecuperacaoSenhaService {
         return token;
     }
 
-    public boolean trocarSenha(FormularioRecuperarSenha formulario) {
+    public void trocarSenha(FormularioRecuperarSenha formulario) throws TokenInvalido {
         Long usuarioId = formulario.getUsuarioId();
         TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
@@ -49,14 +53,10 @@ public class RecuperacaoSenhaService {
         if(validator.isValid(formulario, token)) {
             usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
             repository.delete(token.getId());
-            return true;
         } else {
-            return false;
+            TokenRecuperacaoSenha novoToken = token.withTentativas(token.getTentativas() + 1);
+            repository.save(novoToken);
+            throw new TokenInvalido(maxTentativasToken - novoToken.getTentativas());
         }
-    }
-
-    public void falhaNaVerificacao(Long usuarioId) {
-        TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
-        repository.save(token.withTentativas(token.getTentativas() + 1));
     }
 }

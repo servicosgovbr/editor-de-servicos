@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
 import static java.lang.Long.valueOf;
@@ -87,14 +88,30 @@ public class GerenciarUsuarioControllerTest {
     }
 
     @Test
-    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErrosBasicos() {
+    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErrosBasicos() throws TokenInvalido {
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withUsuarioId(USUARIO_ID);
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
                 .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+
         when(bindingResult.hasErrors()).thenReturn(false);
         controller.recuperarSenha(formulario, bindingResult);
         verify(tokenService).trocarSenha(formulario);
+    }
+
+    @Test
+    public void deveAdicionarErroAResultBidingCasoTokenEstejaInvalido() throws TokenInvalido {
+        FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        int tentativasSobrando = 3;
+        doThrow(new TokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+
+        String endereco = controller.recuperarSenha(formulario, bindingResult);
+
+        FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
+                "O CPF informado não é compatível com o cadastrado. Você possui mais "+tentativasSobrando+" tentativas.");
+        verify(bindingResult).addError(fieldError);
+        assertThat(endereco, equalTo("recuperar-senha"));
     }
 
 }
