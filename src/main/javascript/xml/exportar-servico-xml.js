@@ -127,6 +127,7 @@ module.exports = function (servico) {
     m('legislacoes', servico.legislacoes().map(item))
   ]));
 
+  XML.cdata(doc, 'nome');
   XML.cdata(doc, 'descricao');
   XML.cdata(doc, 'requisitos');
   XML.cdata(doc, 'contato');
