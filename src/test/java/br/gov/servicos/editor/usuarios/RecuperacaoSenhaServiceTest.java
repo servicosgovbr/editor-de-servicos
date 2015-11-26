@@ -62,7 +62,7 @@ public class RecuperacaoSenhaServiceTest {
         TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha()
                 .withToken(ENCRYPTED_TOKEN)
                 .withUsuario(new Usuario().withId(USUARIO_ID))
-                .withTentativas(0);
+                .withTentativasSobrando(MAX);
         verify(repository).save(refEq(expectedTokenRecuperacaoSenha, "dataCriacao"));
         assertThat(token, equalTo(TOKEN));
     }
@@ -85,7 +85,7 @@ public class RecuperacaoSenhaServiceTest {
     public void naoDeveSalvarSenhaSeTokenForInvalido() {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario).withTentativas(0);
+        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario).withTentativasSobrando(0);
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
         when(validator.isValid(formulario, token)).thenReturn(false);
 
@@ -103,10 +103,10 @@ public class RecuperacaoSenhaServiceTest {
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
                 .withUsuario(usuario)
-                .withTentativas(0);
+                .withTentativasSobrando(MAX);
         TokenRecuperacaoSenha expectedToken = new TokenRecuperacaoSenha()
                 .withUsuario(usuario)
-                .withTentativas(1);
+                .withTentativasSobrando(MAX-1);
 
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
         when(validator.isValid(formulario, token)).thenReturn(false);
@@ -124,7 +124,7 @@ public class RecuperacaoSenhaServiceTest {
         Usuario usuario = new Usuario();
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
                 .withUsuario(usuario)
-                .withTentativas(0);
+                .withTentativasSobrando(MAX);
 
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(token);
         when(validator.isValid(formulario, token)).thenReturn(false);

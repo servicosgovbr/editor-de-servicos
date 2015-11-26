@@ -39,7 +39,7 @@ public class RecuperacaoSenhaService {
         TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
                                                             .withUsuario(new Usuario().withId(valueOf(usuarioId)))
                                                             .withDataCriacao(LocalDateTime.now(clock))
-                                                            .withTentativas(0)
+                                                            .withTentativasSobrando(maxTentativasToken)
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
         return token;
@@ -54,9 +54,9 @@ public class RecuperacaoSenhaService {
             usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
             repository.delete(token.getId());
         } else {
-            TokenRecuperacaoSenha novoToken = token.withTentativas(token.getTentativas() + 1);
+            TokenRecuperacaoSenha novoToken = token.decrementarTentativasSobrando();
             repository.save(novoToken);
-            throw new TokenInvalido(maxTentativasToken - novoToken.getTentativas());
+            throw new TokenInvalido(novoToken.getTentativasSobrando());
         }
     }
 }

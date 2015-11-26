@@ -95,8 +95,18 @@ public class GerenciarUsuarioController {
     }
 
     private FieldError criarErroTokenInvalido(TokenInvalido e) {
+        int tentativasSobrando = e.getTentativasSobrando();
         return new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
-                "O CPF informado não é compatível com o cadastrado. Você possui mais "+e.getTentativasSobrando()+" tentativas.");
+                criarMensagemTentativasSobrando(tentativasSobrando));
+    }
+
+    private String criarMensagemTentativasSobrando(int tentativasSobrando) {
+        if(tentativasSobrando > 0) {
+            return "O CPF informado não é compatível com o cadastrado. Você possui mais " + tentativasSobrando + " tentativas.";
+        } else {
+            return  "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
+                    "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..";
+        }
     }
 
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {

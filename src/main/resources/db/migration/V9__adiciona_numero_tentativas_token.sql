@@ -27,7 +27,7 @@ create table tokens(
   usuario_id INTEGER not null,
   token varchar(100) not null,
   data_criacao timestamp not null,
-  tentativas smallint default 0,
+  tentativas_sobrando smallint not null,
   constraint fk_tokens_usuarios foreign key(usuario_id) references usuarios(id)
 );
 
