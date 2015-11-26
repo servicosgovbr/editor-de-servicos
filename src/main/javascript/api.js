@@ -108,6 +108,17 @@ module.exports = {
     });
   },
 
+  renomear: function (id, novoNome) {
+    return request({
+      method: 'PATCH',
+      background: true,
+      url: '/editar/api/pagina/servico/' + id,
+      config: configCsrf,
+      serialize: _.identity,
+      data: novoNome
+    });
+  },
+
   importarXml: function (urlParam) {
     return request({
       method: 'GET',

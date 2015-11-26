@@ -5,8 +5,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
-import static org.springframework.http.MediaType.ALL;
-import static org.springframework.http.MediaType.APPLICATION_XML;
+import static java.lang.String.format;
+import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @AllArgsConstructor
@@ -23,8 +23,10 @@ public class MockMvcEditorAPI {
         return editarCarta("novo");
     }
 
-    public ResultActions renomearCarta(String de, String para) throws Exception {
-        return mvc.perform(patch(String.format("/editar/api/pagina/servico/%s/%s", de, para))
+    public ResultActions renomearCarta(String id, String novoNome) throws Exception {
+        return mvc.perform(patch(format("/editar/api/pagina/servico/%s", id))
+                .contentType(APPLICATION_JSON)
+                .content(novoNome)
                 .accept(ALL));
     }
 
@@ -50,7 +52,7 @@ public class MockMvcEditorAPI {
     }
 
     public ResultActions descartarPagina(TipoPagina tipo, String id) throws Exception {
-        String url = String.format("/editar/api/pagina/%s/%s/descartar", tipo.getNome(), id);
+        String url = format("/editar/api/pagina/%s/%s/descartar", tipo.getNome(), id);
         return mvc.perform(post(url)
                 .accept(ALL));
     }
@@ -64,7 +66,7 @@ public class MockMvcEditorAPI {
     }
 
     public ResultActions despublicarPagina(TipoPagina tipo, String id) throws Exception {
-        String url = String.format("/editar/api/pagina/" + tipo.getNome() + "/%s/despublicar", id);
+        String url = format("/editar/api/pagina/" + tipo.getNome() + "/%s/despublicar", id);
         return mvc.perform(post(url)
                 .accept(ALL));
     }

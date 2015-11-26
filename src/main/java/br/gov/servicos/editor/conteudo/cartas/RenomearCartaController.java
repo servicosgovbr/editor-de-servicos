@@ -11,9 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletResponse;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static lombok.AccessLevel.PRIVATE;
@@ -33,19 +32,14 @@ class RenomearCartaController {
         this.factory = factory;
     }
 
-    @RequestMapping(value = "/editar/api/pagina/servico/{id}/{novoNome}", method = PATCH)
+    @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = PATCH)
     ResponseEntity renomear(@PathVariable("id") String id,
-                            @PathVariable String novoNome,
-                            HttpServletResponse response) {
-        ConteudoVersionado carta = renomear(id, novoNome);
+                            @RequestBody String novoNome) {
+        ConteudoVersionado carta = factory.pagina(id, SERVICO);
+
+        String novoId = carta.renomear(userProfiles.get(), novoNome);
+        carta = factory.pagina(novoId, SERVICO);
 
         return new ResponseEntity(MetadadosUtils.metadados(carta), HttpStatus.OK);
     }
-
-    ConteudoVersionado renomear(String id, String novoNome) {
-        ConteudoVersionado carta = factory.pagina(id, SERVICO);
-        String novoId = carta.renomear(userProfiles.get(), novoNome);
-        return factory.pagina(novoId, SERVICO);
-    }
-
 }

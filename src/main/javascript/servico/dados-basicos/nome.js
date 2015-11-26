@@ -2,7 +2,7 @@
 
 var slugify = require('slugify');
 var idUnico = require('utils/id-unico');
-var atributosCsrf = require('utils/atributos-csrf');
+var api = require('api');
 
 module.exports = {
 
@@ -25,14 +25,7 @@ module.exports = {
       m.redraw();
       var servico = this.servico();
       var idAtual = slugify(servico.nome());
-      m.request({
-        method: 'PATCH',
-        background: true,
-        url: '/editar/api/pagina/servico/' + idAtual + '/' + novoNome,
-        config: function (xhr) {
-          xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
-        }
-      }).then(_.bind(function () {
+      api.renomear(idAtual, novoNome).then(_.bind(function () {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));
         alertify.success('Serviço renomeado com sucesso!', 0);
