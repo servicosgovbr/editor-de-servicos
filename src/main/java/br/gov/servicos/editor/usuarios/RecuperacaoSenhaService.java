@@ -48,7 +48,7 @@ public class RecuperacaoSenhaService {
 
     public void trocarSenha(FormularioRecuperarSenha formulario) throws TokenInvalido {
         Long usuarioId = formulario.getUsuarioId();
-        TokenRecuperacaoSenha token = repository.findByUsuarioId(usuarioId);
+        TokenRecuperacaoSenha token = findLatestTokenByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
 
         Optional<TokenError> tokenError = validator.hasError(formulario, token);
@@ -62,5 +62,13 @@ public class RecuperacaoSenhaService {
         } else {
             throw new TokenExpirado();
         }
+    }
+
+    private TokenRecuperacaoSenha findLatestTokenByUsuarioId(Long usuarioId) {
+        Iterable<TokenRecuperacaoSenha> tokensUsuario = repository.findByUsuarioIdOrderByDataCriacaoAsc(usuarioId);
+        if(!tokensUsuario.iterator().hasNext()) {
+            throw new UsuarioInexistenteException();
+        }
+        return tokensUsuario.iterator().next();
     }
 }
