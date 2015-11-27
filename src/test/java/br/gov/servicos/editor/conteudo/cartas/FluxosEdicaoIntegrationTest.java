@@ -1,7 +1,10 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
+import br.gov.servicos.editor.config.SlugifyConfig;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.utils.Unchecked;
 import lombok.SneakyThrows;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,51 +15,223 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static java.util.stream.Collectors.joining;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
 
-    private static final int OPERATION_COUNT = 37;
-
-    static String CARTA_A = "<servico><nome>Carta A</nome></servico>";
-    static String CARTA_A_ALTERACOES = "<servico><nome>Carta A</nome><sigla>CA</sigla></servico>";
-
-    static String CARTA_B = "<servico><nome>Carta B</nome></servico>";
-    static String CARTA_B_ALTERACOES = "<servico><nome>Carta B</nome><sigla>CB</sigla></servico>";
-
-    static String CARTA_C = "<servico><nome>Carta C</nome></servico>";
-    static String CARTA_C_ALTERACOES = "<servico><nome>Carta C</nome><sigla>CC</sigla></servico>";
-
-    ExecutorService exec;
+    ExecutorService execucaoParalela;
 
     @Before
     public void setup() {
-        exec = Executors.newCachedThreadPool();
-
+        execucaoParalela = Executors.newCachedThreadPool();
         setupBase()
-                .carta("carta-a", CARTA_A)
-                .carta("carta-b", CARTA_B)
-                .carta("carta-c", CARTA_C)
+                .carta(id("a"), carta("A"))
+                .carta(id("b"), carta("B"))
+                .carta(id("c"), carta("C"))
+                .carta(id("d"), carta("D"))
+                .carta(id("e"), carta("E"))
                 .build();
     }
 
     @After
     public void tearDown() {
-        exec.shutdown();
+        execucaoParalela.shutdown();
     }
 
     @Test
     public void testeConcorrencia() throws Exception {
-        getAll(
-                exec.submit(() -> fluxoListarSalvarEditar(SERVICO, "carta-a", CARTA_A, CARTA_A_ALTERACOES)),
-                exec.submit(() -> fluxoListarSalvarEditar(SERVICO, "carta-b", CARTA_B, CARTA_B_ALTERACOES)),
-                exec.submit(() -> fluxoListarSalvarEditar(SERVICO, "carta-c", CARTA_C, CARTA_C_ALTERACOES)));
+        paralelizar(
+                () -> fluxoListarSalvarEditar(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> fluxoListarSalvarEditar(SERVICO, id("b"), carta("B"), carta2("B")),
+                () -> fluxoListarSalvarEditar(SERVICO, id("c"), carta("C"), carta2("C")));
+    }
+
+    @Test
+    public void fluxoDelecaoMesmoServicoNaoDeveDarErros() throws Exception {
+        paralelizar(
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")),
+                () -> api.excluirPagina(SERVICO, id("a")));
+
+        api.editarCarta(id("a"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void fluxoDeletarPaginaRepositorioNaoDeveFicarInconsistente() {
+        try {
+            paralelizar(
+                    () -> api.excluirPagina(SERVICO, id("a")).andExpect(status().isOk()),
+                    () -> api.excluirPagina(SERVICO, id("b")).andExpect(status().isOk()),
+                    () -> api.excluirPagina(SERVICO, id("c")).andExpect(status().isOk()));
+
+            paralelizar(
+                    () -> api.excluirPagina(SERVICO, id("a")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("b")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("c")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("a")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("b")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("c")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("a")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("b")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("c")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("a")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("b")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("c")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("a")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("b")).andExpect(status().isNotFound()),
+                    () -> api.excluirPagina(SERVICO, id("c")).andExpect(status().isNotFound()));
+        } finally {
+            execucaoParalela.shutdown();
+        }
+    }
+
+    @Test
+    public void edicaoConcorrenteDoMesmoDocumentoDeveManterAUltimaVersaoSemErros() throws Exception {
+        paralelizar(
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")));
+
+        String ultimo = "<servico><nome>Carta A</nome><descricao>Uma descricao</descricao></servico>";
+
+        api.salvarCarta(id("a"), ultimo)
+                .andExpect(status().is3xxRedirection());
+
+        api.editarCarta(id("a"))
+                .andExpect(status().isOk())
+                .andExpect(content().xml(ultimo));
+    }
+
+    @Test
+    public void equipesEditandoAoMesmoTempoManteRepsitorioFuncional() {
+        paralelizar(
+                () -> fluxoListarExcluirRenomearSalvarSalvarPublicar("a", "b", "c", "d", "e"),
+                () -> fluxoListarEditarSalvarPublicarDescartarDespublicarListar("z"),
+                () -> fluxoListarExcluirRenomearSalvarSalvarPublicar("f", "g", "h", "i", "j"),
+                () -> fluxoListarEditarSalvarPublicarDescartarDespublicarListar("x"),
+                () -> fluxoListarExcluirRenomearSalvarSalvarPublicar("k", "l", "m", "n", "o"),
+                () -> fluxoListarEditarSalvarPublicarDescartarDespublicarListar("v"),
+                () -> fluxoListarExcluirRenomearSalvarSalvarPublicar("p", "q", "r", "s", "t"),
+                () -> fluxoListarEditarSalvarPublicarDescartarDespublicarListar("1"),
+                () -> fluxoListarExcluirRenomearSalvarSalvarPublicar("2", "3", "4", "5", "6"),
+                () -> fluxoListarEditarSalvarPublicarDescartarDespublicarListar("y"));
+    }
+
+    @SneakyThrows
+    private void fluxoListarExcluirRenomearSalvarSalvarPublicar(String id1, String id2, String id3, String id4, String id5) {
+        String id3r = id3 + " r";
+        String id4r = id4 + " r";
+        String id5r = id5 + " r";
+
+        api.listar()
+                .andExpect(status().isOk());
+
+        api.salvarCarta(id(id1), carta(id1));
+        api.salvarCarta(id(id2), carta(id2));
+        api.salvarCarta(id(id3), carta(id3));
+        api.salvarCarta(id(id4), carta(id4));
+        api.salvarCarta(id(id5), carta(id5));
+
+        api.excluirPagina(SERVICO, id(id1))
+                .andExpect(status().isOk());
+        api.excluirPagina(SERVICO, id(id2))
+                .andExpect(status().isOk());
+        api.renomearCarta(id(id3), id(id3r))
+                .andExpect(status().isOk());
+        api.renomearCarta(id(id4), id(id4r))
+                .andExpect(status().isOk());
+        api.renomearCarta(id(id5), id(id5r))
+                .andExpect(status().isOk());
+
+        api.salvarCarta(id(id1), carta(id1))
+                .andExpect(status().is3xxRedirection());
+        api.salvarCarta(id(id2), carta(id2))
+                .andExpect(status().is3xxRedirection());
+        api.salvarCarta(id(id3r), carta2(id3r))
+                .andExpect(status().is3xxRedirection());
+        api.salvarCarta(id(id4r), carta2(id4r))
+                .andExpect(status().is3xxRedirection());
+        api.salvarCarta(id(id5r), carta2(id5r))
+                .andExpect(status().is3xxRedirection());
+
+        api.publicarCarta(id(id1))
+                .andExpect(status().isOk());
+        api.publicarCarta(id(id2))
+                .andExpect(status().isOk());
+        api.publicarCarta(id(id3r))
+                .andExpect(status().isOk());
+        api.publicarCarta(id(id4r))
+                .andExpect(status().isOk());
+        api.publicarCarta(id(id4r))
+                .andExpect(status().isOk());
+
+        api.listar()
+                .andExpect(jsonPath("$[*].id")
+                        .value(Matchers.hasItems(id(id1), id(id2), id(id3r), id(id4r), id(id5r))));
+    }
+
+    @SneakyThrows
+    private void fluxoListarEditarSalvarPublicarDescartarDespublicarListar(String id) {
+        id = id(id);
+
+        api.listar()
+                .andExpect(status().isOk());
+        api.salvarCarta(id, carta2(id))
+                .andExpect(status().is3xxRedirection());
+        api.publicarCarta(id)
+                .andExpect(status().isOk());
+        api.salvarCarta(id, carta3(id))
+                .andExpect(status().is3xxRedirection());
+        api.descartarCarta(id)
+                .andExpect(status().is3xxRedirection());
+        api.editarCarta(id)
+                .andExpect(status().isOk())
+                .andExpect(content().xml(carta2(id)));
+        api.salvarCarta(id, carta4(id))
+                .andExpect(status().is3xxRedirection());
+        api.publicarCarta(id)
+                .andExpect(status().isOk());
+        api.despublicarCarta(id)
+                .andExpect(status().isOk());
+        api.listar()
+                .andExpect(status().isOk());
+        api.editarCarta(id)
+                .andExpect(status().isOk())
+                .andExpect(content().xml(carta4(id)));
+    }
+
+    @SneakyThrows
+    private void listar() {
+        api.listar()
+                .andExpect(status().isOk());
+    }
+
+    @SneakyThrows
+    private void salvarDocumentos(TipoPagina tipo, String id, String conteudo1, String conteudo2) {
+        api.salvarPagina(tipo, id, conteudo1)
+                .andExpect(status().is3xxRedirection());
+        api.salvarPagina(tipo, id, conteudo2)
+                .andExpect(status().is3xxRedirection());
     }
 
     @SneakyThrows
     private void fluxoListarSalvarEditar(TipoPagina tipo, String id, String conteudo1, String conteudo2) {
-        for (int i = 0; i < OPERATION_COUNT; i++) {
+        for (int i = 0; i < 7; i++) {
             api.listar()
                     .andExpect(status().isOk());
             api.salvarPagina(tipo, id, conteudo1)
@@ -89,45 +264,51 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
                 .andExpect(status().isOk());
     }
 
+    private void paralelizar(Unchecked.Supplier... fs) {
+        Arrays.asList(fs)
+                .stream()
+                .map(f -> execucaoParalela.submit(() -> f.get()))
+                .forEach(this::get);
+    }
 
-    @Test
-    public void fluxoDeletarPaginaRepositorioNaoDeveFicarInconsistente() {
+    private void paralelizar(Runnable... fs) {
+        Arrays.asList(fs)
+                .stream()
+                .map(f -> execucaoParalela.submit(() -> f.run()))
+                .forEach(this::get);
+    }
+
+    private Object get(Future f) {
         try {
-            getAll(
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-a").andExpect(status().isOk())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-b").andExpect(status().isOk())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-c").andExpect(status().isOk())));
-
-            getAll(
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-a").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-b").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-c").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-a").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-b").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-c").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-a").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-b").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-c").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-a").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-b").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-c").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-a").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-b").andExpect(status().isNotFound())),
-                    exec.submit(() -> api.excluirPagina(TipoPagina.SERVICO, "carta-c").andExpect(status().isNotFound())));
-        } finally {
-            exec.shutdown();
+            return f.get();
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
         }
     }
 
-    private void getAll(Future... fs) {
-        Arrays.asList(fs)
-                .forEach(f -> {
-                    try {
-                        f.get();
-                    } catch (Throwable t) {
-                        throw new RuntimeException(t);
-                    }
-                });
+    private static String carta(String base) {
+        return "<servico><nome>Carta " + base + "</nome></servico>";
+    }
+
+    private static String carta2(String base) {
+        return "<servico><nome>Carta " + base + "</nome><sigla>C" + base.charAt(0) + "</sigla></servico>";
+    }
+
+    private static String carta3(String base) {
+        return "<servico><nome>Carta " + base + "</nome><sigla>C" + base.charAt(0) + "</sigla><descricao>" + base + "</descricao></servico>";
+    }
+
+    private static String carta4(String base) {
+        String palavrasChave = "<palavras-chave>" + Arrays.asList(base.split(""))
+                .stream()
+                .map(s -> "<item>" + s + "</item>")
+                .collect(joining("")) + "</palavras-chave>";
+
+        return "<servico><nome>Carta " + base + "</nome><sigla>C" + base.charAt(0) + "</sigla>" + palavrasChave + "</servico>";
+    }
+
+    private static String id(String base) {
+        return SlugifyConfig.slugify("carta-" + base);
     }
 
 }
