@@ -9,6 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,5 +43,12 @@ public class UsuarioServiceTest {
         when(repository.findById(USUARIO_ID)).thenReturn(USUARIO);
         when(repository.save(USUARIO)).thenReturn(USUARIO);
 //        assertThat(service.habilitarDesabilitarUsuario(USUARIO_ID.toString()), equalTo(USUARIO));
+    }
+
+    @Test
+    public void desabilitaUsuario() {
+        when(repository.findById(USUARIO_ID)).thenReturn(USUARIO.withHabilitado(true));
+        service.desabilitarUsuario(USUARIO_ID.toString());
+        verify(repository).save(USUARIO.withHabilitado(false));
     }
 }

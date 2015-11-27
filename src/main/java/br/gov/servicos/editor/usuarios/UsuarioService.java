@@ -38,4 +38,8 @@ public class UsuarioService {
         return this.save(usuario.withHabilitado(!usuario.isHabilitado()));
     }
 
+    public void desabilitarUsuario(String usuarioId) {
+        Usuario usuario = this.findById(usuarioId);
+        this.save(usuario.withHabilitado(false));
+    }
 }

@@ -25,7 +25,7 @@ public class RecuperacaoSenhaService {
     private TokenRecuperacaoSenhaRepository repository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
     private RecuperacaoSenhaValidator validator;
@@ -43,6 +43,7 @@ public class RecuperacaoSenhaService {
                                                             .withTentativasSobrando(maxTentativasToken)
                                                             .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
+        usuarioService.desabilitarUsuario(usuarioId);
         return token;
     }
 
@@ -53,7 +54,7 @@ public class RecuperacaoSenhaService {
 
         Optional<TokenError> tokenError = validator.hasError(formulario, token);
         if(!tokenError.isPresent()) {
-            usuarioRepository.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
+            usuarioService.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
             repository.delete(token.getId());
         } else if(tokenError.get().equals(TokenError.INVALIDO)){
             TokenRecuperacaoSenha novoToken = token.decrementarTentativasSobrando();

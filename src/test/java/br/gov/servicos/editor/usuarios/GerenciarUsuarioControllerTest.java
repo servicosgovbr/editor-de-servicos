@@ -139,5 +139,4 @@ public class GerenciarUsuarioControllerTest {
                 "Este link não é válido. Solicite um novo link para alterar sua senha.");
         verify(bindingResult).addError(fieldError);
     }
-
 }

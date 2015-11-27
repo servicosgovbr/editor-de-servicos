@@ -47,7 +47,7 @@ public class RecuperacaoSenhaServiceTest {
     private RecuperacaoSenhaValidator validator;
 
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @InjectMocks
     private RecuperacaoSenhaService recuperacaoSenhaService;
@@ -73,6 +73,13 @@ public class RecuperacaoSenhaServiceTest {
         assertThat(token, equalTo(TOKEN));
     }
 
+
+    @Test
+    public void deveDesabilitarUsuarioQuandogerarToken() {
+        recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
+        verify(usuarioService).desabilitarUsuario(USUARIO_ID.toString());
+    }
+
     @Test
     public void deveSalvarSenhaSeTokenForValido() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
@@ -84,7 +91,7 @@ public class RecuperacaoSenhaServiceTest {
         when(validator.hasError(formulario, token)).thenReturn(empty());
 
         recuperacaoSenhaService.trocarSenha(formulario);
-        verify(usuarioRepository).save(usuario.withSenha(ENCRYPTED_SENHA));
+        verify(usuarioService).save(usuario.withSenha(ENCRYPTED_SENHA));
     }
 
     @Test
@@ -114,7 +121,7 @@ public class RecuperacaoSenhaServiceTest {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
         } catch (TokenInvalido e) {
-            verify(usuarioRepository, never()).save(usuario.withSenha(ENCRYPTED_SENHA));
+            verify(usuarioService, never()).save(usuario.withSenha(ENCRYPTED_SENHA));
         }
     }
 
