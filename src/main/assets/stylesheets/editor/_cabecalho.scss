@@ -28,7 +28,7 @@ header {
     font-size: 0.55em;
     font-family: $openSansRegular;
     letter-spacing: 0.4pt;
-    @include ellipsis(37%);
+    @include ellipsis(38%);
     border-left: 1px solid;
     vertical-align: top;
     position: relative;
@@ -39,7 +39,7 @@ header {
   }
 
   div {
-    @include span-columns(4.7 of 12);
+    @include span-columns(4.9 of 12);
     @include omega;
     line-height: 3em;
     min-width: 230px;
