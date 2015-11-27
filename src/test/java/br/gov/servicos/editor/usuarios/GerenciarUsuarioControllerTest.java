@@ -1,7 +1,9 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
-import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
+import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
+import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Test;
@@ -24,7 +26,7 @@ public class GerenciarUsuarioControllerTest {
     private static final String TOKEN = "token";
     private static final String USUARIO_ID = "123412341234";
     private FormularioUsuario FORM_USUARIO = new FormularioUsuario();
-    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID));
+    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID)).withPapel(new Papel());
 
     @Mock
     private UsuarioService usuarioService;

@@ -6,6 +6,7 @@ import br.gov.servicos.editor.usuarios.recuperarsenha.*;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
+import static net.logstash.logback.marker.Markers.append;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -58,17 +60,11 @@ public class GerenciarUsuarioController {
     public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
             Usuario usuarioSalvo = usuarioService.save(factory.criarUsuario(formularioUsuario));
+            usuarioLog("Usuario criado", usuarioSalvo);
             return intrucoesParaRecuperarSenha(usuarioSalvo);
         } else {
             return new ModelAndView("cadastrar");
         }
-    }
-
-    private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario) {
-        ModelMap model = new ModelMap();
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuario.getId().toString()));
-        return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
     @RequestMapping("/editar/usuarios/usuario")
@@ -80,7 +76,8 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/habilitar-desabilitar", method = POST)
     public String habilitarDesabilitarUsuario(@PathVariable("usuarioId") String usuarioId) {
-        usuarioService.habilitarDesabilitarUsuario(usuarioId);
+        Usuario usuario = usuarioService.habilitarDesabilitarUsuario(usuarioId);
+        usuarioLog("Mudança de propriedade habilitado", usuario);
         return "redirect:/editar/usuarios";
     }
 
@@ -110,15 +107,25 @@ public class GerenciarUsuarioController {
     public String recuperarSenha(@Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
         if (!result.hasErrors()) {
             try {
-                tokenService.trocarSenha(formularioRecuperarSenha);
+                Usuario usuarioComSenhaNova = tokenService.trocarSenha(formularioRecuperarSenha);
+                usuarioLog("Senha trocada", usuarioComSenhaNova);
                 return "redirect:/editar/autenticar?senhaAlterada";
             } catch(TokenInvalido e) {
+                log.info("Falha na tentativa de trocar senha");
                 result.addError(criarErroTokenInvalido(e));
                 return "recuperar-senha";
             }
         } else {
             return "recuperar-senha";
         }
+    }
+
+    private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario) {
+        ModelMap model = new ModelMap();
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuario.getId().toString()));
+        usuarioLog("Token gerado para trocar senha", usuario);
+        return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
     private FieldError criarErroTokenInvalido(TokenInvalido e) {
@@ -130,6 +137,7 @@ public class GerenciarUsuarioController {
         } else {
             message = "Este link não é válido. Solicite um novo link para alterar sua senha.";
         }
+
         return new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
                     message);
     }
@@ -146,6 +154,17 @@ public class GerenciarUsuarioController {
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {
         String token = tokenService.gerarTokenParaUsuario(usuarioId);
         return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId;
+    }
+
+    private void usuarioLog(String mensagem, Usuario usuario) {
+        Marker marker = append("usuario.id", usuario.getId())
+                .and(append("usuario.cpf", usuario.getCpf()))
+                .and(append("usuario.habilitado", usuario.isHabilitado()))
+                .and(append("usuario.nome", usuario.getNome()))
+                .and(append("usuario.papel", usuario.getPapel().getNome()))
+                .and(append("usuario.siorg", usuario.getSiorg()));
+
+        log.debug(marker, mensagem);
     }
 
 }
