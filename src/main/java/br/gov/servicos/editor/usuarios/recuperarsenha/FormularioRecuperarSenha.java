@@ -1,13 +1,10 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.recuperarsenha;
 
-import br.com.caelum.stella.bean.validation.CPF;
 import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
 import br.gov.servicos.editor.usuarios.cadastro.ConfirmacaoSenha;
-import br.gov.servicos.editor.usuarios.cadastro.CpfUnico;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.Valid;
 

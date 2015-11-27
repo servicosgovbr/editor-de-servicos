@@ -1,6 +1,8 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.recuperarsenha;
 
-import br.gov.servicos.editor.usuarios.cadastro.TokenRecuperacaoSenhaRepository;
+import br.gov.servicos.editor.usuarios.*;
+import br.gov.servicos.editor.usuarios.token.TokenRepository;
+import br.gov.servicos.editor.usuarios.token.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +24,7 @@ public class RecuperacaoSenhaService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private TokenRecuperacaoSenhaRepository repository;
+    private TokenRepository repository;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -37,7 +39,7 @@ public class RecuperacaoSenhaService {
 
     public String gerarTokenParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
-        TokenRecuperacaoSenha tokenRecuperacaoSenha = new TokenRecuperacaoSenha()
+        Token tokenRecuperacaoSenha = new Token()
                                                             .withUsuario(new Usuario().withId(valueOf(usuarioId)))
                                                             .withDataCriacao(LocalDateTime.now(clock))
                                                             .withTentativasSobrando(maxTentativasToken)
@@ -49,7 +51,7 @@ public class RecuperacaoSenhaService {
 
     public void trocarSenha(FormularioRecuperarSenha formulario) throws TokenInvalido {
         Long usuarioId = formulario.getUsuarioId();
-        TokenRecuperacaoSenha token = findLatestTokenByUsuarioId(usuarioId);
+        Token token = findLatestTokenByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
 
         Optional<TokenError> tokenError = validator.hasError(formulario, token);
@@ -59,16 +61,16 @@ public class RecuperacaoSenhaService {
                     .withHabilitado(true));
             repository.delete(token.getId());
         } else if(tokenError.get().equals(TokenError.INVALIDO)){
-            TokenRecuperacaoSenha novoToken = token.decrementarTentativasSobrando();
+            Token novoToken = token.decrementarTentativasSobrando();
             repository.save(novoToken);
-            throw new CpfTokenInvalido(novoToken.getTentativasSobrando());
+            throw new TokenExpirado.CpfTokenInvalido(novoToken.getTentativasSobrando());
         } else {
             throw new TokenExpirado();
         }
     }
 
-    private TokenRecuperacaoSenha findLatestTokenByUsuarioId(Long usuarioId) {
-        Iterable<TokenRecuperacaoSenha> tokensUsuario = repository.findByUsuarioIdOrderByDataCriacaoAsc(usuarioId);
+    private Token findLatestTokenByUsuarioId(Long usuarioId) {
+        Iterable<Token> tokensUsuario = repository.findByUsuarioIdOrderByDataCriacaoAsc(usuarioId);
         if(!tokensUsuario.iterator().hasNext()) {
             throw new UsuarioInexistenteException();
         }

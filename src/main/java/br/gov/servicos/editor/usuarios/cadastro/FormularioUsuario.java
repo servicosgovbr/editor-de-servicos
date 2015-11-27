@@ -28,10 +28,6 @@ public class FormularioUsuario {
     @CpfUnico
     String cpf;
 
-    @Valid
-    @ConfirmacaoSenha
-    CamposSenha camposSenha = new CamposSenha();
-
     String papelId;
 
     @Servidor
@@ -53,8 +49,4 @@ public class FormularioUsuario {
     String emailSecundario;
 
     boolean habilitado;
-
-    public String getSenha() {
-        return this.camposSenha.getSenha();
-    }
 }

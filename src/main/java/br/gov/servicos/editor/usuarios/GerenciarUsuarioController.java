@@ -1,6 +1,9 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
+import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.token.TokenExpirado;
+import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,13 +50,20 @@ public class GerenciarUsuarioController {
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
-    public String criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+    public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
-            usuarioService.save(factory.criarUsuario(formularioUsuario));
-            return "redirect:/editar/usuarios/usuario?sucesso";
+            Usuario usuarioSalvo = usuarioService.save(factory.criarUsuario(formularioUsuario));
+            return intrucoesParaRecuperarSenha(usuarioSalvo);
         } else {
-            return "cadastrar";
+            return new ModelAndView("cadastrar");
         }
+    }
+
+    private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario) {
+        ModelMap model = new ModelMap();
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuario.getId().toString()));
+        return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
     @RequestMapping("/editar/usuarios/usuario")
@@ -72,10 +82,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/recuperar-senha", method = POST)
     public ModelAndView requisitarTrocaSenha(@PathVariable("usuarioId") String usuarioId) {
         Usuario usuario = usuarioService.findById(usuarioId);
-        ModelMap model = new ModelMap();
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuarioId));
-        return new ModelAndView("instrucoes-recuperar-senha", model);
+        return intrucoesParaRecuperarSenha(usuario);
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/editar", method = POST)
@@ -111,8 +118,8 @@ public class GerenciarUsuarioController {
 
     private FieldError criarErroTokenInvalido(TokenInvalido e) {
         String message;
-        if(e instanceof CpfTokenInvalido) {
-            CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
+        if(e instanceof TokenExpirado.CpfTokenInvalido) {
+            TokenExpirado.CpfTokenInvalido cpfTokenInvalido = (TokenExpirado.CpfTokenInvalido) e;
             int tentativasSobrando = cpfTokenInvalido.getTentativasSobrando();
             message = criarMensagemTentativasSobrando(tentativasSobrando);
         } else {

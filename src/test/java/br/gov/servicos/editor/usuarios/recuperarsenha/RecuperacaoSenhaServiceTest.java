@@ -1,7 +1,16 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.recuperarsenha;
 
+import br.gov.servicos.editor.usuarios.Usuario;
+import br.gov.servicos.editor.usuarios.UsuarioInexistenteException;
+import br.gov.servicos.editor.usuarios.UsuarioRepository;
+import br.gov.servicos.editor.usuarios.UsuarioService;
 import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
-import br.gov.servicos.editor.usuarios.cadastro.TokenRecuperacaoSenhaRepository;
+import br.gov.servicos.editor.usuarios.token.TokenRepository;
+import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.token.GeradorToken;
+import br.gov.servicos.editor.usuarios.token.Token;
+import br.gov.servicos.editor.usuarios.token.TokenExpirado;
+import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +22,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
-import static br.gov.servicos.editor.usuarios.TokenError.EXPIRADO;
-import static br.gov.servicos.editor.usuarios.TokenError.INVALIDO;
+import static br.gov.servicos.editor.usuarios.token.TokenError.EXPIRADO;
+import static br.gov.servicos.editor.usuarios.token.TokenError.INVALIDO;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -41,7 +50,7 @@ public class RecuperacaoSenhaServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private TokenRecuperacaoSenhaRepository repository;
+    private TokenRepository repository;
 
     @Mock
     private RecuperacaoSenhaValidator validator;
@@ -65,11 +74,11 @@ public class RecuperacaoSenhaServiceTest {
         when(geradorToken.gerar()).thenReturn(TOKEN);
         String token = recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
 
-        TokenRecuperacaoSenha expectedTokenRecuperacaoSenha = new TokenRecuperacaoSenha()
+        Token expectedToken = new Token()
                 .withToken(ENCRYPTED_TOKEN)
                 .withUsuario(new Usuario().withId(USUARIO_ID))
                 .withTentativasSobrando(MAX);
-        verify(repository).save(refEq(expectedTokenRecuperacaoSenha, "dataCriacao"));
+        verify(repository).save(refEq(expectedToken, "dataCriacao"));
         assertThat(token, equalTo(TOKEN));
     }
 
@@ -83,8 +92,8 @@ public class RecuperacaoSenhaServiceTest {
     @Test
     public void deveSalvarSenhaSeTokenForValido() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
-        Usuario usuario = new Usuario().withHabilitado(false);
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario);
+        Usuario usuario = new Usuario();
+        Token token = new Token().withUsuario(usuario);
 
         when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
 
@@ -98,7 +107,7 @@ public class RecuperacaoSenhaServiceTest {
     public void deveDeletarTokenCasoSenhaTenhaSidoTrocada() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
+        Token token = new Token()
                 .withUsuario(usuario)
                 .withId(TOKEN_ID);
         when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
@@ -113,7 +122,7 @@ public class RecuperacaoSenhaServiceTest {
     public void naoDeveSalvarSenhaSeTokenForInvalido() {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario).withTentativasSobrando(0);
+        Token token = new Token().withUsuario(usuario).withTentativasSobrando(0);
         when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
@@ -129,10 +138,10 @@ public class RecuperacaoSenhaServiceTest {
     public void deveIncrementarNumeroDeTentativasSeTokenForInvalido() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
+        Token token = new Token()
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX);
-        TokenRecuperacaoSenha expectedToken = new TokenRecuperacaoSenha()
+        Token expectedToken = new Token()
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX-1);
 
@@ -141,7 +150,7 @@ public class RecuperacaoSenhaServiceTest {
 
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
-        } catch (CpfTokenInvalido e) {
+        } catch (TokenExpirado.CpfTokenInvalido e) {
             verify(repository).save(expectedToken);
         }
     }
@@ -151,7 +160,7 @@ public class RecuperacaoSenhaServiceTest {
     public void deveLancarExcecaoCasoTokenSejaInvalidoComMensagemDizendoQuantasTentativasEstaoFaltando() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
+        Token token = new Token()
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX);
 
@@ -161,7 +170,7 @@ public class RecuperacaoSenhaServiceTest {
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
-        } catch(CpfTokenInvalido e) {
+        } catch(TokenExpirado.CpfTokenInvalido e) {
             assertThat(e.getTentativasSobrando(), equalTo(MAX-1));
         }
     }
@@ -170,7 +179,7 @@ public class RecuperacaoSenhaServiceTest {
     public void deveLancarExcecaoDeTokenExpiradoCasoTokenEstejaExpirado() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
-        TokenRecuperacaoSenha token = new TokenRecuperacaoSenha()
+        Token token = new Token()
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX);
 

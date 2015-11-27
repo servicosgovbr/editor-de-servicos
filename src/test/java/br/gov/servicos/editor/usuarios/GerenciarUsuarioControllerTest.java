@@ -1,6 +1,9 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
+import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.token.TokenExpirado;
+import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,7 +24,7 @@ public class GerenciarUsuarioControllerTest {
     private static final String TOKEN = "token";
     private static final String USUARIO_ID = "123412341234";
     private FormularioUsuario FORM_USUARIO = new FormularioUsuario();
-    private Usuario USUARIO = new Usuario().withCpf(CPF);
+    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID));
 
     @Mock
     private UsuarioService usuarioService;
@@ -42,17 +45,21 @@ public class GerenciarUsuarioControllerTest {
     public void salvaNovoUsuario() {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
+        when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
         controller.criar(FORM_USUARIO, bindingResult);
         verify(usuarioService).save(USUARIO);
     }
 
     @Test
-    public void retornarNovoUsuarioFormularioCasoCadastroTenhaSidoFeito() {
+    public void vaiParaPaginaDeIntrucoesParaFinalizarCadastro() {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
-        String endereco = controller.criar(FORM_USUARIO, bindingResult);
-        assertThat(endereco, equalTo("redirect:/editar/usuarios/usuario?sucesso"));
-
+        when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
+        when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
+        ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
+        assertThat(modelAndView.getViewName(), equalTo("instrucoes-recuperar-senha"));
+        assertThat(modelAndView.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+"&usuarioId="+USUARIO_ID));
+        assertThat(modelAndView.getModel().get("usuario"), equalTo(USUARIO));
     }
 
     @Test
@@ -66,9 +73,8 @@ public class GerenciarUsuarioControllerTest {
     @Test
     public void retornaMesmoUsuarioFormularioSeFormularioPossuiErros() {
         when(bindingResult.hasErrors()).thenReturn(true);
-        when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
-        String endereco = controller.criar(FORM_USUARIO, bindingResult);
-        assertThat(endereco, equalTo("cadastrar"));
+        ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
+        assertThat(modelAndView.getViewName(), equalTo("cadastrar"));
     }
 
     @Test
@@ -80,6 +86,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void mostrarLinkComTokenNasIntrucoesDeRecuperarSenhas() {
+        when(usuarioService.findById(USUARIO_ID)).thenReturn(USUARIO);
         when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
         ModelAndView view = controller.requisitarTrocaSenha(USUARIO_ID);
         assertThat(view.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+"&usuarioId="+USUARIO_ID));
@@ -102,7 +109,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 3;
-        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         String endereco = controller.recuperarSenha(formulario, bindingResult);
 
@@ -117,7 +124,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 0;
-        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         controller.recuperarSenha(formulario, bindingResult);
 

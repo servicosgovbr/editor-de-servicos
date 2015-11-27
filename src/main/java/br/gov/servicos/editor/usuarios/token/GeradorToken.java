@@ -1,4 +1,4 @@
-package br.gov.servicos.editor.usuarios;
+package br.gov.servicos.editor.usuarios.token;
 
 import org.springframework.stereotype.Component;
 
