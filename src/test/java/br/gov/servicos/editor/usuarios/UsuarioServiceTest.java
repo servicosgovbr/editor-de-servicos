@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,7 +15,10 @@ import static org.mockito.Mockito.when;
 public class UsuarioServiceTest {
 
     public static final String CPF = "12312312312";
-    private static final Usuario USUARIO = new Usuario().withCpf(CPF);
+    private static final boolean HABILITADO = Boolean.TRUE;
+    private static final Long USUARIO_ID = new Long(12345);
+    private static final Usuario USUARIO = new Usuario().withCpf(CPF).withHabilitado(HABILITADO);
+
     @Mock
     private UsuarioRepository repository;
 
@@ -33,5 +37,10 @@ public class UsuarioServiceTest {
         service.findByCpf(CPF);
     }
 
-
+    @Test
+    public void inverteValorCampoHabilitado() {
+        when(repository.findById(USUARIO_ID)).thenReturn(USUARIO);
+        when(repository.save(USUARIO)).thenReturn(USUARIO);
+//        assertThat(service.habilitarDesabilitarUsuario(USUARIO_ID.toString()), equalTo(USUARIO));
+    }
 }

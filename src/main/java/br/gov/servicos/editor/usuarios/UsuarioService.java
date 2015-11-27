@@ -25,11 +25,17 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public void save(Usuario usuario) {
-        usuarioRepository.save(usuario);
+    public Usuario save(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 
     public Usuario findById(String usuarioId) {
         return usuarioRepository.findById(valueOf(usuarioId));
     }
+
+    public Usuario habilitarDesabilitarUsuario(String usuarioId) {
+        Usuario usuario = this.findById(usuarioId);
+        return this.save(usuario.withHabilitado(!usuario.isHabilitado()));
+    }
+
 }

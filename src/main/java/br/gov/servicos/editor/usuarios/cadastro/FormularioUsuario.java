@@ -52,6 +52,8 @@ public class FormularioUsuario {
     @Email(message = "Email Secundário: " + EMAIL_INVALIDO)
     String emailSecundario;
 
+    boolean habilitado;
+
     public String getSenha() {
         return this.camposSenha.getSenha();
     }

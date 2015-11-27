@@ -63,6 +63,12 @@ public class GerenciarUsuarioController {
         return new ModelAndView("cadastrar", model);
     }
 
+    @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/habilitar-desabilitar", method = POST)
+    public String habilitarDesabilitarUsuario(@PathVariable("usuarioId") String usuarioId) {
+        usuarioService.habilitarDesabilitarUsuario(usuarioId);
+        return "redirect:/editar/usuarios";
+    }
+
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/recuperar-senha", method = POST)
     public ModelAndView requisitarTrocaSenha(@PathVariable("usuarioId") String usuarioId) {
         Usuario usuario = usuarioService.findById(usuarioId);
@@ -70,6 +76,15 @@ public class GerenciarUsuarioController {
         model.addAttribute("usuario", usuario);
         model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuarioId));
         return new ModelAndView("instrucoes-recuperar-senha", model);
+    }
+
+    @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/editar", method = POST)
+    public ModelAndView editarUsuario(@PathVariable("usuarioId") String usuarioId) {
+        Usuario usuario = usuarioService.findById(usuarioId);
+        ModelMap model = new ModelMap();
+        FormularioUsuario formularioUsuario = factory.criaFormulario(usuario);
+        model.addAttribute("formularioUsuario", formularioUsuario);
+        return new ModelAndView("cadastrar", model);
     }
 
     @RequestMapping(value = "/editar/recuperar-senha", method = GET)
