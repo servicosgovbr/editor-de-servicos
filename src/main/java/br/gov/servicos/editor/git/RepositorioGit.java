@@ -75,7 +75,7 @@ public class RepositorioGit {
     }
 
     public Optional<Revisao> getRevisaoMaisRecenteDoBranch(String branchRef, Path caminhoRelativo) {
-        RevCommit commit = comRepositorioAbertoParaLeitura(uncheckedFunction(git -> {
+        Function<Git, RevCommit> fn = uncheckedFunction(git -> {
             Repository repo = git.getRepository();
             RevWalk revWalk = new RevWalk(repo);
 
@@ -87,7 +87,8 @@ public class RepositorioGit {
                 return revs.next();
             }
             return null;
-        }));
+        });
+        RevCommit commit = comRepositorioAberto(fn);
 
         if (commit == null) {
             return empty();
@@ -106,18 +107,6 @@ public class RepositorioGit {
                 } finally {
                     this.git = null;
                 }
-            }
-        }
-    }
-
-    @SneakyThrows
-    private <T> T comRepositorioAbertoParaLeitura(Function<Git, T> fn) {
-        try (Git git = Git.open(raiz)) {
-            try {
-                this.git = git;
-                return fn.apply(git);
-            } finally {
-                this.git = null;
             }
         }
     }
@@ -358,7 +347,7 @@ public class RepositorioGit {
     }
 
     public Stream<String> branches() {
-        return comRepositorioAbertoParaLeitura(git -> {
+        Function<Git, Stream<String>> fn = git -> {
             LogstashMarker marker = append("git.state", git.getRepository().getRepositoryState().toString());
 
             try {
@@ -375,7 +364,8 @@ public class RepositorioGit {
                 log.error(marker, "Erro ao listar branches", e);
                 return Stream.<String>empty();
             }
-        });
+        };
+        return comRepositorioAberto(fn);
     }
 
     @SneakyThrows

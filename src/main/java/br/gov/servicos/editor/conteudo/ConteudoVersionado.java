@@ -42,7 +42,7 @@ import static org.eclipse.jgit.lib.Constants.R_HEADS;
 public class ConteudoVersionado {
 
     @Getter
-    private String id;
+    String id;
     @Getter
     TipoPagina tipo;
     @Getter(PROTECTED)
