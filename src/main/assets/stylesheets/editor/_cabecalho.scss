@@ -25,7 +25,7 @@ header {
   }
 
   .nome-pagina {
-    @include ellipsis(36%);
+    @include ellipsis(35%);
     font-size: 0.55em;
     font-family: $openSansRegular;
     letter-spacing: 0.4pt;
