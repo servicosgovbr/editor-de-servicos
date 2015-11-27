@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.*;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
@@ -36,6 +37,9 @@ public class GerenciarUsuarioController {
     @Autowired
     private RecuperacaoSenhaService tokenService;
 
+    @Autowired
+    private Siorg siorg;
+
     @ModelAttribute("papeis")
     public Iterable<Papel> papularPapeis() {
         return this.papelRepository.findAll();
@@ -45,6 +49,7 @@ public class GerenciarUsuarioController {
     public ModelAndView usuarios() {
         Iterable<Usuario> usuarios = usuarioService.findAll();
         ModelMap model = new ModelMap();
+        model.addAttribute("siorg", siorg);
         model.addAttribute("usuarios", usuarios);
         return new ModelAndView("usuarios", model);
     }

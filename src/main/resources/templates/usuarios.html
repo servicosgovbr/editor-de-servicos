@@ -31,6 +31,48 @@
     </header>
 
     <div id="usuarios" style="padding-top: 100px">
+        <table id="listagem-usuarios">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Papéis</th>
+                    <th>Orgão</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.nome}"></td>
+                    <td th:text="${usuario.emailPrimario}"></td>
+                    <td th:text="${usuario.papel.nome}"></td>
+                    <!--<td th:if="${siorg.nomeDoOrgao(usuario.siorg)}" th:text=""></td>-->
+                    <td th:if="${siorg.nomeDoOrgao(usuario.siorg) != null}" th:text="${siorg.nomeDoOrgao(usuario.siorg).orElse(new String())}"></td>
+                    <td>
+                        <span th:if="${usuario.habilitado == true}" class="">Habilitado</span>
+                        <span th:if="${usuario.habilitado == false}">Desabilitado</span>
+                    </td>
+                    <td>
+                        <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
+                            <button id="edicao-usuario" type="submit">
+                                <span>
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </span>
+                            </button>
+                        </form>
+                        <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
+                            <button id="recuperar-senha-usuario" type="submit">
+                                <span>
+                                    <i class="fa fa-key"></i>
+                                </span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+        <!--
         <div th:each="usuario : ${usuarios}">
             <form th:action="@{/editar/usuarios/usuario/{id}/habilitar-desabilitar(id=${usuario.id})}" method="post">
                 <div th:text="${usuario.nome}"></div>
@@ -46,6 +88,7 @@
                 <button type="submit">recuperar senha</button>
             </form>
         </div>
+        -->
         <a href="/editar/usuarios/usuario">criar</a>
     </div>
 </div>
