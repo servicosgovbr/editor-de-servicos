@@ -70,7 +70,17 @@
 
   }
 
+  button {
+    float: right;
+    margin-top: 10px;
+    background-color: $azul-regular;
+    color: $branco;
 
+    &:hover {
+      color: $branco;
+      background-color: $azul-escuro;
+    }
+  }
 
   h2 {
     text-transform: capitalize;
@@ -78,8 +88,10 @@
     font-family: $openSansBold;
     text-align: center;
   } 
+}
 
-  .erro {
+#login, #cadastro, #recuperar {
+ .erro {
     background: #ff5151;
     color: white;
     padding: 10px 15px;
@@ -122,18 +134,6 @@
   .select2Erro .select2-message-container {
     border: 2px solid #ff5151;
     border-radius: 6px;
-  }
-
-  button {
-    float: right;
-    margin-top: 10px;
-    background-color: $azul-regular;
-    color: $branco;
-
-    &:hover {
-      color: $branco;
-      background-color: $azul-escuro;
-    }
   }
 }
 

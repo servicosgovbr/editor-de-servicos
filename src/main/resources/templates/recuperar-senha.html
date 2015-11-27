@@ -27,7 +27,7 @@
     </header>
 
     <div id="informacoes">
-        <form th:action="@{/editar/recuperar-senha}" th:object="${formularioRecuperarSenha}" method="post">
+        <form id="recuperar" th:action="@{/editar/recuperar-senha}" th:object="${formularioRecuperarSenha}" method="post">
             <fieldset>
                 <h3>Crie uma nova senha:</h3>
                 <p>1. Sua senha deve conter pelo menos 8 caracteres</p>
