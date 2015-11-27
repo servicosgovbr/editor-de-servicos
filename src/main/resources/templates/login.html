@@ -31,6 +31,11 @@
             Seu CPF e/ou sua senha estão incorretos.
         </p>
 
+        <p th:if="${param.senhaAlterada}" class="info">
+            <i class="fa fa-info"></i>&nbsp;
+            Senha alterada com sucesso.
+        </p>
+
         <p th:if="${param.sair}" class="info">
             <i class="fa fa-info"></i>&nbsp;
             Você saiu do sistema.
