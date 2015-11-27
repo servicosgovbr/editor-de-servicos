@@ -54,7 +54,9 @@ public class RecuperacaoSenhaService {
 
         Optional<TokenError> tokenError = validator.hasError(formulario, token);
         if(!tokenError.isPresent()) {
-            usuarioService.save(usuario.withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha())));
+            usuarioService.save(usuario
+                    .withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha()))
+                    .withHabilitado(true));
             repository.delete(token.getId());
         } else if(tokenError.get().equals(TokenError.INVALIDO)){
             TokenRecuperacaoSenha novoToken = token.decrementarTentativasSobrando();

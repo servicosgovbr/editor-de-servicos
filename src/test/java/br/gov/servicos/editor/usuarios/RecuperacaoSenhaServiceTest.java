@@ -83,7 +83,7 @@ public class RecuperacaoSenhaServiceTest {
     @Test
     public void deveSalvarSenhaSeTokenForValido() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
-        Usuario usuario = new Usuario();
+        Usuario usuario = new Usuario().withHabilitado(false);
         TokenRecuperacaoSenha token = new TokenRecuperacaoSenha().withUsuario(usuario);
 
         when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
@@ -91,7 +91,7 @@ public class RecuperacaoSenhaServiceTest {
         when(validator.hasError(formulario, token)).thenReturn(empty());
 
         recuperacaoSenhaService.trocarSenha(formulario);
-        verify(usuarioService).save(usuario.withSenha(ENCRYPTED_SENHA));
+        verify(usuarioService).save(usuario.withSenha(ENCRYPTED_SENHA).withHabilitado(true));
     }
 
     @Test
