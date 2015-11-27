@@ -90,7 +90,7 @@ var Orgao = function (config) {
 
   this.id = id('orgao');
   this.nome = v.prop(data.nome || '', v.obrigatorio);
-  this.contato = v.prop(data.contato || '', v.textoCurto);
+  this.contato = v.prop(data.contato || '', v.textoLongo);
 };
 
 var GRATUITO = 'gratuito';
