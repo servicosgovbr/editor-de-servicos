@@ -142,10 +142,6 @@ div.input-container {
     @include validacao-erro-input('Já existe um serviço com este nome', 127px);
   }
 
-  &.erro-nome-orgao-existente {
-    @include validacao-erro-input('Já existe um orgão com este nome', 127px);
-  }
-
   &.erro-nome-tematica-existente {
     @include validacao-erro-input('Já existe uma página temática com este nome', 127px);
   }
@@ -195,4 +191,7 @@ h2.erro-min-1 {
     @include validacao-erro-input('Já existe um serviço com este nome', 127px);
   }
 
+  &.erro-nome-orgao-existente {
+    @include validacao-erro-input('Já existe um orgão com este nome', 127px);
+  }
 }
