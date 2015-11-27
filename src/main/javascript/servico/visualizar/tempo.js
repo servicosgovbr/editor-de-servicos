@@ -56,8 +56,8 @@ module.exports = {
               m('h3.subtitulo-servico', 'Quanto tempo leva?'),
               tempoEntreView(),
               tempoAteView(),
-              m('br'),
-              m('h4', 'Informações adicionais ao tempo estimado'),
+              ctrl.servico.tempoTotalEstimado().descricao().length > 0 ? m('br') : '',
+              ctrl.servico.tempoTotalEstimado().descricao().length > 0 ? m('h4', 'Informações adicionais ao tempo estimado') : '',
               m.trust(ctrl.converter.makeHtml(ctrl.servico.tempoTotalEstimado().descricao()))
           ]);
     }
