@@ -57,5 +57,6 @@ body {
 
 	button {
 		@include span-columns(3);
+		margin-left: 10px;
 	}
 }
