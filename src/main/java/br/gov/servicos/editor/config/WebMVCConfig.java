@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -53,5 +54,13 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new CustomLoginSuccessHandler("/editar","/editar/autenticar");
+    }
+
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+        resourceBundleMessageSource.setBasenames("GerenciarUsuarios");
+        resourceBundleMessageSource.setDefaultEncoding("UTF-8");
+        return resourceBundleMessageSource;
     }
 }

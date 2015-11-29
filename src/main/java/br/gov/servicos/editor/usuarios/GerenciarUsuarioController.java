@@ -61,7 +61,7 @@ public class GerenciarUsuarioController {
         if (!result.hasErrors()) {
             Usuario usuarioSalvo = usuarioService.save(factory.criarUsuario(formularioUsuario));
             usuarioLog("Usuario criado", usuarioSalvo);
-            return intrucoesParaRecuperarSenha(usuarioSalvo);
+            return intrucoesParaRecuperarSenha(usuarioSalvo, "completarCadastro");
         } else {
             return new ModelAndView("cadastrar");
         }
@@ -84,7 +84,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/recuperar-senha", method = POST)
     public ModelAndView requisitarTrocaSenha(@PathVariable("usuarioId") String usuarioId) {
         Usuario usuario = usuarioService.findById(usuarioId);
-        return intrucoesParaRecuperarSenha(usuario);
+        return intrucoesParaRecuperarSenha(usuario, "recuperarSenha");
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/editar", method = POST)
@@ -120,10 +120,11 @@ public class GerenciarUsuarioController {
         }
     }
 
-    private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario) {
+    private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario, String pagina) {
         ModelMap model = new ModelMap();
         model.addAttribute("usuario", usuario);
-        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuario.getId().toString()));
+        model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuario.getId().toString(), pagina));
+        model.addAttribute("pagina", pagina);
         usuarioLog("Token gerado para trocar senha", usuario);
         return new ModelAndView("instrucoes-recuperar-senha", model);
     }
@@ -151,9 +152,9 @@ public class GerenciarUsuarioController {
         }
     }
 
-    private String gerarLinkParaRecuperacaoDeSenha(String usuarioId) {
+    private String gerarLinkParaRecuperacaoDeSenha(String usuarioId, String pagina) {
         String token = tokenService.gerarTokenParaUsuario(usuarioId);
-        return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId;
+        return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId + "&" + pagina;
     }
 
     private void usuarioLog(String mensagem, Usuario usuario) {

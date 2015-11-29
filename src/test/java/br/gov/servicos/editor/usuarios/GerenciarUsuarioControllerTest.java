@@ -100,6 +100,8 @@ public class GerenciarUsuarioControllerTest {
                 .withUsuarioId(USUARIO_ID);
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
                 .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+        when(tokenService.trocarSenha(formulario)).thenReturn(USUARIO);
+
 
         when(bindingResult.hasErrors()).thenReturn(false);
         controller.recuperarSenha(formulario, bindingResult);
