@@ -91,14 +91,14 @@ header {
   }
 
   #visualizar, #permissoes {
-    background-color: #2355b1;
-    border-bottom: 2px solid #244e9d;
-    border-right: 2px solid #244e9d;
-    border-top: 3px solid #2355b1;
+    background-color: #3f7ef4;
+    border-bottom: 2px solid #3972DB;
+    border-right: 2px solid #3972DB;
+    border-top: 3px solid #3f7ef4;
 
     &:not(:disabled):hover {
-      background-color: #244e9d;
-      border-top: 3px solid #244e9d; 
+      background-color: #3972DB;
+      border-top: 3px solid #3972DB; 
     }
   }
 
