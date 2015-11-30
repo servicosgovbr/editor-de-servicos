@@ -18,7 +18,7 @@
                 <h1>
                     <i class="fa fa-arrow-left"></i>
                     Editor de Serviços
-                    <span class="nome-pagina">Recuperar senha</span>
+                    <span class="nome-pagina" th:text="#{${'trocarSenha.titulo.' + pagina}}">Recuperar senha</span>
                 </h1>
             </a>
         </div>
@@ -27,9 +27,9 @@
     </header>
 
     <div id="informacoes">
-        <form id="recuperar" th:action="@{/editar/recuperar-senha}" th:object="${formularioRecuperarSenha}" method="post">
+        <form id="recuperar" th:action="@{${'/editar/recuperar-senha?pagina=' + pagina}}" th:object="${formularioRecuperarSenha}" method="post">
             <fieldset>
-                <h3>Crie uma nova senha:</h3>
+                <h3 th:text="#{${'trocarSenha.instrucaoSenha.' + pagina}}">Crie uma nova senha:</h3>
                 <p>1. Sua senha deve conter pelo menos 8 caracteres</p>
                 <p>2. Crie uma senha segura e não esqueça de grava-la para seu uso posterior</p>
             </fieldset>

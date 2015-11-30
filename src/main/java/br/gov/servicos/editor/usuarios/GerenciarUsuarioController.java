@@ -2,7 +2,9 @@ package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
-import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
+import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
+import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -27,6 +30,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class GerenciarUsuarioController {
 
+    public static final String COMPLETAR_CADASTRO = "completarCadastro";
+    public static final String RECUPERAR_SENHA = "recuperarSenha";
     @Autowired
     private UsuarioFactory factory;
 
@@ -61,7 +66,7 @@ public class GerenciarUsuarioController {
         if (!result.hasErrors()) {
             Usuario usuarioSalvo = usuarioService.save(factory.criarUsuario(formularioUsuario));
             usuarioLog("Usuario criado", usuarioSalvo);
-            return intrucoesParaRecuperarSenha(usuarioSalvo, "completarCadastro");
+            return intrucoesParaRecuperarSenha(usuarioSalvo, COMPLETAR_CADASTRO);
         } else {
             return new ModelAndView("cadastrar");
         }
@@ -84,7 +89,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/recuperar-senha", method = POST)
     public ModelAndView requisitarTrocaSenha(@PathVariable("usuarioId") String usuarioId) {
         Usuario usuario = usuarioService.findById(usuarioId);
-        return intrucoesParaRecuperarSenha(usuario, "recuperarSenha");
+        return intrucoesParaRecuperarSenha(usuario, RECUPERAR_SENHA);
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/editar", method = POST)
@@ -97,27 +102,37 @@ public class GerenciarUsuarioController {
     }
 
     @RequestMapping(value = "/editar/recuperar-senha", method = GET)
-    public ModelAndView recuperacaoSenha(FormularioRecuperarSenha formularioRecuperarSenha) {
+    public ModelAndView recuperacaoSenha(@RequestParam(value = "pagina", defaultValue = RECUPERAR_SENHA) String pagina,
+                                         FormularioRecuperarSenha formularioRecuperarSenha) {
         ModelMap model = new ModelMap();
+        model.addAttribute("pagina", pagina);
         model.addAttribute("formularioRecuperarSenha", formularioRecuperarSenha);
-        return new ModelAndView("recuperar-senha");
+        return new ModelAndView("recuperar-senha", model);
     }
 
     @RequestMapping(value = "/editar/recuperar-senha", method = POST)
-    public String recuperarSenha(@Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
+    public ModelAndView recuperarSenha(@RequestParam(value = "pagina", defaultValue = "recuperarSenha") String pagina,
+                                 @Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
         if (!result.hasErrors()) {
             try {
                 Usuario usuarioComSenhaNova = tokenService.trocarSenha(formularioRecuperarSenha);
                 usuarioLog("Senha trocada", usuarioComSenhaNova);
-                return "redirect:/editar/autenticar?senhaAlterada";
+                return new ModelAndView("redirect:/editar/autenticar?senhaAlterada");
             } catch(TokenInvalido e) {
                 log.info("Falha na tentativa de trocar senha");
                 result.addError(criarErroTokenInvalido(e));
-                return "recuperar-senha";
+                return retornarParaRecuperarSenha(pagina);
             }
         } else {
-            return "recuperar-senha";
+            return retornarParaRecuperarSenha(pagina);
         }
+    }
+
+    private ModelAndView retornarParaRecuperarSenha(
+            @RequestParam(value = "pagina", defaultValue = RECUPERAR_SENHA) String pagina) {
+        ModelMap model = new ModelMap();
+        model.addAttribute("pagina", pagina);
+        return new ModelAndView("recuperar-senha", model);
     }
 
     private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario, String pagina) {
@@ -145,7 +160,8 @@ public class GerenciarUsuarioController {
 
     private String criarMensagemTentativasSobrando(int tentativasSobrando) {
         if(tentativasSobrando > 0) {
-            return "O CPF informado não é compatível com o cadastrado. Você possui mais " + tentativasSobrando + " tentativas.";
+            return "O CPF informado não é compatível com o cadastrado. Você possui mais "
+                    + tentativasSobrando + " tentativas.";
         } else {
             return  "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
                     "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..";
@@ -154,7 +170,7 @@ public class GerenciarUsuarioController {
 
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId, String pagina) {
         String token = tokenService.gerarTokenParaUsuario(usuarioId);
-        return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId + "&" + pagina;
+        return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId + "&pagina=" + pagina;
     }
 
     private void usuarioLog(String mensagem, Usuario usuario) {
