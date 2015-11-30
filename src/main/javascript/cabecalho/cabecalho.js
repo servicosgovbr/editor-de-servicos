@@ -16,7 +16,7 @@ module.exports = {
 
         m('span.novo',
             m('a.button#permissoes', {
-              href: '/editar/servico/novo'
+              href: '/editar/usuarios'
             }, [
               m('i.fa.fa-user-plus'),
               m.trust('Gerenciar permissões')
