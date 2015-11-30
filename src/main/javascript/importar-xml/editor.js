@@ -25,6 +25,7 @@ module.exports = {
 
     this.ok = function () {
       this.importando(true);
+      m.redraw();
       promise.onSuccOrError(
         importarXml(this.url())
         .then(_.bind(function (ser) {

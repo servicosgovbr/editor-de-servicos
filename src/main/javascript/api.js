@@ -17,7 +17,7 @@ function serializeXml(svc) {
 }
 
 function deserializeXml(svc) {
-  return new DOMParser().parseFromString(svc, 'application/xml');
+  return jQuery.parseXML(svc);
 }
 
 function configCsrf(xhr) {
@@ -121,15 +121,18 @@ module.exports = {
 
   importarXml: function (urlParam) {
     return request({
-      method: 'GET',
-      url: '/editar/api/importar-xml',
-      config: function (xhr) {
-        xhr.setRequestHeader('Accept', 'application/xml');
-      },
-      data: {
-        url: urlParam
-      }
-    }).then(deserializeXml);
+        method: 'GET',
+        url: '/editar/api/importar-xml',
+        config: function (xhr) {
+          xhr.setRequestHeader('Accept', 'application/xml');
+        },
+        data: {
+          url: urlParam
+        }
+      }).then(deserializeXml)
+      .then(null, function (e) {
+        erro('Erro no formato XML. Verifique se o conteúdo do endereço informado é válido: ' + urlParam);
+      });
     //retorno com erro não usa xml, por isso não usamos função "deserialize", e fazemos isso aqui
   },
 
