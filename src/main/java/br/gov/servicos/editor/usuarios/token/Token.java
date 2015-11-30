@@ -23,7 +23,7 @@ public class Token implements Serializable {
 
     @Id
     @Column(unique = true)
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch=FetchType.LAZY)

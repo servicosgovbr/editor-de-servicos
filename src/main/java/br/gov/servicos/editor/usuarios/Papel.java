@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name="PAPEIS")
 public class Papel implements GrantedAuthority {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
