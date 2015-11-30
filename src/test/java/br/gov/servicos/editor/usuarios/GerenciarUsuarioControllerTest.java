@@ -1,7 +1,9 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
-import br.gov.servicos.editor.usuarios.recuperarsenha.*;
+import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
+import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
+import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Test;
@@ -13,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
 
+import static br.gov.servicos.editor.usuarios.GerenciarUsuarioController.COMPLETAR_CADASTRO;
+import static br.gov.servicos.editor.usuarios.GerenciarUsuarioController.RECUPERAR_SENHA;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
@@ -23,8 +27,9 @@ public class GerenciarUsuarioControllerTest {
     public static final String CPF = "12312312319";
     private static final String TOKEN = "token";
     private static final String USUARIO_ID = "123412341234";
+    private static final String PAGINA = "recuperarSenha";
     private FormularioUsuario FORM_USUARIO = new FormularioUsuario();
-    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID));
+    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID)).withPapel(new Papel());
 
     @Mock
     private UsuarioService usuarioService;
@@ -58,7 +63,8 @@ public class GerenciarUsuarioControllerTest {
         when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
         ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
         assertThat(modelAndView.getViewName(), equalTo("instrucoes-recuperar-senha"));
-        assertThat(modelAndView.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+"&usuarioId="+USUARIO_ID));
+        assertThat(modelAndView.getModel().get("link"), equalTo("/editar/recuperar-senha?token="
+                +TOKEN+"&usuarioId="+USUARIO_ID+"&pagina="+ COMPLETAR_CADASTRO));
         assertThat(modelAndView.getModel().get("usuario"), equalTo(USUARIO));
     }
 
@@ -89,7 +95,8 @@ public class GerenciarUsuarioControllerTest {
         when(usuarioService.findById(USUARIO_ID)).thenReturn(USUARIO);
         when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
         ModelAndView view = controller.requisitarTrocaSenha(USUARIO_ID);
-        assertThat(view.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+"&usuarioId="+USUARIO_ID));
+        assertThat(view.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+
+                "&usuarioId="+USUARIO_ID+"&pagina="+ RECUPERAR_SENHA));
     }
 
     @Test
@@ -98,9 +105,11 @@ public class GerenciarUsuarioControllerTest {
                 .withUsuarioId(USUARIO_ID);
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
                 .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha);
+        when(tokenService.trocarSenha(formulario)).thenReturn(USUARIO);
+
 
         when(bindingResult.hasErrors()).thenReturn(false);
-        controller.recuperarSenha(formulario, bindingResult);
+        controller.recuperarSenha(PAGINA, formulario, bindingResult);
         verify(tokenService).trocarSenha(formulario);
     }
 
@@ -111,12 +120,12 @@ public class GerenciarUsuarioControllerTest {
         int tentativasSobrando = 3;
         doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
-        String endereco = controller.recuperarSenha(formulario, bindingResult);
+        ModelAndView endereco = controller.recuperarSenha(PAGINA, formulario, bindingResult);
 
         FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
                 "O CPF informado não é compatível com o cadastrado. Você possui mais "+tentativasSobrando+" tentativas.");
         verify(bindingResult).addError(fieldError);
-        assertThat(endereco, equalTo("recuperar-senha"));
+        assertThat(endereco.getViewName(), equalTo("recuperar-senha"));
     }
 
     @Test
@@ -126,7 +135,7 @@ public class GerenciarUsuarioControllerTest {
         int tentativasSobrando = 0;
         doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
-        controller.recuperarSenha(formulario, bindingResult);
+        controller.recuperarSenha(PAGINA, formulario, bindingResult);
 
         FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
                 "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
@@ -140,7 +149,7 @@ public class GerenciarUsuarioControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         doThrow(new TokenExpirado()).when(tokenService).trocarSenha(formulario);
 
-        controller.recuperarSenha(formulario, bindingResult);
+        controller.recuperarSenha(PAGINA, formulario, bindingResult);
 
         FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
                 "Este link não é válido. Solicite um novo link para alterar sua senha.");

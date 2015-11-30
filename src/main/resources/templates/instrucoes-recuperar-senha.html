@@ -5,7 +5,7 @@
       layout:decorator="layout">
 
 <head>
-    <title>Intruções Recuperação de Senha</title>
+    <title th:text="#{${'instrucoes.tituloHead.' + pagina}}">Intruções Recuperação de Senha</title>
 </head>
 
 <body layout:fragment="corpo">
@@ -15,11 +15,10 @@
     <header>
         <div>
             <a href="/editar">
-                
                 <h1>
                     <i class="fa fa-arrow-left"></i>
                     Editor de Serviços
-                    <span class="nome-pagina">Recuperar senha</span>
+                    <span class="nome-pagina" th:text="#{${'instrucoes.titulo.' + pagina}}">Recuperar senha</span>
                 </h1>
             </a>
         </div>
@@ -29,21 +28,22 @@
             <button type="submit">&nbsp; Sair &nbsp;
             <i class="fa fa-sign-out"></i></button>
         </form>
+
     </header>
 
     <div id="informacoes">
         <a href="/editar/usuarios"><i class="fa fa-arrow-left"></i> Voltar para lista de usuários</a>
         <fieldset>
-            <h3>Passo-a-passo para recuperação de senha</h3>
-            <p>1. Copie o link para que o usuário possa refazer sua senha</p>
-            <p>2. Envie um email para o usuário com o link abaixo, para que ele ou ela possa criar uma nova senha</p>
+            <h3 th:text="#{${'instrucoes.descricao.' + pagina}}">Passo-a-passo para recuperação de senha</h3>
+            <p th:text="#{${'instrucoes.passo1.' + pagina}}">1. Copie o link para que o usuário possa refazer sua senha</p>
+            <p th:text="#{${'instrucoes.passo2.' + pagina}}">2. Envie um email para o usuário com o link abaixo, para que ele ou ela possa criar uma nova senha</p>
         </fieldset>
         <fieldset>
             <h3>Nome</h3>
             <p th:text="${usuario.nome}"></p>
             <h3>E-Mail</h3>
             <p th:text="${usuario.emailPrimario}"></p>
-            <h3>Link para recuperação de senha</h3>
+            <h3 th:text="#{${'instrucoes.link.' + pagina}}">Link para recuperação de senha</h3>
             <input type="text" th:value="${'http://www.servicos.gov.br' + link}"></input>
         </fieldset>
     </div>

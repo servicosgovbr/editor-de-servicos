@@ -49,17 +49,19 @@ public class RecuperacaoSenhaService {
         return token;
     }
 
-    public void trocarSenha(FormularioRecuperarSenha formulario) throws TokenInvalido {
+    public Usuario trocarSenha(FormularioRecuperarSenha formulario) throws TokenInvalido {
         Long usuarioId = formulario.getUsuarioId();
         Token token = findLatestTokenByUsuarioId(usuarioId);
         Usuario usuario = token.getUsuario();
 
         Optional<TokenError> tokenError = validator.hasError(formulario, token);
         if(!tokenError.isPresent()) {
-            usuarioService.save(usuario
+            Usuario usuarioComSenhaNova = usuario
                     .withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha()))
-                    .withHabilitado(true));
+                    .withHabilitado(true);
+            usuarioService.save(usuarioComSenhaNova);
             repository.delete(token.getId());
+            return usuarioComSenhaNova;
         } else if(tokenError.get().equals(TokenError.INVALIDO)){
             Token novoToken = token.decrementarTentativasSobrando();
             repository.save(novoToken);
