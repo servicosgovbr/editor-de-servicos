@@ -70,7 +70,7 @@ header {
     float: right;
   }
 
-  #salvar, #publicar, #descartar, #visualizar, #editar, #nova-pagina, #permissoes {
+  #salvar, #publicar, #descartar, #visualizar, #editar, #nova-pagina, #permissoes, #novo-usuario {
     float: right;
     margin-top: em(2);
     color: $branco;
@@ -88,6 +88,10 @@ header {
       background-color: #199772;
       border-top: 3px solid #199772;
     }
+  }
+
+  #novo-usuario {
+    margin-top: 6px;
   }
 
   #visualizar, #permissoes {

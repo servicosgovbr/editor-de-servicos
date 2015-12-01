@@ -22,24 +22,29 @@
                 </h1>
             </a>
         </div>
-        <div class="metadados">&nbsp;</div>
-        <span></span>
+        <div class="metadados">
+            <a id="novo-usuario" href="/editar/usuarios/usuario" class="button">
+                <i class="fa fa-user-plus"></i>
+                Novo Usuário
+            </a>
+        </div>
+
         <form id="logout" th:action="@{/editar/sair}" method="post">
             <button type="submit">&nbsp; Sair &nbsp;
-            <i class="fa fa-sign-out"></i></button>
+                <i class="fa fa-sign-out"></i></button>
         </form>
     </header>
 
-    <div id="usuarios" style="padding-top: 100px">
-        <table id="listagem-usuarios">
+    <div id="lista-usuarios" style="padding-top: 100px">
+        <table id="usuarios">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th style="width:20%;">Email</th>
                     <th>Papéis</th>
                     <th>Orgão</th>
                     <th>Situação</th>
-                    <th></th>
+                    <th style="width:7%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -54,14 +59,14 @@
                     </td>
                     <td>
                         <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
-                            <button id="edicao-usuario" type="submit">
+                            <button id="edicao-usuario" type="submit" class="editar">
                                 <span>
                                     <i class="fa fa-pencil-square-o"></i>
                                 </span>
                             </button>
                         </form>
                         <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
-                            <button id="recuperar-senha-usuario" type="submit">
+                            <button id="recuperar-senha-usuario" type="submit" class="recuperar-senha">
                                 <span>
                                     <i class="fa fa-key"></i>
                                 </span>
@@ -70,9 +75,7 @@
                     </td>
                 </tr>
             </tbody>
-
         </table>
-        <a class="botao-primario" href="/editar/usuarios/usuario">Novo usuário</a>
     </div>
 </div>
 </body>
