@@ -26,11 +26,11 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
     public void setup() {
         execucaoParalela = Executors.newCachedThreadPool();
         setupBase()
-                .carta(id("a"), carta("A"))
-                .carta(id("b"), carta("B"))
-                .carta(id("c"), carta("C"))
-                .carta(id("d"), carta("D"))
-                .carta(id("e"), carta("E"))
+                .carta(id("a"), carta1("A"))
+                .carta(id("b"), carta1("B"))
+                .carta(id("c"), carta1("C"))
+                .carta(id("d"), carta1("D"))
+                .carta(id("e"), carta1("E"))
                 .build();
     }
 
@@ -40,17 +40,16 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
     }
 
     @Test
-    public void testeConcorrencia() throws Exception {
+    public void equipesListandoEditandoSalvandoAoMesmoTempoDeveManterRepositorioFuncional() throws Exception {
         paralelizar(
-                () -> fluxoListarSalvarEditar(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> fluxoListarSalvarEditar(SERVICO, id("b"), carta("B"), carta2("B")),
-                () -> fluxoListarSalvarEditar(SERVICO, id("c"), carta("C"), carta2("C")));
+                () -> fluxoListarSalvarEditar(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> fluxoListarSalvarEditar(SERVICO, id("b"), carta1("B"), carta2("B")),
+                () -> fluxoListarSalvarEditar(SERVICO, id("c"), carta1("C"), carta2("C")));
     }
 
     @Test
     public void fluxoDelecaoMesmoServicoNaoDeveDarErros() throws Exception {
         paralelizar(
-                () -> api.excluirPagina(SERVICO, id("a")),
                 () -> api.excluirPagina(SERVICO, id("a")),
                 () -> api.excluirPagina(SERVICO, id("a")),
                 () -> api.excluirPagina(SERVICO, id("a")),
@@ -98,14 +97,14 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
     @Test
     public void edicaoConcorrenteDoMesmoDocumentoDeveManterAUltimaVersaoSemErros() throws Exception {
         paralelizar(
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta("A"), carta2("A")));
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")));
 
         String ultimo = "<servico><nome>Carta A</nome><descricao>Uma descricao</descricao></servico>";
 
@@ -118,7 +117,7 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
     }
 
     @Test
-    public void equipesEditandoAoMesmoTempoManteRepsitorioFuncional() {
+    public void equipesEditandoAoMesmoTempoDeveManterRepositorioFuncional() {
         paralelizar(
                 () -> fluxoListarExcluirRenomearSalvarSalvarPublicar("a", "b", "c", "d", "e"),
                 () -> fluxoListarEditarSalvarPublicarDescartarDespublicarListar("z"),
@@ -141,11 +140,11 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
         api.listar()
                 .andExpect(status().isOk());
 
-        api.salvarCarta(id(id1), carta(id1));
-        api.salvarCarta(id(id2), carta(id2));
-        api.salvarCarta(id(id3), carta(id3));
-        api.salvarCarta(id(id4), carta(id4));
-        api.salvarCarta(id(id5), carta(id5));
+        api.salvarCarta(id(id1), carta1(id1));
+        api.salvarCarta(id(id2), carta1(id2));
+        api.salvarCarta(id(id3), carta1(id3));
+        api.salvarCarta(id(id4), carta1(id4));
+        api.salvarCarta(id(id5), carta1(id5));
 
         api.excluirPagina(SERVICO, id(id1))
                 .andExpect(status().isOk());
@@ -158,9 +157,9 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
         api.renomearCarta(id(id5), id(id5r))
                 .andExpect(status().isOk());
 
-        api.salvarCarta(id(id1), carta(id1))
+        api.salvarCarta(id(id1), carta1(id1))
                 .andExpect(status().is3xxRedirection());
-        api.salvarCarta(id(id2), carta(id2))
+        api.salvarCarta(id(id2), carta1(id2))
                 .andExpect(status().is3xxRedirection());
         api.salvarCarta(id(id3r), carta2(id3r))
                 .andExpect(status().is3xxRedirection());
@@ -231,7 +230,7 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
 
     @SneakyThrows
     private void fluxoListarSalvarEditar(TipoPagina tipo, String id, String conteudo1, String conteudo2) {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 10; i++) {
             api.listar()
                     .andExpect(status().isOk());
             api.salvarPagina(tipo, id, conteudo1)
@@ -286,7 +285,7 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
         }
     }
 
-    private static String carta(String base) {
+    private static String carta1(String base) {
         return "<servico><nome>Carta " + base + "</nome></servico>";
     }
 
@@ -308,7 +307,7 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
     }
 
     private static String id(String base) {
-        return SlugifyConfig.slugify("carta-" + base);
+        return SlugifyConfig.slugify("carta1-" + base);
     }
 
 }
