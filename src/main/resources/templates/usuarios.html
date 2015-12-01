@@ -47,11 +47,10 @@
                     <td th:text="${usuario.nome}"></td>
                     <td th:text="${usuario.emailPrimario}"></td>
                     <td th:text="${usuario.papel.nome}"></td>
-                    <!--<td th:if="${siorg.nomeDoOrgao(usuario.siorg)}" th:text=""></td>-->
                     <td th:if="${siorg.nomeDoOrgao(usuario.siorg) != null}" th:text="${siorg.nomeDoOrgao(usuario.siorg).orElse(new String())}"></td>
                     <td>
-                        <span th:if="${usuario.habilitado == true}" class="">Habilitado</span>
-                        <span th:if="${usuario.habilitado == false}">Desabilitado</span>
+                        <span th:if="${usuario.habilitado == true}" class="habilitado">Habilitado</span>
+                        <span th:if="${usuario.habilitado == false}" class="desabilitado">Desabilitado</span>
                     </td>
                     <td>
                         <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
@@ -73,23 +72,6 @@
             </tbody>
 
         </table>
-        <!--
-        <div th:each="usuario : ${usuarios}">
-            <form th:action="@{/editar/usuarios/usuario/{id}/habilitar-desabilitar(id=${usuario.id})}" method="post">
-                <div th:text="${usuario.nome}"></div>
-                <button type="submit">habilitar/desabilitar usuario</button>
-            </form>
-            <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
-                <div th:text="${usuario.nome}"></div>
-                <button type="submit">editar usuario</button>
-            </form>
-
-            <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
-                <div th:text="${usuario.nome}"></div>
-                <button type="submit">recuperar senha</button>
-            </form>
-        </div>
-        -->
         <a class="botao-primario" href="/editar/usuarios/usuario">Novo usuário</a>
     </div>
 </div>

@@ -39,6 +39,14 @@ body {
 	margin-right: 9px;
 }
 
+.habilitado {
+    color: $verde;
+}
+
+.desabilitado {
+    color: $vermelho-regular
+}
+
 #area-de-interesse, #select-orgao, #tipoDePagina {
 	.select2-message-container {
 		width: 100%;
