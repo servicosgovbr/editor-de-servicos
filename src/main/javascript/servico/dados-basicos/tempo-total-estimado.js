@@ -47,6 +47,7 @@ module.exports = {
         m('.input-container.inline.margin-right', {
           class: tte().ateMaximo.erro()
         }, [m('input.ate-maximo[type="number"]', {
+          min: 1,
           value: tte().ateMaximo(),
           onchange: m.withAttr('value', tte().ateMaximo)
         })]),
@@ -62,8 +63,16 @@ module.exports = {
         m('.input-container.inline', {
           class: tte().entreMinimo.erro()
         }, [m('input.entre-minimo[type="number"]', {
+          min: 1,
           value: tte().entreMinimo(),
-          onchange: m.withAttr('value', tte().entreMinimo)
+          onchange: m.withAttr('value', tte().entreMinimo),
+          onblur: m.withAttr('value', function(value) {
+            var el = document.querySelector('input.entre-maximo');
+            el.setAttribute('min', parseInt(value, 10) + 1);
+            if (parseInt(tte().entreMaximo(), 10) < parseInt(value, 10) + 1) {
+              tte().entreMaximo(parseInt(value, 10) + 1);
+            }
+          })
         })]),
 
         m('span', ' e '),

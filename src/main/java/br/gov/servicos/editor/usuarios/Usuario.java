@@ -1,7 +1,7 @@
 package br.gov.servicos.editor.usuarios;
 
 
-import com.google.common.collect.Lists;
+import br.gov.servicos.editor.security.GerenciadorPermissoes;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @Entity
 @Getter
@@ -55,13 +57,21 @@ public class Usuario implements Serializable, UserDetails{
     @Column
     private String emailSecundario;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="papel_id")
     private Papel papel;
 
+    private static GerenciadorPermissoes gerenciadorPermissoes;
+
+    public static void setGerenciadorPermissoes(GerenciadorPermissoes gerenciadorPermissoes) {
+        Usuario.gerenciadorPermissoes = gerenciadorPermissoes;
+    }
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Lists.newArrayList(getPapel());
+    public Collection<GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = newArrayList(getPapel());
+        authorities.addAll(gerenciadorPermissoes.getPermissoes(getPapel().getNome()));
+        return authorities;
     }
 
     @Override

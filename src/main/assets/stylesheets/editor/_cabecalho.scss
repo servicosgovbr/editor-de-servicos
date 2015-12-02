@@ -72,10 +72,10 @@ header {
 
   #salvar, #publicar, #descartar, #visualizar, #editar, #nova-pagina, #permissoes, #novo-usuario {
     float: right;
-    margin-top: em(2);
+    margin-top: 2px;
     color: $branco;
     margin-right: 1em;
-    font-size: 14px;
+    font-size: 13px;
     background-color: $verde;
     border-bottom: 2px solid #199772;
     border-right: 2px solid #199772;
@@ -92,6 +92,20 @@ header {
 
   #novo-usuario {
     margin-top: 6px;
+  }
+
+  #descartar {
+    background-color: #fb445a;
+    border-bottom: 2px solid #da4a4a !important;
+    border-right: 2px solid #da4a4a !important;
+    border-top: 3px solid #fb445a;
+
+    &:not(:disabled):hover {
+      background-color: #da4a4a;
+      border-bottom: 2px solid #da4a4a;
+      border-right: 2px solid #da4a4a;
+      border-top: 3px solid #da4a4a;
+    }
   }
 
   #visualizar, #permissoes {
@@ -114,21 +128,8 @@ header {
     vertical-align: bottom;
     margin-bottom: 3px;
     text-align: right;
-    margin-right: 10px;
-  }
-
-  #descartar {
-    background-color: #fb445a;
-    border-bottom: 2px solid #da4a4a;
-    border-right: 2px solid #da4a4a;
-    border-top: 3px solid #fb445a;
-
-    &:not(:disabled):hover {
-      background-color: #da4a4a;
-      border-bottom: 2px solid #da4a4a;
-      border-right: 2px solid #da4a4a;
-      border-top: 3px solid #da4a4a;
-    }
+    margin-right: 8px;
+    font-size: 12px;
   }
 
   #editar {
@@ -145,20 +146,28 @@ header {
     }
   }
 
+  .username {
+    text-transform: uppercase;
+    margin-right: 5px;
+    display: inline-block;
+  }
+
   #logout {
     @include span-columns(1.5 of 12);
     @include omega;
-    margin-top: em(6);
+    margin-top: 8px;
     line-height: 2.25em;
     float: right;
     font-size: 14px;
     text-align: right;
 
     > button {
-      line-height: 2.25em;
+      line-height: 1.5em;
       margin: 0;
       color: $branco;
-      padding: 0;
+      padding: 0 5px;
+      vertical-align: top;
+      margin-top: 5px;
 
       &:hover {
         background-color: $azul-escuro;  

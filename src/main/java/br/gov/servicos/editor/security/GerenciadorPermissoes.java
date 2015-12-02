@@ -1,47 +1,42 @@
 package br.gov.servicos.editor.security;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import br.gov.servicos.editor.usuarios.Usuario;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static br.gov.servicos.editor.security.Permissao.ADMIN;
-import static java.util.stream.Collectors.toList;
+import java.util.Collection;
 
 @Component
-public class GerenciadorPermissoes {
+public class GerenciadorPermissoes implements InitializingBean {
+    private Multimap<String, Permissao> map;
+    private YamlPropertiesFactoryBean yamlPropertiesFactoryBean;
 
-    private Map<String, Permissao> permissoes;
-
-    public GerenciadorPermissoes() {
-        this.permissoes = new HashMap<>();
-
-        this.permissoes.put("jkirchne@thoughtworks.com", ADMIN);
-        this.permissoes.put("jean.kirchner@gmail.com", ADMIN);
-        this.permissoes.put("ojanequi@thoughtworks.com", ADMIN);
-        this.permissoes.put("srosa@thoughtworks.com", ADMIN);
-        this.permissoes.put("bleite@thoughtworks.com", ADMIN);
-        this.permissoes.put("gfreita@thoughtworks.com", ADMIN);
-
-        this.permissoes.put("almeidafab@gmail.com", ADMIN);
-        this.permissoes.put("formiga.mauricio@gmail.com", ADMIN);
+    @Autowired
+    public GerenciadorPermissoes(YamlPropertiesFactoryBean yamlPropertiesFactoryBean) {
+        this.yamlPropertiesFactoryBean = yamlPropertiesFactoryBean;
     }
 
-    public Permissao permissao(String email) {
-        return Optional.ofNullable(permissoes.get(email))
-                .orElse(ADMIN);
+    @Override
+    public void afterPropertiesSet() {
+        map = HashMultimap.create();
+        yamlPropertiesFactoryBean.getObject().forEach((papel, permissao) -> {
+            map.put(parsePapel((String) papel), new Permissao((String) permissao));
+        });
+        Usuario.setGerenciadorPermissoes(this); //necessario porque usuario não é uma classe spring
     }
 
-    public List<GrantedAuthority> authorities(String email) {
-        return permissao(email)
-                .getPermissoes()
-                .stream()
-                .map(Enum::name)
-                .map(SimpleGrantedAuthority::new)
-                .collect(toList());
+    private String parsePapel(String papel)  {
+        if(!papel.matches("[\\w\\s]+\\[\\d\\]")) {
+            throw new RuntimeException("Formato incorreto do arquivo de permissões. Problema com o papel: " + papel);
+        }
+        return papel.split("\\[")[0];
+    }
+
+    public Collection<Permissao> getPermissoes(String editor) {
+        return map.get(editor);
     }
 }

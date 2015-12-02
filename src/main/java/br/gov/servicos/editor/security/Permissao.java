@@ -1,24 +1,19 @@
 package br.gov.servicos.editor.security;
 
-import lombok.Getter;
 
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableSet;
+@EqualsAndHashCode
+@AllArgsConstructor
+@ToString
+public class Permissao implements GrantedAuthority {
+    private String nome;
 
-public enum Permissao {
-    EDITOR,
-    ADMIN(EDITOR);
-
-    @Getter
-    final Set<Permissao> permissoes;
-
-    Permissao(Permissao... others) {
-        HashSet todas = new HashSet<>(asList(others));
-        todas.add(this);
-        this.permissoes = unmodifiableSet(todas);
+    @Override
+    public String getAuthority() {
+        return nome;
     }
-
 }

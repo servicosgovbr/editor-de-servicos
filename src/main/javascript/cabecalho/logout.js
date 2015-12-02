@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 var atributosCsrf = require('utils/atributos-csrf');
 
@@ -9,10 +10,10 @@ module.exports = {
         type: 'hidden',
         name: atributosCsrf.name,
         value: atributosCsrf.token
-      }),
+      }), m('span.username', loggedUser),
       m('button', {
           title: 'Sair do editor (logout)'
-        }, m.trust('&nbsp; Sair &nbsp;'),
+        },
         m('i.fa.fa-sign-out'))
     ]);
   }

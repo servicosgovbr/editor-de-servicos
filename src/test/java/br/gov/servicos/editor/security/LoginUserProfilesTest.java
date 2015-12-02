@@ -24,9 +24,6 @@ public class LoginUserProfilesTest {
     private static final String EMAIL = "email@institucional.gov.br";
     public static final String NOME = "Editor de Serviço";
     @Mock
-    private GerenciadorPermissoes gerenciadorPermissoes;
-
-    @Mock
     private HttpServletRequest httpServletRequest;
 
     @Mock

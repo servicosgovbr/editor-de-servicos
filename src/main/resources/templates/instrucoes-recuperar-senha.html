@@ -44,7 +44,7 @@
             <h3>E-Mail</h3>
             <p th:text="${usuario.emailPrimario}"></p>
             <h3 th:text="#{${'instrucoes.link.' + pagina}}">Link para recuperação de senha</h3>
-            <input type="text" th:value="${'http://' + #httpServletRequest.localName + link}"></input>
+            <input type="text" th:value="${'http://www.servicos.gov.br' + link}"></input>
         </fieldset>
     </div>
 </div>
