@@ -12,7 +12,10 @@ import static org.springframework.http.HttpMethod.*;
 
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
-    public static final String LOGIN_URL = "/editar/autenticar";
+    private static final String LOGIN_URL = "/editar/autenticar";
+    private static final String API_PUBLICAR = "/editar/api/pagina/**";
+    private static final String PUBLICAR = "PUBLICAR";
+    private static final String SALVAR = "SALVAR";
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
 
@@ -42,10 +45,11 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/editar/autenticar", "/editar/api/**", "/editar/recuperar-senha").permitAll()
+                .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
+                .antMatchers(POST, "/editar/**").hasAnyAuthority(SALVAR, PUBLICAR)
+                .antMatchers(PUT, API_PUBLICAR).hasAuthority(PUBLICAR)
                 .antMatchers(DELETE, "/editar/**").authenticated()
                 .antMatchers(PATCH, "/editar/**").authenticated()
-                .antMatchers(PUT, "/editar/**").authenticated()
 
                 .anyRequest().fullyAuthenticated()
 
