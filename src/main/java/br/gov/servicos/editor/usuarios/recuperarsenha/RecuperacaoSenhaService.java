@@ -1,7 +1,8 @@
 package br.gov.servicos.editor.usuarios.recuperarsenha;
 
-import br.gov.servicos.editor.usuarios.*;
-import br.gov.servicos.editor.usuarios.token.TokenRepository;
+import br.gov.servicos.editor.usuarios.Usuario;
+import br.gov.servicos.editor.usuarios.UsuarioInexistenteException;
+import br.gov.servicos.editor.usuarios.UsuarioService;
 import br.gov.servicos.editor.usuarios.token.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +66,7 @@ public class RecuperacaoSenhaService {
         } else if(tokenError.get().equals(TokenError.INVALIDO)){
             Token novoToken = token.decrementarTentativasSobrando();
             repository.save(novoToken);
-            throw new TokenExpirado.CpfTokenInvalido(novoToken.getTentativasSobrando());
+            throw new CpfTokenInvalido(novoToken.getTentativasSobrando());
         } else {
             throw new TokenExpirado();
         }
