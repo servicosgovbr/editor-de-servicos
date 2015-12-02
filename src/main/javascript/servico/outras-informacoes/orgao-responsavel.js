@@ -15,7 +15,7 @@ module.exports = {
           m.component(require('tooltips').orgaoResponsavel)
         ]),
 
-        m('.input-container', [
+        m('.input-container.full', [
           m.component(require('pagina/orgao/select-orgao'), {
             prop: ctrl.servico().orgao().nome
           })

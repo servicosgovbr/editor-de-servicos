@@ -180,7 +180,7 @@ h2.erro-min-1 {
   @include validacao-erro-inline('Deve haver no mínimo um item', -3px, 5px);
 }
 
-.select2-message-container {
+.input-container:not(.full) .select2-message-container {
   position: relative;
 
   &.erro-campo-obrigatorio {
@@ -193,5 +193,13 @@ h2.erro-min-1 {
 
   &.erro-nome-orgao-existente {
     @include validacao-erro-input('Já existe um orgão com este nome', 127px);
+  }
+}
+
+.input-container.full .select2-message-container {
+  position: relative;
+
+  &.erro-campo-obrigatorio {
+    @include validacao-erro-input('Campo obrigatório', 117px);    
   }
 }
