@@ -1,6 +1,6 @@
 'use strict';
 
-var erro = require('utils/erro-ajax');
+var tratamentoAcessoNegado = require('utils/tratamento-acesso-negado');
 
 function fazMockSeRodarEmTestes(xhr) {
   if (!xhr.getResponseHeader) {
@@ -25,9 +25,7 @@ module.exports = function (metadados) {
       }
     });
 
-    if(xhr.status === 406 || xhr.status === 403) {
-      erro('Acesso negado. Você não possui permissão para realizar esse tipo de operação.');
-    }
+    tratamentoAcessoNegado(xhr);
 
     return xhr.responseText;
   };
