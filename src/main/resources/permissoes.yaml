@@ -1,11 +1,20 @@
 admin:
   - salvar
   - publicar
+  - despublicar
+  - descartar
+  - excluir
 ponto focal:
   - publicar
   - salvar
-publicar:
+  - despublicar
+  - descartar
+  - excluir
+publicador:
   - publicar
   - salvar
+  - despublicar
+  - descartar
+  - excluir
 editor:
   - salvar
