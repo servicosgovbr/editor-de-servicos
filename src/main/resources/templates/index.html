@@ -26,5 +26,18 @@
 <script src="/editar/assets/vendor.js"></script>
 <script src="/editar/assets/app.js"></script>
 <script>require('modulos')(m);</script>
+<script>
+  loggedUser = '';
+
+  m.request({
+    url: '/editar/api/ping',
+    extract: function (xhr) {
+      loggedUser = JSON.parse(xhr.responseText).profile.name.split(' ')[0];
+
+      return xhr.responseText;
+    },
+    background: true
+  });
+</script>
 </body>
 </html>
