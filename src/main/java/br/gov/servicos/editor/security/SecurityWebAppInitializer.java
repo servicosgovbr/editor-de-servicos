@@ -15,14 +15,13 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_URL = "/editar/autenticar";
     private static final String API_DESPUBLICAR = "/editar/api/pagina/*/*/despublicar";
     private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
-    private static final String API_PUBLICAR = "/editar/api/pagina/**";
-    private static final String API_SALVAR = "/editar/api/pagina/**";
-    private static final String API_EXCLUIR = "/editar/api/pagina/**";
+    private static final String API_PAGINA = "/editar/api/pagina/**";
     private static final String PUBLICAR = "PUBLICAR";
     private static final String SALVAR = "SALVAR";
     private static final String DESPUBLICAR = "DESPUBLICAR";
     private static final String DESCARTAR = "DESCARTAR";
     private static final String EXCLUIR = "EXCLUIR";
+    private static final String RENOMEAR = "RENOMEAR";
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
 
@@ -58,9 +57,10 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
                 .antMatchers(POST, API_DESPUBLICAR).hasAuthority(DESPUBLICAR)
                 .antMatchers(POST, API_DESCARTAR).hasAuthority(DESCARTAR)
-                .antMatchers(DELETE, API_EXCLUIR).hasAuthority(EXCLUIR)
-                .antMatchers(PUT, API_PUBLICAR).hasAuthority(PUBLICAR)
-                .antMatchers(POST, API_SALVAR).hasAnyAuthority(SALVAR, PUBLICAR, DESPUBLICAR)
+                .antMatchers(DELETE, API_PAGINA).hasAuthority(EXCLUIR)
+                .antMatchers(PATCH, API_PAGINA).hasAuthority(RENOMEAR)
+                .antMatchers(PUT, API_PAGINA).hasAuthority(PUBLICAR)
+                .antMatchers(POST, API_PAGINA).hasAnyAuthority(SALVAR, PUBLICAR, DESPUBLICAR)
                 .antMatchers(DELETE, "/editar/**").authenticated()
                 .antMatchers(PATCH, "/editar/**").authenticated()
 

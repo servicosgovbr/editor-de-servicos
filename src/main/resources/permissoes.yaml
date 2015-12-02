@@ -4,17 +4,20 @@ admin:
   - despublicar
   - descartar
   - excluir
+  - renomear
 ponto focal:
   - publicar
   - salvar
   - despublicar
   - descartar
   - excluir
+  - renomear
 publicador:
   - publicar
   - salvar
   - despublicar
   - descartar
   - excluir
+  - renomear
 editor:
   - salvar
