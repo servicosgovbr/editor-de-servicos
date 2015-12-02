@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import static br.gov.servicos.editor.security.Permissao.ADMIN;
 import static lombok.AccessLevel.PRIVATE;
 
 @Component
@@ -19,8 +18,7 @@ public class UserProfileConfigParaTeste implements UserProfiles {
         return new UserProfile()
                 .withEmail("teste@gmail.com")
                 .withName("teste")
-                .withFamilyName("teste")
-                .withPermissao(ADMIN);
+                .withFamilyName("teste");
     }
 
 }
