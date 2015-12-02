@@ -5,6 +5,7 @@ admin:
   - descartar
   - excluir
   - renomear
+  - cadastrar
 ponto focal:
   - publicar
   - salvar
@@ -12,6 +13,7 @@ ponto focal:
   - descartar
   - excluir
   - renomear
+  - cadastrar
 publicador:
   - publicar
   - salvar
@@ -19,5 +21,6 @@ publicador:
   - descartar
   - excluir
   - renomear
+  - cadastrar
 editor:
   - salvar

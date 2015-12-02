@@ -16,12 +16,14 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESPUBLICAR = "/editar/api/pagina/*/*/despublicar";
     private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
     private static final String API_PAGINA = "/editar/api/pagina/**";
+    private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
     private static final String PUBLICAR = "PUBLICAR";
     private static final String SALVAR = "SALVAR";
     private static final String DESPUBLICAR = "DESPUBLICAR";
     private static final String DESCARTAR = "DESCARTAR";
     private static final String EXCLUIR = "EXCLUIR";
     private static final String RENOMEAR = "RENOMEAR";
+    private static final String CADASTRAR = "CADASTRAR";
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
 
@@ -61,8 +63,8 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .antMatchers(PATCH, API_PAGINA).hasAuthority(RENOMEAR)
                 .antMatchers(PUT, API_PAGINA).hasAuthority(PUBLICAR)
                 .antMatchers(POST, API_PAGINA).hasAnyAuthority(SALVAR, PUBLICAR, DESPUBLICAR)
-                .antMatchers(DELETE, "/editar/**").authenticated()
-                .antMatchers(PATCH, "/editar/**").authenticated()
+                .antMatchers(GET, API_NOVO_USUARIO).hasAuthority(CADASTRAR)
+                .antMatchers(POST, API_NOVO_USUARIO).hasAuthority(CADASTRAR)
 
                 .anyRequest().fullyAuthenticated()
 
