@@ -23,7 +23,6 @@ function deserializeXml(svc) {
 
 function configCsrf(xhr) {
   xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
-  xhr.setRequestHeader('X-Forwarded-For', 'https');
 }
 
 module.exports = {
@@ -37,7 +36,7 @@ module.exports = {
       config: function (xhr) {
         xhr.setRequestHeader('Accepts', 'application/xml');
         xhr.setRequestHeader('Content-Type', 'application/xml');
-        configCsrf(xhr);
+        xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
       },
       serialize: serializeXml,
       extract: extrairMetadados(metadados),
@@ -52,7 +51,6 @@ module.exports = {
       url: '/editar/api/pagina/' + tipo + '/' + slugify(nome),
       config: function (xhr) {
         xhr.setRequestHeader('Accept', 'application/xml');
-        xhr.setRequestHeader('X-Forwarded-For', 'https');
       },
       extract: extrairMetadados(metadados),
       deserialize: deserializeXml
@@ -130,7 +128,6 @@ module.exports = {
         url: '/editar/api/importar-xml',
         config: function (xhr) {
           xhr.setRequestHeader('Accept', 'application/xml');
-          xhr.setRequestHeader('X-Forwarded-For', 'https');
         },
         data: {
           url: urlParam
