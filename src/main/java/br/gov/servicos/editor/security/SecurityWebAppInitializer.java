@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import static br.gov.servicos.editor.security.TipoPermissao.*;
 import static org.springframework.http.HttpMethod.*;
 
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
@@ -17,13 +18,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
     private static final String API_PAGINA = "/editar/api/pagina/**";
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
-    private static final String PUBLICAR = "PUBLICAR";
-    private static final String SALVAR = "SALVAR";
-    private static final String DESPUBLICAR = "DESPUBLICAR";
-    private static final String DESCARTAR = "DESCARTAR";
-    private static final String EXCLUIR = "EXCLUIR";
-    private static final String RENOMEAR = "RENOMEAR";
-    private static final String CADASTRAR = "CADASTRAR";
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
 
@@ -44,27 +38,27 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .formLogin()
-                    .loginPage("/editar/autenticar")
-                    .successHandler(successHandler)
-                    .permitAll()
+                .loginPage("/editar/autenticar")
+                .successHandler(successHandler)
+                .permitAll()
                 .and()
 
-                    .logout()
-                    .logoutUrl("/editar/sair")
-                    .logoutSuccessUrl("/editar/autenticar?sair")
-                    .deleteCookies("JSESSIONID", "SESSION")
+                .logout()
+                .logoutUrl("/editar/sair")
+                .logoutSuccessUrl("/editar/autenticar?sair")
+                .deleteCookies("JSESSIONID", "SESSION")
 
                 .and()
                 .authorizeRequests()
                 .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
-                .antMatchers(POST, API_DESPUBLICAR).hasAuthority(DESPUBLICAR)
-                .antMatchers(POST, API_DESCARTAR).hasAuthority(DESCARTAR)
-                .antMatchers(DELETE, API_PAGINA).hasAuthority(EXCLUIR)
-                .antMatchers(PATCH, API_PAGINA).hasAuthority(RENOMEAR)
-                .antMatchers(PUT, API_PAGINA).hasAuthority(PUBLICAR)
-                .antMatchers(POST, API_PAGINA).hasAnyAuthority(SALVAR, PUBLICAR, DESPUBLICAR)
-                .antMatchers(GET, API_NOVO_USUARIO).hasAuthority(CADASTRAR)
-                .antMatchers(POST, API_NOVO_USUARIO).hasAuthority(CADASTRAR)
+                .antMatchers(POST, API_DESPUBLICAR).hasAuthority(DESPUBLICAR.getNome())
+                .antMatchers(POST, API_DESCARTAR).hasAuthority(DESCARTAR.getNome())
+                .antMatchers(DELETE, API_PAGINA).hasAuthority(EXCLUIR.getNome())
+                .antMatchers(PATCH, API_PAGINA).hasAuthority(RENOMEAR.getNome())
+                .antMatchers(PUT, API_PAGINA).hasAuthority(PUBLICAR.getNome())
+                .antMatchers(POST, API_PAGINA).hasAnyAuthority(SALVAR.getNome(), PUBLICAR.getNome(), DESPUBLICAR.getNome())
+                .antMatchers(GET, API_NOVO_USUARIO).hasAuthority(CADASTRAR.getNome())
+                .antMatchers(POST, API_NOVO_USUARIO).hasAuthority(CADASTRAR.getNome())
 
                 .anyRequest().fullyAuthenticated()
 
