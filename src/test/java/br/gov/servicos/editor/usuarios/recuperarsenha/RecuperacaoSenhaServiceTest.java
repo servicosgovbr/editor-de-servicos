@@ -5,12 +5,8 @@ import br.gov.servicos.editor.usuarios.UsuarioInexistenteException;
 import br.gov.servicos.editor.usuarios.UsuarioRepository;
 import br.gov.servicos.editor.usuarios.UsuarioService;
 import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
-import br.gov.servicos.editor.usuarios.token.TokenRepository;
+import br.gov.servicos.editor.usuarios.token.*;
 import br.gov.servicos.editor.usuarios.recuperarsenha.*;
-import br.gov.servicos.editor.usuarios.token.GeradorToken;
-import br.gov.servicos.editor.usuarios.token.Token;
-import br.gov.servicos.editor.usuarios.token.TokenExpirado;
-import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -150,7 +146,7 @@ public class RecuperacaoSenhaServiceTest {
 
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
-        } catch (TokenExpirado.CpfTokenInvalido e) {
+        } catch (CpfTokenInvalido e) {
             verify(repository).save(expectedToken);
         }
     }
@@ -170,7 +166,7 @@ public class RecuperacaoSenhaServiceTest {
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
-        } catch(TokenExpirado.CpfTokenInvalido e) {
+        } catch(CpfTokenInvalido e) {
             assertThat(e.getTentativasSobrando(), equalTo(MAX-1));
         }
     }
