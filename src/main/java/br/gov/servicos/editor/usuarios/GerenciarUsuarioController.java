@@ -76,6 +76,7 @@ public class GerenciarUsuarioController {
     public ModelAndView login(FormularioUsuario formularioUsuario) {
         ModelMap model = new ModelMap();
         model.addAttribute("formularioUsuario", formularioUsuario);
+        model.addAttribute("edicao", Boolean.FALSE);
         return new ModelAndView("cadastrar", model);
     }
 
@@ -98,6 +99,7 @@ public class GerenciarUsuarioController {
         ModelMap model = new ModelMap();
         FormularioUsuario formularioUsuario = factory.criaFormulario(usuario);
         model.addAttribute("formularioUsuario", formularioUsuario);
+        model.addAttribute("edicao", Boolean.TRUE);
         return new ModelAndView("cadastrar", model);
     }
 

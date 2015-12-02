@@ -3,7 +3,7 @@
 #login, #cadastro {
   @include shift(3 of 12);
   @include span-columns(6 of 12);
-  margin-top: $tamanho-do-cabecalho + 2em;
+  margin-top: $tamanho-do-cabecalho;
   margin-bottom: $tamanho-do-cabecalho;
 
   .borda {
@@ -143,6 +143,19 @@
   margin: 0 auto;
 
   a {
+    text-decoration: underline;
+    margin-bottom: 15px;
+    display: block;
+  }
+}
+
+#volta-lista-usuarios {
+  padding-top: 100px;
+  width: 80%;
+  margin: 0 auto;
+
+  a {
+    @include shift(2 of 12);
     text-decoration: underline;
     margin-bottom: 15px;
     display: block;

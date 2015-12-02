@@ -54,8 +54,8 @@
                     <td th:text="${usuario.papel.nome}"></td>
                     <td th:if="${siorg.nomeDoOrgao(usuario.siorg) != null}" th:text="${siorg.nomeDoOrgao(usuario.siorg).orElse(new String())}"></td>
                     <td>
-                        <span th:if="${usuario.habilitado == true}" class="habilitado">Habilitado</span>
-                        <span th:if="${usuario.habilitado == false}" class="desabilitado">Desabilitado</span>
+                        <span th:if="${usuario.habilitado == true}" class="habilitado">Ativo</span>
+                        <span th:if="${usuario.habilitado == false}" class="desabilitado">Inativo</span>
                     </td>
                     <td>
                         <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">

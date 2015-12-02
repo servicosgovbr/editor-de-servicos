@@ -18,7 +18,8 @@
                 <h1>
                     <i class="fa fa-arrow-left"></i>
                     Editor de Serviços
-                    <span class="nome-pagina">Novo usuário</span>
+                    <span th:if="${edicao == false}" class="nome-pagina">Novo usuário</span>
+                    <span th:if="${edicao == true}" class="nome-pagina">Editar usuário</span>
                 </h1>
             </a>
         </div>
@@ -29,6 +30,10 @@
             <i class="fa fa-sign-out"></i></button>
         </form>
     </header>
+
+    <div id="volta-lista-usuarios">
+        <a href="/editar/usuarios"><i class="fa fa-arrow-left"></i> Voltar para lista de usuários</a>
+    </div>
 
     <form id="cadastro" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" method="post">
         <fieldset>
@@ -65,6 +70,9 @@
             <h3 for="papel-select">Papel</h3>
             <div id="papel-select"></div>
 
+            <h3 th:if="${edicao == true}" for="ativo-inativo-select">Situação</h3>
+            <div th:if="${edicao == true}" id="ativo-inativo-select"></div>
+
             <label class="checkbox" for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
 
             <button type="submit">
@@ -79,9 +87,11 @@
 <script th:inline="javascript">
     var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
     var papeis = /*[[${papeis}]]*/;
+    var valoresAtivo = [{ id: true, text: 'Ativo'}, { id: false, text: 'Inativo'}];
     require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
     require('usuarios/papel')(m, papeis, 'papel-select');
-    require('usuarios/cpf-mask')('cpf')
+    require('usuarios/ativo')(m, valoresAtivo, 'ativo-inativo-select');
+    require('usuarios/cpf-mask')('cpf');
 </script>
 </body>
 </html>
