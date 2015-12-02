@@ -1,0 +1,13 @@
+admin:
+  - cadastrar usuario
+ponto focal:
+  - criar servico
+  - editar servico
+  - salvar servico
+publicar:
+  - editar servico
+  - salvar servico
+  - publicar servico
+editor:
+  - editar servico
+  - salvar servico
