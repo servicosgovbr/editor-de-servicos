@@ -30,7 +30,8 @@
         </div>
 
         <form id="logout" th:action="@{/editar/sair}" method="post">
-            <button type="submit">&nbsp; Sair &nbsp;
+            <span id="username"></span>
+            <button type="submit">
                 <i class="fa fa-sign-out"></i></button>
         </form>
     </header>
@@ -78,5 +79,15 @@
         </table>
     </div>
 </div>
+<script th:inline="javascript">
+    var r = new XMLHttpRequest();
+    r.open("GET", "/editar/api/ping", true);
+    r.onreadystatechange = function () {
+      console.log(r.responseText);
+      if (r.readyState != 4 || r.status != 200) return;
+      document.getElementById('username').innerHTML = JSON.parse(r.responseText).profile.name.split(' ')[0];
+    };
+    r.send();
+</script>
 </body>
 </html>
