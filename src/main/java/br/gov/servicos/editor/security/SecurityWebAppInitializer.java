@@ -8,11 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import static br.gov.servicos.editor.security.TipoPermissao.*;
 import static org.springframework.http.HttpMethod.*;
 
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
-    public static final String LOGIN_URL = "/editar/autenticar";
+    private static final String LOGIN_URL = "/editar/autenticar";
+    private static final String API_DESPUBLICAR = "/editar/api/pagina/*/*/despublicar";
+    private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
+    private static final String API_PAGINA = "/editar/api/pagina/**";
+    private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
 
@@ -24,33 +29,41 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
+        accessDeniedHandler.setErrorPage("/editar/acessoNegado");
+
         http
                 .httpBasic()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL))
                 .and()
 
                 .formLogin()
-                    .loginPage("/editar/autenticar")
-                    .successHandler(successHandler)
-                    .permitAll()
+                .loginPage("/editar/autenticar")
+                .successHandler(successHandler)
+                .permitAll()
                 .and()
 
-                    .logout()
-                    .logoutUrl("/editar/sair")
-                    .logoutSuccessUrl("/editar/autenticar?sair")
-                    .deleteCookies("JSESSIONID", "SESSION")
+                .logout()
+                .logoutUrl("/editar/sair")
+                .logoutSuccessUrl("/editar/autenticar?sair")
+                .deleteCookies("JSESSIONID", "SESSION")
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/editar/autenticar", "/editar/api/**", "/editar/recuperar-senha").permitAll()
-                .antMatchers(DELETE, "/editar/**").authenticated()
-                .antMatchers(PATCH, "/editar/**").authenticated()
-                .antMatchers(PUT, "/editar/**").authenticated()
+                .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
+                .antMatchers(POST, API_DESPUBLICAR).hasAuthority(DESPUBLICAR.getNome())
+                .antMatchers(POST, API_DESCARTAR).hasAuthority(DESCARTAR.getNome())
+                .antMatchers(DELETE, API_PAGINA).hasAuthority(EXCLUIR.getNome())
+                .antMatchers(PATCH, API_PAGINA).hasAuthority(RENOMEAR.getNome())
+                .antMatchers(PUT, API_PAGINA).hasAuthority(PUBLICAR.getNome())
+                .antMatchers(POST, API_PAGINA).hasAnyAuthority(SALVAR.getNome(), PUBLICAR.getNome(), DESPUBLICAR.getNome())
+                .antMatchers(GET, API_NOVO_USUARIO).hasAuthority(CADASTRAR.getNome())
+                .antMatchers(POST, API_NOVO_USUARIO).hasAuthority(CADASTRAR.getNome())
 
                 .anyRequest().fullyAuthenticated()
 
                 .and()
-                    .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
 
                 .and()
                     .sessionManagement()
