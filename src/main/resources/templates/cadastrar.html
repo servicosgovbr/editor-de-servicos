@@ -18,8 +18,8 @@
                 <h1>
                     <i class="fa fa-arrow-left"></i>
                     Editor de Serviços
-                    <span th:if="${edicao == false}" class="nome-pagina">Novo usuário</span>
-                    <span th:if="${edicao == true}" class="nome-pagina">Editar usuário</span>
+                    <span th:if="${formularioUsuario.ehInclusaoDeUsuario}" class="nome-pagina">Novo usuário</span>
+                    <span th:if="${formularioUsuario.ehInclusaoDeUsuario} == false" class="nome-pagina">Editar usuário</span>
                 </h1>
             </a>
         </div>
@@ -72,15 +72,15 @@
             <h3 for="papel-select">Papel</h3>
             <div id="papel-select"></div>
 
-            <h3 th:if="${edicao == true}" for="ativo-inativo-select">Situação</h3>
-            <div th:if="${edicao == true}" id="ativo-inativo-select"></div>
+            <h3 th:if="*{ehInclusaoDeUsuario} == false" for="ativo-inativo-select">Situação</h3>
+            <div th:if="*{ehInclusaoDeUsuario} == false" id="ativo-inativo-select"></div>
 
             <label class="checkbox" for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
 
-            <button th:if="${edicao != true}" type="submit">
+            <button th:if="*{ehInclusaoDeUsuario}" type="submit">
                 Cadastrar
             </button>
-            <button th:if="${edicao == true}" type="submit">
+            <button th:if="*{ehInclusaoDeUsuario} == false" type="submit">
                 Salvar
             </button>
         </fieldset>
