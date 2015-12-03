@@ -112,6 +112,8 @@
       color: #606060;
       padding-left: 20px;
       font-size: 14px;
+      text-overflow: ellipsis;
+      overflow: auto;
 
       &:last-child {
         text-align: right;
@@ -119,6 +121,7 @@
       }
 
       .editar, .recuperar-senha {
+        position: relative;
         display: inline-block;
         width: 32px;
         height: 32px;
@@ -127,9 +130,46 @@
         text-align: center;
         border-radius: 4px;
 
+        .tooltip-content {
+          display: none;
+        }
+
         &:hover {
           color: $branco;
           background-color: $azul-regular;
+
+          .tooltip-content {
+            display: block;
+            background-color: #ddd;
+            position: absolute;
+            top: 42px;
+            left: -60px;
+            width: 140px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-align: left;
+            text-transform: none;
+            font-size: 13px;
+            color: $cinza-escuro;
+            pointer-events: none;
+            text-align: center;
+            z-index: 4;
+
+            &:before {
+              content: '';
+              position: absolute;
+              top: -16px;
+              left: 67px;
+              margin-top: 0;
+              width: 0;
+              height: 0;
+              border-left: 8px solid transparent;
+              border-right: 8px solid transparent;
+              border-bottom: 8px solid #ddd;
+              border-top: 8px solid transparent;
+              z-index: 4;
+            }
+          }
         }
       }
     }
