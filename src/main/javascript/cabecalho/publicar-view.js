@@ -15,16 +15,19 @@ module.exports = {
   controller: function (args) {
     this.publicar = safeGet(args, 'publicar');
     this.descartar = safeGet(args, 'descartar');
+    this.salvandoServico = args.salvandoServico;
 
     this.publicando = m.prop(false);
     this.descartando = m.prop(false);
 
     this.opera = function (prop, operacao) {
       prop(true);
+      this.salvandoServico(true);
       promise.onSuccOrError(
         operacao,
         _.bind(function () {
           prop(false);
+          this.salvandoServico(false);
           m.redraw();
         }, this));
     };
@@ -80,14 +83,14 @@ module.exports = {
         id: 'descartar',
         onclick: _.bind(ctrl.descartarClick, ctrl),
         icon: 'times',
-        disabled: desabilitaBotoes || !podeDescartar()
+        disabled: desabilitaBotoes || !podeDescartar() || ctrl.salvandoServico()
       }),
 
       botaoQueEspera(ctrl.publicando, {
         id: 'publicar',
         onclick: _.bind(ctrl.publicarClick, ctrl),
         icon: 'check',
-        disabled: desabilitaBotoes || !podePublicar()
+        disabled: desabilitaBotoes || !podePublicar() || ctrl.salvandoServico()
       })
     ]);
   }

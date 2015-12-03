@@ -8,6 +8,7 @@ module.exports = {
 
   controller: function (args) {
     this.servico = args.servico;
+    this.salvandoServico = args.salvandoServico;
     this.renomeando = m.prop(false);
 
     this.validar = function (nome) {
@@ -22,6 +23,7 @@ module.exports = {
 
     this.renomearServico = function (novoNome) {
       this.renomeando(true);
+      this.salvandoServico(true);
       m.redraw();
       var servico = this.servico();
       var idAtual = slugify(servico.nome());
@@ -30,6 +32,7 @@ module.exports = {
         m.route('/editar/servico/' + slugify(novoNome));
         alertify.success('Serviço renomeado com sucesso!', 0);
         this.renomeando(false);
+        this.salvandoServico(false);
       }, this));
     };
   },
@@ -49,7 +52,7 @@ module.exports = {
     })) : m('div', [
             m('span', servico.nome()),
             m('button.renomear', {
-        disabled: ctrl.renomeando(),
+        disabled: ctrl.renomeando() || ctrl.salvandoServico(),
         style: {
           float: 'right'
         },

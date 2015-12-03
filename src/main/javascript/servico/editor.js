@@ -15,6 +15,7 @@ var modificado = m.prop(false);
 module.exports = {
   controller: function () {
     this.cabecalho = new CabecalhoModel();
+    this.salvandoServico = m.prop(false);
     this.servico = servicoEmEdicao.recuperar(this.cabecalho);
 
     this._servicoSalvo = _.bind(function (servico) {
@@ -58,7 +59,8 @@ module.exports = {
   view: function (ctrl) {
     var binding = {
       servico: ctrl.servico,
-      novo: routeUtils.ehNovo()
+      novo: routeUtils.ehNovo(),
+      salvandoServico: ctrl.salvandoServico
     };
 
     return m('#conteudo', {
@@ -88,7 +90,8 @@ module.exports = {
           publicar: _.bind(ctrl.publicar, ctrl),
           visualizar: _.bind(ctrl.visualizar, ctrl),
           descartar: _.bind(ctrl.descartar, ctrl),
-          cabecalho: ctrl.cabecalho
+          cabecalho: ctrl.cabecalho,
+          salvandoServico: ctrl.salvandoServico
         }),
         m.component(require('componentes/menu/menu-lateral'), {
           menuConfig: binding,
