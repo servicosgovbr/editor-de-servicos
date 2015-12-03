@@ -70,6 +70,7 @@ module.exports = {
 
     var binding = {
       pagina: ctrl.pagina,
+      validaNome: ctrl.pagina().nome,
       nome: ehNovo() ? ctrl.pagina().url : ctrl.pagina().nome,
       novo: ehNovo()
     };

@@ -39,19 +39,27 @@
         <table id="usuarios">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th style="width:27%;">Name</th>
                     <th style="width:20%;">Email</th>
-                    <th>Papéis</th>
+                    <th>CPF</th>
+                    <th style="width:10%;">Papel</th>
                     <th>Orgão</th>
-                    <th>Situação</th>
-                    <th style="width:7%"></th>
+                    <th style="width:10%;">Situação</th>
+                    <th style="width:11%"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="usuario : ${usuarios}">
-                    <td th:text="${usuario.nome}"></td>
+                    <td>
+                        <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
+                            <button class="nome-usuario-link" type="submit">
+                                <span th:text="${usuario.nome}"></span>
+                            </button>
+                        </form>
+                    </td>
                     <td th:text="${usuario.emailPrimario}"></td>
-                    <td th:text="${usuario.papel.nome}"></td>
+                    <td th:text="${usuario.cpf}"></td>
+                    <td th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(usuario.papel.nome, '_', ' ')))}"></td>
                     <td th:if="${siorg.nomeDoOrgao(usuario.siorg) != null}" th:text="${siorg.nomeDoOrgao(usuario.siorg).orElse(new String())}"></td>
                     <td>
                         <span th:if="${usuario.habilitado == true}" class="habilitado">Ativo</span>
@@ -63,12 +71,18 @@
                                 <span>
                                     <i class="fa fa-pencil-square-o"></i>
                                 </span>
+                                <span class="tooltip-content">
+                                    Editar usuário
+                                </span>
                             </button>
                         </form>
                         <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
                             <button id="recuperar-senha-usuario" type="submit" class="recuperar-senha">
                                 <span>
                                     <i class="fa fa-key"></i>
+                                </span>
+                                <span class="tooltip-content">
+                                    Recuperar senha
                                 </span>
                             </button>
                         </form>

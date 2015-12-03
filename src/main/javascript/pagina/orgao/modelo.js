@@ -30,7 +30,7 @@ module.exports = function (config) {
   var tamanho = safeGet(data, 'tamanho');
 
   this.id = id('orgao');
-  this.nome = m.prop(data.nome || '');
+  this.nome = v.prop(data.nome || '', v.obrigatorio);
   this.url = createUrl(data.url || '', this.nome);
   this.conteudo = v.prop(data.conteudo || '', v.obrigatorio, v.maximo(tamanho));
   this.contato = v.prop(data.contato || '', v.obrigatorio);
