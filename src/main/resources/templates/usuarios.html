@@ -22,18 +22,17 @@
                 </h1>
             </a>
         </div>
-        <div class="metadados">
-            <a id="novo-usuario" href="/editar/usuarios/usuario" class="button">
-                <i class="fa fa-user-plus"></i>
-                Novo Usuário
-            </a>
-        </div>
-
-        <form id="logout" th:action="@{/editar/sair}" method="post">
+         <form id="logout" th:action="@{/editar/sair}" method="post">
             <span id="username"></span>
             <button type="submit">
                 <i class="fa fa-sign-out"></i></button>
         </form>
+        <span class="novo">
+            <a id="novo-usuario" href="/editar/usuarios/usuario" class="button">
+                <i class="fa fa-user-plus"></i>
+                Novo Usuário
+            </a>
+        </span>
     </header>
 
     <div id="lista-usuarios" style="padding-top: 100px">

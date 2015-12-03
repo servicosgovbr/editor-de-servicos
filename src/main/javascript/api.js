@@ -25,10 +25,6 @@ function configCsrf(xhr) {
   xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
 }
 
-function configHttps(xhr) {
-  xhr.setRequestHeader('X-Forwarded-For', 'https');
-}
-
 module.exports = {
   salvar: function (tipo, nome, xml, metadados) {
     var id = slugify(nome);
@@ -40,8 +36,7 @@ module.exports = {
       config: function (xhr) {
         xhr.setRequestHeader('Accepts', 'application/xml');
         xhr.setRequestHeader('Content-Type', 'application/xml');
-        configCsrf(xhr);
-        configHttps(xhr);
+        xhr.setRequestHeader(atributosCsrf.header, atributosCsrf.token);
       },
       serialize: serializeXml,
       extract: extrairMetadados(metadados),
@@ -56,7 +51,6 @@ module.exports = {
       url: '/editar/api/pagina/' + tipo + '/' + slugify(nome),
       config: function (xhr) {
         xhr.setRequestHeader('Accept', 'application/xml');
-        configHttps(xhr);
       },
       extract: extrairMetadados(metadados),
       deserialize: deserializeXml
@@ -70,10 +64,7 @@ module.exports = {
       background: true,
       url: '/editar/api/pagina/' + tipo + '/' + id,
       extract: extrairMetadados(metadados),
-      config: function (xhr) {
-        configCsrf(xhr);
-        configHttps(xhr);
-      }
+      config: configCsrf
     });
   },
 
@@ -88,7 +79,6 @@ module.exports = {
       config: function (xhr) {
         xhr.setRequestHeader('Accept', mimeType);
         configCsrf(xhr);
-        configHttps(xhr);
       },
       extract: extrairMetadados(metadados),
       deserialize: function (str) {
@@ -105,10 +95,7 @@ module.exports = {
       background: true,
       url: url,
       extract: extrairMetadados(metadados),
-      config: function (xhr) {
-        configCsrf(xhr);
-        configHttps(xhr);
-      }
+      config: configCsrf
     });
   },
 
@@ -119,10 +106,7 @@ module.exports = {
       method: 'DELETE',
       url: url,
       extract: tratamentoAcessoNegado,
-      config: function (xhr) {
-        configCsrf(xhr);
-        configHttps(xhr);
-      },
+      config: configCsrf
     });
   },
 
@@ -131,10 +115,7 @@ module.exports = {
       method: 'PATCH',
       background: true,
       url: '/editar/api/pagina/servico/' + id,
-      config: function (xhr) {
-        configCsrf(xhr);
-        configHttps(xhr);
-      },
+      config: configCsrf,
       serialize: _.identity,
       extract: tratamentoAcessoNegado,
       data: novoNome
@@ -147,7 +128,6 @@ module.exports = {
         url: '/editar/api/importar-xml',
         config: function (xhr) {
           xhr.setRequestHeader('Accept', 'application/xml');
-          configHttps(xhr);
         },
         data: {
           url: urlParam
@@ -166,7 +146,6 @@ module.exports = {
       data: {
         urlOrgao: urlOrgao
       },
-      config: configHttps
     });
   }
 };
