@@ -149,13 +149,17 @@
   }
 }
 
+#cadastro {
+  margin-top: 0;
+}
+
 #volta-lista-usuarios {
   padding-top: 100px;
   width: 80%;
   margin: 0 auto;
 
   a {
-    @include shift(2 of 12);
+    @include shift(2.3 of 12);
     text-decoration: underline;
     margin-bottom: 15px;
     display: block;
