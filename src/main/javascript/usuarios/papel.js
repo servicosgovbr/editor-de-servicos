@@ -10,11 +10,19 @@ module.exports = function (m, papeis, element) {
     for (var i = 0; i < originalArray.length; i++) {
       newArray.push({
         id: originalArray[i].id,
-        text: originalArray[i].nome
+        text: convertToTitleCase(originalArray[i].nome)
       });
     }
 
     return newArray;
+  }
+
+  function convertToTitleCase(value) {
+    return value.replace('_', ' ').replace(/\w\S*/g, 
+      function (text) {
+        return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+      }
+    );
   }
 
   papel.view = function () {
