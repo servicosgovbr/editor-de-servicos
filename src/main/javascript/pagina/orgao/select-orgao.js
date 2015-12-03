@@ -11,7 +11,7 @@ module.exports = {
     var nome = args.validaNome;
 
     return m('div#select-orgao.input-container', {
-      class: nome.erro()
+      class: nome && nome.erro && nome.erro()
     }, m.component(require('componentes/select2'), {
       ajax: {
         url: '/editar/api/orgaos',
