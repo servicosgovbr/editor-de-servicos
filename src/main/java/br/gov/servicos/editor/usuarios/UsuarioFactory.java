@@ -11,8 +11,7 @@ public class UsuarioFactory {
     private CPFFormatter cpfFormatter = new CPFFormatter();
 
     public Usuario criarUsuario(FormularioUsuario formulario) {
-        Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
-        return popularUsuarioApartirDoFormulario(new Usuario(), formulario).withPapel(papel).withHabilitado(true);
+        return popularUsuarioApartirDoFormulario(new Usuario(), formulario.withHabilitado(Boolean.TRUE));
     }
 
     public Usuario atualizaUsuario(Usuario usuario, FormularioUsuario formulario) {
@@ -20,6 +19,7 @@ public class UsuarioFactory {
     }
 
     private Usuario popularUsuarioApartirDoFormulario(Usuario usuario, FormularioUsuario formulario){
+        Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
         return usuario
                 .withCpf(cpfFormatter.unformat(formulario.getCpf()))
                 .withSiorg(formulario.getSiorg())
@@ -27,18 +27,20 @@ public class UsuarioFactory {
                 .withEmailPrimario(formulario.getEmailPrimario())
                 .withEmailSecundario(formulario.getEmailSecundario())
                 .withServidor(formulario.getCamposServidor().isServidor())
-                .withNome(formulario.getNome());
+                .withNome(formulario.getNome())
+                .withPapel(papel)
+                .withHabilitado(formulario.isHabilitado());
     }
 
     public FormularioUsuario criaFormulario(Usuario usuario) {
         return new FormularioUsuario()
                 .withCpf(cpfFormatter.format(usuario.getCpf()))
-                .withPapelId(usuario.getPapel() != null ? String.valueOf(usuario.getPapel().getId()) : null)
                 .withSiorg(usuario.getSiorg())
-                .withCamposServidor(new CamposServidor().withSiape(usuario.getSiape()))
+                .withCamposServidor(new CamposServidor().withSiape(usuario.getSiape()).withServidor(usuario.isServidor()))
                 .withEmailPrimario(usuario.getEmailPrimario())
                 .withEmailSecundario(usuario.getEmailSecundario())
-                .withHabilitado(usuario.isHabilitado())
-                .withNome(usuario.getNome());
+                .withNome(usuario.getNome())
+                .withPapelId(usuario.getPapel() != null ? String.valueOf(usuario.getPapel().getId()) : null)
+                .withHabilitado(usuario.isHabilitado());
     }
 }

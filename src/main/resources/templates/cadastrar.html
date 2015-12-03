@@ -101,10 +101,10 @@
     
     var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
     var papeis = /*[[${papeis}]]*/;
-    var valoresAtivo = [{ id: true, text: 'Ativo'}, { id: false, text: 'Inativo'}];
+    var valorDeHabilitado = /*[[${formularioUsuario.habilitado}]]*/;
     require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
     require('usuarios/papel')(m, papeis, 'papel-select');
-    require('usuarios/ativo')(m, valoresAtivo, 'ativo-inativo-select');
+    require('usuarios/ativo')(m, valorDeHabilitado, 'ativo-inativo-select');
     require('usuarios/cpf-mask')('cpf');
 </script>
 </body>
