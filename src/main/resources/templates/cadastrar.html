@@ -26,7 +26,8 @@
         <div class="metadados">&nbsp;</div>
         <span></span>
         <form id="logout" th:action="@{/editar/sair}" method="post">
-            <button type="submit">&nbsp; Sair &nbsp;
+            <span id="username"></span>
+            <button type="submit">
             <i class="fa fa-sign-out"></i></button>
         </form>
     </header>
@@ -89,6 +90,15 @@
 <script src="/editar/assets/vendor.js"></script>
 <script src="/editar/assets/app.js"></script>
 <script th:inline="javascript">
+    var r = new XMLHttpRequest();
+    r.open("GET", "/editar/api/ping", true);
+    r.onreadystatechange = function () {
+      console.log(r.responseText);
+      if (r.readyState != 4 || r.status != 200) return;
+      document.getElementById('username').innerHTML = JSON.parse(r.responseText).profile.name.split(' ')[0];
+    };
+    r.send();
+    
     var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
     var papeis = /*[[${papeis}]]*/;
     var valoresAtivo = [{ id: true, text: 'Ativo'}, { id: false, text: 'Inativo'}];

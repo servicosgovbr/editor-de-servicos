@@ -2,15 +2,9 @@ package br.gov.servicos.editor.usuarios.recuperarsenha;
 
 import br.gov.servicos.editor.usuarios.Usuario;
 import br.gov.servicos.editor.usuarios.UsuarioInexistenteException;
-import br.gov.servicos.editor.usuarios.UsuarioRepository;
 import br.gov.servicos.editor.usuarios.UsuarioService;
 import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
-import br.gov.servicos.editor.usuarios.token.TokenRepository;
-import br.gov.servicos.editor.usuarios.recuperarsenha.*;
-import br.gov.servicos.editor.usuarios.token.GeradorToken;
-import br.gov.servicos.editor.usuarios.token.Token;
-import br.gov.servicos.editor.usuarios.token.TokenExpirado;
-import br.gov.servicos.editor.usuarios.token.TokenInvalido;
+import br.gov.servicos.editor.usuarios.token.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,9 +78,16 @@ public class RecuperacaoSenhaServiceTest {
 
 
     @Test
-    public void deveDesabilitarUsuarioQuandogerarToken() {
+    public void deveDesabilitarUsuarioQuandoGerarToken() {
         recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
         verify(usuarioService).desabilitarUsuario(USUARIO_ID.toString());
+    }
+
+    @Test
+    public void naoDeveDesabilitarUsuarioQuandoGerarTokenSeTagNaoEstiverDesabilitada() {
+        ReflectionTestUtils.setField(recuperacaoSenhaService, "desabilitarUsuarioAoCriarToken", false);
+        recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
+        verify(usuarioService, never()).desabilitarUsuario(USUARIO_ID.toString());
     }
 
     @Test
@@ -150,7 +151,7 @@ public class RecuperacaoSenhaServiceTest {
 
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
-        } catch (TokenExpirado.CpfTokenInvalido e) {
+        } catch (CpfTokenInvalido e) {
             verify(repository).save(expectedToken);
         }
     }
@@ -170,7 +171,7 @@ public class RecuperacaoSenhaServiceTest {
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
-        } catch(TokenExpirado.CpfTokenInvalido e) {
+        } catch(CpfTokenInvalido e) {
             assertThat(e.getTentativasSobrando(), equalTo(MAX-1));
         }
     }

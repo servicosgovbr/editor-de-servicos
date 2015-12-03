@@ -4,6 +4,7 @@ var erro = require('utils/erro-ajax');
 var extrairMetadados = require('utils/extrair-metadados');
 var atributosCsrf = require('utils/atributos-csrf');
 var slugify = require('slugify');
+var tratamentoAcessoNegado = require('utils/tratamento-acesso-negado');
 
 function request(opts) {
   return m.request(_.assign({
@@ -104,6 +105,7 @@ module.exports = {
     return request({
       method: 'DELETE',
       url: url,
+      extract: tratamentoAcessoNegado,
       config: configCsrf
     });
   },
@@ -115,6 +117,7 @@ module.exports = {
       url: '/editar/api/pagina/servico/' + id,
       config: configCsrf,
       serialize: _.identity,
+      extract: tratamentoAcessoNegado,
       data: novoNome
     });
   },

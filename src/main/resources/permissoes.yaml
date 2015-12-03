@@ -1,13 +1,26 @@
 admin:
-  - cadastrar usuario
+  - salvar
+  - publicar
+  - despublicar
+  - descartar
+  - excluir
+  - renomear
+  - cadastrar
 ponto focal:
-  - criar servico
-  - editar servico
-  - salvar servico
-publicar:
-  - editar servico
-  - salvar servico
-  - publicar servico
+  - publicar
+  - salvar
+  - despublicar
+  - descartar
+  - excluir
+  - renomear
+  - cadastrar
+publicador:
+  - publicar
+  - salvar
+  - despublicar
+  - descartar
+  - excluir
+  - renomear
+  - cadastrar
 editor:
-  - editar servico
-  - salvar servico
+  - salvar

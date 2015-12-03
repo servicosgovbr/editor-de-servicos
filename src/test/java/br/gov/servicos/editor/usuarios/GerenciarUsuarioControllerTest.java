@@ -4,6 +4,7 @@ import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
+import br.gov.servicos.editor.usuarios.token.CpfTokenInvalido;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Test;
@@ -118,7 +119,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 3;
-        doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         ModelAndView endereco = controller.recuperarSenha(PAGINA, formulario, bindingResult);
 
@@ -133,7 +134,7 @@ public class GerenciarUsuarioControllerTest {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 0;
-        doThrow(new TokenExpirado.CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
+        doThrow(new CpfTokenInvalido(tentativasSobrando)).when(tokenService).trocarSenha(formulario);
 
         controller.recuperarSenha(PAGINA, formulario, bindingResult);
 

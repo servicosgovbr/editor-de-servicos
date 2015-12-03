@@ -6,7 +6,7 @@ import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
-import br.gov.servicos.editor.usuarios.token.TokenExpirado;
+import br.gov.servicos.editor.usuarios.token.CpfTokenInvalido;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;
@@ -172,8 +172,8 @@ public class GerenciarUsuarioController {
 
     private FieldError criarErroTokenInvalido(TokenInvalido e) {
         String message;
-        if(e instanceof TokenExpirado.CpfTokenInvalido) {
-            TokenExpirado.CpfTokenInvalido cpfTokenInvalido = (TokenExpirado.CpfTokenInvalido) e;
+        if(e instanceof CpfTokenInvalido) {
+            CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
             int tentativasSobrando = cpfTokenInvalido.getTentativasSobrando();
             message = criarMensagemTentativasSobrando(tentativasSobrando);
         } else {

@@ -18,14 +18,16 @@ module.exports = {
     var salvarView = '';
     if (ctrl.config.salvar !== _.noop) {
       salvarView = m.component(require('cabecalho/salvar-button'), {
-        salvar: ctrl.config.salvar
+        salvar: ctrl.config.salvar,
+        salvandoServico: ctrl.config.salvandoServico
       });
     }
 
     var visualizarView = '';
     if (ctrl.config.visualizar !== _.noop) {
       visualizarView = m.component(require('cabecalho/visualizar-button'), {
-        visualizar: ctrl.config.visualizar
+        visualizar: ctrl.config.visualizar,
+        salvandoServico: ctrl.config.salvandoServico
       });
     }
 
@@ -34,7 +36,8 @@ module.exports = {
       publicarView = m.component(require('cabecalho/publicar-view'), {
         publicar: ctrl.config.publicar,
         descartar: ctrl.config.descartar,
-        metadados: ctrl.config.cabecalho.metadados()
+        metadados: ctrl.config.cabecalho.metadados(),
+        salvandoServico: ctrl.config.salvandoServico
       });
     }
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+
+<head>
+    <title>Erro</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+    </header>
+
+    <div id="erro">
+
+        <h2>Acesso negado <i class="fa fa-bomb fa-lg"></i> </h2>
+
+        <p>
+            Você não possui permissão para realizar esse tipo de operação
+        </p>
+
+    </div>
+
+</div>
+</body>
+</html>

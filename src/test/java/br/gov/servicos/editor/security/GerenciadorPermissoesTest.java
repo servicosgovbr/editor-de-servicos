@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.security;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
@@ -13,16 +14,30 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class GerenciadorPermissoesTest {
 
-    @Test
-    public void deveTerUmMapComTodosOsPapeisPresentesNoArquivo() {
-        GerenciadorPermissoes gerenciadorPermissoes = new GerenciadorPermissoes(loadProperty());
+
+    private static GerenciadorPermissoes gerenciadorPermissoes;
+
+    @BeforeClass
+    public static void setUp() {
+        gerenciadorPermissoes = new GerenciadorPermissoes(loadProperty());
         gerenciadorPermissoes.afterPropertiesSet();
-        Collection<Permissao> permissoes = gerenciadorPermissoes.getPermissoes("editor");
-        assertThat(permissoes, hasSize(2));
-        assertThat(permissoes, hasItem(new Permissao("editar servico")));
     }
 
-    private YamlPropertiesFactoryBean loadProperty() {
+    @Test
+    public void deveTerUmMapComTodosOsPapeisPresentesNoArquivo() {
+        Collection<Permissao> permissoes = gerenciadorPermissoes.getPermissoes("editor");
+        assertThat(permissoes, hasSize(2));
+        assertThat(permissoes, hasItem(new Permissao("EDITAR SERVICO")));
+    }
+
+    @Test
+    public void deveGuardarChavesEPermissoesEmMaiuscula() {
+        Collection<Permissao> permissoes = gerenciadorPermissoes.getPermissoes("EDITOR");
+        assertThat(permissoes, hasSize(2));
+        assertThat(permissoes, hasItem(new Permissao("EDITAR SERVICO")));
+    }
+
+    private static YamlPropertiesFactoryBean loadProperty() {
         YamlPropertiesFactoryBean permissoes = new YamlPropertiesFactoryBean();
         permissoes.setResources(new ClassPathResource("permissoesTest.yaml"));
         permissoes.afterPropertiesSet();

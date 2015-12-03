@@ -37,6 +37,8 @@ flags:
 eds:
   max-tentativas-token: 3
   max-horas-token: 24
+  token:
+    desabilitarUsuario: false
   cartas:
     repositorio: "git@github.com:servicosgovbr/cartas-de-teste.git"
 

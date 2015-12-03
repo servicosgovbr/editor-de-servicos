@@ -3,7 +3,7 @@
 #login, #cadastro {
   @include shift(3 of 12);
   @include span-columns(6 of 12);
-  margin-top: $tamanho-do-cabecalho;
+  margin-top: $tamanho-do-cabecalho + 2em;
   margin-bottom: $tamanho-do-cabecalho;
 
   .borda {
