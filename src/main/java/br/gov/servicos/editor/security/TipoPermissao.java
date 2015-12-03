@@ -3,13 +3,13 @@ package br.gov.servicos.editor.security;
 import lombok.Getter;
 
 public enum TipoPermissao {
-    PUBLICAR("publicar"),
-    SALVAR("salvar"),
-    DESPUBLICAR("despublicar"),
-    DESCARTAR("descartar"),
-    EXCLUIR("excluir"),
-    RENOMEAR("renomear"),
-    CADASTRAR("cadastrar");
+    PUBLICAR("PUBLICAR"),
+    SALVAR("SALVAR"),
+    DESPUBLICAR("DESPUBLICAR"),
+    DESCARTAR("DESCARTAR"),
+    EXCLUIR("EXCLUIR"),
+    RENOMEAR("RENOMEAR"),
+    CADASTRAR("CADASTRAR");
 
     @Getter
     private final String nome;
