@@ -58,10 +58,10 @@
       }
 
       .remover, .visualizar, .publicar {
-        display: inline-block;
+        display: inline;
         width: 32px;
         height: 32px;
-        margin: 8px;
+        margin: 0;
         padding: 4px;
         text-align: center;
         border-radius: 4px;
@@ -79,6 +79,8 @@
       }
 
       .visualizar {
+        padding: 4px 8px;
+
         &:hover {
           background-color: $azul-regular;
         }

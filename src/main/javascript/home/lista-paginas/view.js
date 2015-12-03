@@ -57,7 +57,7 @@ module.exports = function (ctrl, args) {
        m('th.center', 'Tipo'),
        m('th.center', 'Publicação'),
        m('th.center', 'Edição'),
-       m('th.right', '')
+       m('th.right[width="10%"]', '')
      ])
     ].concat(paginas.map(function (s) {
 
