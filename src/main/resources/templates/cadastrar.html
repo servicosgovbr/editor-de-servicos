@@ -77,7 +77,7 @@
 
             <label class="checkbox" for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
 
-            <button th:if="${edicao == false}" type="submit">
+            <button th:if="${edicao != true}" type="submit">
                 Cadastrar
             </button>
             <button th:if="${edicao == true}" type="submit">
