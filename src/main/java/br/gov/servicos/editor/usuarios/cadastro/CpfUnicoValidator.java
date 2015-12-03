@@ -15,8 +15,8 @@ public class CpfUnicoValidator implements ConstraintValidator<CpfUnico, Object> 
     private UsuarioRepository repository;
 
     private CPFFormatter cpfFormatter = new CPFFormatter();
-    private String nomeCampoMarcaSeValidacaoAtiva;
-    private String nomeCampoComValorCpf;
+    protected String nomeCampoMarcaSeValidacaoAtiva;
+    protected String nomeCampoComValorCpf;
 
     @Override
     public void initialize(CpfUnico constraintAnnotation) {

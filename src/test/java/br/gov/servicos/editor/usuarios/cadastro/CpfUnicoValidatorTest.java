@@ -14,8 +14,10 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class CpfUnicoValidatorTest {
 
-//    private static final String CPF = "12312312312";
-//    private static final String CPF_FORMATADO = "123.123.123-12";
+    private static final String CPF = "12312312312";
+    private static final String NOME_CAMPO_COM_VALOR_CPF = "cpf";
+    private static final String NOME_CAMPO_MARCA_VALIDACAO_ATIVA = "ehInclusaoDeUsuario";
+    private static final String CPF_FORMATADO = "123.123.123-12";
 
     @Mock
     private UsuarioRepository repository;
@@ -26,11 +28,15 @@ public class CpfUnicoValidatorTest {
     @InjectMocks
     private CpfUnicoValidator validator;
 
+    private FormularioUsuario formularioUsuario;
+
     @Test
     public void deveProcurarPorCpfDesformatado() {
-
-//        validator.isValid(CPF_FORMATADO, context);
-//        verify(repository).findByCpf(CPF);
+        formularioUsuario = new FormularioUsuario();
+        validator.nomeCampoComValorCpf = NOME_CAMPO_COM_VALOR_CPF;
+        validator.nomeCampoMarcaSeValidacaoAtiva = NOME_CAMPO_MARCA_VALIDACAO_ATIVA;
+        validator.isValid(formularioUsuario.withCpf(CPF_FORMATADO).withEhInclusaoDeUsuario(Boolean.TRUE), context);
+        verify(repository).findByCpf(CPF);
     }
 
 }
