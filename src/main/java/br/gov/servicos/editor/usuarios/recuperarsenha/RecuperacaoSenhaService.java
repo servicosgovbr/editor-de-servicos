@@ -36,17 +36,22 @@ public class RecuperacaoSenhaService {
     @Value("${eds.max-tentativas-token}")
     private int maxTentativasToken;
 
+    @Value("${eds.token.desabilitarUsuario}")
+    private boolean desabilitarUsuarioAoCriarToken = true;
+
     private Clock clock = Clock.systemUTC();
 
     public String gerarTokenParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
         Token tokenRecuperacaoSenha = new Token()
-                                                            .withUsuario(new Usuario().withId(valueOf(usuarioId)))
-                                                            .withDataCriacao(LocalDateTime.now(clock))
-                                                            .withTentativasSobrando(maxTentativasToken)
-                                                            .withToken(passwordEncoder.encode(token));
+                                            .withUsuario(new Usuario().withId(valueOf(usuarioId)))
+                                            .withDataCriacao(LocalDateTime.now(clock))
+                                            .withTentativasSobrando(maxTentativasToken)
+                                            .withToken(passwordEncoder.encode(token));
         repository.save(tokenRecuperacaoSenha);
-        usuarioService.desabilitarUsuario(usuarioId);
+        if(desabilitarUsuarioAoCriarToken) {
+            usuarioService.desabilitarUsuario(usuarioId);
+        }
         return token;
     }
 

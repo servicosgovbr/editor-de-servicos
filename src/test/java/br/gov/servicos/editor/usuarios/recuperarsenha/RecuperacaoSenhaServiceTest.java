@@ -2,11 +2,9 @@ package br.gov.servicos.editor.usuarios.recuperarsenha;
 
 import br.gov.servicos.editor.usuarios.Usuario;
 import br.gov.servicos.editor.usuarios.UsuarioInexistenteException;
-import br.gov.servicos.editor.usuarios.UsuarioRepository;
 import br.gov.servicos.editor.usuarios.UsuarioService;
 import br.gov.servicos.editor.usuarios.cadastro.CamposSenha;
 import br.gov.servicos.editor.usuarios.token.*;
-import br.gov.servicos.editor.usuarios.recuperarsenha.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,9 +78,16 @@ public class RecuperacaoSenhaServiceTest {
 
 
     @Test
-    public void deveDesabilitarUsuarioQuandogerarToken() {
+    public void deveDesabilitarUsuarioQuandoGerarToken() {
         recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
         verify(usuarioService).desabilitarUsuario(USUARIO_ID.toString());
+    }
+
+    @Test
+    public void naoDeveDesabilitarUsuarioQuandoGerarTokenSeTagNaoEstiverDesabilitada() {
+        ReflectionTestUtils.setField(recuperacaoSenhaService, "desabilitarUsuarioAoCriarToken", false);
+        recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
+        verify(usuarioService, never()).desabilitarUsuario(USUARIO_ID.toString());
     }
 
     @Test
