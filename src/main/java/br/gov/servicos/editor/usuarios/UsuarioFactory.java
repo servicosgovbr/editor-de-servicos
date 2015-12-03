@@ -4,8 +4,6 @@ import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.usuarios.cadastro.CamposServidor;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,15 +12,21 @@ public class UsuarioFactory {
 
     public Usuario criarUsuario(FormularioUsuario formulario) {
         Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
-        return new Usuario()
+        return popularUsuarioApartirDoFormulario(new Usuario(), formulario).withPapel(papel).withHabilitado(true);
+    }
+
+    public Usuario atualizaUsuario(Usuario usuario, FormularioUsuario formulario) {
+        return popularUsuarioApartirDoFormulario(usuario, formulario);
+    }
+
+    private Usuario popularUsuarioApartirDoFormulario(Usuario usuario, FormularioUsuario formulario){
+        return usuario
                 .withCpf(cpfFormatter.unformat(formulario.getCpf()))
-                .withPapel(papel)
                 .withSiorg(formulario.getSiorg())
                 .withSiape(StringUtils.defaultIfEmpty(formulario.getCamposServidor().getSiape(), null))
                 .withEmailPrimario(formulario.getEmailPrimario())
                 .withEmailSecundario(formulario.getEmailSecundario())
                 .withServidor(formulario.getCamposServidor().isServidor())
-                .withHabilitado(true)
                 .withNome(formulario.getNome());
     }
 

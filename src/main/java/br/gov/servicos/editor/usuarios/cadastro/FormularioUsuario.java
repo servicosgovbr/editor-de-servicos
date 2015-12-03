@@ -19,13 +19,13 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode
+@CpfUnico(campoMarcaSeValidacaoHabilitada = "ehInclusaoDeUsuario", nomeCampoComValorCpf = "cpf")
 public class FormularioUsuario {
     public static final String EMAIL_INVALIDO = "formato de email não valido";
     public static final String CAMPO_OBRIGATORIO = "campo obrigatório";
 
     @NotBlank(message = "CPF: " + CAMPO_OBRIGATORIO)
     @CPF(message = "CPF: não é valido")
-    @CpfUnico
     String cpf;
 
     String papelId;
@@ -49,4 +49,6 @@ public class FormularioUsuario {
     String emailSecundario;
 
     boolean habilitado;
+
+    boolean ehInclusaoDeUsuario;
 }

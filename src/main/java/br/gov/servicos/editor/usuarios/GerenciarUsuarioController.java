@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 import static net.logstash.logback.marker.Markers.append;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Slf4j
 @Controller
@@ -46,6 +48,8 @@ public class GerenciarUsuarioController {
 
     @Autowired
     private Siorg siorg;
+
+    private CPFFormatter cpfFormatter = new CPFFormatter();
 
     @ModelAttribute("papeis")
     public Iterable<Papel> papularPapeis() {
@@ -72,11 +76,30 @@ public class GerenciarUsuarioController {
         }
     }
 
+    @RequestMapping(value = "/editar/usuarios/usuario", method = PUT)
+    public ModelAndView atualizar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+        if (!result.hasErrors()) {
+            Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
+            Usuario usuarioSalvo;
+            if(usuario != null) {
+                usuario = factory.atualizaUsuario(usuario, formularioUsuario);
+            } else {
+                throw new UsuarioInexistenteException();
+            }
+            usuarioSalvo = usuarioService.save(usuario);
+            usuarioLog("Usuario criado", usuarioSalvo);
+            return intrucoesParaRecuperarSenha(usuarioSalvo, COMPLETAR_CADASTRO);
+        } else {
+            return new ModelAndView("cadastrar");
+        }
+    }
+
     @RequestMapping("/editar/usuarios/usuario")
     public ModelAndView login(FormularioUsuario formularioUsuario) {
         ModelMap model = new ModelMap();
-        model.addAttribute("formularioUsuario", formularioUsuario);
+        model.addAttribute("formularioUsuario", formularioUsuario.withEhInclusaoDeUsuario(Boolean.TRUE));
         model.addAttribute("edicao", Boolean.FALSE);
+        model.addAttribute("method", POST);
         return new ModelAndView("cadastrar", model);
     }
 
@@ -100,6 +123,7 @@ public class GerenciarUsuarioController {
         FormularioUsuario formularioUsuario = factory.criaFormulario(usuario);
         model.addAttribute("formularioUsuario", formularioUsuario);
         model.addAttribute("edicao", Boolean.TRUE);
+        model.addAttribute("metodo", PUT);
         return new ModelAndView("cadastrar", model);
     }
 

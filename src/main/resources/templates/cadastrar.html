@@ -35,7 +35,8 @@
         <a href="/editar/usuarios"><i class="fa fa-arrow-left"></i> Voltar para lista de usuários</a>
     </div>
 
-    <form id="cadastro" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" method="post">
+    <form id="cadastro" th:action="@{/editar/usuarios/usuario}" th:object="${formularioUsuario}" th:method="${metodo}">
+        <input id="ehInclusaoDeUsuario" name="ehInclusaoDeUsuario" type="hidden" th:value="*{ehInclusaoDeUsuario}" />
         <fieldset>
             <p th:if="${param.sucesso}" class="info">
                 <i class="fa fa-info"></i>&nbsp;
@@ -75,8 +76,11 @@
 
             <label class="checkbox" for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
 
-            <button type="submit">
+            <button th:if="${edicao == false}" type="submit">
                 Cadastrar
+            </button>
+            <button th:if="${edicao == true}" type="submit">
+                Atualizar
             </button>
         </fieldset>
     </form>
