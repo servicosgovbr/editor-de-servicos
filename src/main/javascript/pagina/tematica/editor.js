@@ -18,6 +18,7 @@ module.exports = {
     this.modificado = m.prop(false);
     this.cabecalho = new CabecalhoModel();
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
+    this.salvandoServico = m.prop(false);
 
     this._onOp = _.bind(function (pagina) {
       this.pagina(pagina);
@@ -90,7 +91,8 @@ module.exports = {
         salvar: _.bind(ctrl.salvar, ctrl),
         publicar: _.bind(ctrl.publicar, ctrl),
         descartar: _.bind(ctrl.descartar, ctrl),
-        cabecalho: ctrl.cabecalho
+        cabecalho: ctrl.cabecalho,
+        salvandoServico: ctrl.salvandoServico
       },
 
       menuLateralConfig: {
