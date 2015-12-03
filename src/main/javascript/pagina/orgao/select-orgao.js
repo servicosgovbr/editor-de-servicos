@@ -8,11 +8,8 @@ module.exports = {
 
   view: function (ctrl, args) {
     var orgao = safeGet(args, 'prop');
-    var nome = args.validaNome;
 
-    return m('div#select-orgao.input-container', {
-      class: nome.erro()
-    }, m.component(require('componentes/select2'), {
+    return m('div#select-orgao', m.component(require('componentes/select2'), {
       ajax: {
         url: '/editar/api/orgaos',
         dataType: 'json',
