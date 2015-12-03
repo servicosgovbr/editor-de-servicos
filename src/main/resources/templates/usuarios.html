@@ -59,7 +59,7 @@
                     </td>
                     <td th:text="${usuario.emailPrimario}"></td>
                     <td th:text="${usuario.cpf}"></td>
-                    <td th:text="${usuario.papel.nome}"></td>
+                    <td th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(usuario.papel.nome, '_', ' ')))}"></td>
                     <td th:if="${siorg.nomeDoOrgao(usuario.siorg) != null}" th:text="${siorg.nomeDoOrgao(usuario.siorg).orElse(new String())}"></td>
                     <td>
                         <span th:if="${usuario.habilitado == true}" class="habilitado">Ativo</span>
