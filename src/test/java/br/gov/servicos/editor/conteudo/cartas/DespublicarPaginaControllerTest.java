@@ -7,11 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -27,16 +24,14 @@ public class DespublicarPaginaControllerTest {
 
     UserProfileConfigParaTeste userProfiles = new UserProfileConfigParaTeste();
 
-    @Test
+    @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
         DespublicarPaginaController controller = new DespublicarPaginaController(factory, userProfiles);
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
         userProfiles.setTemPermissaoParaOrgao(false);
 
-        ResponseEntity resultado = controller.despublicar("servico", "");
-
-        assertThat(resultado.getStatusCode(), equalTo(HttpStatus.FORBIDDEN));
+        controller.despublicar("servico", "");
     }
 
 }

@@ -9,11 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -49,11 +46,10 @@ public class PublicarPaginaControllerTest {
         verify(carta).publicar(userProfiles.get());
     }
 
-    @Test
+    @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
         userProfiles.setTemPermissaoParaOrgao(false);
-        ResponseEntity resultado = controller.publicar("servico", "");
-        assertThat(resultado.getStatusCode(), equalTo(HttpStatus.FORBIDDEN));
+        controller.publicar("servico", "");
     }
 
 }
