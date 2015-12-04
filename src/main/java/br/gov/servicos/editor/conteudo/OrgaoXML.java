@@ -9,7 +9,6 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.ORGAO;
@@ -37,6 +36,7 @@ public class OrgaoXML implements ConteudoMetadadosProvider {
         return new ConteudoMetadados()
                 .withTipo(ORGAO.getNome())
                 .withNome(getNome())
-                .withNomeOrgao(getNome());
+                .withNomeOrgao(getNome())
+                .withOrgaoId(url);
     }
 }

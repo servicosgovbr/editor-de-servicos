@@ -3,21 +3,19 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.fixtures.UserProfileConfigParaTeste;
-import br.gov.servicos.editor.git.Metadados;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.access.AccessDeniedException;
 
+import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PublicarPaginaControllerTest {
+public class RenomearCartaControllerTest {
 
     @Mock
     ConteudoVersionado carta;
@@ -25,31 +23,29 @@ public class PublicarPaginaControllerTest {
     @Mock
     ConteudoVersionadoFactory factory;
 
-    PublicarPaginaController controller;
-
     UserProfileConfigParaTeste userProfiles = new UserProfileConfigParaTeste();
 
-    @Before
-    public void setUp() throws Exception {
-        controller = new PublicarPaginaController(factory, userProfiles);
-        given(carta.getMetadados())
-                .willReturn(new Metadados());
-        given(carta.existe())
-                .willReturn(true);
+
+    @Test(expected = ConteudoInexistenteException.class)
+    public void deveLancarConteudoInexistenteSeConteudoNaoExiste() throws ConteudoInexistenteException {
+        RenomearCartaController controller = new RenomearCartaController(userProfiles, factory);
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
-    }
+        given(carta.getTipo()).willReturn(SERVICO);
+        given(carta.existe()).willReturn(false);
 
-    @Test
-    public void publicaCartaExistente() throws Exception {
-        controller.publicar("servico", "");
-        verify(carta).publicar(userProfiles.get());
+        controller.renomear("id", "novoNome");
     }
 
     @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
+        RenomearCartaController controller = new RenomearCartaController(userProfiles, factory);
+        given(factory.pagina(anyString(), any()))
+                .willReturn(carta);
+        given(carta.existe()).willReturn(true);
         userProfiles.setTemPermissaoParaOrgao(false);
-        controller.publicar("servico", "");
+
+        controller.renomear("id", "novoNome");
     }
 
 }

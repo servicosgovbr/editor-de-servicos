@@ -10,14 +10,15 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.function.Supplier;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
+import static br.gov.servicos.editor.security.TipoPermissao.EXCLUIR;
 import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,11 +50,20 @@ public class ExcluirPaginaControllerTest {
 
     @Test
     public void removeCartaExistente() throws Exception {
+        given(userProfiles.temPermissaoParaOrgao(any(), eq(EXCLUIR), anyString()))
+                .willReturn(true);
         given(userProfiles.get())
                 .willReturn(PROFILE);
 
         controller.remover("servico", "");
         verify(carta).remover(PROFILE);
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
+        given(userProfiles.temPermissaoParaOrgao(any(), eq(EXCLUIR), anyString()))
+                .willReturn(false);
+        controller.remover("servico", "");
     }
 
 }
