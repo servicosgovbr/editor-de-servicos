@@ -44,7 +44,8 @@ public class ServicoXML implements ConteudoMetadadosProvider {
         return new ConteudoMetadados()
                 .withTipo(tipo)
                 .withNome(this.getNome())
-                .withNomeOrgao(nomeOrgao);
+                .withNomeOrgao(nomeOrgao)
+                .withOrgaoId(id);
     }
 
     private String nomeOrgao(Siorg siorg, String idOrgao) {

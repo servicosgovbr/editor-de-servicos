@@ -217,6 +217,10 @@ public class ConteudoVersionado {
         }
     }
 
+    public String getOrgaoId() {
+        return getMetadados().getConteudo().getOrgaoId();
+    }
+
     @SneakyThrows
     protected ConteudoMetadados getConteudoParaMetadados() {
         return deserializadorConteudoXML.deserializaConteudo(getConteudoRaw())
@@ -272,7 +276,6 @@ public class ConteudoVersionado {
         return reformatadorXml.formata(new DOMSource(doc));
     }
 
-
     private void salvarConteudo(UserProfile profile, String branch, String conteudo, String mensagemBase) {
         String mensagem = format("%s '%s'", mensagemBase, getId());
 
@@ -304,6 +307,5 @@ public class ConteudoVersionado {
         String conteudo = mudarNomeConteudo(novoNome);
         salvarConteudo(profile, branch, conteudo);
     }
-
 }
 
