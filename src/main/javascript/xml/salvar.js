@@ -44,7 +44,6 @@ function salvarPaginaTematica(pagina, metadados) {
 
 function salvarOrgao(orgao, metadados) {
   return promiseUtil.resolved(orgao)
-    .then(validaNome)
     .then(validaUrl)
     .then(exportarXmlOrgao)
     .then(function (xml) {

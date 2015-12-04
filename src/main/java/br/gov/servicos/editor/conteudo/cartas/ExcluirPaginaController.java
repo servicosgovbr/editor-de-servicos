@@ -8,13 +8,13 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.ORGAO;
-import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
 import static br.gov.servicos.editor.conteudo.TipoPagina.fromNome;
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -38,9 +38,16 @@ class ExcluirPaginaController {
     void remover(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
+
+        String orgaoId = conteudoVersionado.getOrgaoId();
+        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, orgaoId)) {
+            throw new AccessDeniedException("Usuário sem permissão");
+        }
+
         if (tipoPagina == ORGAO) {
             throw new IllegalArgumentException("tipo não pode ser: " + tipoPagina.getNome());
         }
+
         if (!conteudoVersionado.existe()) {
             throw new ConteudoInexistenteException(conteudoVersionado);
         }
