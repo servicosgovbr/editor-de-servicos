@@ -73,6 +73,10 @@
 
       .remover {
         color: $vermelho;
+        height: 28px;
+        width: 28px;
+        vertical-align: baseline;
+
         &:hover {
           background-color: $vermelho;
         }
