@@ -16,7 +16,7 @@ create table usuarios(
   habilitado boolean not null,
   siorg varchar(256) not null,
   nome varchar(100) not null,
-  siape varchar(50) unique,
+  siape varchar(50),
   email_primario varchar(256) not null,
   email_secundario varchar(256),
   constraint fk_usuarios_papeis foreign key(papel_id) references papeis(id)
@@ -35,5 +35,3 @@ INSERT INTO public.papeis (nome) VALUES ('PONTO_FOCAL');
 INSERT INTO public.papeis (nome) VALUES ('PUBLICADOR');
 INSERT INTO public.papeis (nome) VALUES ('EDITOR');
 INSERT INTO public.usuarios (cpf, senha, papel_id, servidor, habilitado, siorg, email_primario, nome) VALUES ('12312312312', '$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm', 1, true, true, 'http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/108999', 'jeank@thoughtworks.com', 'Editor de Serviços');
-INSERT INTO public.usuarios (cpf, senha, papel_id, servidor, habilitado, siorg, email_primario, nome) VALUES ('32132132132', '$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm', 4, true, true, 'http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/108999', 'editorDeServicos@thoughtworks.com', 'Apenas Editor');
-INSERT INTO public.usuarios (cpf, senha, papel_id, servidor, habilitado, siorg, email_primario, nome) VALUES ('11111111111', '$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm', 2, true, true, 'http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/108999', 'pontoFocal@thoughtworks.com', 'É Ponto Focal');
