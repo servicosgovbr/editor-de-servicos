@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.fixtures;
 
-import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfile;
 import br.gov.servicos.editor.security.UserProfiles;
@@ -28,7 +27,7 @@ public class UserProfileConfigParaTeste implements UserProfiles {
     }
 
     @Override
-    public boolean temPermissaoParaOrgao(TipoPagina tipoPagina, TipoPermissao publicar, String orgaoId) {
+    public boolean temPermissaoParaOrgao(TipoPermissao publicar, String orgaoId) {
         return temPermissaoParaOrgao;
     }
 

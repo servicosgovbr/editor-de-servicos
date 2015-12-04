@@ -47,7 +47,7 @@ class DescartarAlteracoesPaginaController {
         }
 
         String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, TipoPermissao.DESCARTAR, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.DESCARTAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

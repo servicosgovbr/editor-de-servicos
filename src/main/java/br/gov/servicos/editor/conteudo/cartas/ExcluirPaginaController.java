@@ -49,7 +49,7 @@ class ExcluirPaginaController {
         }
 
         String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, TipoPermissao.EXCLUIR, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.EXCLUIR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

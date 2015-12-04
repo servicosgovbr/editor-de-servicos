@@ -42,7 +42,7 @@ class PublicarPaginaController {
         }
 
         String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, TipoPermissao.PUBLICAR, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.PUBLICAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

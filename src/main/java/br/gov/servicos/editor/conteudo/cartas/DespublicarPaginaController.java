@@ -42,7 +42,7 @@ class DespublicarPaginaController {
         }
 
         String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, TipoPermissao.DESPUBLICAR, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.DESPUBLICAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

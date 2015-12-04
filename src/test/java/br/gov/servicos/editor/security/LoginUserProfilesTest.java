@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.security;
 
-import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.usuarios.Usuario;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,16 +60,11 @@ public class LoginUserProfilesTest {
     }
 
     @Test
-    public void deveRetornarTrueSeTipoDePaginaForDiferenteDeServicoOuOrgao() {
-        assertTrue(userProfiles.temPermissaoParaOrgao(TipoPagina.PAGINA_TEMATICA, TipoPermissao.PUBLICAR, ""));
-    }
-
-    @Test
     public void deveRetornarTrueSeUsuarioTiverPermissaoParaOperacao() {
         Usuario usuario = mock(Usuario.class);
         when(authentication.getPrincipal()).thenReturn(usuario);
         when(usuario.temPermissaoComOrgao(any(), any())).thenReturn(true);
-        assertTrue(userProfiles.temPermissaoParaOrgao(TipoPagina.SERVICO, TipoPermissao.PUBLICAR, ORGAO_ID));
+        assertTrue(userProfiles.temPermissaoParaOrgao(TipoPermissao.PUBLICAR, ORGAO_ID));
     }
 
     @Test
@@ -78,7 +72,7 @@ public class LoginUserProfilesTest {
         Usuario usuario = mock(Usuario.class);
         when(authentication.getPrincipal()).thenReturn(usuario);
         when(usuario.temPermissaoComOrgao(any(), any())).thenReturn(false);
-        assertFalse(userProfiles.temPermissaoParaOrgao(TipoPagina.SERVICO, TipoPermissao.PUBLICAR, OUTRO_ORGAO));
+        assertFalse(userProfiles.temPermissaoParaOrgao(TipoPermissao.PUBLICAR, OUTRO_ORGAO));
     }
 
 }

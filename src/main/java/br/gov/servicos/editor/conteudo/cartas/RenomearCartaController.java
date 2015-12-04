@@ -44,7 +44,7 @@ class RenomearCartaController {
         }
 
         String orgaoId = carta.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(SERVICO, TipoPermissao.RENOMEAR, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.RENOMEAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
