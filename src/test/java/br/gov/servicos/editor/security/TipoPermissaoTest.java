@@ -9,7 +9,8 @@ public class TipoPermissaoTest {
     @Test
     public void todosNomesDevemEstarEmLetraMaiuscula() {
         for (TipoPermissao tipoPermissao : TipoPermissao.values()) {
-            assertTrue("Nome deve estar em letras maiusculas: " + tipoPermissao.getNome(), tipoPermissao.getNome().matches("[A-Z\\s]+"));
+            assertTrue("Nome deve estar em letras maiusculas: " + tipoPermissao.getNome(),
+                    tipoPermissao.getNome().matches("[A-Z\\s\\(\\)]+"));
         }
     }
 
