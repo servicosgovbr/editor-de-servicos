@@ -24,9 +24,12 @@ public class LoginUserProfiles implements UserProfiles {
         }
     }
 
-    public boolean temPermissaoParaOrgao(TipoPagina tipoPagina, String orgaoId) {
+    public boolean temPermissaoParaOrgao(TipoPagina tipoPagina, TipoPermissao permissao, String orgaoId) {
         Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return !(tipoPagina.equals(TipoPagina.ORGAO) || tipoPagina.equals(TipoPagina.SERVICO))
-                || usuario.getSiorg().equals(orgaoId);
+        return !isOrgaoOuServico(tipoPagina) || usuario.temPermissaoComOrgao(permissao, orgaoId);
+    }
+
+    private boolean isOrgaoOuServico(TipoPagina tipoPagina) {
+        return tipoPagina.equals(TipoPagina.ORGAO) || tipoPagina.equals(TipoPagina.SERVICO);
     }
 }

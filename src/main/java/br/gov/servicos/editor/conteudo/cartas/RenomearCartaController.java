@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
+import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ class RenomearCartaController {
         }
 
         String orgaoId = carta.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(SERVICO, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(SERVICO, TipoPermissao.RENOMEAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

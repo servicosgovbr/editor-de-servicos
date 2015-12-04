@@ -4,5 +4,5 @@ import br.gov.servicos.editor.conteudo.TipoPagina;
 
 public interface UserProfiles {
     UserProfile get();
-    boolean temPermissaoParaOrgao(TipoPagina tipoPagina, String orgaoId);
+    boolean temPermissaoParaOrgao(TipoPagina tipoPagina, TipoPermissao publicar, String orgaoId);
 }

@@ -9,17 +9,18 @@ public enum TipoPermissao {
     DESCARTAR("DESCARTAR"),
     EXCLUIR("EXCLUIR"),
     RENOMEAR("RENOMEAR"),
-    PUBLICAR_ORGAO_ESPECIFICO("PUBLICAR (ORGAO ESPECIFICO)"),
-    DESPUBLICAR_ORGAO_ESPECIFICO("DESPUBLICAR (ORGAO ESPECIFICO)"),
-    DESCARTAR_ORGAO_ESPECIFICO("DESCARTAR (ORGAO ESPECIFICO)"),
-    EXCLUIR_ORGAO_ESPECIFICO("EXCLUIR (ORGAO ESPECIFICO)"),
-    RENOMEAR_ORGAO_ESPECIFICO("RENOMEAR (ORGAO ESPECIFICO)"),
     CADASTRAR("CADASTRAR");
+
+    private static final String ORGAO_ESPECIFICO = " (ORGAO ESPECIFICO)";
 
     @Getter
     private final String nome;
 
     TipoPermissao(String nome) {
         this.nome = nome;
+    }
+
+    public String comOrgaoEspecifico() {
+        return nome + ORGAO_ESPECIFICO;
     }
 }

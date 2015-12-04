@@ -6,21 +6,21 @@ admin:
   - excluir
   - renomear
   - cadastrar
-ponto focal:
-  - publicar
+ponto_focal:
+  - publicar (ORGAO ESPECIFICO)
   - salvar
-  - despublicar
-  - descartar
-  - excluir
-  - renomear
+  - despublicar (ORGAO ESPECIFICO)
+  - descartar (ORGAO ESPECIFICO)
+  - excluir (ORGAO ESPECIFICO)
+  - renomear (ORGAO ESPECIFICO)
   - cadastrar
 publicador:
-  - publicar
+  - publicar (ORGAO ESPECIFICO)
   - salvar
-  - despublicar
-  - descartar
-  - excluir
-  - renomear
+  - despublicar (ORGAO ESPECIFICO)
+  - descartar (ORGAO ESPECIFICO)
+  - excluir (ORGAO ESPECIFICO)
+  - renomear (ORGAO ESPECIFICO)
   - cadastrar
 editor:
   - salvar

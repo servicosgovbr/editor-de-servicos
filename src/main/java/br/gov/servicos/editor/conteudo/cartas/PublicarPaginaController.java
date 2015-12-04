@@ -4,6 +4,7 @@ import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ class PublicarPaginaController {
         }
 
         String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, TipoPermissao.PUBLICAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

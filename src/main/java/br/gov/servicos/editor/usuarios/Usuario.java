@@ -2,6 +2,7 @@ package br.gov.servicos.editor.usuarios;
 
 
 import br.gov.servicos.editor.security.GerenciadorPermissoes;
+import br.gov.servicos.editor.security.TipoPermissao;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -104,4 +105,20 @@ public class Usuario implements Serializable, UserDetails{
         return isHabilitado();
     }
 
+    public boolean temPermissaoComOrgao(TipoPermissao permissao, String orgaoId) {
+        for (GrantedAuthority authority: getAuthorities()) {
+            if(permissaoIgual(permissao, authority) || permissaoIgualComOrgao(permissao, authority, orgaoId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean permissaoIgualComOrgao(TipoPermissao permissao, GrantedAuthority authority, String orgaoId) {
+        return authority.getAuthority().equals(permissao.comOrgaoEspecifico()) && getSiorg().equals(orgaoId);
+    }
+
+    private boolean permissaoIgual(TipoPermissao permissao, GrantedAuthority authority) {
+        return authority.getAuthority().equals(permissao.getNome());
+    }
 }

@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ class DescartarAlteracoesPaginaController {
         }
 
         String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, orgaoId)) {
+        if (!userProfiles.temPermissaoParaOrgao(tipoPagina, TipoPermissao.DESCARTAR, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
