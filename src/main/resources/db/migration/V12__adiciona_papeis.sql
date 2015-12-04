@@ -31,7 +31,7 @@ create table tokens(
   constraint fk_tokens_usuarios foreign key(usuario_id) references usuarios(id)
 );
 INSERT INTO public.papeis (nome) VALUES ('ADMIN');
-INSERT INTO public.papeis (nome) VALUES ('PONTOFOCAL');
+INSERT INTO public.papeis (nome) VALUES ('PONTO_FOCAL');
 INSERT INTO public.papeis (nome) VALUES ('PUBLICADOR');
 INSERT INTO public.papeis (nome) VALUES ('EDITOR');
 INSERT INTO public.usuarios (cpf, senha, papel_id, servidor, habilitado, siorg, email_primario, nome) VALUES ('12312312312', '$2a$10$1O.BjADPpzYc2qm6c27U8ucMfZEhhHUALb/4TjiQMMbjoRgIqqizm', 1, true, true, '1934', 'jeank@thoughtworks.com', 'Editor de Serviços');
