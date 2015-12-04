@@ -66,9 +66,6 @@
                 <div id="siorg-select"></div>
             </div>
 
-            <h3 for="siape" class="opcional">SIAPE</h3>
-            <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
-
             <h3 for="papel-select">Papel</h3>
             <div id="papel-select"></div>
 
@@ -76,6 +73,11 @@
             <div th:if="*{ehInclusaoDeUsuario} == false" id="ativo-inativo-select"></div>
 
             <label class="checkbox" for="servidor"><input id="servidor" name="camposServidor.servidor" th:field="*{camposServidor.servidor}" type="checkbox" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/> Este usuário é um servidor</label>
+
+            <div id="siape_container">
+                <h3 for="siape">SIAPE</h3>
+                <input id="siape" name="camposServidor.siape" type="text" th:value="*{camposServidor.siape}" placeholder="siape" th:class="${#fields.hasErrors('camposServidor')}? erroCampo"/>
+            </div>
 
             <button th:if="*{ehInclusaoDeUsuario}" type="submit">
                 Cadastrar
@@ -106,6 +108,21 @@
     require('usuarios/papel')(m, papeis, 'papel-select');
     require('usuarios/ativo')(m, valorDeHabilitado, 'ativo-inativo-select');
     require('usuarios/cpf-mask')('cpf');
+</script>
+<script type="text/javascript">
+    $(function() {
+        if(!$('#servidor').is(":checked")) {
+            $('#siape_container').hide();
+        }
+
+        $('#servidor').change(function(value) {
+            if($(this).is(":checked") === true) {
+                $('#siape_container').show();
+            } else {
+                $('#siape_container').hide();
+            }
+        });
+    });
 </script>
 </body>
 </html>
