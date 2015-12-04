@@ -27,4 +27,9 @@ public class LoginUserProfiles implements UserProfiles {
         Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return usuario.temPermissaoComOrgao(permissao, orgaoId);
     }
+
+    @Override
+    public boolean temPermissaoParaOrgaoEPapel(TipoPermissao cadastrar, String siorg, String admin) {
+        return true;
+    }
 }

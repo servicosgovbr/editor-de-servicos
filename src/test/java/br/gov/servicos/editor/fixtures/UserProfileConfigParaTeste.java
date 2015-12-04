@@ -31,4 +31,9 @@ public class UserProfileConfigParaTeste implements UserProfiles {
         return temPermissaoParaOrgao;
     }
 
+    @Override
+    public boolean temPermissaoParaOrgaoEPapel(TipoPermissao cadastrar, String siorg, String admin) {
+        return true;
+    }
+
 }

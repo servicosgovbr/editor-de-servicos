@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.usuarios;
 
+import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
@@ -44,11 +45,15 @@ public class GerenciarUsuarioControllerTest {
     @Mock
     private RecuperacaoSenhaService tokenService;
 
+    @Mock
+    private UserProfiles userProfiles;
+
     @InjectMocks
     private GerenciarUsuarioController controller;
 
     @Test
     public void salvaNovoUsuario() {
+        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
@@ -58,6 +63,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void vaiParaPaginaDeIntrucoesParaFinalizarCadastro() {
+        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
@@ -71,6 +77,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void naoSalvaSeFormularioPossuiErros() {
+        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(true);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         controller.criar(FORM_USUARIO, bindingResult);
@@ -79,6 +86,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void retornaMesmoUsuarioFormularioSeFormularioPossuiErros() {
+        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(true);
         ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
         assertThat(modelAndView.getViewName(), equalTo("cadastrar"));

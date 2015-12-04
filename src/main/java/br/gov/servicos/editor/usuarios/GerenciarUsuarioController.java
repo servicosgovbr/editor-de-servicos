@@ -2,6 +2,8 @@ package br.gov.servicos.editor.usuarios;
 
 import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.frontend.Siorg;
+import br.gov.servicos.editor.security.TipoPermissao;
+import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
@@ -11,6 +13,7 @@ import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,9 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 import static net.logstash.logback.marker.Markers.append;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Slf4j
 @Controller
@@ -49,6 +50,9 @@ public class GerenciarUsuarioController {
     @Autowired
     private Siorg siorg;
 
+    @Autowired
+    private UserProfiles userProfiles;
+
     private CPFFormatter cpfFormatter = new CPFFormatter();
 
     @ModelAttribute("papeis")
@@ -67,6 +71,9 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
     public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+        if(!userProfiles.temPermissaoParaOrgaoEPapel(TipoPermissao.CADASTRAR, formularioUsuario.getSiorg(), "ADMIN")) {
+            throw new AccessDeniedException("Usuário sem permissão");
+        }
         if (!result.hasErrors()) {
             Usuario usuarioSalvo = usuarioService.save(factory.criarUsuario(formularioUsuario));
             usuarioLog("Usuario criado", usuarioSalvo);
