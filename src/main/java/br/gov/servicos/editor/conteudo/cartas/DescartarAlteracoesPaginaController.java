@@ -40,7 +40,7 @@ class DescartarAlteracoesPaginaController {
             throw new IllegalStateException("Descartar um serviço que não foi publicado, seria o equivalente a excluir o serviço");
         }
         conteudoVersionado.descartarAlteracoes();
-        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId());
+        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
     }
 
 }

@@ -15,7 +15,7 @@ class IndexController {
 
     @RequestMapping("/")
     RedirectView root() {
-        return new RedirectView("/editar/");
+        return new RedirectView("/editar/", true, false);
     }
 
     @RequestMapping({

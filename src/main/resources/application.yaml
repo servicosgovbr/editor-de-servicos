@@ -49,3 +49,5 @@ spring:
 
   datasource:
     url: jdbc:h2:mem:editor;MODE=PostgreSQL
+
+
