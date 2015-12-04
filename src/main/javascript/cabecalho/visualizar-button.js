@@ -6,6 +6,7 @@ module.exports = {
   controller: function (args) {
     this.visualizar = safeGet(args, 'visualizar');
     this.salvandoServico = args.salvandoServico;
+    this.caiuSessao = args.caiuSessao;
 
     this.onClick = function () {
       this.visualizar();
@@ -21,7 +22,7 @@ module.exports = {
 
     return m('button#visualizar', {
       onclick: _.bind(ctrl.onClick, ctrl),
-      disabled: _.contains('/editar/servico/novo', m.route()) && !temEdicao() || ctrl.salvandoServico()
+      disabled: _.contains('/editar/servico/novo', m.route()) && !temEdicao() || ctrl.salvandoServico() || ctrl.caiuSessao()
     }, [
       m('i.fa.fa-eye'),
       m.trust('&nbsp; Visualizar')

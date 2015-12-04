@@ -6,6 +6,7 @@ module.exports = {
   controller: function (args) {
     this.salvar = safeGet(args, 'salvar');
     this.salvandoServico = args.salvandoServico;
+    this.caiuSessao = args.caiuSessao;
 
     this.salvando = m.prop(false);
 
@@ -30,7 +31,7 @@ module.exports = {
   view: function (ctrl) {
     return m('button#salvar', {
       onclick: _.bind(ctrl.onClick, ctrl),
-      disabled: ctrl.salvando() || ctrl.salvandoServico() ? 'disabled' : ''
+      disabled: ctrl.salvando() || ctrl.salvandoServico() || ctrl.caiuSessao() ? 'disabled' : ''
     }, ctrl.salvando() ? [
       m('i.fa.fa-spin.fa-spinner'),
       m.trust('&nbsp; Salvando...')

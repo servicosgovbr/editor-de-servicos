@@ -19,7 +19,8 @@ module.exports = {
     if (ctrl.config.salvar !== _.noop) {
       salvarView = m.component(require('cabecalho/salvar-button'), {
         salvar: ctrl.config.salvar,
-        salvandoServico: ctrl.config.salvandoServico
+        salvandoServico: ctrl.config.salvandoServico,
+        caiuSessao: ctrl.config.caiuSessao
       });
     }
 
@@ -27,7 +28,8 @@ module.exports = {
     if (ctrl.config.visualizar !== _.noop) {
       visualizarView = m.component(require('cabecalho/visualizar-button'), {
         visualizar: ctrl.config.visualizar,
-        salvandoServico: ctrl.config.salvandoServico
+        salvandoServico: ctrl.config.salvandoServico,
+        caiuSessao: ctrl.config.caiuSessao
       });
     }
 
@@ -37,7 +39,8 @@ module.exports = {
         publicar: ctrl.config.publicar,
         descartar: ctrl.config.descartar,
         metadados: ctrl.config.cabecalho.metadados(),
-        salvandoServico: ctrl.config.salvandoServico
+        salvandoServico: ctrl.config.salvandoServico,
+        caiuSessao: ctrl.config.caiuSessao
       });
     }
 
@@ -49,7 +52,9 @@ module.exports = {
     }
 
     return m('#metadados', [
-      m.component(require('componentes/status-conexao'), { salvandoServico: ctrl.config.salvandoServico }),
+      m.component(require('componentes/status-conexao'), 
+        { salvandoServico: ctrl.config.salvandoServico,
+          caiuSessao: ctrl.config.caiuSessao}),
       salvarView,
       visualizarView,
       publicarView,

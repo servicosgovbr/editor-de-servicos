@@ -16,6 +16,7 @@ module.exports = {
   controller: function () {
     this.cabecalho = new CabecalhoModel();
     this.salvandoServico = m.prop(false);
+    this.caiuSessao = m.prop(false);
     this.servico = servicoEmEdicao.recuperar(this.cabecalho);
 
     this._servicoSalvo = _.bind(function (servico) {
@@ -60,7 +61,8 @@ module.exports = {
     var binding = {
       servico: ctrl.servico,
       novo: routeUtils.ehNovo(),
-      salvandoServico: ctrl.salvandoServico
+      salvandoServico: ctrl.salvandoServico,
+      caiuSessao: ctrl.caiuSessao
     };
 
     return m('#conteudo', {
@@ -91,7 +93,8 @@ module.exports = {
           visualizar: _.bind(ctrl.visualizar, ctrl),
           descartar: _.bind(ctrl.descartar, ctrl),
           cabecalho: ctrl.cabecalho,
-          salvandoServico: ctrl.salvandoServico
+          salvandoServico: ctrl.salvandoServico,
+          caiuSessao: ctrl.caiuSessao
         }),
         m.component(require('componentes/menu/menu-lateral'), {
           menuConfig: binding,

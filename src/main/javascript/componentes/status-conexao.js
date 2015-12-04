@@ -1,17 +1,17 @@
 'use strict';
 
-var salvandoServico;
+var caiuSessao;
 
 var httpOk = function (resp) {
   if (resp.profile.id) {
-    salvandoServico(false);
+    caiuSessao(false);
     m.redraw();
     this.attr('class', '')
       .attr('title', 'Conexão estabelecida')
       .html('');
 
   } else {
-    salvandoServico(true);
+    caiuSessao(true);
     m.redraw();
     this.attr('class', 'mensagem erro')
       .html('Sua sessão expirou. <a href="/editar/" target="_blank">Clique aqui para entrar novamente</a>');
@@ -57,7 +57,7 @@ var config = function (element, isInitialized) {
 module.exports = {
 
   view: function (ctrl, args) {
-    salvandoServico = args.salvandoServico;
+    caiuSessao = args.caiuSessao;
 
     return m('span#status-conexao', {
       config: config

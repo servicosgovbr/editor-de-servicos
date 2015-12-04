@@ -16,6 +16,7 @@ module.exports = {
     this.publicar = safeGet(args, 'publicar');
     this.descartar = safeGet(args, 'descartar');
     this.salvandoServico = args.salvandoServico;
+    this.caiuSessao = args.caiuSessao;
 
     this.publicando = m.prop(false);
     this.descartando = m.prop(false);
@@ -83,14 +84,14 @@ module.exports = {
         id: 'descartar',
         onclick: _.bind(ctrl.descartarClick, ctrl),
         icon: 'times',
-        disabled: desabilitaBotoes || !podeDescartar() || ctrl.salvandoServico()
+        disabled: desabilitaBotoes || !podeDescartar() || ctrl.salvandoServico() || ctrl.caiuSessao()
       }),
 
       botaoQueEspera(ctrl.publicando, {
         id: 'publicar',
         onclick: _.bind(ctrl.publicarClick, ctrl),
         icon: 'check',
-        disabled: desabilitaBotoes || !podePublicar() || ctrl.salvandoServico()
+        disabled: desabilitaBotoes || !podePublicar() || ctrl.salvandoServico() || ctrl.caiuSessao()
       })
     ]);
   }
