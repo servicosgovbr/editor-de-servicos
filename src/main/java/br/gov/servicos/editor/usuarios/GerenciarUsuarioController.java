@@ -81,7 +81,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario", method = PUT)
     public ModelAndView atualizar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
-            // verificar se existe mais de um usuário com o mesmo cpf e lançar erro
+            // TODO verificar se existe mais de um usuário com o mesmo cpf e lançar erro
             Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
             Usuario usuarioSalvo;
             if(usuario != null) {

@@ -18,6 +18,5 @@ import static lombok.AccessLevel.PRIVATE;
 public class CamposServidor {
     boolean servidor;
 
-    @SiapeUnico
     String siape;
 }
