@@ -48,6 +48,7 @@ public class RecuperacaoSenhaService {
                                             .withDataCriacao(LocalDateTime.now(clock))
                                             .withTentativasSobrando(maxTentativasToken)
                                             .withToken(passwordEncoder.encode(token));
+        repository.deleteByUsuarioId(valueOf(usuarioId));
         repository.save(tokenRecuperacaoSenha);
         if(desabilitarUsuarioAoCriarToken) {
             usuarioService.desabilitarUsuario(usuarioId);
@@ -78,7 +79,7 @@ public class RecuperacaoSenhaService {
     }
 
     private Token findLatestTokenByUsuarioId(Long usuarioId) {
-        Iterable<Token> tokensUsuario = repository.findByUsuarioIdOrderByDataCriacaoAsc(usuarioId);
+        Iterable<Token> tokensUsuario = repository.findByUsuarioId(usuarioId);
         if(!tokensUsuario.iterator().hasNext()) {
             throw new UsuarioInexistenteException();
         }

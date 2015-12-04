@@ -96,7 +96,7 @@ public class RecuperacaoSenhaServiceTest {
         Usuario usuario = new Usuario();
         Token token = new Token().withUsuario(usuario);
 
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
 
         when(validator.hasError(formulario, token)).thenReturn(empty());
 
@@ -111,7 +111,7 @@ public class RecuperacaoSenhaServiceTest {
         Token token = new Token()
                 .withUsuario(usuario)
                 .withId(TOKEN_ID);
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(empty());
 
         recuperacaoSenhaService.trocarSenha(formulario);
@@ -124,7 +124,7 @@ public class RecuperacaoSenhaServiceTest {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         Usuario usuario = new Usuario();
         Token token = new Token().withUsuario(usuario).withTentativasSobrando(0);
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
         try {
@@ -146,7 +146,7 @@ public class RecuperacaoSenhaServiceTest {
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX-1);
 
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
         try {
@@ -165,7 +165,7 @@ public class RecuperacaoSenhaServiceTest {
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX);
 
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
 
         try {
@@ -184,7 +184,7 @@ public class RecuperacaoSenhaServiceTest {
                 .withUsuario(usuario)
                 .withTentativasSobrando(MAX);
 
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList(token));
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(Optional.of(EXPIRADO));
 
         recuperacaoSenhaService.trocarSenha(formulario);
@@ -193,7 +193,7 @@ public class RecuperacaoSenhaServiceTest {
     @Test(expected = UsuarioInexistenteException.class)
     public void deveLancarExcecaoSeNaoEncontrarTokenParaUsuario() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
-        when(repository.findByUsuarioIdOrderByDataCriacaoAsc(USUARIO_ID)).thenReturn(newArrayList());
+        when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList());
         recuperacaoSenhaService.trocarSenha(formulario);
     }
 
