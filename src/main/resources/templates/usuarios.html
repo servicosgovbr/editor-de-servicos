@@ -96,7 +96,6 @@
     var r = new XMLHttpRequest();
     r.open("GET", "/editar/api/ping", true);
     r.onreadystatechange = function () {
-      console.log(r.responseText);
       if (r.readyState != 4 || r.status != 200) return;
       document.getElementById('username').innerHTML = JSON.parse(r.responseText).profile.name.split(' ')[0];
     };
