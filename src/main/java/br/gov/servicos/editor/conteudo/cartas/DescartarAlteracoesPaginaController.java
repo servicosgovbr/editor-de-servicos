@@ -37,17 +37,19 @@ class DescartarAlteracoesPaginaController {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
+        if (!conteudoVersionado.existe()) {
+            throw new ConteudoInexistenteException(conteudoVersionado);
+        }
+
+        if (!conteudoVersionado.existeNoMaster()) {
+            throw new IllegalStateException("Descartar um serviço que não foi publicado, seria o equivalente a excluir o serviço");
+        }
+
         String orgaoId = conteudoVersionado.getOrgaoId();
         if (!userProfiles.temPermissaoParaOrgao(tipoPagina, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
-        if (!conteudoVersionado.existe()) {
-            throw new ConteudoInexistenteException(conteudoVersionado);
-        }
-        if (!conteudoVersionado.existeNoMaster()) {
-            throw new IllegalStateException("Descartar um serviço que não foi publicado, seria o equivalente a excluir o serviço");
-        }
         conteudoVersionado.descartarAlteracoes();
         return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId());
     }

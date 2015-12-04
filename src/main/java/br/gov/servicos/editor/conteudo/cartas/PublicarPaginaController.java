@@ -36,13 +36,13 @@ class PublicarPaginaController {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
+        if (!conteudoVersionado.existe()) {
+            throw new ConteudoInexistenteException(conteudoVersionado);
+        }
+
         String orgaoId = conteudoVersionado.getOrgaoId();
         if (!userProfiles.temPermissaoParaOrgao(tipoPagina, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
-        }
-
-        if (!conteudoVersionado.existe()) {
-            throw new ConteudoInexistenteException(conteudoVersionado);
         }
 
         conteudoVersionado.publicar(userProfiles.get());

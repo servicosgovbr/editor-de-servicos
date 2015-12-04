@@ -49,6 +49,8 @@ public class ExcluirPaginaControllerTest {
 
     @Test
     public void removeCartaExistente() throws Exception {
+        given(userProfiles.temPermissaoParaOrgao(any(), anyString()))
+                .willReturn(true);
         given(userProfiles.get())
                 .willReturn(PROFILE);
 

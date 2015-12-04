@@ -27,8 +27,9 @@ public class DescartarAlteracoesPaginaControllerTest {
     @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
         DescartarAlteracoesPaginaController controller = new DescartarAlteracoesPaginaController(factory, userProfiles);
-        given(factory.pagina(anyString(), any()))
-                .willReturn(carta);
+        given(factory.pagina(anyString(), any())).willReturn(carta);
+        given(carta.existe()).willReturn(true);
+        given(carta.existeNoMaster()).willReturn(true);
         userProfiles.setTemPermissaoParaOrgao(false);
 
         controller.descartar("servico", "");

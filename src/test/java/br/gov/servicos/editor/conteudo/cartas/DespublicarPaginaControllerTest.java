@@ -27,8 +27,8 @@ public class DespublicarPaginaControllerTest {
     @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
         DespublicarPaginaController controller = new DespublicarPaginaController(factory, userProfiles);
-        given(factory.pagina(anyString(), any()))
-                .willReturn(carta);
+        given(factory.pagina(anyString(), any())).willReturn(carta);
+        given(carta.existe()).willReturn(true);
         userProfiles.setTemPermissaoParaOrgao(false);
 
         controller.despublicar("servico", "");

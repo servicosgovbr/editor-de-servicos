@@ -35,8 +35,12 @@ class RenomearCartaController {
 
     @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = PATCH)
     ResponseEntity renomear(@PathVariable("id") String id,
-                            @RequestBody String novoNome) {
+                            @RequestBody String novoNome) throws ConteudoInexistenteException {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
+
+        if (!carta.existe()) {
+            throw new ConteudoInexistenteException(carta);
+        }
 
         String orgaoId = carta.getOrgaoId();
         if (!userProfiles.temPermissaoParaOrgao(SERVICO, orgaoId)) {
