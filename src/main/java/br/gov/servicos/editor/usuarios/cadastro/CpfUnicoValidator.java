@@ -30,11 +30,11 @@ public class CpfUnicoValidator implements ConstraintValidator<CpfUnico, Object> 
         ReflectionUtils.makeAccessible(campoValidacaoAtiva);
         boolean validacaoEstaAtiva = (boolean) ReflectionUtils.getField(campoValidacaoAtiva, value);
 
-        Field campoCpf = ReflectionUtils.findField(value.getClass(), this.nomeCampoComValorCpf);
-        ReflectionUtils.makeAccessible(campoCpf);
-        String cpf = (String) ReflectionUtils.getField(campoCpf, value);
-
         if (validacaoEstaAtiva) {
+            Field campoCpf = ReflectionUtils.findField(value.getClass(), this.nomeCampoComValorCpf);
+            ReflectionUtils.makeAccessible(campoCpf);
+            String cpf = (String) ReflectionUtils.getField(campoCpf, value);
+
             return repository.findByCpf(cpfFormatter.unformat(cpf)) == null;
         } else {
             return true;

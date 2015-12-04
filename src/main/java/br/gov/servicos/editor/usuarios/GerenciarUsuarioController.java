@@ -72,13 +72,16 @@ public class GerenciarUsuarioController {
             usuarioLog("Usuario criado", usuarioSalvo);
             return intrucoesParaRecuperarSenha(usuarioSalvo, COMPLETAR_CADASTRO);
         } else {
-            return new ModelAndView("cadastrar");
+            ModelMap model = new ModelMap();
+            model.addAttribute("metodo", POST);
+            return new ModelAndView("cadastrar", model);
         }
     }
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = PUT)
     public ModelAndView atualizar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
         if (!result.hasErrors()) {
+            // verificar se existe mais de um usuário com o mesmo cpf e lançar erro
             Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
             Usuario usuarioSalvo;
             if(usuario != null) {
@@ -87,10 +90,12 @@ public class GerenciarUsuarioController {
                 throw new UsuarioInexistenteException();
             }
             usuarioSalvo = usuarioService.save(usuario);
-            usuarioLog("Usuario criado", usuarioSalvo);
-            return intrucoesParaRecuperarSenha(usuarioSalvo, COMPLETAR_CADASTRO);
+            usuarioLog("Usuario atualizado", usuarioSalvo);
+            return usuarios();
         } else {
-            return new ModelAndView("cadastrar");
+            ModelMap model = new ModelMap();
+            model.addAttribute("metodo", PUT);
+            return new ModelAndView("cadastrar", model);
         }
     }
 
@@ -98,7 +103,7 @@ public class GerenciarUsuarioController {
     public ModelAndView login(FormularioUsuario formularioUsuario) {
         ModelMap model = new ModelMap();
         model.addAttribute("formularioUsuario", formularioUsuario.withEhInclusaoDeUsuario(Boolean.TRUE));
-        model.addAttribute("method", POST);
+        model.addAttribute("metodo", POST);
         return new ModelAndView("cadastrar", model);
     }
 

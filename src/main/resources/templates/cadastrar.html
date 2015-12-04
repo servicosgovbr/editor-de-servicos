@@ -52,7 +52,7 @@
             <input id="nome_completo" name="nome" type="text" th:value="*{nome}" autofocus="true" th:class="${#fields.hasErrors('nome')}? erroCampo" />
 
             <h3 for="cpf">CPF</h3>
-            <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="___.___.___-__" th:class="${#fields.hasErrors('cpf')}? erroCampo"/>
+            <input id="cpf" name="cpf" type="text" th:value="*{cpf}" placeholder="___.___.___-__" th:class="${#fields.hasErrors('cpf')}? erroCampo" th:readonly="*{ehInclusaoDeUsuario} == false"/>
 
             <h3 for="email_primario">Email Primário</h3>
             <input id="email_primario" name="emailPrimario" th:value="*{emailPrimario}" type="email"
