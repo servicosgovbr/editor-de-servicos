@@ -1,12 +1,18 @@
 'use strict';
 
+var salvandoServico;
+
 var httpOk = function (resp) {
   if (resp.profile.id) {
+    salvandoServico(false);
+    m.redraw();
     this.attr('class', '')
       .attr('title', 'Conexão estabelecida')
       .html('');
 
   } else {
+    salvandoServico(true);
+    m.redraw();
     this.attr('class', 'mensagem erro')
       .html('Sua sessão expirou. <a href="/editar/" target="_blank">Clique aqui para entrar novamente</a>');
   }
@@ -50,7 +56,9 @@ var config = function (element, isInitialized) {
 
 module.exports = {
 
-  view: function () {
+  view: function (ctrl, args) {
+    salvandoServico = args.salvandoServico;
+
     return m('span#status-conexao', {
       config: config
     });
