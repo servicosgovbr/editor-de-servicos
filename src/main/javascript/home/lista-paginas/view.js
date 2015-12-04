@@ -52,9 +52,9 @@ module.exports = function (ctrl, args) {
 
   return m('', mostrarCarregando ? m('div.carregando', m('i.fa.fa-spin.fa-spinner.fa-2x'), 'Carregando...') : '', paginas.length !== 0 ? m('table', [
      m('tr', [
-       m('th[width="40%"]', 'Nome'),
-       m('th.center', 'Órgão'),
-       m('th.center', 'Tipo'),
+       m('th[width="35%"]', 'Nome'),
+       m('th.center[width="20%"]', 'Órgão'),
+       m('th.center[width="8%"]', 'Tipo'),
        m('th.center', 'Publicação'),
        m('th.center', 'Edição'),
        m('th.right[width="10%"]', '')
