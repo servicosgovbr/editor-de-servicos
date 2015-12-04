@@ -112,6 +112,7 @@
 <script type="text/javascript">
     $(function() {
         if(!$('#servidor').is(":checked")) {
+            $('#siape').val('');
             $('#siape_container').hide();
         }
 
@@ -119,6 +120,7 @@
             if($(this).is(":checked") === true) {
                 $('#siape_container').show();
             } else {
+                $('#siape').val('');
                 $('#siape_container').hide();
             }
         });
