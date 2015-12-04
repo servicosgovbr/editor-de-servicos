@@ -17,7 +17,7 @@ function excluirView(ctrl, pagina) {
   if (pagina.excluindo && pagina.excluindo()) {
     return m('i.fa.fa-spin.fa-spinner');
   }
-  return m('button.remover', {
+  return m('button.remover', m('span.tooltip-content', 'Excluir página'), {
     title: 'Remover este conteúdo',
     onclick: _.bind(ctrl.excluirConteudo, ctrl, pagina.id, pagina.conteudo.tipo, pagina)
   }, m('i.fa.fa-trash-o'));
@@ -27,7 +27,7 @@ function visualizarView(ctrl, pagina) {
   if (!isServico(pagina)) {
     return '';
   }
-  return m('a.visualizar', {
+  return m('a.visualizar', m('span.tooltip-content', 'Ver página'), {
     href: '/editar/visualizar/' + pagina.conteudo.tipo + '/' + pagina.id,
     title: 'Visualizar este conteúdo'
   }, m('i.fa.fa-eye'));
