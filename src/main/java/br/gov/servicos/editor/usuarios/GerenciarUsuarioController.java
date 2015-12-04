@@ -2,7 +2,6 @@ package br.gov.servicos.editor.usuarios;
 
 import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.frontend.Siorg;
-import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
@@ -71,7 +70,7 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
     public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
-        if(!userProfiles.temPermissaoParaOrgaoEPapel(TipoPermissao.CADASTRAR, formularioUsuario.getSiorg(), "ADMIN")) {
+        if(!userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), "ADMIN")) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
         if (!result.hasErrors()) {

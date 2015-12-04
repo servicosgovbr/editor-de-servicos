@@ -53,7 +53,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void salvaNovoUsuario() {
-        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
+        when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
@@ -63,7 +63,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void vaiParaPaginaDeIntrucoesParaFinalizarCadastro() {
-        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
+        when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
@@ -77,7 +77,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void naoSalvaSeFormularioPossuiErros() {
-        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
+        when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(true);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         controller.criar(FORM_USUARIO, bindingResult);
@@ -86,7 +86,7 @@ public class GerenciarUsuarioControllerTest {
 
     @Test
     public void retornaMesmoUsuarioFormularioSeFormularioPossuiErros() {
-        when(userProfiles.temPermissaoParaOrgaoEPapel(any(), any(), any())).thenReturn(true);
+        when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(true);
         ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
         assertThat(modelAndView.getViewName(), equalTo("cadastrar"));
