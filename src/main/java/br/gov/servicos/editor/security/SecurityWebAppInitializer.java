@@ -65,10 +65,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                                                                  CADASTRAR.comPapel(PONTOFOCAL),
                                                                  CADASTRAR.comPapel(PUBLICADOR),
                                                                  CADASTRAR.comPapel(EDITOR))
-                .antMatchers(POST, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
-                                                                CADASTRAR.comPapel(PONTOFOCAL),
-                                                                CADASTRAR.comPapel(PUBLICADOR),
-                                                                CADASTRAR.comPapel(EDITOR))
 
                 .anyRequest().fullyAuthenticated()
 

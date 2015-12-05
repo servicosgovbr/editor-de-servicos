@@ -159,7 +159,7 @@ public class GerenciarUsuarioController {
 
     private boolean verificarPermissao(@Valid FormularioUsuario formularioUsuario) {
         Papel papel = papelRepository.findById(Long.valueOf(formularioUsuario.getPapelId()));
-        return !userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), papel.getNome());
+        return papel != null && !userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), papel.getNome());
     }
 
     private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario, String pagina) {

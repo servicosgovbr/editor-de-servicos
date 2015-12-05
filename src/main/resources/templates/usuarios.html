@@ -66,7 +66,7 @@
                         <span th:if="${usuario.habilitado == false}" class="desabilitado">Inativo</span>
                     </td>
                     <td>
-                        <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
+                        <form th:if="${userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(usuario.siorg, usuario.papel.nome)}" th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
                             <button id="edicao-usuario" type="submit" class="editar">
                                 <span>
                                     <i class="fa fa-pencil-square-o"></i>
