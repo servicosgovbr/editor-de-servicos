@@ -5,11 +5,7 @@ admin:
   - descartar
   - excluir
   - renomear
-  - cadastrar com outro orgao
-  - cadastrar admin
-  - cadastrar ponto_focal
-  - cadastrar publicador
-  - cadastrar editor
+  - cadastrar
 ponto_focal:
   - publicar (ORGAO ESPECIFICO)
   - salvar
@@ -17,9 +13,6 @@ ponto_focal:
   - descartar (ORGAO ESPECIFICO)
   - excluir (ORGAO ESPECIFICO)
   - renomear (ORGAO ESPECIFICO)
-  - cadastrar ponto_focal
-  - cadastrar publicador
-  - cadastrar editor
 publicador:
   - publicar (ORGAO ESPECIFICO)
   - salvar
@@ -27,6 +20,5 @@ publicador:
   - descartar (ORGAO ESPECIFICO)
   - excluir (ORGAO ESPECIFICO)
   - renomear (ORGAO ESPECIFICO)
-  - cadastrar publicador
 editor:
   - salvar
