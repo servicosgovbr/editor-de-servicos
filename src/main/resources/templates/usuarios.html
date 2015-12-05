@@ -76,7 +76,7 @@
                                 </span>
                             </button>
                         </form>
-                        <form th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
+                        <form  th:if="${LoginUserProfile.temPermissaoGerenciarUsuarioOrgaoEPapel(usuario.siorg, usuario.papel.nome) != true}" th:action="@{/editar/usuarios/usuario/{id}/recuperar-senha(id=${usuario.id})}" method="post">
                             <button id="recuperar-senha-usuario" type="submit" class="recuperar-senha">
                                 <span>
                                     <i class="fa fa-key"></i>

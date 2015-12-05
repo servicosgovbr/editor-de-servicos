@@ -30,6 +30,6 @@ public class LoginUserProfiles implements UserProfiles {
 
     @Override
     public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String admin) {
-        return true;
+        return false;
     }
 }
