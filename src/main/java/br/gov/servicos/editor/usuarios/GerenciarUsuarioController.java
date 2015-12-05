@@ -2,13 +2,10 @@ package br.gov.servicos.editor.usuarios;
 
 import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.frontend.Siorg;
+import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
-import br.gov.servicos.editor.usuarios.recuperarsenha.CamposVerificacaoRecuperarSenha;
-import br.gov.servicos.editor.usuarios.recuperarsenha.FormularioRecuperarSenha;
 import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
-import br.gov.servicos.editor.usuarios.token.CpfTokenInvalido;
-import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +13,19 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
 import static net.logstash.logback.marker.Markers.append;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Slf4j
 @Controller
@@ -55,8 +54,27 @@ public class GerenciarUsuarioController {
     private CPFFormatter cpfFormatter = new CPFFormatter();
 
     @ModelAttribute("papeis")
-    public Iterable<Papel> papularPapeis() {
-        return this.papelRepository.findAll();
+    public Iterable<Papel> popularPapeis() {
+        Iterable<Papel> todosPapeis = this.papelRepository.findAll();
+        return StreamSupport.stream(todosPapeis.spliterator(), false)
+                .filter(papel -> userProfiles.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.getNome())))
+                .collect(Collectors.toList());
+    }
+
+    @ModelAttribute("userProfiles")
+    public UserProfiles getUserProfiles() {
+        return userProfiles;
+    }
+
+    @ModelAttribute("siorg")
+    public Siorg getSiorg() {
+        return siorg;
+    }
+
+    @ModelAttribute("temPermissaoDeGerenciarUsuariosDeOutrosOrgaos")
+    public boolean temPermissaoDeGerenciarUsuariosDeOutrosOrgaos() {
+        return userProfiles.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome());
+
     }
 
     @RequestMapping(value = "/editar/usuarios")
@@ -70,7 +88,7 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
     public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
-        if(!userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), "ADMIN")) {
+        if(verificarPermissao(formularioUsuario)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
         if (!result.hasErrors()) {
@@ -86,6 +104,9 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = PUT)
     public ModelAndView atualizar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+        if(verificarPermissao(formularioUsuario)) {
+            throw new AccessDeniedException("Usuário sem permissão");
+        }
         if (!result.hasErrors()) {
             // TODO verificar se existe mais de um usuário com o mesmo cpf e lançar erro
             Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
@@ -136,38 +157,9 @@ public class GerenciarUsuarioController {
         return new ModelAndView("cadastrar", model);
     }
 
-    @RequestMapping(value = "/editar/recuperar-senha", method = GET)
-    public ModelAndView recuperacaoSenha(@RequestParam(value = "pagina", defaultValue = RECUPERAR_SENHA) String pagina,
-                                         FormularioRecuperarSenha formularioRecuperarSenha) {
-        ModelMap model = new ModelMap();
-        model.addAttribute("pagina", pagina);
-        model.addAttribute("formularioRecuperarSenha", formularioRecuperarSenha);
-        return new ModelAndView("recuperar-senha", model);
-    }
-
-    @RequestMapping(value = "/editar/recuperar-senha", method = POST)
-    public ModelAndView recuperarSenha(@RequestParam(value = "pagina", defaultValue = "recuperarSenha") String pagina,
-                                 @Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
-        if (!result.hasErrors()) {
-            try {
-                Usuario usuarioComSenhaNova = tokenService.trocarSenha(formularioRecuperarSenha);
-                usuarioLog("Senha trocada", usuarioComSenhaNova);
-                return new ModelAndView("redirect:/editar/autenticar?senhaAlterada");
-            } catch(TokenInvalido e) {
-                log.info("Falha na tentativa de trocar senha");
-                result.addError(criarErroTokenInvalido(e));
-                return retornarParaRecuperarSenha(pagina);
-            }
-        } else {
-            return retornarParaRecuperarSenha(pagina);
-        }
-    }
-
-    private ModelAndView retornarParaRecuperarSenha(
-            @RequestParam(value = "pagina", defaultValue = RECUPERAR_SENHA) String pagina) {
-        ModelMap model = new ModelMap();
-        model.addAttribute("pagina", pagina);
-        return new ModelAndView("recuperar-senha", model);
+    private boolean verificarPermissao(@Valid FormularioUsuario formularioUsuario) {
+        Papel papel = papelRepository.findById(Long.valueOf(formularioUsuario.getPapelId()));
+        return papel != null && !userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), papel.getNome());
     }
 
     private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario, String pagina) {
@@ -177,30 +169,6 @@ public class GerenciarUsuarioController {
         model.addAttribute("pagina", pagina);
         usuarioLog("Token gerado para trocar senha", usuario);
         return new ModelAndView("instrucoes-recuperar-senha", model);
-    }
-
-    private FieldError criarErroTokenInvalido(TokenInvalido e) {
-        String message;
-        if(e instanceof CpfTokenInvalido) {
-            CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
-            int tentativasSobrando = cpfTokenInvalido.getTentativasSobrando();
-            message = criarMensagemTentativasSobrando(tentativasSobrando);
-        } else {
-            message = "Este link não é válido. Solicite um novo link para alterar sua senha.";
-        }
-
-        return new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
-                    message);
-    }
-
-    private String criarMensagemTentativasSobrando(int tentativasSobrando) {
-        if(tentativasSobrando > 0) {
-            return "O CPF informado não é compatível com o cadastrado. Você possui mais "
-                    + tentativasSobrando + " tentativas.";
-        } else {
-            return  "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
-                    "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..";
-        }
     }
 
     private String gerarLinkParaRecuperacaoDeSenha(String usuarioId, String pagina) {

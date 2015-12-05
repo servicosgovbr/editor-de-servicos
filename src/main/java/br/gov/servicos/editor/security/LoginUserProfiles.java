@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
+
 @Component
 @Profile("!teste")
 public class LoginUserProfiles implements UserProfiles {
@@ -24,12 +26,28 @@ public class LoginUserProfiles implements UserProfiles {
     }
 
     public boolean temPermissaoParaOrgao(TipoPermissao permissao, String orgaoId) {
-        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuario = getPrincipal();
         return usuario.temPermissaoComOrgao(permissao, orgaoId);
     }
 
     @Override
-    public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String admin) {
-        return false;
+    public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String papel) {
+        Usuario usuario = getPrincipal();
+        return usuario.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.toUpperCase())) &&
+                (usuario.getSiorg().equals(siorg) || usuario.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome()));
+    }
+
+    @Override
+    public boolean temPermissao(String permissao) {
+        return getPrincipal().temPermissao(permissao);
+    }
+
+    @Override
+    public String getSiorg() {
+        return getPrincipal().getSiorg();
+    }
+
+    private Usuario getPrincipal() {
+        return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

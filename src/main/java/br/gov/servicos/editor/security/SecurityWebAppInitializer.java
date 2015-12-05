@@ -18,6 +18,10 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
     private static final String API_PAGINA = "/editar/api/pagina/**";
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
+    private static final String ADMIN = "ADMIN";
+    private static final String PONTOFOCAL = "PONTOFOCAL";
+    private static final String PUBLICADOR = "PUBLICADOR";
+    private static final String EDITOR = "CADASTRO";
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
 
@@ -57,8 +61,10 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .antMatchers(PATCH, API_PAGINA).hasAnyAuthority(RENOMEAR.getNome(), RENOMEAR.comOrgaoEspecifico())
                 .antMatchers(PUT, API_PAGINA).hasAnyAuthority(PUBLICAR.getNome(), PUBLICAR.comOrgaoEspecifico())
                 .antMatchers(POST, API_PAGINA).hasAnyAuthority(SALVAR.getNome(), PUBLICAR.getNome(), DESPUBLICAR.getNome())
-                .antMatchers(GET, API_NOVO_USUARIO).hasAuthority(CADASTRAR.getNome())
-                .antMatchers(POST, API_NOVO_USUARIO).hasAuthority(CADASTRAR.getNome())
+                .antMatchers(GET, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
+                                                                 CADASTRAR.comPapel(PONTOFOCAL),
+                                                                 CADASTRAR.comPapel(PUBLICADOR),
+                                                                 CADASTRAR.comPapel(EDITOR))
 
                 .anyRequest().fullyAuthenticated()
 

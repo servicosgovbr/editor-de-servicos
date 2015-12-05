@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR;
+import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
@@ -60,7 +62,7 @@ public class LoginUserProfilesTest {
     }
 
     @Test
-    public void deveRetornarTrueSeUsuarioTiverPermissaoParaOperacao() {
+    public void deveValidarSeUsuarioTiverPermissaoParaOperacao() {
         Usuario usuario = mock(Usuario.class);
         when(authentication.getPrincipal()).thenReturn(usuario);
         when(usuario.temPermissaoComOrgao(any(), any())).thenReturn(true);
@@ -68,11 +70,47 @@ public class LoginUserProfilesTest {
     }
 
     @Test
-    public void deveRetornarFalseSeUsuarioNãoTiverPermissaoParaOperacao() {
+    public void deveInvalidarSeUsuarioNãoTiverPermissaoParaOperacao() {
         Usuario usuario = mock(Usuario.class);
         when(authentication.getPrincipal()).thenReturn(usuario);
         when(usuario.temPermissaoComOrgao(any(), any())).thenReturn(false);
         assertFalse(userProfiles.temPermissaoParaOrgao(TipoPermissao.PUBLICAR, OUTRO_ORGAO));
+    }
+
+    @Test
+    public void deveInvalidarSeUsuarioNaoTemPermissaoParaCadastrarPapel() {
+        Usuario usuario = mock(Usuario.class);
+        when(authentication.getPrincipal()).thenReturn(usuario);
+        when(usuario.temPermissao(CADASTRAR.comPapel("PUBLICADOR"))).thenReturn(false);
+        assertFalse(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(ORGAO_ID, "PUBLICADOR"));
+    }
+
+    @Test
+    public void deveInvalidarSeSiorgForDiferenteDeOrgaoId() {
+        Usuario usuario = mock(Usuario.class);
+        when(authentication.getPrincipal()).thenReturn(usuario);
+        when(usuario.temPermissao(CADASTRAR.comPapel("PUBLICADOR"))).thenReturn(true);
+        when(usuario.getSiorg()).thenReturn(OUTRO_ORGAO);
+        assertFalse(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(ORGAO_ID, "PUBLICADOR"));
+    }
+
+    @Test
+    public void deveValidarSeSiorForIgualAoOrgaoId() {
+        Usuario usuario = mock(Usuario.class);
+        when(authentication.getPrincipal()).thenReturn(usuario);
+        when(usuario.temPermissao(CADASTRAR.comPapel("PUBLICADOR"))).thenReturn(true);
+        when(usuario.getSiorg()).thenReturn(ORGAO_ID);
+        assertTrue(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(ORGAO_ID, "PUBLICADOR"));
+    }
+
+    @Test
+    public void deveValidarSeUsuarioTemPermissaoDeCadastrarOutrosOrgaosMesmoSeSiorgForDiferenteDeOrgaoId() {
+        Usuario usuario = mock(Usuario.class);
+        when(authentication.getPrincipal()).thenReturn(usuario);
+        when(usuario.temPermissao(CADASTRAR.comPapel("PUBLICADOR"))).thenReturn(true);
+        when(usuario.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome())).thenReturn(true);
+        when(usuario.getSiorg()).thenReturn(OUTRO_ORGAO);
+        assertTrue(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(ORGAO_ID, "PUBLICADOR"));
     }
 
 }

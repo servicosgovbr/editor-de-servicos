@@ -62,8 +62,14 @@
             <input id="email_secundario" name="emailSecundario" th:value="*{emailSecundario}" type="email"
                    placeholder="email@secundario.org" th:class="${#fields.hasErrors('emailSecundario')}? erroCampo"/>
 
-            <div th:class="${#fields.hasErrors('siorg')}? select2Erro">
+            <div th:if="${temPermissaoDeGerenciarUsuariosDeOutrosOrgaos}" th:class="${#fields.hasErrors('siorg')}? select2Erro">
                 <div id="siorg-select"></div>
+            </div>
+
+            <div th:if="${!temPermissaoDeGerenciarUsuariosDeOutrosOrgaos}">
+                <h3>Orgão</h3>
+                <input th:value="${siorg.nomeDoOrgao(userProfiles.getSiorg()).get()}" disabled="true"/>
+                <input type="hidden" th:value="${userProfiles.getSiorg()}" name="siorg"/>
             </div>
 
             <h3 for="papel-select">Papel</h3>
@@ -102,12 +108,13 @@
     r.send();
     
     var siorgInicial = /*[[${formularioUsuario.siorg}]]*/ null;
+    var papelInicial = /*[[${formularioUsuario.papelId}]]*/ null;
     var papeis = /*[[${papeis}]]*/;
     var valorDeHabilitado = /*[[${formularioUsuario.habilitado}]]*/;
-    require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
-    require('usuarios/papel')(m, papeis, 'papel-select');
-    require('usuarios/ativo')(m, valorDeHabilitado, 'ativo-inativo-select');
     require('usuarios/cpf-mask')('cpf');
+    require('usuarios/siorg')(m, siorgInicial, 'siorg-select');
+    require('usuarios/papel')(m, papeis, papelInicial, 'papel-select');
+    require('usuarios/ativo')(m, valorDeHabilitado, 'ativo-inativo-select');
 </script>
 <script type="text/javascript">
     $(function() {

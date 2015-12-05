@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function (m, papeis, element) {
+module.exports = function (m, papeis, papelInicial, element) {
   var papel = {};
-  papel.id = m.prop('1');
+  papel.id = m.prop(papelInicial ? papelInicial : papeis[0].id);
 
   function convertToSelect2Data(originalArray) {
     var newArray = [];
