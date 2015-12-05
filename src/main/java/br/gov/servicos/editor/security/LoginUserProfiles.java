@@ -26,14 +26,23 @@ public class LoginUserProfiles implements UserProfiles {
     }
 
     public boolean temPermissaoParaOrgao(TipoPermissao permissao, String orgaoId) {
-        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuario = getPrincipal();
         return usuario.temPermissaoComOrgao(permissao, orgaoId);
     }
 
     @Override
     public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String papel) {
-        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuario = getPrincipal();
         return usuario.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.toUpperCase())) &&
                 (usuario.getSiorg().equals(siorg) || usuario.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome()));
+    }
+
+    @Override
+    public boolean temPermissao(String permissao) {
+        return getPrincipal().temPermissao(permissao);
+    }
+
+    private Usuario getPrincipal() {
+        return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

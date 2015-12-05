@@ -36,4 +36,9 @@ public class UserProfileConfigParaTeste implements UserProfiles {
         return true;
     }
 
+    @Override
+    public boolean temPermissao(String permissao) {
+        return true;
+    }
+
 }
