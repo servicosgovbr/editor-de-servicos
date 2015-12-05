@@ -9,7 +9,13 @@ module.exports = function (m, valorDeHabilitado, element) {
         m.component(require('componentes/select2'), {
         prop: ativo.id,
         tte: {},
-        data: [{ id: true, text: 'Ativo'}, { id: false, text: 'Inativo'}]
+        data: [{
+          id: true,
+          text: 'Ativo'
+        }, {
+          id: false,
+          text: 'Inativo'
+        }]
       }),
         m('input[type=hidden]#habilitado', {
         name: 'habilitado',

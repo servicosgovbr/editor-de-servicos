@@ -18,7 +18,7 @@ module.exports = function (m, papeis, papelInicial, element) {
   }
 
   function convertToTitleCase(value) {
-    return value.replace('_', ' ').replace(/\w\S*/g, 
+    return value.replace('_', ' ').replace(/\w\S*/g,
       function (text) {
         return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
       }

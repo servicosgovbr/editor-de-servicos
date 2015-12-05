@@ -4,17 +4,20 @@ var caiuSessao;
 
 var httpOk = function (resp) {
   if (resp.profile.id) {
-    caiuSessao(false);
-    m.redraw();
-    this.attr('class', '')
-      .attr('title', 'Conexão estabelecida')
-      .html('');
-
+    if (caiuSessao() !== false) {
+      caiuSessao(false);
+      m.redraw();
+      this.attr('class', '')
+        .attr('title', 'Conexão estabelecida')
+        .html('');
+    }
   } else {
-    caiuSessao(true);
-    m.redraw();
-    this.attr('class', 'mensagem erro')
-      .html('Sua sessão expirou. <a href="/editar/" target="_blank">Clique aqui para entrar novamente</a>');
+    if (caiuSessao() !== true) {
+      caiuSessao(true);
+      m.redraw();
+      this.attr('class', 'mensagem erro')
+        .html('Sua sessão expirou. <a href="/editar/" target="_blank">Clique aqui para entrar novamente</a>');
+    }
   }
 };
 

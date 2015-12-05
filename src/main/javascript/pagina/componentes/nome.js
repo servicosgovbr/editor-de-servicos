@@ -5,7 +5,7 @@ module.exports = {
     var nomeProp = args.nome;
     var tooltipNome = args.tooltipNome;
 
-    var componenteNome = args.novo ? m.component(args.componente, _.assign(args,{
+    var componenteNome = args.novo ? m.component(args.componente, _.assign(args, {
       prop: nomeProp
     })) : nomeProp();
 

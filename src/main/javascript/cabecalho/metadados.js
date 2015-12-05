@@ -52,9 +52,10 @@ module.exports = {
     }
 
     return m('#metadados', [
-      m.component(require('componentes/status-conexao'), 
-        { salvandoServico: ctrl.config.salvandoServico,
-          caiuSessao: ctrl.config.caiuSessao}),
+      m.component(require('componentes/status-conexao'), {
+        salvandoServico: ctrl.config.salvandoServico,
+        caiuSessao: ctrl.config.caiuSessao
+      }),
       salvarView,
       visualizarView,
       publicarView,

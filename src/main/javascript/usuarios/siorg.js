@@ -4,7 +4,7 @@ var selectOrgao = require('pagina/orgao/select-orgao');
 
 module.exports = function (m, siorgInicial, element) {
   var campoSiorg = document.getElementById(element);
-  if(!campoSiorg) {
+  if (!campoSiorg) {
     return;
   }
 
