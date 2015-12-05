@@ -31,7 +31,7 @@ public class GerenciadorPermissoes implements InitializingBean {
     }
 
     private String parsePapel(String papel)  {
-        if(!papel.matches("[\\w\\s]+\\[\\d\\]")) {
+        if(!papel.matches("[\\w\\s]+\\[\\d+\\]")) {
             throw new RuntimeException("Formato incorreto do arquivo de permissões. Problema com o papel: " + papel);
         }
         return papel.split("\\[")[0].toUpperCase();

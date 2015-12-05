@@ -8,11 +8,13 @@ import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
 import br.gov.servicos.editor.usuarios.token.CpfTokenInvalido;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
 import br.gov.servicos.editor.usuarios.token.TokenInvalido;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,8 +50,16 @@ public class GerenciarUsuarioControllerTest {
     @Mock
     private UserProfiles userProfiles;
 
+    @Mock
+    private PapelRepository papelRepository;
+
     @InjectMocks
     private GerenciarUsuarioController controller;
+
+    @Before
+    public void setUp() {
+        when(papelRepository.findById(any())).thenReturn(new Papel());
+    }
 
     @Test
     public void salvaNovoUsuario() {
@@ -73,6 +83,12 @@ public class GerenciarUsuarioControllerTest {
         assertThat(modelAndView.getModel().get("link"), equalTo("/editar/recuperar-senha?token="
                 +TOKEN+"&usuarioId="+USUARIO_ID+"&pagina="+ COMPLETAR_CADASTRO));
         assertThat(modelAndView.getModel().get("usuario"), equalTo(USUARIO));
+    }
+
+    @Test(expected = AccessDeniedException.class)
+    public void deveLancarExcecaoSeNaoPermitidoAlterarUsuario() {
+        when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(false);
+        controller.criar(FORM_USUARIO, bindingResult);
     }
 
     @Test

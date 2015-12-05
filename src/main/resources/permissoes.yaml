@@ -5,7 +5,11 @@ admin:
   - descartar
   - excluir
   - renomear
-  - cadastrar
+  - cadastrar ADMIN
+  - cadastrar PONTO_FOCAL
+  - cadastrar PUBLICADOR
+  - cadastrar EDITOR
+  - CADASTRAR OUTROS ORGAOS #permite cadastrar/alterar usuarios de outros orgaos
 ponto_focal:
   - publicar (ORGAO ESPECIFICO)
   - salvar
@@ -13,6 +17,9 @@ ponto_focal:
   - descartar (ORGAO ESPECIFICO)
   - excluir (ORGAO ESPECIFICO)
   - renomear (ORGAO ESPECIFICO)
+  - cadastrar PONTO_FOCAL
+  - cadastrar PUBLICADOR
+  - cadastrar EDITOR
 publicador:
   - publicar (ORGAO ESPECIFICO)
   - salvar
@@ -20,5 +27,7 @@ publicador:
   - descartar (ORGAO ESPECIFICO)
   - excluir (ORGAO ESPECIFICO)
   - renomear (ORGAO ESPECIFICO)
+  - cadastrar PUBLICADOR
+  - cadastrar EDITOR
 editor:
   - salvar

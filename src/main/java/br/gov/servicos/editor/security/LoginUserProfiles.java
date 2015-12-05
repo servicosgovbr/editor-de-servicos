@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
+
 @Component
 @Profile("!teste")
 public class LoginUserProfiles implements UserProfiles {
@@ -29,7 +31,9 @@ public class LoginUserProfiles implements UserProfiles {
     }
 
     @Override
-    public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String admin) {
-        return false;
+    public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String papel) {
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usuario.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.toUpperCase())) &&
+                (usuario.getSiorg().equals(siorg) || usuario.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome()));
     }
 }

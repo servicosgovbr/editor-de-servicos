@@ -106,12 +106,9 @@ public class Usuario implements Serializable, UserDetails{
     }
 
     public boolean temPermissaoComOrgao(TipoPermissao permissao, String orgaoId) {
-        for (GrantedAuthority authority: getAuthorities()) {
-            if(permissaoIgual(permissao, authority) || permissaoIgualComOrgao(permissao, authority, orgaoId)) {
-                return true;
-            }
-        }
-        return false;
+        return getAuthorities().stream().anyMatch(grantedAuthority ->
+                         permissaoIgual(permissao, grantedAuthority) ||
+                         permissaoIgualComOrgao(permissao, grantedAuthority, orgaoId));
     }
 
     private boolean permissaoIgualComOrgao(TipoPermissao permissao, GrantedAuthority authority, String orgaoId) {
@@ -120,5 +117,9 @@ public class Usuario implements Serializable, UserDetails{
 
     private boolean permissaoIgual(TipoPermissao permissao, GrantedAuthority authority) {
         return authority.getAuthority().equals(permissao.getNome());
+    }
+
+    public boolean temPermissao(String permissao) {
+        return getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(permissao));
     }
 }

@@ -70,7 +70,7 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
     public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
-        if(!userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), "ADMIN")) {
+        if(verificarPermissao(formularioUsuario)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
         if (!result.hasErrors()) {
@@ -86,6 +86,9 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = PUT)
     public ModelAndView atualizar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
+        if(verificarPermissao(formularioUsuario)) {
+            throw new AccessDeniedException("Usuário sem permissão");
+        }
         if (!result.hasErrors()) {
             // TODO verificar se existe mais de um usuário com o mesmo cpf e lançar erro
             Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
@@ -161,6 +164,11 @@ public class GerenciarUsuarioController {
         } else {
             return retornarParaRecuperarSenha(pagina);
         }
+    }
+
+    private boolean verificarPermissao(@Valid FormularioUsuario formularioUsuario) {
+        Papel papel = papelRepository.findById(Long.valueOf(formularioUsuario.getPapelId()));
+        return !userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), papel.getNome());
     }
 
     private ModelAndView retornarParaRecuperarSenha(
