@@ -28,6 +28,7 @@ public class FormularioUsuario {
     @CPF(message = "CPF: não é valido")
     String cpf;
 
+    @NotBlank
     String papelId;
 
     @Servidor

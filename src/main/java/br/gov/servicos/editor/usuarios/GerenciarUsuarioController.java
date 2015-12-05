@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
 import static net.logstash.logback.marker.Markers.append;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -58,6 +59,22 @@ public class GerenciarUsuarioController {
         return StreamSupport.stream(todosPapeis.spliterator(), false)
                 .filter(papel -> userProfiles.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.getNome())))
                 .collect(Collectors.toList());
+    }
+
+    @ModelAttribute("userProfiles")
+    public UserProfiles getUserProfiles() {
+        return userProfiles;
+    }
+
+    @ModelAttribute("siorg")
+    public Siorg getSiorg() {
+        return siorg;
+    }
+
+    @ModelAttribute("temPermissaoDeGerenciarUsuariosDeOutrosOrgaos")
+    public boolean temPermissaoDeGerenciarUsuariosDeOutrosOrgaos() {
+        return userProfiles.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome());
+
     }
 
     @RequestMapping(value = "/editar/usuarios")

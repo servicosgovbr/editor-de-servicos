@@ -41,4 +41,9 @@ public class UserProfileConfigParaTeste implements UserProfiles {
         return true;
     }
 
+    @Override
+    public String getSiorg() {
+        return "";
+    }
+
 }

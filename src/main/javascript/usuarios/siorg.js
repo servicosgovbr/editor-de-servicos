@@ -3,6 +3,11 @@
 var selectOrgao = require('pagina/orgao/select-orgao');
 
 module.exports = function (m, siorgInicial, element) {
+  var campoSiorg = document.getElementById(element);
+  if(!campoSiorg) {
+    return;
+  }
+
   var siorg = {};
   siorg.nome = m.prop(siorgInicial);
   siorg.view = function () {
@@ -18,7 +23,7 @@ module.exports = function (m, siorgInicial, element) {
     ]);
   };
 
-  m.mount(document.getElementById(element), {
+  m.mount(campoSiorg, {
     view: siorg.view
   });
 };

@@ -42,6 +42,11 @@ public class LoginUserProfiles implements UserProfiles {
         return getPrincipal().temPermissao(permissao);
     }
 
+    @Override
+    public String getSiorg() {
+        return getPrincipal().getSiorg();
+    }
+
     private Usuario getPrincipal() {
         return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
