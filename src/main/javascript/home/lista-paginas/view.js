@@ -17,20 +17,20 @@ function excluirView(ctrl, pagina) {
   if (pagina.excluindo && pagina.excluindo()) {
     return m('i.fa.fa-spin.fa-spinner');
   }
-  return m('button.remover', m('span.tooltip-content', 'Excluir página'), {
+  return m('button.remover', {
     title: 'Remover este conteúdo',
     onclick: _.bind(ctrl.excluirConteudo, ctrl, pagina.id, pagina.conteudo.tipo, pagina)
-  }, m('i.fa.fa-trash-o'));
+  }, [m('i.fa.fa-trash-o'), m('span.tooltip-content', 'Excluir página')]);
 }
 
 function visualizarView(ctrl, pagina) {
   if (!isServico(pagina)) {
     return '';
   }
-  return m('a.visualizar', m('span.tooltip-content', 'Ver página'), {
+  return m('a.visualizar', {
     href: '/editar/visualizar/' + pagina.conteudo.tipo + '/' + pagina.id,
     title: 'Visualizar este conteúdo'
-  }, m('i.fa.fa-eye'));
+  }, [m('i.fa.fa-eye'), m('span.tooltip-content', 'Ver página')]);
 }
 
 function estaFiltrando(ctrl, args) {
