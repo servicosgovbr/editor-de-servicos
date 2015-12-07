@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import lombok.experimental.Wither;
 
@@ -39,5 +41,5 @@ public class UserProfile {
 
     String hd;
 
-    Collection<GrantedAuthority> permissoes;
+    Collection<GrantedAuthority> permissoes = new ArrayList<>();
 }
