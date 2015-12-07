@@ -1,8 +1,10 @@
 package br.gov.servicos.editor.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.GrantedAuthority;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import java.util.Collection;
 import lombok.experimental.Wither;
 
 @Getter
@@ -36,4 +38,6 @@ public class UserProfile {
     String locale;
 
     String hd;
+
+    Collection<GrantedAuthority> permissoes;
 }

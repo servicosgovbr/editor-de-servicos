@@ -28,11 +28,13 @@
 <script>require('modulos')(m);</script>
 <script>
   loggedUser = '';
+  fullLoggedUser = {};
 
   m.request({
     url: '/editar/api/ping',
     extract: function (xhr) {
       loggedUser = JSON.parse(xhr.responseText).profile.name.split(' ')[0];
+      fullLoggedUser = JSON.parse(xhr.responseText);
 
       return xhr.responseText;
     },

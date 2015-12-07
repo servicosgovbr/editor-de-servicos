@@ -19,7 +19,8 @@ public class LoginUserProfiles implements UserProfiles {
             return new UserProfile()
                     .withId(usuario.getEmailPrimario())
                     .withEmail(usuario.getEmailPrimario())
-                    .withName(usuario.getNome());
+                    .withName(usuario.getNome())
+                    .withPermissoes(usuario.getAuthorities());
         } else {
             return new UserProfile();
         }
