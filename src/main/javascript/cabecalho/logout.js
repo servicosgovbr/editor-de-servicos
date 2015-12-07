@@ -10,7 +10,7 @@ module.exports = {
         type: 'hidden',
         name: atributosCsrf.name,
         value: atributosCsrf.token
-      }), m('span.username', loggedUser),
+      }), m('span.username', loggedUser.name && loggedUser.name.split(' ')[0]),
       m('button', {
           title: 'Sair do editor (logout)'
         },
