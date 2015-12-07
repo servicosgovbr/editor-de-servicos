@@ -19,7 +19,7 @@ public class PublicarPaginaControllerIntegrationTest extends RepositorioGitInteg
                 .andExpect(status().isOk());
 
         api.salvarCarta("teste-a", "<servico><nome>Teste A</nome><sigla>TSTA</sigla><nomes-populares><item>C</item></nomes-populares></servico>")
-                .andExpect(status().is(302))
+                .andExpect(status().is(303))
                 .andExpect(redirectedUrl("/editar/api/pagina/servico/teste-a"));
 
         api.renomearCarta("teste-a", "teste-b")
@@ -29,7 +29,7 @@ public class PublicarPaginaControllerIntegrationTest extends RepositorioGitInteg
                 .andExpect(status().isOk());
 
         api.salvarCarta("teste-b", "<servico><nome>Teste B</nome><sigla>TSTB</sigla><nomes-populares><item>A</item><item>B</item></nomes-populares></servico>")
-                .andExpect(status().is(302))
+                .andExpect(status().is(303))
                 .andExpect(redirectedUrl("/editar/api/pagina/servico/teste-b"));
 
         api.listar()
@@ -60,7 +60,7 @@ public class PublicarPaginaControllerIntegrationTest extends RepositorioGitInteg
                 .andExpect(content().xml(CONTEUDO_PAGINA_TEMATICA));
 
         api.salvarPagina(PAGINA_TEMATICA, "p-a", "<pagina-tematica><nome>Pagina A</nome><conteudo>blah</conteudo></pagina-tematica>")
-                .andExpect(status().is(302))
+                .andExpect(status().is(303))
                 .andExpect(redirectedUrl("/editar/api/pagina/pagina-tematica/p-a"));
 
         api.listar()

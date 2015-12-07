@@ -197,7 +197,7 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
         api.salvarCarta(id, carta3(id))
                 .andExpect(status().is3xxRedirection());
         api.descartarCarta(id)
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
         api.editarCarta(id)
                 .andExpect(status().isOk())
                 .andExpect(content().xml(carta2(id)));
@@ -253,7 +253,7 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
                     .andExpect(status().isOk());
         }
         api.descartarPagina(tipo, id)
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
         api.listar()
                 .andExpect(status().isOk());
         api.editarPagina(tipo, id)

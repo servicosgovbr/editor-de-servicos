@@ -52,7 +52,7 @@ class DescartarAlteracoesPaginaController {
         }
 
         conteudoVersionado.descartarAlteracoes();
-        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId());
+        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
     }
 
 }

@@ -52,7 +52,7 @@ public class DescartarAlteracoesPaginaControllerIntegrationTest extends Reposito
                 .andExpect(content().xml(conteudo2));
 
         api.descartarPagina(tipo, id)
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
         api.editarPagina(tipo, id)
                 .andExpect(status().isOk())
@@ -76,7 +76,7 @@ public class DescartarAlteracoesPaginaControllerIntegrationTest extends Reposito
                 .andExpect(content().xml("<servico><nome>Carta B</nome><sigla>CA</sigla></servico>"));
 
         api.descartarCarta("carta-b")
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
         api.editarCarta("carta-b")
                 .andExpect(status().isOk())
@@ -137,7 +137,7 @@ public class DescartarAlteracoesPaginaControllerIntegrationTest extends Reposito
 
     private void descartarAlteracoesSemEdicoesRetornaStatusOk(TipoPagina tipo, String id) throws Exception {
         api.descartarPagina(tipo, id)
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
 }
