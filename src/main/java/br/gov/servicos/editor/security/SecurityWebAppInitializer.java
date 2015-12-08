@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.security;
 
-import br.gov.servicos.editor.conteudo.TipoPagina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,7 +9,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import static br.gov.servicos.editor.security.TipoPermissao.*;
-import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static org.springframework.http.HttpMethod.*;
 
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
@@ -20,7 +18,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
     private static final String API_PAGINA = "/editar/api/pagina/**";
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
-    private static final String API_PAGINA_TEMATICA = "/editar/api/pagina/pagina-tematica/**";
     private static final String ADMIN = "ADMIN";
     private static final String PONTOFOCAL = "PONTOFOCAL";
     private static final String PUBLICADOR = "PUBLICADOR";
@@ -59,12 +56,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
                 .antMatchers(POST, API_DESPUBLICAR).hasAnyAuthority(DESPUBLICAR.getNome(), DESPUBLICAR.comOrgaoEspecifico())
-                .antMatchers(DELETE, API_PAGINA_TEMATICA).hasAnyAuthority(EXCLUIR.comTipoPagina(PAGINA_TEMATICA))
-                .antMatchers(PATCH, API_PAGINA_TEMATICA).hasAnyAuthority(RENOMEAR.comTipoPagina(PAGINA_TEMATICA))
-                .antMatchers(PUT, API_PAGINA_TEMATICA).hasAnyAuthority(PUBLICAR.comTipoPagina(PAGINA_TEMATICA))
-                .antMatchers(POST, API_PAGINA_TEMATICA).hasAnyAuthority(SALVAR.comTipoPagina(PAGINA_TEMATICA),
-                                                                        PUBLICAR.comTipoPagina(PAGINA_TEMATICA),
-                                                                        DESPUBLICAR.comTipoPagina(PAGINA_TEMATICA))
                 .antMatchers(POST, API_DESCARTAR).hasAnyAuthority(DESCARTAR.getNome(), DESCARTAR.comOrgaoEspecifico())
                 .antMatchers(DELETE, API_PAGINA).hasAnyAuthority(EXCLUIR.getNome(), EXCLUIR.comOrgaoEspecifico())
                 .antMatchers(PATCH, API_PAGINA).hasAnyAuthority(RENOMEAR.getNome(), RENOMEAR.comOrgaoEspecifico())
@@ -74,6 +65,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                                                                  CADASTRAR.comPapel(PONTOFOCAL),
                                                                  CADASTRAR.comPapel(PUBLICADOR),
                                                                  CADASTRAR.comPapel(EDITOR))
+
                 .anyRequest().fullyAuthenticated()
 
                 .and()

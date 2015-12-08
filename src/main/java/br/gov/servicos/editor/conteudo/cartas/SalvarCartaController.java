@@ -43,8 +43,7 @@ public class SalvarCartaController {
             @PathVariable("tipo") String tipo,
             @PathVariable("id") String id,
             @RequestBody DOMSource servico) throws Exception {
-        TipoPagina tipoPagina = TipoPagina.fromNome(tipo);
-        ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
+        ConteudoVersionado conteudoVersionado = factory.pagina(id, TipoPagina.fromNome(tipo));
         String conteudo = reformatadorXml.formata(servico);
         conteudoVersionado.salvar(userProfiles.get(), conteudo);
         return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
