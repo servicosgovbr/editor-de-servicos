@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR;
 import static br.gov.servicos.editor.security.TipoPermissao.PUBLICAR;
-import static br.gov.servicos.editor.security.TipoPermissao.SALVAR_EDITAR;
+import static br.gov.servicos.editor.security.TipoPermissao.EDITAR_SALVAR;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +33,7 @@ public class TipoPermissaoTest {
 
     @Test
     public void deveRetornarNomeDePermissaoComTipoPagina() {
-        assertThat(SALVAR_EDITAR.comTipoPagina(TipoPagina.PAGINA_TEMATICA), equalTo(SALVAR_EDITAR.getNome() + " " + TipoPagina.PAGINA_TEMATICA.getNome().toUpperCase()));
+        assertThat(EDITAR_SALVAR.comTipoPagina(TipoPagina.PAGINA_TEMATICA), equalTo(EDITAR_SALVAR.getNome() + " " + TipoPagina.PAGINA_TEMATICA.getNome().toUpperCase()));
     }
 
 }

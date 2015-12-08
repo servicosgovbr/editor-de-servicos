@@ -4,7 +4,7 @@ import br.gov.servicos.editor.conteudo.TipoPagina;
 import lombok.Getter;
 
 public enum TipoPermissao {
-    SALVAR_EDITAR("SALVAR_EDITAR"),
+    EDITAR_SALVAR("EDITAR_SALVAR"),
     PUBLICAR("PUBLICAR"),
     DESPUBLICAR("DESPUBLICAR"),
     DESCARTAR("DESCARTAR"),
