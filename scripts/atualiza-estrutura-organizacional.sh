@@ -9,7 +9,8 @@ curl -sH 'Accept-encoding: gzip' "http://estruturaorganizacional.dados.gov.br/do
 echo 'Lista de órgãos do SIORG foi atualizada!'
 
 
-git pull --rebase
+git add . -A
+git commit -m 'atualiza estrutura organizacional'
 git push
 git stash pop
 
