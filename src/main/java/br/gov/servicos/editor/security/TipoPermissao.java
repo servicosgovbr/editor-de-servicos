@@ -1,9 +1,10 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.conteudo.TipoPagina;
 import lombok.Getter;
 
 public enum TipoPermissao {
-    SALVAR("SALVAR"),
+    SALVAR_EDITAR("SALVAR_EDITAR"),
     PUBLICAR("PUBLICAR"),
     DESPUBLICAR("DESPUBLICAR"),
     DESCARTAR("DESCARTAR"),
@@ -28,5 +29,9 @@ public enum TipoPermissao {
 
     public String comPapel(String papel) {
         return nome + " " + papel.toUpperCase();
+    }
+
+    public String comTipoPagina(TipoPagina tipoPagina) {
+        return nome + " " + tipoPagina.toString().toUpperCase();
     }
 }

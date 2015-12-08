@@ -1,5 +1,10 @@
 admin:
-  - salvar
+  - criar PAGINA_TEMATICA
+  - editar_salvar PAGINA_TEMATICA
+  - publicar PAGINA_TEMATICA
+  - descartar PAGINA_TEMATICA
+  - despublicar PAGINA_TEMATICA
+  - excluir PAGINA_TEMATICA
   - publicar
   - despublicar
   - descartar
@@ -11,23 +16,44 @@ admin:
   - cadastrar EDITOR
   - CADASTRAR OUTROS ORGAOS #permite cadastrar/alterar usuarios de outros orgaos
 ponto_focal:
-  - publicar (ORGAO ESPECIFICO)
-  - salvar
-  - despublicar (ORGAO ESPECIFICO)
-  - descartar (ORGAO ESPECIFICO)
-  - excluir (ORGAO ESPECIFICO)
-  - renomear (ORGAO ESPECIFICO)
+  - criar PAGINA_TEMATICA
+  - editar_salvar PAGINA_TEMATICA
+  - criar ORGAO (ORGAO ESPECIFICO)
+  - editar_salvar ORGAO (ORGAO ESPECIFICO)
+  - publicar ORGAO (ORGAO ESPECIFICO)
+  - descartar ORGAO (ORGAO ESPECIFICO)
+  - despublicar ORGAO (ORGAO ESPECIFICO)
+  - excluir ORGAO (ORGAO ESPECIFICO)
+  - criar SERVICO
+  - editar_salvar SERVICO
+  - publicar SERVICO (ORGAO ESPECIFICO)
+  - descartar SERVICO (ORGAO ESPECIFICO)
+  - despublicar SERVICO (ORGAO ESPECIFICO)
+  - excluir SERVICO (ORGAO ESPECIFICO)
   - cadastrar PONTO_FOCAL
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
 publicador:
-  - publicar (ORGAO ESPECIFICO)
-  - salvar
-  - despublicar (ORGAO ESPECIFICO)
-  - descartar (ORGAO ESPECIFICO)
-  - excluir (ORGAO ESPECIFICO)
-  - renomear (ORGAO ESPECIFICO)
+  - criar PAGINA_TEMATICA
+  - editar_salvar PAGINA_TEMATICA
+  - criar ORGAO (ORGAO ESPECIFICO)
+  - editar_salvar ORGAO (ORGAO ESPECIFICO)
+  - publicar ORGAO (ORGAO ESPECIFICO)
+  - descartar ORGAO (ORGAO ESPECIFICO)
+  - despublicar ORGAO (ORGAO ESPECIFICO)
+  - excluir ORGAO (ORGAO ESPECIFICO)
+  - criar SERVICO
+  - editar_salvar SERVICO
+  - publicar SERVICO (ORGAO ESPECIFICO)
+  - descartar SERVICO (ORGAO ESPECIFICO)
+  - despublicar SERVICO (ORGAO ESPECIFICO)
+  - excluir SERVICO (ORGAO ESPECIFICO)
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
 editor:
-  - salvar
+  - criar PAGINA_TEMATICA
+  - editar_salvar PAGINA_TEMATICA
+  - criar ORGAO (ORGAO ESPECIFICO)
+  - editar_salvar ORGAO (ORGAO ESPECIFICO)
+  - criar SERVICO
+  - editar_salvar SERVICO

@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.usuarios.Usuario;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +31,12 @@ public class LoginUserProfiles implements UserProfiles {
     public boolean temPermissaoParaOrgao(TipoPermissao permissao, String orgaoId) {
         Usuario usuario = getPrincipal();
         return usuario.temPermissaoComOrgao(permissao, orgaoId);
+    }
+
+    @Override
+    public boolean temPermissaoParaTipoPagina(TipoPermissao tipoPermissao, TipoPagina tipoPagina) {
+        Usuario usuario = getPrincipal();
+        return usuario.temPermissao(tipoPermissao.comTipoPagina(tipoPagina));
     }
 
     @Override
