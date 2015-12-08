@@ -1,4 +1,4 @@
-/*global loggedUser, console*/
+/*global loggedUser, location*/
 'use strict';
 
 function retornaPermissoes() {
@@ -12,25 +12,37 @@ function retornaPermissoes() {
 var arrayPermissoes = retornaPermissoes();
 
 function possuiPermissao(permissao) {
-  console.log(arrayPermissoes);
-  console.log(permissao);
   return _.contains(arrayPermissoes, permissao);
 }
 
-function podeAlterarPaginasTematicas() {
-  return possuiPermissao('criar PAGINA-TEMATICA') &&
-    possuiPermissao('editar_salvar PAGINA-TEMATICA') &&
-    possuiPermissao('publicar PAGINA-TEMATICA') &&
-    possuiPermissao('descartar PAGINA-TEMATICA') &&
-    possuiPermissao('despublicar PAGINA-TEMATICA') &&
-    possuiPermissao('excluir PAGINA-TEMATICA');
+function estaNaPaginaServico() {
+  return location.pathname.indexOf('editar/servico') > -1;
 }
 
-function podePublicarOrgaoServico() {
-  return possuiPermissao('publicar');
+function estaNaPaginaOrgao() {
+  return location.pathname.indexOf('editar/orgao') > -1;
+}
+
+function estaNaPaginaTematica() {
+  return location.pathname.indexOf('editar/pagina-tematica') > -1;
+}
+
+function  podeSalvarServico() {
+  return possuiPermissao('editar_salvar SERVICO') && estaNaPaginaServico();
+}
+
+function  podeSalvarOrgao() {
+  return possuiPermissao('editar_salvar ORGAO (ORGAO ESPECIFICO)') && estaNaPaginaOrgao();
+}
+
+function  podeSalvarPaginaTematica() {
+  return possuiPermissao('editar_salvar PAGINA_TEMATICA') && estaNaPaginaTematica();
+}
+
+function podeSalvarPagina() {
+  return  podeSalvarServico() || podeSalvarPaginaTematica() || podeSalvarOrgao();
 }
 
 module.exports = {
-  podeAlterarPaginasTematicas: podeAlterarPaginasTematicas,
-  podePublicarOrgaoServico: podePublicarOrgaoServico
+  podeSalvarPagina: podeSalvarPagina
 };
