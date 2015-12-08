@@ -40,7 +40,7 @@ eds:
   token:
     desabilitarUsuario: false
   cartas:
-    repositorio: "https://github.com/servicosgovbr/cartas-de-teste.git"
+    repositorio: "/Users/mbalhest/portaldeservicos/cartas-de-teste"
 
 ---
 

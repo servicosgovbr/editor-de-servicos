@@ -1,9 +1,11 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.conteudo.TipoPagina;
 import org.junit.Test;
 
 import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR;
 import static br.gov.servicos.editor.security.TipoPermissao.PUBLICAR;
+import static br.gov.servicos.editor.security.TipoPermissao.SALVAR_EDITAR;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
@@ -11,10 +13,10 @@ import static org.junit.Assert.assertTrue;
 public class TipoPermissaoTest {
 
     @Test
-    public void todosNomesDevemEstarEmLetraMaiuscula() {
+    public void todosNomesDevemEstarEmLetraMaiusculaEPodemConterUnderscore() {
         for (TipoPermissao tipoPermissao : TipoPermissao.values()) {
             assertTrue("Nome deve estar em letras maiusculas: " + tipoPermissao.getNome(),
-                    tipoPermissao.getNome().matches("[A-Z\\s\\(\\)]+"));
+                    tipoPermissao.getNome().matches("[A-Z\\s\\(\\)_]+"));
         }
     }
 
@@ -26,6 +28,12 @@ public class TipoPermissaoTest {
     @Test
     public void deveRetornarNomeDePermissaoComPapel() {
         assertThat(CADASTRAR.comPapel("BLA"), equalTo(CADASTRAR.getNome() + " BLA"));
+    }
+
+
+    @Test
+    public void deveRetornarNomeDePermissaoComTipoPagina() {
+        assertThat(SALVAR_EDITAR.comTipoPagina(TipoPagina.PAGINA_TEMATICA), equalTo(SALVAR_EDITAR.getNome() + " " + TipoPagina.PAGINA_TEMATICA.getNome().toUpperCase()));
     }
 
 }
