@@ -18,12 +18,12 @@ function possuiPermissao(permissao) {
 }
 
 function podeAlterarPaginasTematicas() {
-  return possuiPermissao('criar PAGINA_TEMATICA') &&
-    possuiPermissao('editar_salvar PAGINA_TEMATICA') &&
-    possuiPermissao('publicar PAGINA_TEMATICA') &&
-    possuiPermissao('descartar PAGINA_TEMATICA') &&
-    possuiPermissao('despublicar PAGINA_TEMATICA') &&
-    possuiPermissao('excluir PAGINA_TEMATICA');
+  return possuiPermissao('criar PAGINA-TEMATICA') &&
+    possuiPermissao('editar_salvar PAGINA-TEMATICA') &&
+    possuiPermissao('publicar PAGINA-TEMATICA') &&
+    possuiPermissao('descartar PAGINA-TEMATICA') &&
+    possuiPermissao('despublicar PAGINA-TEMATICA') &&
+    possuiPermissao('excluir PAGINA-TEMATICA');
 }
 
 function podePublicarOrgaoServico() {
