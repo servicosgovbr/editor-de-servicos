@@ -18,42 +18,63 @@ admin:
 ponto_focal:
   - criar PAGINA_TEMATICA
   - editar_salvar PAGINA_TEMATICA
-  - criar ORGAO (ORGAO ESPECIFICO)
-  - editar_salvar ORGAO (ORGAO ESPECIFICO)
-  - publicar ORGAO (ORGAO ESPECIFICO)
-  - descartar ORGAO (ORGAO ESPECIFICO)
-  - despublicar ORGAO (ORGAO ESPECIFICO)
-  - excluir ORGAO (ORGAO ESPECIFICO)
+  - criar ORGAO
+  #- criar ORGAO (ORGAO ESPECIFICO)
+  - editar_salvar ORGAO
+  #- editar_salvar ORGAO (ORGAO ESPECIFICO)
+  - publicar ORGAO
+  - descartar ORGAO
+  #- descartar ORGAO (ORGAO ESPECIFICO)
+  - despublicar ORGAO
+  #- despublicar ORGAO (ORGAO ESPECIFICO)
+  - excluir ORGAO
+  #- excluir ORGAO (ORGAO ESPECIFICO)
   - criar SERVICO
   - editar_salvar SERVICO
-  - publicar SERVICO (ORGAO ESPECIFICO)
-  - descartar SERVICO (ORGAO ESPECIFICO)
-  - despublicar SERVICO (ORGAO ESPECIFICO)
-  - excluir SERVICO (ORGAO ESPECIFICO)
+  - publicar SERVICO
+  #- publicar SERVICO (ORGAO ESPECIFICO)
+  - descartar SERVICO
+  #- descartar SERVICO (ORGAO ESPECIFICO)
+  - despublicar SERVICO
+  #- despublicar SERVICO (ORGAO ESPECIFICO)
+  - excluir SERVICO
+  #- excluir SERVICO (ORGAO ESPECIFICO)
   - cadastrar PONTO_FOCAL
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
 publicador:
   - criar PAGINA_TEMATICA
   - editar_salvar PAGINA_TEMATICA
-  - criar ORGAO (ORGAO ESPECIFICO)
-  - editar_salvar ORGAO (ORGAO ESPECIFICO)
-  - publicar ORGAO (ORGAO ESPECIFICO)
-  - descartar ORGAO (ORGAO ESPECIFICO)
-  - despublicar ORGAO (ORGAO ESPECIFICO)
-  - excluir ORGAO (ORGAO ESPECIFICO)
+  - criar ORGAO
+  #- criar ORGAO (ORGAO ESPECIFICO)
+  - editar_salvar ORGAO
+  #- editar_salvar ORGAO (ORGAO ESPECIFICO)
+  - publicar ORGAO
+  #- publicar ORGAO (ORGAO ESPECIFICO)
+  - descartar ORGAO
+  #- descartar ORGAO (ORGAO ESPECIFICO)
+  - despublicar ORGAO
+  #- despublicar ORGAO (ORGAO ESPECIFICO)
+  - excluir ORGAO
+  #- excluir ORGAO (ORGAO ESPECIFICO)
   - criar SERVICO
   - editar_salvar SERVICO
-  - publicar SERVICO (ORGAO ESPECIFICO)
-  - descartar SERVICO (ORGAO ESPECIFICO)
-  - despublicar SERVICO (ORGAO ESPECIFICO)
-  - excluir SERVICO (ORGAO ESPECIFICO)
+  - publicar SERVICO
+  #- publicar SERVICO (ORGAO ESPECIFICO)
+  - descartar SERVICO
+  #- descartar SERVICO (ORGAO ESPECIFICO)
+  - despublicar SERVICO
+  #- despublicar SERVICO (ORGAO ESPECIFICO)
+  - excluir SERVICO
+  #- excluir SERVICO (ORGAO ESPECIFICO)
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
 editor:
   - criar PAGINA_TEMATICA
   - editar_salvar PAGINA_TEMATICA
-  - criar ORGAO (ORGAO ESPECIFICO)
-  - editar_salvar ORGAO (ORGAO ESPECIFICO)
+  - criar ORGAO
+  #- criar ORGAO (ORGAO ESPECIFICO)
+  - editar_salvar ORGAO
+  #- editar_salvar ORGAO (ORGAO ESPECIFICO)
   - criar SERVICO
   - editar_salvar SERVICO
