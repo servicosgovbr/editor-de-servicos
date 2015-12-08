@@ -11,12 +11,10 @@ function retornaPermissoes() {
 
 var arrayPermissoes = retornaPermissoes();
 
-//funções apoio
 function possuiPermissao(permissao) {
   return _.contains(arrayPermissoes, permissao);
 }
 
-//funções checa URL
 function estaNaPaginaServico() {
   return location.pathname.indexOf('editar/servico') > -1;
 }
@@ -29,7 +27,6 @@ function estaNaPaginaTematica() {
   return location.pathname.indexOf('editar/pagina-tematica') > -1;
 }
 
-//serviço
 function possuiPermissaoPaginaServico(permissao) {
   return possuiPermissao(permissao) && estaNaPaginaServico();
 }
@@ -38,17 +35,14 @@ function possuiPermissaoPaginaServicoOrgaoEspecifico(permissao, orgaoIdUsuario, 
   return possuiPermissao(permissao) && estaNaPaginaServico() && orgaoIdUsuario === orgaoIdPagina;
 }
 
-//orgão
-function possuiPermissaoPaginaOrgao(permissao, orgaoIdUsuario, orgaoIdPagina) {
-  return possuiPermissao(permissao) && estaNaPaginaOrgao() && orgaoIdUsuario === orgaoIdPagina;
-}
-
-//página temática
 function possuiPermissaoPaginaTematica(permissao) {
   return possuiPermissao(permissao) && estaNaPaginaTematica();
 }
 
-//funções genéricas
+function possuiPermissaoPaginaOrgao(permissao, orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissao(permissao) && estaNaPaginaOrgao() && orgaoIdUsuario === orgaoIdPagina;
+}
+
 function podeSalvarPagina(orgaoIdUsuario, orgaoIdPagina) {
   return  possuiPermissaoPaginaServico('editar_salvar SERVICO') || 
           possuiPermissaoPaginaTematica('editar_salvar PAGINA_TEMATICA') || 
