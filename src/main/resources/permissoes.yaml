@@ -1,18 +1,18 @@
 admin:
-  - criar PAGINA_TEMATICA
-  - editar_salvar PAGINA_TEMATICA
-  - publicar PAGINA_TEMATICA
-  - descartar PAGINA_TEMATICA
-  - despublicar PAGINA_TEMATICA
-  - excluir PAGINA_TEMATICA
+  - criar PAGINA-TEMATICA
+  - editar_salvar PAGINA-TEMATICA
+  - publicar PAGINA-TEMATICA
+  - descartar PAGINA-TEMATICA
+  - despublicar PAGINA-TEMATICA
+  - excluir PAGINA-TEMATICA
   - cadastrar ADMIN
   - cadastrar PONTO_FOCAL
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
   - CADASTRAR OUTROS ORGAOS #permite cadastrar/alterar usuarios de outros orgaos
 ponto_focal:
-  - criar PAGINA_TEMATICA
-  - editar_salvar PAGINA_TEMATICA
+  - criar PAGINA-TEMATICA
+  - editar_salvar PAGINA-TEMATICA
   - criar ORGAO (ORGAO ESPECIFICO)
   - editar_salvar ORGAO (ORGAO ESPECIFICO)
   - publicar ORGAO (ORGAO ESPECIFICO)
@@ -29,8 +29,8 @@ ponto_focal:
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
 publicador:
-  - criar PAGINA_TEMATICA
-  - editar_salvar PAGINA_TEMATICA
+  - criar PAGINA-TEMATICA
+  - editar_salvar PAGINA-TEMATICA
   - criar ORGAO (ORGAO ESPECIFICO)
   - editar_salvar ORGAO (ORGAO ESPECIFICO)
   - publicar ORGAO (ORGAO ESPECIFICO)
@@ -46,8 +46,8 @@ publicador:
   - cadastrar PUBLICADOR
   - cadastrar EDITOR
 editor:
-  - criar PAGINA_TEMATICA
-  - editar_salvar PAGINA_TEMATICA
+  - criar PAGINA-TEMATICA
+  - editar_salvar PAGINA-TEMATICA
   - criar ORGAO (ORGAO ESPECIFICO)
   - editar_salvar ORGAO (ORGAO ESPECIFICO)
   - criar SERVICO
