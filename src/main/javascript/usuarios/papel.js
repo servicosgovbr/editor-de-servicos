@@ -4,6 +4,14 @@ module.exports = function (m, papeis, papelInicial, element) {
   var papel = {};
   papel.id = m.prop(papelInicial ? papelInicial : papeis[0].id);
 
+  function convertToTitleCase(value) {
+    return value.replace('_', ' ').replace(/\w\S*/g,
+      function (text) {
+        return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+      }
+    );
+  }
+
   function convertToSelect2Data(originalArray) {
     var newArray = [];
 
@@ -15,14 +23,6 @@ module.exports = function (m, papeis, papelInicial, element) {
     }
 
     return newArray;
-  }
-
-  function convertToTitleCase(value) {
-    return value.replace('_', ' ').replace(/\w\S*/g,
-      function (text) {
-        return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-      }
-    );
   }
 
   papel.view = function () {
