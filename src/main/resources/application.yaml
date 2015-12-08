@@ -40,7 +40,7 @@ eds:
   token:
     desabilitarUsuario: false
   cartas:
-    repositorio: "git@github.com:servicosgovbr/cartas-de-teste.git"
+    repositorio: "https://github.com/servicosgovbr/cartas-de-teste.git"
 
 ---
 
