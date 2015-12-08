@@ -42,4 +42,6 @@ public class UserProfile {
     String hd;
 
     Collection<GrantedAuthority> permissoes = new ArrayList<>();
+
+    String siorg;
 }
