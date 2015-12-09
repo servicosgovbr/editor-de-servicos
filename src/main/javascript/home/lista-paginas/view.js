@@ -1,6 +1,8 @@
+/*global loggedUser*/
 'use strict';
 
 var referencia = require('referencia');
+var permissoes = require('utils/permissoes');
 
 function isServico(p) {
   return p.conteudo.tipo === 'servico';
@@ -61,7 +63,7 @@ module.exports = function (ctrl, args) {
      ])
     ].concat(paginas.map(function (s) {
 
-    return m('tr', [
+    return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, loggedUser.siorg, s.id) ? m('tr', [
 
       m('td', m('a.nome-link', {
         href: '/editar/' + s.conteudo.tipo + '/' + s.id
@@ -90,6 +92,6 @@ module.exports = function (ctrl, args) {
         visualizarView(ctrl, s),
         excluirView(ctrl, s),
       ])
-    ]);
+    ]) : m('');
   }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '');
 };
