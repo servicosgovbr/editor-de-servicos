@@ -9,10 +9,16 @@ function retornaPermissoes() {
   });
 }
 
-var arrayPermissoes = retornaPermissoes();
+var arrayPermissoes = [];
 
 function possuiPermissao(permissao) {
+  arrayPermissoes = retornaPermissoes();
   return _.contains(arrayPermissoes, permissao);
+}
+
+function possuiPermissaoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina) {
+  arrayPermissoes = retornaPermissoes();
+  return _.contains(arrayPermissoes, permissao) && (orgaoIdUsuario === orgaoIdPagina);
 }
 
 function estaNaPaginaServico() {
@@ -47,6 +53,16 @@ function podeSalvarPagina(orgaoIdUsuario, orgaoIdPagina) {
   return  possuiPermissaoPaginaServico('EDITAR_SALVAR SERVICO') || 
           possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA') || 
           possuiPermissaoPaginaOrgao('EDITAR_SALVAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+}
+
+function podeMostrarPaginaLista(tipo, orgaoIdUsuario, orgaoIdPagina) {
+  var returnValue = false;
+
+  if (tipo === 'servico') { returnValue = possuiPermissao('EDITAR_SALVAR SERVICO'); }
+  if (tipo === 'pagina-tematica') { returnValue = possuiPermissaoOrgaoEspecifico('EDITAR_SALVAR PAGINA-TEMATICA'); }
+  if (tipo === 'orgao') { returnValue = possuiPermissaoOrgaoEspecifico('EDITAR_SALVAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina); }
+  
+  return returnValue;
 }
 
 function podeCriarPagina(orgaoIdUsuario, orgaoIdPagina) {
@@ -89,5 +105,6 @@ module.exports = {
   podeCriarPagina: podeCriarPagina,
   podePublicarDascartarPagina: podePublicarDascartarPagina,
   podeDespublicarPagina: podeDespublicarPagina,
-  podeExcluirPagina: podeExcluirPagina
+  podeExcluirPagina: podeExcluirPagina,
+  podeMostrarPaginaLista: podeMostrarPaginaLista
 };

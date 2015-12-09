@@ -33,6 +33,7 @@
     url: '/editar/api/ping',
     extract: function (xhr) {
       loggedUser = JSON.parse(xhr.responseText).profile;
+      loggedUser.siorg = loggedUser.siorg.replace(/:\/\//g, '-').replace(/\./g, '-').replace(/\//g, '-');
 
       return xhr.responseText;
     },
