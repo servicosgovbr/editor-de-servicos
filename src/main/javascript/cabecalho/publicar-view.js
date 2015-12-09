@@ -3,6 +3,7 @@
 var safeGet = require('utils/code-checks').safeGet;
 var avisos = require('utils/avisos');
 var promise = require('utils/promise');
+var permissoes = require('utils/permissoes');
 
 function botaoQueEspera(flagProp, opts) {
   return m('button#' + opts.id, {
@@ -76,7 +77,7 @@ module.exports = {
       return temEdicao() && revisaoEditadoEPublicadoDiferente();
     }
 
-    return m('span#publicar-view', [
+    return permissoes.podePublicarDascartarPagina() ? m('span#publicar-view', [
       m('span.label-botao', 'Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
 
@@ -93,6 +94,6 @@ module.exports = {
         icon: 'check',
         disabled: desabilitaBotoes || !podePublicar() || ctrl.salvandoServico() || ctrl.caiuSessao()
       })
-    ]);
+    ]) : m('');
   }
 };
