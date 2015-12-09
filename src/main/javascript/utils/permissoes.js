@@ -79,11 +79,15 @@ function podeExcluirPagina(orgaoIdUsuario, orgaoIdPagina) {
          possuiPermissaoPaginaOrgao('EXCLUIR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
 }
 
+function podePublicarDascartarPagina(orgaoIdUsuario, orgaoIdPagina) {
+  return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) &&
+         podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina);
+}
+
 module.exports = {
   podeSalvarPagina: podeSalvarPagina,
   podeCriarPagina: podeCriarPagina,
-  podePublicarPagina: podePublicarPagina,
+  podePublicarDascartarPagina: podePublicarDascartarPagina,
   podeDespublicarPagina: podeDespublicarPagina,
-  podeDescartarPagina: podeDescartarPagina,
   podeExcluirPagina: podeExcluirPagina
 };
