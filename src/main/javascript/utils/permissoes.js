@@ -11,17 +11,17 @@ function retornaPermissoes() {
 
 var arrayPermissoes = [];
 
-function possuiPermissao(permissao) {
-  arrayPermissoes = retornaPermissoes();
-  return _.contains(arrayPermissoes, permissao);
-}
-
 function formataUrl(url) {
   if (url !== undefined) {
     return url.replace(/:\/\//g, '-').replace(/\./g, '-').replace(/\//g, '-');
   } else {
     return url;
   }
+}
+
+function possuiPermissao(permissao) {
+  arrayPermissoes = retornaPermissoes();
+  return _.contains(arrayPermissoes, permissao);
 }
 
 function possuiPermissaoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina) {
@@ -109,7 +109,7 @@ function podeExcluirPagina(orgaoIdUsuario, modelo) {
   }
 
   return possuiPermissaoOrgaoEspecifico('EXCLUIR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
-         possuiPermissaoPaginaTematica('EXCLUIR PAGINA-TEMATICA') || 
+         possuiPermissao('EXCLUIR PAGINA-TEMATICA') || 
          possuiPermissaoOrgaoEspecifico('EXCLUIR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
 }
 
