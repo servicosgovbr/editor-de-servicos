@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
@@ -18,7 +19,7 @@ module.exports = {
     this.descartar = safeGet(args, 'descartar');
     this.salvandoServico = args.salvandoServico;
     this.caiuSessao = args.caiuSessao;
-
+    this.orgaoId = args.orgaoId;
     this.publicando = m.prop(false);
     this.descartando = m.prop(false);
 
@@ -77,7 +78,7 @@ module.exports = {
       return temEdicao() && revisaoEditadoEPublicadoDiferente();
     }
 
-    return permissoes.podePublicarDascartarPagina() ? m('span#publicar-view', [
+    return permissoes.podePublicarDascartarPagina(loggedUser.siorg, ctrl.orgaoId) ? m('span#publicar-view', [
       m('span.label-botao', 'Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
 
