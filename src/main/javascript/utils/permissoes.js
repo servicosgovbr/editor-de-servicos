@@ -97,17 +97,7 @@ function podeDespublicarPagina(orgaoIdUsuario, orgaoIdPagina) {
          possuiPermissaoPaginaOrgao('DESPUBLICAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
 }
 
-function podeExcluirPagina(orgaoIdUsuario, modelo) {
-  var orgaoIdPagina;
-
-  if (modelo.conteudo.tipo === 'servico') {
-    orgaoIdPagina = modelo.conteudo.orgaoId;
-  }
-
-  if (modelo.conteudo.tipo === 'orgao') {
-    orgaoIdPagina = modelo.id;
-  }
-
+function podeExcluirPagina(orgaoIdUsuario, orgaoIdPagina) {
   return possuiPermissaoOrgaoEspecifico('EXCLUIR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
          possuiPermissao('EXCLUIR PAGINA-TEMATICA') || 
          possuiPermissaoOrgaoEspecifico('EXCLUIR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
