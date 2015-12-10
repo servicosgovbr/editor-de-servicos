@@ -108,7 +108,8 @@ module.exports = {
         despublicarConfig: {
           tipo: 'orgao',
           despublicar: _.bind(ctrl.despublicar, ctrl),
-          metadados: ctrl.cabecalho.metadados()
+          metadados: ctrl.cabecalho.metadados(),
+          orgaoId: ctrl.pagina().url()
         }
       },
 
