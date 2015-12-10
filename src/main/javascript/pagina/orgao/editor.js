@@ -100,7 +100,8 @@ module.exports = {
         descartar: _.bind(ctrl.descartar, ctrl),
         cabecalho: ctrl.cabecalho,
         salvandoServico: ctrl.salvandoServico,
-        caiuSessao: ctrl.caiuSessao
+        caiuSessao: ctrl.caiuSessao,
+        orgaoId: ctrl.pagina().url()
       },
 
       menuLateralConfig: {

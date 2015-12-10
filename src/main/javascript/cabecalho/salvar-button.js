@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
@@ -8,6 +9,7 @@ module.exports = {
     this.salvar = safeGet(args, 'salvar');
     this.salvandoServico = args.salvandoServico;
     this.caiuSessao = args.caiuSessao;
+    this.orgaoId = args.orgaoId;
 
     this.salvando = m.prop(false);
 
@@ -30,7 +32,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return permissoes.podeSalvarPagina() ? m('button#salvar', {
+    return permissoes.podeSalvarPagina(loggedUser.siorg, ctrl.orgaoId) ? m('button#salvar', {
       onclick: _.bind(ctrl.onClick, ctrl),
       disabled: ctrl.salvando() || ctrl.salvandoServico() || ctrl.caiuSessao() ? 'disabled' : ''
     }, ctrl.salvando() ? [
