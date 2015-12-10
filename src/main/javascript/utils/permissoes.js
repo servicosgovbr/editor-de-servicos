@@ -16,9 +16,17 @@ function possuiPermissao(permissao) {
   return _.contains(arrayPermissoes, permissao);
 }
 
+function formataUrl(url) {
+  if (url !== undefined) {
+    return url.replace(/:\/\//g, '-').replace(/\./g, '-').replace(/\//g, '-');
+  } else {
+    return url;
+  }
+}
+
 function possuiPermissaoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina) {
   arrayPermissoes = retornaPermissoes();
-  return _.contains(arrayPermissoes, permissao) && (orgaoIdUsuario === orgaoIdPagina);
+  return _.contains(arrayPermissoes, permissao) && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
 function estaNaPaginaServico() {
@@ -38,7 +46,7 @@ function possuiPermissaoPaginaServico(permissao) {
 }
 
 function possuiPermissaoPaginaServicoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina) {
-  return possuiPermissao(permissao) && estaNaPaginaServico() && (orgaoIdUsuario === orgaoIdPagina);
+  return possuiPermissao(permissao) && estaNaPaginaServico() && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
 function possuiPermissaoPaginaTematica(permissao) {
@@ -46,7 +54,7 @@ function possuiPermissaoPaginaTematica(permissao) {
 }
 
 function possuiPermissaoPaginaOrgao(permissao, orgaoIdUsuario, orgaoIdPagina) {
-  return possuiPermissao(permissao) && estaNaPaginaOrgao() && (orgaoIdUsuario === orgaoIdPagina);
+  return possuiPermissao(permissao) && estaNaPaginaOrgao() && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
 function podeSalvarPagina(orgaoIdUsuario, orgaoIdPagina) {
