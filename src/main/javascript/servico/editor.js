@@ -102,7 +102,8 @@ module.exports = {
           despublicarConfig: {
             tipo: 'servico',
             despublicar: _.bind(ctrl.despublicar, ctrl),
-            metadados: ctrl.cabecalho.metadados()
+            metadados: ctrl.cabecalho.metadados(),
+            orgaoId: ctrl.servico().orgao().nome()
           }
         }),
         m('#servico', m('.scroll', [

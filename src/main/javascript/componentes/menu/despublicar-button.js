@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
@@ -25,6 +26,7 @@ module.exports = {
   controller: function (args) {
     this.despublicar = safeGet(args, 'despublicar');
     this.despublicando = m.prop(false);
+    this.orgaoId = args.orgaoId;
 
     this.onClick = function () {
       this.despublicando(true);
@@ -52,7 +54,7 @@ module.exports = {
           target: '_blank'
         }, 'Acesse a versão no Portal') : ''
      ]),
-      permissoes.podeDespublicarPagina() ? botaoQueEspera({
+      permissoes.podeDespublicarPagina(loggedUser.siorg, ctrl.orgaoId) ? botaoQueEspera({
         id: 'despublicar',
         onclick: confirmacao(_.bind(ctrl.onClick, ctrl)),
         icon: '',
