@@ -94,7 +94,8 @@ module.exports = {
           descartar: _.bind(ctrl.descartar, ctrl),
           cabecalho: ctrl.cabecalho,
           salvandoServico: ctrl.salvandoServico,
-          caiuSessao: ctrl.caiuSessao
+          caiuSessao: ctrl.caiuSessao,
+          orgaoId: ctrl.servico().orgao().nome()
         }),
         m.component(require('componentes/menu/menu-lateral'), {
           menuConfig: binding,
