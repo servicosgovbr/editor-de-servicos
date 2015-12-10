@@ -90,7 +90,7 @@ module.exports = function (ctrl, args) {
 
       m('td.right', [
         visualizarView(ctrl, s),
-        excluirView(ctrl, s),
+        permissoes.podeExcluirPagina(loggedUser.siorg, s) ? excluirView(ctrl, s) : '',
       ])
     ]) : m('');
   }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '');
