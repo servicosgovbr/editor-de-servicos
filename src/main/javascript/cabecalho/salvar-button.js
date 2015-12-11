@@ -1,4 +1,3 @@
-/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
