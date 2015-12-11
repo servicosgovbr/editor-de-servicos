@@ -32,7 +32,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return permissoes.podeSalvarPagina(loggedUser.siorg, ctrl.orgaoId) ? m('button#salvar', {
+    return permissoes.podeSalvarPagina() ? m('button#salvar', {
       onclick: _.bind(ctrl.onClick, ctrl),
       disabled: ctrl.salvando() || ctrl.salvandoServico() || ctrl.caiuSessao() ? 'disabled' : ''
     }, ctrl.salvando() ? [
