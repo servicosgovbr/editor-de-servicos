@@ -1,16 +1,34 @@
 'use strict';
 
 var referencia = require('referencia');
+var permissoes = require('utils/permissoes');
+
+function filtraArray(array) {
+  var arrayNovo = _.filter(array, function(pagina) {
+    if (permissoes.podeCriarPagina(pagina.id)) {
+      return true;
+    }
+  });
+
+  return arrayNovo;
+}
+
+var iconesDeTipo = {
+  servico: 'fa-file-text-o',
+  orgao: 'fa-building-o'
+};
 
 module.exports = {
   view: function (ctrl, args) {
     var tooltipTipo = args.tooltipTipo;
-
-    var componenteTipo = args.novo ? m.component(require('componentes/select2'), {
-      prop: args.tipo,
-      change: args.change,
-      data: referencia.tiposDePagina
-    }) : referencia.tipoDePagina(args.tipo());
+    var componenteTipo = args.novo ? m('', { class: 'criar-pagina' }, filtraArray(referencia.tiposDePagina).map(function(pagina) {
+      return m('a', {
+        href: '/editar/' + pagina.id + '/novo',
+        class: 'button botao-primario'
+      }, [ m('span.fa', {
+          class: iconesDeTipo[pagina.id] || 'fa-file-o'
+        }),'Criar ' + pagina.text]);
+    })) : referencia.tipoDePagina(args.tipo());
 
     return m('fieldset#tipoDePagina', [
       m('h3', [
