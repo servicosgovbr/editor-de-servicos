@@ -27,7 +27,11 @@ module.exports = function (metadados) {
 
     tratamentoAcessoNegado(xhr);
 
-    return xhr.responseText;
+    if(xhr.status === 406 || xhr.status === 403) {
+      return 'acesso_negado';
+    } else {
+      return xhr.responseText;
+    }
   };
 
 };
