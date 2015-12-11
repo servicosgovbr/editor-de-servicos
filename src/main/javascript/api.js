@@ -18,7 +18,11 @@ function serializeXml(svc) {
 }
 
 function deserializeXml(svc) {
-  return jQuery.parseXML(svc);
+  if(svc === 'acesso_negado') {
+      return 'acesso_negado';
+  } else {
+    return jQuery.parseXML(svc);
+  }
 }
 
 function configCsrf(xhr) {

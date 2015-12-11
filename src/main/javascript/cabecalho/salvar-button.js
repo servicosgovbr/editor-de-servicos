@@ -22,7 +22,10 @@ module.exports = {
         m.redraw();
         return resp;
       }, this), _.bind(function (msg) {
-        alertify.error(msg, 0);
+        if (msg !== 'acesso_negado') {
+          alertify.error(msg, 0);
+        }
+        
         this.salvando(false);
         this.salvandoServico(false);
         m.redraw();
