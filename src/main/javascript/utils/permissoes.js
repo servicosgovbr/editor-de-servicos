@@ -2,11 +2,15 @@
 'use strict';
 
 function retornaPermissoes() {
-  var arrayOriginal = loggedUser.permissoes.slice(1);
+  if (loggedUser.permissoes !== undefined) {
+    var arrayOriginal = loggedUser.permissoes.slice(1);
 
-  return arrayOriginal.map(function(permissao) {
-    return permissao.authority;
-  });
+    return arrayOriginal.map(function(permissao) {
+      return permissao.authority;
+    });
+  } else {
+    return [];
+  }
 }
 
 var arrayPermissoes = [];
@@ -73,10 +77,20 @@ function podeMostrarPaginaLista(tipo, orgaoIdUsuario, orgaoIdPagina) {
   return returnValue;
 }
 
-function podeCriarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  return possuiPermissaoPaginaServico('CRIAR SERVICO') || 
-         possuiPermissaoPaginaTematica('CRIAR PAGINA-TEMATICA') || 
-         possuiPermissaoPaginaOrgao('CRIAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+function podeCriarPagina(tipoPagina) {
+  if (tipoPagina === 'servico') {
+    return possuiPermissao('CRIAR SERVICO');
+  }
+  
+  if (tipoPagina === 'orgao') {
+    return possuiPermissao('CRIAR ORGAO (ORGAO ESPECIFICO)');
+  }
+
+  if (tipoPagina === 'pagina-tematica') {
+    return possuiPermissao('CRIAR PAGINA-TEMATICA');
+  }
+
+  return true;
 }
 
 function podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) {

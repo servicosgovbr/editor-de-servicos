@@ -33,6 +33,7 @@
     url: '/editar/api/ping',
     extract: function (xhr) {
       loggedUser = JSON.parse(xhr.responseText).profile;
+      m.redraw();
 
       return xhr.responseText;
     },
