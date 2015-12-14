@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
 
-import java.io.FileNotFoundException;
+import java.lang.reflect.UndeclaredThrowableException;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -58,7 +58,7 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
         String orgaoId = "";
         try {
             orgaoId = conteudoVersionado.getOrgaoId();
-        } catch (Exception ex) { // ele pode não encontrar o arquivo com o xml
+        } catch (UndeclaredThrowableException ex) { // ele pode não encontrar o arquivo com o xml - acontece na criação da página
             ConteudoMetadadosProvider conteudoMetadadosProvider = DeserializadorUtils.obterDeserializador(tipoPagina).deserializaConteudo(conteudo);
             orgaoId = conteudoMetadadosProvider.toConteudoMetadados(siorg).getOrgaoId();
         }
