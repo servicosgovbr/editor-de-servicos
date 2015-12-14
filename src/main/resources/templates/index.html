@@ -33,7 +33,11 @@
     url: '/editar/api/ping',
     extract: function (xhr) {
       loggedUser = JSON.parse(xhr.responseText).profile;
-      m.redraw();
+      
+      //Executa redraw para atualizar interface baseado em usuário logado
+      if(location.pathname === '/editar/pagina/nova') {
+        m.redraw();
+      }
 
       return xhr.responseText;
     },
