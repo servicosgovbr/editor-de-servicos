@@ -1,8 +1,10 @@
+/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
 var promise = require('utils/promise');
 var confirmacao = require('componentes/menu/despublicar-confirmacao');
+var permissoes = require('utils/permissoes');
 
 function botaoQueEspera(opts) {
   return m('button.botao-primario#' + opts.id, {
@@ -24,6 +26,7 @@ module.exports = {
   controller: function (args) {
     this.despublicar = safeGet(args, 'despublicar');
     this.despublicando = m.prop(false);
+    this.orgaoId = args.orgaoId;
 
     this.onClick = function () {
       this.despublicando(true);
@@ -51,13 +54,13 @@ module.exports = {
           target: '_blank'
         }, 'Acesse a versão no Portal') : ''
      ]),
-      botaoQueEspera({
+      permissoes.podeDespublicarPagina(loggedUser.siorg, ctrl.orgaoId) ? botaoQueEspera({
         id: 'despublicar',
         onclick: confirmacao(_.bind(ctrl.onClick, ctrl)),
         icon: '',
         disabled: !publicado || ctrl.despublicando(),
         espera: ctrl.despublicando()
-      }),
+      }) : m(''),
       m('hr')
     ]);
   }

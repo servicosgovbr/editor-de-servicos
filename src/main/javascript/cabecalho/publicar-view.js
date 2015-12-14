@@ -1,8 +1,10 @@
+/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
 var avisos = require('utils/avisos');
 var promise = require('utils/promise');
+var permissoes = require('utils/permissoes');
 
 function botaoQueEspera(flagProp, opts) {
   return m('button#' + opts.id, {
@@ -17,7 +19,7 @@ module.exports = {
     this.descartar = safeGet(args, 'descartar');
     this.salvandoServico = args.salvandoServico;
     this.caiuSessao = args.caiuSessao;
-
+    this.orgaoId = args.orgaoId;
     this.publicando = m.prop(false);
     this.descartando = m.prop(false);
 
@@ -76,7 +78,7 @@ module.exports = {
       return temEdicao() && revisaoEditadoEPublicadoDiferente();
     }
 
-    return m('span#publicar-view', [
+    return permissoes.podePublicarDascartarPagina(loggedUser.siorg, ctrl.orgaoId) ? m('span#publicar-view', [
       m('span.label-botao', 'Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
 
@@ -93,6 +95,6 @@ module.exports = {
         icon: 'check',
         disabled: desabilitaBotoes || !podePublicar() || ctrl.salvandoServico() || ctrl.caiuSessao()
       })
-    ]);
+    ]) : m('');
   }
 };

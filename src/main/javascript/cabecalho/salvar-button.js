@@ -1,12 +1,14 @@
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
+var permissoes = require('utils/permissoes');
 
 module.exports = {
   controller: function (args) {
     this.salvar = safeGet(args, 'salvar');
     this.salvandoServico = args.salvandoServico;
     this.caiuSessao = args.caiuSessao;
+    this.orgaoId = args.orgaoId;
 
     this.salvando = m.prop(false);
 
@@ -20,7 +22,10 @@ module.exports = {
         m.redraw();
         return resp;
       }, this), _.bind(function (msg) {
-        alertify.error(msg, 0);
+        if (msg !== 'acesso_negado') {
+          alertify.error(msg, 0);
+        }
+        
         this.salvando(false);
         this.salvandoServico(false);
         m.redraw();
@@ -29,7 +34,7 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    return m('button#salvar', {
+    return permissoes.podeSalvarPagina() ? m('button#salvar', {
       onclick: _.bind(ctrl.onClick, ctrl),
       disabled: ctrl.salvando() || ctrl.salvandoServico() || ctrl.caiuSessao() ? 'disabled' : ''
     }, ctrl.salvando() ? [
@@ -38,6 +43,6 @@ module.exports = {
     ] : [
       m('i.fa.fa-floppy-o'),
       m.trust('&nbsp; Salvar')
-    ]);
+    ]) : m('');
   }
 };

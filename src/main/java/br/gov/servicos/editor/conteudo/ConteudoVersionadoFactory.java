@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo;
 import br.gov.servicos.editor.conteudo.cartas.ServicoXML;
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;
+import br.gov.servicos.editor.utils.DeserializadorUtils;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
@@ -40,18 +41,8 @@ public class ConteudoVersionadoFactory {
     @Bean // necessário para @Cacheable
     @Scope("prototype")
     public ConteudoVersionado pagina(String texto, TipoPagina tipo) {
-        return new ConteudoVersionado(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml, siorg, obterDeserializador(tipo));
+        return new ConteudoVersionado(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml, siorg, DeserializadorUtils.obterDeserializador(tipo));
     }
 
-    private DeserializadorConteudoXML obterDeserializador(TipoPagina tipo) {
-        switch (tipo) {
-            case SERVICO:
-                return new DeserializadorConteudoXML(ServicoXML.class);
-            case ORGAO:
-                return new DeserializadorConteudoXML(OrgaoXML.class);
-            case PAGINA_TEMATICA:
-                return new DeserializadorConteudoXML(PaginaTematicaXML.class);
-        }
-        throw new IllegalArgumentException("Tipo inexistente: " + tipo);
-    }
+
 }

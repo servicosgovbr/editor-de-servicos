@@ -10,14 +10,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DescartarAlteracoesPaginaControllerIntegrationTest extends RepositorioGitIntegrationTest {
 
-    public static final String PAGINA_A = "<pagina-tematica><nome>Pagina A</nome></pagina-tematica>";
-    public static final String PAGINA_A_2 = "<pagina-tematica><nome>Pagina A</nome><conteudo>conteudo</conteudo></pagina-tematica>";
+    public static final String PAGINA_A = "<pagina-tematica><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Pagina A</nome></pagina-tematica>";
+    public static final String PAGINA_A_2 = "<pagina-tematica><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Pagina A</nome><conteudo>conteudo</conteudo></pagina-tematica>";
 
-    public static final String CARTA_A = "<servico><nome>Carta A</nome></servico>";
-    public static final String CARTA_A_2 = "<servico><nome>Carta A</nome><sigla>CA</sigla></servico>";
+    public static final String CARTA_A = "<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome></servico>";
+    public static final String CARTA_A_2 = "<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome><sigla>CA</sigla></servico>";
 
-    public static final String ORGAO_A = "<orgao><nome>Carta A</nome></orgao>";
-    public static final String ORGAO_A_2 = "<orgao><nome>Carta A</nome><conteudo>CA</conteudo></orgao>";
+    public static final String ORGAO_A = "<orgao><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome></orgao>";
+    public static final String ORGAO_A_2 = "<orgao><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome><conteudo>CA</conteudo></orgao>";
 
     @Before
     public void setup() {
@@ -61,26 +61,26 @@ public class DescartarAlteracoesPaginaControllerIntegrationTest extends Reposito
 
     @Test
     public void descartarAposRenomearDeveVoltarParaVersaoPublicada() throws Exception {
-        api.salvarCarta("carta-a", "<servico><nome>Carta A</nome><sigla>CA</sigla></servico>")
+        api.salvarCarta("carta-a", "<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome><sigla>CA</sigla></servico>")
                 .andExpect(status().is3xxRedirection());
 
         api.editarCarta("carta-a")
                 .andExpect(status().isOk())
-                .andExpect(content().xml("<servico><nome>Carta A</nome><sigla>CA</sigla></servico>"));
+                .andExpect(content().xml("<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome><sigla>CA</sigla></servico>"));
 
         api.renomearCarta("carta-a", "Carta B")
                 .andExpect(status().isOk());
 
         api.editarCarta("carta-b")
                 .andExpect(status().isOk())
-                .andExpect(content().xml("<servico><nome>Carta B</nome><sigla>CA</sigla></servico>"));
+                .andExpect(content().xml("<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta B</nome><sigla>CA</sigla></servico>"));
 
         api.descartarCarta("carta-b")
                 .andExpect(status().isOk());
 
         api.editarCarta("carta-b")
                 .andExpect(status().isOk())
-                .andExpect(content().xml("<servico><nome>Carta B</nome></servico>"));
+                .andExpect(content().xml("<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta B</nome></servico>"));
     }
 
     @Test

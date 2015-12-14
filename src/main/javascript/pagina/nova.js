@@ -7,12 +7,6 @@ module.exports = {
 
   controller: function (args) {
     this.tipo = m.prop('');
-
-    this.atualizarRota = function () {
-      if (this.tipo()) {
-        m.route('/editar/' + this.tipo() + '/novo');
-      }
-    };
   },
 
   view: function (ctrl, args) {
@@ -31,10 +25,7 @@ module.exports = {
         m.component(require('pagina/componentes/tipo-de-pagina'), {
           tipo: ctrl.tipo,
           tooltipTipo: Tooltips.tipoPagina,
-          novo: !ctrl.tipo(),
-          change: function () {
-            ctrl.atualizarRota();
-          }
+          novo: !ctrl.tipo()
         }),
       ]
     });

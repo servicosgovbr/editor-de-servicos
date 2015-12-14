@@ -16,5 +16,5 @@ public class ConteudoMetadados {
     String tipo;
     String nome;
     String nomeOrgao = " — — ";
-    String orgaoId;
+    String orgaoId = "";
 }

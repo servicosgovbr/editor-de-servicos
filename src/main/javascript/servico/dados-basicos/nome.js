@@ -3,6 +3,7 @@
 var slugify = require('slugify');
 var idUnico = require('utils/id-unico');
 var api = require('api');
+var permissoes = require('utils/permissoes');
 
 module.exports = {
 
@@ -51,7 +52,7 @@ module.exports = {
       autofocus: 'autofocus'
     })) : m('div', [
             m('span', servico.nome()),
-            m('button.renomear', {
+            permissoes.podeSalvarPagina() ? m('button.renomear', {
         disabled: ctrl.renomeando() || ctrl.salvandoServico(),
         style: {
           float: 'right'
@@ -80,7 +81,7 @@ module.exports = {
           };
           renomear();
         }
-      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner'), ' Alterando nome...'] : [m('i.fa.fa-pencil'), ' Alterar nome'])
+      }, ctrl.renomeando() ? [m('i.fa.fa-spin.fa-spinner'), ' Alterando nome...'] : [m('i.fa.fa-pencil'), ' Alterar nome']) : m('')
         ]);
 
     return m('fieldset#nome', [

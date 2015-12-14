@@ -2,17 +2,35 @@
 'use strict';
 
 function retornaPermissoes() {
-  var arrayOriginal = loggedUser.permissoes.slice(1);
+  if (loggedUser.permissoes !== undefined) {
+    var arrayOriginal = loggedUser.permissoes.slice(1);
 
-  return arrayOriginal.map(function(permissao) {
-    return permissao.authority;
-  });
+    return arrayOriginal.map(function(permissao) {
+      return permissao.authority;
+    });
+  } else {
+    return [];
+  }
 }
 
-var arrayPermissoes = retornaPermissoes();
+var arrayPermissoes = [];
+
+function formataUrl(url) {
+  if (url !== undefined) {
+    return url.replace(/:\/\//g, '-').replace(/\./g, '-').replace(/\//g, '-');
+  } else {
+    return url;
+  }
+}
 
 function possuiPermissao(permissao) {
+  arrayPermissoes = retornaPermissoes();
   return _.contains(arrayPermissoes, permissao);
+}
+
+function possuiPermissaoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina) {
+  arrayPermissoes = retornaPermissoes();
+  return _.contains(arrayPermissoes, permissao) && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
 function estaNaPaginaServico() {
@@ -27,22 +45,88 @@ function estaNaPaginaTematica() {
   return location.pathname.indexOf('editar/pagina-tematica') > -1;
 }
 
-function  podeSalvarServico() {
-  return possuiPermissao('editar_salvar SERVICO') && estaNaPaginaServico();
+function possuiPermissaoPaginaServico(permissao) {
+  return possuiPermissao(permissao) && estaNaPaginaServico();
 }
 
-function  podeSalvarOrgao() {
-  return possuiPermissao('editar_salvar ORGAO (ORGAO ESPECIFICO)') && estaNaPaginaOrgao();
+function possuiPermissaoPaginaServicoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissao(permissao) && estaNaPaginaServico() && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
-function  podeSalvarPaginaTematica() {
-  return possuiPermissao('editar_salvar PAGINA_TEMATICA') && estaNaPaginaTematica();
+function possuiPermissaoPaginaTematica(permissao) {
+  return possuiPermissao(permissao) && estaNaPaginaTematica();
+}
+
+function possuiPermissaoPaginaOrgao(permissao, orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissao(permissao) && estaNaPaginaOrgao() && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
 function podeSalvarPagina() {
-  return  podeSalvarServico() || podeSalvarPaginaTematica() || podeSalvarOrgao();
+  return  possuiPermissaoPaginaServico('EDITAR_SALVAR SERVICO') || 
+          possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA') || 
+          possuiPermissaoPaginaOrgao('EDITAR_SALVAR ORGAO (ORGAO ESPECIFICO)');
+}
+
+function podeMostrarPaginaLista(tipo, orgaoIdUsuario, orgaoIdPagina) {
+  var returnValue = false;
+
+  if (tipo === 'servico') { returnValue = possuiPermissao('EDITAR_SALVAR SERVICO'); }
+  if (tipo === 'pagina-tematica') { returnValue = possuiPermissaoOrgaoEspecifico('EDITAR_SALVAR PAGINA-TEMATICA'); }
+  if (tipo === 'orgao') { returnValue = possuiPermissaoOrgaoEspecifico('EDITAR_SALVAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina); }
+  
+  return returnValue;
+}
+
+function podeCriarPagina(tipoPagina) {
+  if (tipoPagina === 'servico') {
+    return possuiPermissao('CRIAR SERVICO');
+  }
+
+  if (tipoPagina === 'orgao') {
+    return possuiPermissao('CRIAR ORGAO (ORGAO ESPECIFICO)');
+  }
+
+  if (tipoPagina === 'pagina-tematica') {
+    return possuiPermissao('CRIAR PAGINA-TEMATICA');
+  }
+
+  return true;
+}
+
+function podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissaoPaginaServicoOrgaoEspecifico('PUBLICAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
+         possuiPermissaoPaginaTematica('PUBLICAR PAGINA-TEMATICA') || 
+         possuiPermissaoPaginaOrgao('PUBLICAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+}
+
+function podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissaoPaginaServicoOrgaoEspecifico('DESCARTAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
+         possuiPermissaoPaginaTematica('DESCARTAR PAGINA-TEMATICA') || 
+         possuiPermissaoPaginaOrgao('DESCARTAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+}
+
+function podeDespublicarPagina(orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissaoPaginaServicoOrgaoEspecifico('DESPUBLICAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
+         possuiPermissaoPaginaTematica('DESPUBLICAR PAGINA-TEMATICA') || 
+         possuiPermissaoPaginaOrgao('DESPUBLICAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+}
+
+function podeExcluirPagina(orgaoIdUsuario, orgaoIdPagina) {
+  return possuiPermissaoOrgaoEspecifico('EXCLUIR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
+         possuiPermissao('EXCLUIR PAGINA-TEMATICA') || 
+         possuiPermissaoOrgaoEspecifico('EXCLUIR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+}
+
+function podePublicarDascartarPagina(orgaoIdUsuario, orgaoIdPagina) {
+  return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) &&
+         podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina);
 }
 
 module.exports = {
-  podeSalvarPagina: podeSalvarPagina
+  podeSalvarPagina: podeSalvarPagina,
+  podeCriarPagina: podeCriarPagina,
+  podePublicarDascartarPagina: podePublicarDascartarPagina,
+  podeDespublicarPagina: podeDespublicarPagina,
+  podeExcluirPagina: podeExcluirPagina,
+  podeMostrarPaginaLista: podeMostrarPaginaLista
 };

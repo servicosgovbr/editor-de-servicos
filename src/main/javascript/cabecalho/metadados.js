@@ -20,7 +20,8 @@ module.exports = {
       salvarView = m.component(require('cabecalho/salvar-button'), {
         salvar: ctrl.config.salvar,
         salvandoServico: ctrl.config.salvandoServico,
-        caiuSessao: ctrl.config.caiuSessao
+        caiuSessao: ctrl.config.caiuSessao,
+        orgaoId: ctrl.config.orgaoId
       });
     }
 
@@ -40,7 +41,8 @@ module.exports = {
         descartar: ctrl.config.descartar,
         metadados: ctrl.config.cabecalho.metadados(),
         salvandoServico: ctrl.config.salvandoServico,
-        caiuSessao: ctrl.config.caiuSessao
+        caiuSessao: ctrl.config.caiuSessao,
+        orgaoId: ctrl.config.orgaoId
       });
     }
 
