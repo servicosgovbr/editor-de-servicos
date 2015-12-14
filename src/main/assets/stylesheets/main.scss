@@ -74,6 +74,7 @@ body {
 
 	.fa {
 		margin-right: 7px;
+		font-size: 1.3em;
 	}
 
 	.button {
@@ -81,6 +82,7 @@ body {
 		border-color: #2c66ce;
 		border-bottom-color: #3972DB;
 		width: 40%;
+		margin-right: 60%; 
 		display: inline-block;
 
 		&:hover {
