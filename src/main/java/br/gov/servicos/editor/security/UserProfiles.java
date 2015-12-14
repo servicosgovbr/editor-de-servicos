@@ -7,6 +7,7 @@ public interface UserProfiles {
     boolean temPermissaoParaOrgao(TipoPermissao publicar, String orgaoId);
     boolean temPermissaoParaTipoPagina(TipoPermissao tipoPermissao, TipoPagina tipoPagina);
     boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String admin);
+    boolean temPermissaoParaTipoPaginaOrgaoEspecifico(TipoPermissao tipoPermissao, TipoPagina tipoPagina, String orgaoId);
     boolean temPermissao(String permissao);
     String getSiorg();
 }

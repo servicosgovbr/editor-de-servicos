@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.CheckOrgaoEspecificoController;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class DescartarAlteracoesPaginaController {
+class DescartarAlteracoesPaginaController extends CheckOrgaoEspecificoController {
 
     private ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
@@ -46,8 +47,7 @@ class DescartarAlteracoesPaginaController {
             throw new IllegalStateException("Descartar um serviço que não foi publicado, seria o equivalente a excluir o serviço");
         }
 
-        String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.DESCARTAR, orgaoId)) {
+        if (!usuarioPodeRealizarAcao(userProfiles,tipoPagina,conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
@@ -55,4 +55,8 @@ class DescartarAlteracoesPaginaController {
         return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
     }
 
+    @Override
+    public TipoPermissao getTipoPermissao() {
+        return TipoPermissao.DESCARTAR;
+    }
 }

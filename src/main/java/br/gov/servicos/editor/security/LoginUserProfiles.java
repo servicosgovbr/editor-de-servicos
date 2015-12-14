@@ -39,11 +39,19 @@ public class LoginUserProfiles implements UserProfiles {
         return usuario.temPermissao(tipoPermissao.comTipoPagina(tipoPagina));
     }
 
+
+
     @Override
     public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String papel) {
         Usuario usuario = getPrincipal();
         return usuario.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.toUpperCase())) &&
                 (usuario.getSiorg().equals(siorg) || usuario.temPermissao(CADASTRAR_OUTROS_ORGAOS.getNome()));
+    }
+
+    @Override
+    public boolean temPermissaoParaTipoPaginaOrgaoEspecifico(TipoPermissao tipoPermissao, TipoPagina tipoPagina, String orgaoId) {
+        Usuario usuario = getPrincipal();
+        return temPermissao(tipoPermissao.comTipoPaginaParaOrgaoEspecifico(tipoPagina)) && usuario.getSiorg().equals(orgaoId);
     }
 
     @Override

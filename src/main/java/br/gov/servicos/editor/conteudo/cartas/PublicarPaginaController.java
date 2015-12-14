@@ -4,6 +4,7 @@ import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.CheckOrgaoEspecificoController;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class PublicarPaginaController {
+class PublicarPaginaController extends CheckOrgaoEspecificoController {
 
     private ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
@@ -33,7 +34,7 @@ class PublicarPaginaController {
     }
 
     @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = PUT)
-    ResponseEntity publicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException {
+    ResponseEntity publicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, AccessDeniedException {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
@@ -41,8 +42,7 @@ class PublicarPaginaController {
             throw new ConteudoInexistenteException(conteudoVersionado);
         }
 
-        String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.PUBLICAR, orgaoId)) {
+        if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
@@ -51,4 +51,8 @@ class PublicarPaginaController {
         return new ResponseEntity(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
     }
 
+    @Override
+    public TipoPermissao getTipoPermissao() {
+        return TipoPermissao.PUBLICAR;
+    }
 }

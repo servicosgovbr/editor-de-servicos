@@ -34,4 +34,8 @@ public enum TipoPermissao {
     public String comTipoPagina(TipoPagina tipoPagina) {
         return nome + " " + tipoPagina.toString().toUpperCase();
     }
+
+    public String comTipoPaginaParaOrgaoEspecifico(TipoPagina tipoPagina) {
+        return comTipoPagina(tipoPagina) + ORGAO_ESPECIFICO;
+    }
 }
