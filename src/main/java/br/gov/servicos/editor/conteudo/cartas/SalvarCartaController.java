@@ -56,14 +56,14 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
         String orgaoId = "";
-        try {
-            orgaoId = conteudoVersionado.getOrgaoId();
-        } catch (UndeclaredThrowableException ex) { // ele pode não encontrar o arquivo com o xml - acontece na criação da página
-            ConteudoMetadadosProvider conteudoMetadadosProvider = DeserializadorUtils.obterDeserializador(tipoPagina).deserializaConteudo(conteudo);
-            orgaoId = conteudoMetadadosProvider.toConteudoMetadados(siorg).getOrgaoId();
+        if (!TipoPagina.PAGINA_TEMATICA.equals(tipoPagina)) {
+            try {
+                orgaoId = conteudoVersionado.getOrgaoId();
+            } catch (UndeclaredThrowableException ex) { // ele pode não encontrar o arquivo com o xml - acontece na criação da página
+                ConteudoMetadadosProvider conteudoMetadadosProvider = DeserializadorUtils.obterDeserializador(tipoPagina).deserializaConteudo(conteudo);
+                orgaoId = conteudoMetadadosProvider.toConteudoMetadados(siorg).getOrgaoId();
+            }
         }
-
-
         if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, orgaoId)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }

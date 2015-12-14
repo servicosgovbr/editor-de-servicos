@@ -2,9 +2,7 @@ package br.gov.servicos.editor.security;
 
 
 import br.gov.servicos.editor.conteudo.TipoPagina;
-import br.gov.servicos.editor.frontend.Siorg;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 
 
 public abstract class CheckOrgaoEspecificoController {
@@ -13,7 +11,12 @@ public abstract class CheckOrgaoEspecificoController {
    public boolean usuarioPodeRealizarAcao(UserProfiles userProfiles, TipoPagina tipoPagina, String orgaoId) {
         TipoPermissao tipoPermissao = getTipoPermissao();
 
-        return userProfiles.temPermissaoParaTipoPagina(tipoPermissao, tipoPagina) ||
+
+       if (TipoPagina.PAGINA_TEMATICA.equals(tipoPagina)) {
+          return usuarioTemPermissaoParaTipoPagina(tipoPermissao,userProfiles,tipoPagina);
+       }
+
+       return usuarioTemPermissaoParaTipoPagina(tipoPermissao,userProfiles,tipoPagina) ||
                 userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(tipoPermissao,tipoPagina, orgaoId);
 
     }
@@ -21,4 +24,7 @@ public abstract class CheckOrgaoEspecificoController {
    public abstract TipoPermissao getTipoPermissao();
 
 
+    private final boolean usuarioTemPermissaoParaTipoPagina(TipoPermissao tipoPermissao, UserProfiles userProfiles, TipoPagina tipoPagina) {
+        return userProfiles.temPermissaoParaTipoPagina(tipoPermissao, tipoPagina);
+    }
 }
