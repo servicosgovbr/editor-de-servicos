@@ -35,7 +35,7 @@
       loggedUser = JSON.parse(xhr.responseText).profile;
       
       //Executa redraw para atualizar interface baseado em usuário logado
-      if(location.pathname === '/editar/pagina/nova') {
+      if(location.pathname === '/editar/pagina/nova' || location.pathname === '/editar/pagina-tematica/novo') {
         m.redraw();
       }
 
