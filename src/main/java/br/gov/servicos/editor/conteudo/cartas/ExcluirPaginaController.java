@@ -3,6 +3,7 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.CheckOrgaoEspecificoController;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 @Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class ExcluirPaginaController {
+class ExcluirPaginaController extends CheckOrgaoEspecificoController {
 
     UserProfiles userProfiles;
     private ConteudoVersionadoFactory factory;
@@ -47,13 +48,15 @@ class ExcluirPaginaController {
         if (!conteudoVersionado.existe()) {
             throw new ConteudoInexistenteException(conteudoVersionado);
         }
-
-        String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.EXCLUIR, orgaoId)) {
+        if (!usuarioPodeRealizarAcao(userProfiles,tipoPagina,conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
         conteudoVersionado.remover(userProfiles.get());
     }
 
+    @Override
+    public TipoPermissao getTipoPermissao() {
+        return TipoPermissao.EXCLUIR;
+    }
 }

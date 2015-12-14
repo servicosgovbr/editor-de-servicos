@@ -4,6 +4,7 @@ import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.CheckOrgaoEspecificoController;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class DespublicarPaginaController {
+class DespublicarPaginaController extends CheckOrgaoEspecificoController {
 
     ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
@@ -33,7 +34,7 @@ class DespublicarPaginaController {
     }
 
     @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}/despublicar", method = POST)
-    ResponseEntity despublicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException {
+    ResponseEntity despublicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, AccessDeniedException {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
@@ -41,13 +42,17 @@ class DespublicarPaginaController {
             throw new ConteudoInexistenteException(conteudoVersionado);
         }
 
-        String orgaoId = conteudoVersionado.getOrgaoId();
-        if (!userProfiles.temPermissaoParaOrgao(TipoPermissao.DESPUBLICAR, orgaoId)) {
+        if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
         conteudoVersionado.despublicarAlteracoes(userProfiles.get());
 
         return new ResponseEntity(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
+    }
+
+    @Override
+    public TipoPermissao getTipoPermissao() {
+        return TipoPermissao.DESPUBLICAR;
     }
 }

@@ -21,8 +21,8 @@ public class TipoPermissaoTest {
     }
 
     @Test
-    public void deveRetornarNomeDePermissaoComOrgaoEspecifico() {
-        assertThat(PUBLICAR.comOrgaoEspecifico(), equalTo(PUBLICAR.getNome() + " (ORGAO ESPECIFICO)"));
+    public void deveRetornarNomeDePermissaoComTipoDePaginaeEOrgaoEspecifico() {
+        assertThat(PUBLICAR.comTipoPaginaParaOrgaoEspecifico(TipoPagina.ORGAO), equalTo(PUBLICAR.getNome() + " " + TipoPagina.ORGAO.getNome().toUpperCase() + " (ORGAO ESPECIFICO)"));
     }
 
     @Test

@@ -43,11 +43,14 @@ public class UserProfileConfigParaTeste implements UserProfiles {
     }
 
     @Override
-    public boolean temPermissao(String permissao) {
+    public boolean temPermissaoParaTipoPaginaOrgaoEspecifico(TipoPermissao tipoPermissao, TipoPagina tipoPagina, String orgaoId) {
         return true;
     }
 
-
+    @Override
+    public boolean temPermissao(String permissao) {
+        return true;
+    }
 
     @Override
     public String getSiorg() {

@@ -2,6 +2,8 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
+import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,7 @@ import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,8 +54,7 @@ public class ExcluirPaginaControllerTest {
 
     @Test
     public void removeCartaExistente() throws Exception {
-        given(userProfiles.temPermissaoParaOrgao(eq(EXCLUIR), anyString()))
-                .willReturn(true);
+        given(userProfiles.temPermissaoParaTipoPagina(eq(TipoPermissao.EXCLUIR), any(TipoPagina.class))).willReturn(true);
         given(userProfiles.get())
                 .willReturn(PROFILE);
 
@@ -62,8 +64,8 @@ public class ExcluirPaginaControllerTest {
 
     @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
-        given(userProfiles.temPermissaoParaOrgao(eq(EXCLUIR), anyString()))
-                .willReturn(false);
+        given(userProfiles.temPermissaoParaTipoPagina(eq(TipoPermissao.EXCLUIR), any(TipoPagina.class))).willReturn(false);
+        given(userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(eq(TipoPermissao.PUBLICAR), any(TipoPagina.class), anyString())).willReturn(false);
         controller.remover("servico", "");
     }
 

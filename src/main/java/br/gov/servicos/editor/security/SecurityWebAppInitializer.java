@@ -15,16 +15,16 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_URL = "/editar/autenticar";
-    private static final String API_DESPUBLICAR = "/editar/api/pagina/*/*/despublicar";
-    private static final String API_DESCARTAR = "/editar/api/pagina/*/*/descartar";
-    private static final String API_PAGINA = "/editar/api/pagina/**";
+
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
     private static final String ADMIN = "ADMIN";
     private static final String PONTOFOCAL = "PONTOFOCAL";
     private static final String PUBLICADOR = "PUBLICADOR";
     private static final String EDITOR = "CADASTRO";
 
-    private static final String API_PAGINA_PATTERN = "/editar/api/pagina/%s/**";
+    private static final String API_DESPUBLICAR_PATTERN = "/editar/api/pagina/%s/*/despublicar";
+    private static final String API_DESCARTAR_PATTERN = "/editar/api/pagina/%s/*/descartar";
+    private static final String API_PAGINA_PATTERN = "/editar/api/pagina/%s/*";
 
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private AuthenticationSuccessHandler successHandler;
@@ -41,7 +41,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         accessDeniedHandler.setErrorPage("/editar/acessoNegado");
 
 
-        HttpSecurity httpBuilder  = http
+        HttpSecurity httpSecurityBuilder  = http
                 .httpBasic()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL))
                 .and()
@@ -61,27 +61,22 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
-                .antMatchers(POST, API_DESPUBLICAR).hasAnyAuthority(DESPUBLICAR.getNome(), DESPUBLICAR.comOrgaoEspecifico())
+
                 .and();
 
         // este laço irá adicionar todas as permissões específicas por página
         for (TipoPagina tipoPagina: TipoPagina.values()) {
-              httpBuilder.authorizeRequests()
-                      .antMatchers(DELETE, constroiURLTipoPagina(tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina))
-                      .antMatchers(PATCH, constroiURLTipoPagina(tipoPagina)).hasAnyAuthority(RENOMEAR.comTipoPagina(tipoPagina))
-                      .antMatchers(PUT, constroiURLTipoPagina(tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina))
-                      .antMatchers(POST, constroiURLTipoPagina(tipoPagina)).hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina),
-                                                                                                PUBLICAR.comTipoPagina(tipoPagina),
-                                                                                            DESPUBLICAR.comTipoPagina(tipoPagina))
-                      .and();
+              httpSecurityBuilder.authorizeRequests()
+                      .antMatchers(DELETE, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                      .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(RENOMEAR.comTipoPagina(tipoPagina), RENOMEAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                      .antMatchers(PUT, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                      .antMatchers(POST, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina), EDITAR_SALVAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                      .antMatchers(POST, constroiURLTipoPagina(API_DESPUBLICAR_PATTERN, tipoPagina)).hasAnyAuthority(DESPUBLICAR.comTipoPagina(tipoPagina), DESPUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                      .antMatchers(POST, constroiURLTipoPagina(API_DESCARTAR_PATTERN, tipoPagina)).hasAnyAuthority(DESCARTAR.comTipoPagina(tipoPagina),DESCARTAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+            .and();
         }
 
-         httpBuilder.authorizeRequests()
-                .antMatchers(POST, API_DESCARTAR).hasAnyAuthority(DESCARTAR.getNome(), DESCARTAR.comOrgaoEspecifico())
-                .antMatchers(DELETE, API_PAGINA).hasAnyAuthority(EXCLUIR.getNome(), EXCLUIR.comOrgaoEspecifico())
-                .antMatchers(PATCH, API_PAGINA).hasAnyAuthority(RENOMEAR.getNome(), RENOMEAR.comOrgaoEspecifico())
-                .antMatchers(PUT, API_PAGINA).hasAnyAuthority(PUBLICAR.getNome(), PUBLICAR.comOrgaoEspecifico())
-                .antMatchers(POST, API_PAGINA).hasAnyAuthority(EDITAR_SALVAR.getNome(), PUBLICAR.getNome(), DESPUBLICAR.getNome())
+         httpSecurityBuilder.authorizeRequests()
                 .antMatchers(GET, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
                                                                  CADASTRAR.comPapel(PONTOFOCAL),
                                                                  CADASTRAR.comPapel(PUBLICADOR),
@@ -101,8 +96,8 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     }
 
 
-    private String constroiURLTipoPagina(TipoPagina tipoPagina) {
-        return String.format(API_PAGINA_PATTERN, tipoPagina.getNome());
+    private String constroiURLTipoPagina(String urlPattern, TipoPagina tipoPagina) {
+        return String.format(urlPattern, tipoPagina.getNome());
     }
 
 
