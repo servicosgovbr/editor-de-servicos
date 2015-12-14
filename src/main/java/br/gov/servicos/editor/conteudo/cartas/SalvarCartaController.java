@@ -58,7 +58,7 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
         String orgaoId = "";
         try {
             orgaoId = conteudoVersionado.getOrgaoId();
-        } catch (Exception ex) { // ele pode não encontrar o arquivo com o xml
+        } catch (Un ex) { // ele pode não encontrar o arquivo com o xml
             ConteudoMetadadosProvider conteudoMetadadosProvider = DeserializadorUtils.obterDeserializador(tipoPagina).deserializaConteudo(conteudo);
             orgaoId = conteudoMetadadosProvider.toConteudoMetadados(siorg).getOrgaoId();
         }
