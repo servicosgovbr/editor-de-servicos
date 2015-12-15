@@ -52,6 +52,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
 
+
                 .logout()
                 .logoutUrl("/editar/sair")
                 .logoutSuccessUrl("/editar/autenticar?sair")
@@ -61,7 +62,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
-
                 .and();
 
         // este laço irá adicionar todas as permissões específicas por página
@@ -81,10 +81,13 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                                                                  CADASTRAR.comPapel(PONTOFOCAL),
                                                                  CADASTRAR.comPapel(PUBLICADOR),
                                                                  CADASTRAR.comPapel(EDITOR))
-                 .antMatchers(POST, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
+                .antMatchers(POST, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
                                                                   CADASTRAR.comPapel(PONTOFOCAL),
                                                                   CADASTRAR.comPapel(PUBLICADOR),
                                                                   CADASTRAR.comPapel(EDITOR))
+                 
+                .anyRequest().authenticated()
+
                 .and()
                     .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
 
