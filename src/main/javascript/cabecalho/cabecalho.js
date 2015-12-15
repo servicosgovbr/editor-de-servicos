@@ -1,5 +1,7 @@
 'use strict';
 
+var permissoes = require('utils/permissoes');
+
 module.exports = {
 
   view: function (ctrl, args) {
@@ -14,14 +16,15 @@ module.exports = {
           ])
         ),
 
-        m('span.novo',
-            m('a.button#permissoes', {
-              href: '/editar/usuarios'
-            }, [
-              m('i.fa.fa-user-plus'),
-              m.trust('Gerenciar permissões')
-          ])
-        )];
+        permissoes.podeCriarUsuario() ? m('span.novo',
+              m('a.button#permissoes', {
+                href: '/editar/usuarios'
+              }, [
+                m('i.fa.fa-user-plus'),
+                m.trust('Gerenciar permissões')
+            ])
+          ) : m('')
+        ];
       }
 
       return m.component(require('cabecalho/metadados'), args);

@@ -122,7 +122,15 @@ function podePublicarDascartarPagina(orgaoIdUsuario, orgaoIdPagina) {
          podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina);
 }
 
+function podeCriarUsuario() {
+  return possuiPermissao('CADASTRAR ADMIN') ||
+         possuiPermissao('CADASTRAR PONTO_FOCAL') ||
+         possuiPermissao('CADASTRAR PUBLICADOR') ||
+         possuiPermissao('CADASTRAR EDITOR');
+}
+
 module.exports = {
+  podeCriarUsuario: podeCriarUsuario,
   podeSalvarPagina: podeSalvarPagina,
   podeCriarPagina: podeCriarPagina,
   podePublicarDascartarPagina: podePublicarDascartarPagina,
