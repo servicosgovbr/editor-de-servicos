@@ -5,6 +5,8 @@ admin:
   - descartar PAGINA-TEMATICA
   - despublicar PAGINA-TEMATICA
   - excluir PAGINA-TEMATICA
+  - editar_salvar SERVICO
+  - editar_salvar ORGAO
   - cadastrar ADMIN
   - cadastrar PONTO_FOCAL
   - cadastrar PUBLICADOR
