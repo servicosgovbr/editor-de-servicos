@@ -52,7 +52,9 @@ module.exports = function (ctrl, args) {
     orgao: 'fa-building-o'
   };
 
-  return m('', mostrarCarregando ? m('div.carregando', m('i.fa.fa-spin.fa-spinner.fa-2x'), 'Carregando...') : '', paginas.length !== 0 ? m('table', [
+  return m('div', [
+    mostrarCarregando ? m('div.carregando', m('i.fa.fa-spin.fa-spinner.fa-2x'), 'Carregando...') : '',
+    paginas.length !== 0 ? m('table', [
      m('tr', [
        m('th[width="35%"]', 'Nome'),
        m('th.center[width="20%"]', 'Órgão'),
@@ -62,36 +64,32 @@ module.exports = function (ctrl, args) {
        m('th.right[width="10%"]', '')
      ])
     ].concat(paginas.map(function (s) {
-
-    return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, loggedUser.siorg, s.id) ? m('tr', [
-
-      m('td', m('a.nome-link', {
-        href: '/editar/' + s.conteudo.tipo + '/' + s.id
-      }, [
-        m('span.fa', {
-          class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
-        }),
-        m.trust(' &nbsp; '),
-        s.conteudo.nome
-      ]), s.temAlteracoesNaoPublicadas ? m('span.mudanca', 'Alterações não publicadas') : ''),
-      m('td.center', s.conteudo.nomeOrgao),
-      m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
-      m('td.center', s.publicado ? [
-        moment(s.publicado.horario).fromNow(),
-        ', por ',
-        s.publicado.autor.split('@')[0]
-      ] : '—'),
-
-      m('td.center', s.editado ? [
-        moment(s.editado.horario).fromNow(),
-        ', por ',
-        s.editado.autor.split('@')[0]
-      ] : '—'),
-
-      m('td.right', [
-        visualizarView(ctrl, s),
-        permissoes.podeExcluirPagina(s.conteudo.tipo, loggedUser.siorg, s.conteudo.orgaoId || '') ? excluirView(ctrl, s) : '',
-      ])
-    ]) : m('');
-  }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '');
+        return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, loggedUser.siorg, s.id) ? m('tr', [
+          m('td', m('a.nome-link', {
+                       href: '/editar/' + s.conteudo.tipo + '/' + s.id
+                       }, [
+                       m('span.fa', {
+                       class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
+                       }),
+                       m.trust(' &nbsp; '),
+                       s.conteudo.nome
+                       ]), s.temAlteracoesNaoPublicadas ? m('span.mudanca', 'Alterações não publicadas') : ''),
+          m('td.center', s.conteudo.nomeOrgao),
+          m('td.center', referencia.tipoDePagina(s.conteudo.tipo)),
+          m('td.center', s.publicado ? [
+                                           moment(s.publicado.horario).fromNow(),
+                                           ', por ',
+                                           s.publicado.autor.split('@')[0]
+                                           ] : '—'),
+          m('td.center', s.editado ? [
+                                         moment(s.editado.horario).fromNow(),
+                                         ', por ',
+                                         s.editado.autor.split('@')[0]
+                                         ] : '—'),
+          m('td.right', [
+                            visualizarView(ctrl, s),
+                            permissoes.podeExcluirPagina(s.conteudo.tipo, loggedUser.siorg, s.conteudo.orgaoId || '') ? excluirView(ctrl, s) : '',
+                            ])
+        ]) : m('tr');
+  }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '']);
 };
