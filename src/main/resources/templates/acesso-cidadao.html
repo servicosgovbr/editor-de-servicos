@@ -22,19 +22,10 @@
         <span></span>
     </header>
 
-    <form id="login" th:action="@{/editar/autenticar}" method="post">
+    <form id="acesso-cidadao" th:action="@{/editar/acesso-cidadao}" method="post">
 
-        <h2>Acesso para Servidores Públicos</h2>
+        <h2>Acesso para Cidadão</h2>
 
-        <p th:if="${param.error}" class="erro">
-            <i class="fa fa-exclamation-triangle"></i>&nbsp;
-            Seu CPF e/ou sua senha estão incorretos.
-        </p>
-
-        <p th:if="${param.senhaAlterada}" class="info">
-            <i class="fa fa-info"></i>&nbsp;
-            Senha alterada com sucesso.
-        </p>
 
         <p th:if="${param.sair}" class="info">
             <i class="fa fa-info"></i>&nbsp;
@@ -47,20 +38,22 @@
         </p>
 
         <div class="borda">
-            <label for="usuario">CPF</label>
-            <input id="usuario" name="username" type="text" placeholder="XXX.XXX.XXX-XX" required="required"
-                   autofocus="true"/>
 
-            <label for="senha">Senha</label>
-            <input id="senha" name="password" type="password" placeholder="Senha" required="required"/>
+            <label for="email">Nome</label>
+            <input id="nome" name="nome" type="text" required="required" />
 
-            <p class="tooltip-home">Esqueceu sua senha ou não tem cadastro? <span>Caso você não tenha cadastro ou tenha esquecido sua senha, entre em contato com o responsável (ponto focal) do seu órgão.</span></p>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="text" required="required" />
+
+            <label for="cpf">CPF</label>
+            <input id="cpf" name="cpf" type="text" placeholder="XXX.XXX.XXX-XX" required="required" />
+
             <button type="submit">
                 Entrar
             </button>
         </div>
 
-        <a href="/editar/acesso-cidadao"><i class="fa fa-user"></i>&nbsp; Acesso para colaborar como Cidadão não cadastrado</a>
+        <a href="/editar/autenticar"><i class="fa fa-user"></i>&nbsp; Login para usuários cadastrados</a>
 
     </form>
 </div>

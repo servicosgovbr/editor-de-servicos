@@ -1,10 +1,15 @@
 package br.gov.servicos.editor.security;
 
 import br.gov.servicos.editor.conteudo.TipoPagina;
+import br.gov.servicos.editor.security.cidadao.CidadaoAuthenticationDetailsSource;
+import br.gov.servicos.editor.security.cidadao.CidadaoPreAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -12,6 +17,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import static br.gov.servicos.editor.security.TipoPermissao.*;
 import static org.springframework.http.HttpMethod.*;
 
+@Order(1)
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_URL = "/editar/autenticar";
@@ -61,7 +67,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .authorizeRequests()
-                .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha").permitAll()
+                .antMatchers("/editar/autenticar", "/editar/api/ping", "/editar/recuperar-senha", "/editar/acesso-cidadao").permitAll()
                 .and();
 
         // este laço irá adicionar todas as permissões específicas por página
@@ -85,22 +91,22 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                                                                   CADASTRAR.comPapel(PONTOFOCAL),
                                                                   CADASTRAR.comPapel(PUBLICADOR),
                                                                   CADASTRAR.comPapel(EDITOR))
-                 
+
                 .anyRequest().authenticated()
 
                 .and()
                     .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+
 
                 .and()
                     .sessionManagement()
                     .invalidSessionUrl("/editar/autenticar?sessao");
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider);
     }
-
 
     private String constroiURLTipoPagina(String urlPattern, TipoPagina tipoPagina) {
         return String.format(urlPattern, tipoPagina.getNome());
