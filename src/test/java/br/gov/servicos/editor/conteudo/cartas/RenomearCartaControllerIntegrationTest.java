@@ -10,7 +10,7 @@ public class RenomearCartaControllerIntegrationTest extends RepositorioGitIntegr
     @Before
     public void setUp() throws Exception {
         setupBase()
-                .carta("carta-a", "<servico><nome>Carta A</nome></servico>")
+                .carta("carta-a", "<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta A</nome></servico>")
                 .build();
     }
 
@@ -21,6 +21,6 @@ public class RenomearCartaControllerIntegrationTest extends RepositorioGitIntegr
 
         api.editarCarta("carta-b-muito-lokassa")
                 .andExpect(status().isOk())
-                .andExpect(content().xml("<servico><nome>Carta B muito lokassa</nome></servico>"));
+                .andExpect(content().xml("<servico><url>http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/1934</url><nome>Carta B muito lokassa</nome></servico>"));
     }
 }
