@@ -1,12 +1,17 @@
 package br.gov.servicos.editor.config;
 
+import br.gov.servicos.editor.security.CidadaoAuthenticationUserDetailsService;
 import br.gov.servicos.editor.security.CustomLoginSuccessHandler;
 import br.gov.servicos.editor.security.SecurityWebAppInitializer;
+import br.gov.servicos.editor.security.cidadao.CidadaoPreAuthenticationFilter;
+import br.gov.servicos.editor.security.cidadao.CidadaoSecurityWebAppInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.SourceHttpMessageConverter;
@@ -15,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.io.IOException;
@@ -37,12 +43,33 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
         return new SecurityWebAppInitializer(daoAuthenticationProvider, successHandler);
     }
 
+
+    @Bean
+    public CidadaoSecurityWebAppInitializer cidadaoSecurityWebAppInitializer(PreAuthenticatedAuthenticationProvider preAuthenticationProvider,
+                                                                      AuthenticationSuccessHandler cidadaoSuccessHandler, UserDetailsService cidadaoAuthenticationUserDetailsService) {
+        return new CidadaoSecurityWebAppInitializer(preAuthenticationProvider, cidadaoSuccessHandler, cidadaoAuthenticationUserDetailsService);
+    }
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public PreAuthenticatedAuthenticationProvider preAuthenticationProvider(CidadaoAuthenticationUserDetailsService cidadaoAuthenticationUserDetailsService) {
+        PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider = new PreAuthenticatedAuthenticationProvider();
+        preAuthenticatedAuthenticationProvider.setPreAuthenticatedUserDetailsService(cidadaoAuthenticationUserDetailsService);
+        return preAuthenticatedAuthenticationProvider;
+    }
+
+
+    @Bean
+    public CidadaoPreAuthenticationFilter cidadaoPreAuthenticationFilter() {
+        CidadaoPreAuthenticationFilter cidadaoPreAuthenticationFilter = new CidadaoPreAuthenticationFilter();
+        return cidadaoPreAuthenticationFilter;
     }
 
     @Bean
@@ -53,6 +80,11 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new CustomLoginSuccessHandler("/editar","/editar/autenticar");
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler cidadaoSuccessHandler() {
+        return new CustomLoginSuccessHandler("/editar","/editar/acesso-cidadao");
     }
 
     @Bean
