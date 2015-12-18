@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.config.SlugifyConfig;
 import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.usuarios.Usuario;
 import org.springframework.context.annotation.Profile;
@@ -40,7 +41,6 @@ public class LoginUserProfiles implements UserProfiles {
     }
 
 
-
     @Override
     public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String papel) {
         Usuario usuario = getPrincipal();
@@ -49,9 +49,12 @@ public class LoginUserProfiles implements UserProfiles {
     }
 
     @Override
-    public boolean temPermissaoParaTipoPaginaOrgaoEspecifico(TipoPermissao tipoPermissao, TipoPagina tipoPagina, String orgaoId) {
+    public boolean temPermissaoParaTipoPaginaOrgaoEspecifico(TipoPermissao tipoPermissao, TipoPagina tipoPagina, String unsafeOrgaoId) {
         Usuario usuario = getPrincipal();
-        return temPermissao(tipoPermissao.comTipoPaginaParaOrgaoEspecifico(tipoPagina)) && usuario.getSiorg().equals(orgaoId);
+        String userSiorgId = SlugifyConfig.slugify(usuario.getSiorg());
+        String orgaoId = SlugifyConfig.slugify(unsafeOrgaoId);
+
+        return temPermissao(tipoPermissao.comTipoPaginaParaOrgaoEspecifico(tipoPagina)) && userSiorgId.equals(orgaoId);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.conteudo.cartas;
 
-import br.gov.servicos.editor.conteudo.ConteudoMetadadosProvider;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.TipoPagina;
@@ -8,7 +7,6 @@ import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.security.CheckOrgaoEspecificoController;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
-import br.gov.servicos.editor.utils.DeserializadorUtils;
 import br.gov.servicos.editor.utils.ReformatadorXml;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +20,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.transform.dom.DOMSource;
 
-import java.lang.reflect.UndeclaredThrowableException;
-
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -36,7 +32,6 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
     UserProfiles userProfiles;
     ConteudoVersionadoFactory factory;
     Siorg siorg;
-
 
     @Autowired
     public SalvarCartaController(ReformatadorXml reformatadorXml, UserProfiles userProfiles, ConteudoVersionadoFactory factory, Siorg siorg) {
@@ -55,19 +50,9 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
         String conteudo = reformatadorXml.formata(servico);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
-        String orgaoId = "";
-        if (!TipoPagina.PAGINA_TEMATICA.equals(tipoPagina)) {
-            try {
-                orgaoId = conteudoVersionado.getOrgaoId();
-            } catch (UndeclaredThrowableException ex) { // ele pode não encontrar o arquivo com o xml - acontece na criação da página
-                ConteudoMetadadosProvider conteudoMetadadosProvider = DeserializadorUtils.obterDeserializador(tipoPagina).deserializaConteudo(conteudo);
-                orgaoId = conteudoMetadadosProvider.toConteudoMetadados(siorg).getOrgaoId();
-            }
-        }
-        if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, orgaoId)) {
+        if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, id)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
-
 
         conteudoVersionado.salvar(userProfiles.get(), conteudo);
         return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
@@ -77,4 +62,5 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
     public TipoPermissao getTipoPermissao() {
         return TipoPermissao.EDITAR_SALVAR;
     }
+
 }
