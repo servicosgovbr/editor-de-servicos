@@ -68,7 +68,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         for (TipoPagina tipoPagina: TipoPagina.values()) {
               httpSecurityBuilder.authorizeRequests()
                       .antMatchers(DELETE, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(RENOMEAR.comTipoPagina(tipoPagina), RENOMEAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                      .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
                       .antMatchers(PUT, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
                       .antMatchers(POST, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina), EDITAR_SALVAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
                       .antMatchers(POST, constroiURLTipoPagina(API_DESPUBLICAR_PATTERN, tipoPagina)).hasAnyAuthority(DESPUBLICAR.comTipoPagina(tipoPagina), DESPUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))

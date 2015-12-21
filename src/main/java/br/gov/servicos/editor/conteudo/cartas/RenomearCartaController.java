@@ -57,6 +57,6 @@ class RenomearCartaController extends CheckOrgaoEspecificoController {
 
     @Override
     public TipoPermissao getTipoPermissao() {
-        return TipoPermissao.RENOMEAR;
+        return TipoPermissao.CRIAR;
     }
 }

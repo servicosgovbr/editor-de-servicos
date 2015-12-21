@@ -38,7 +38,7 @@ public class RenomearCartaControllerTest {
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
 
-        given(userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(eq(TipoPermissao.RENOMEAR), eq(TipoPagina.SERVICO), anyString())).willReturn(true);
+        given(userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(eq(TipoPermissao.CRIAR), eq(TipoPagina.SERVICO), anyString())).willReturn(true);
         given(carta.getTipo()).willReturn(SERVICO);
         given(carta.existe()).willReturn(false);
 
@@ -48,8 +48,8 @@ public class RenomearCartaControllerTest {
     @Test(expected = AccessDeniedException.class)
     public void retornarAcessoNegadoCasoUsuarioNaoTenhaAcesso() throws ConteudoInexistenteException {
         RenomearCartaController controller = new RenomearCartaController(userProfiles, factory);
-        given(userProfiles.temPermissaoParaTipoPagina(eq(TipoPermissao.RENOMEAR), eq(TipoPagina.SERVICO))).willReturn(false);
-        given(userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(eq(TipoPermissao.RENOMEAR), eq(TipoPagina.SERVICO), anyString())).willReturn(false);
+        given(userProfiles.temPermissaoParaTipoPagina(eq(TipoPermissao.CRIAR), eq(TipoPagina.SERVICO))).willReturn(false);
+        given(userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(eq(TipoPermissao.CRIAR), eq(TipoPagina.SERVICO), anyString())).willReturn(false);
         given(factory.pagina(anyString(), any()))
                 .willReturn(carta);
         given(carta.existe()).willReturn(true);
