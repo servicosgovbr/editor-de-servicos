@@ -32,9 +32,11 @@ module.exports = {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));
         alertify.success('Serviço renomeado com sucesso!', 0);
-        this.renomeando(false);
         this.salvandoServico(false);
       }, this));
+       this.renomeando(false);
+       this.salvandoServico(false);
+       m.redraw();
     };
   },
 
