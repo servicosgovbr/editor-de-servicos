@@ -180,7 +180,7 @@ h2.erro-min-1 {
   @include validacao-erro-inline('Deve haver no mínimo um item', -3px, 5px);
 }
 
-.input-container:not(.full) .select2-message-container {
+.select2-message-container {
   position: relative;
 
   &.erro-campo-obrigatorio {
