@@ -46,11 +46,6 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
 
     @Bean
-    public AuthenticationSuccessHandler cidadaoSuccessHandler() {
-        return new CustomLoginSuccessHandler("/editar","/editar/acesso-cidadao");
-    }
-
-    @Bean
     public YamlPropertiesFactoryBean yamlPropertiesFactoryBean() throws IOException {
         YamlPropertiesFactoryBean permissoes = new YamlPropertiesFactoryBean();
         permissoes.setResources(new ClassPathResource("permissoes.yaml"));
