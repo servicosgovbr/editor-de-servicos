@@ -19,7 +19,8 @@ module.exports = {
         this.salvando(false);
         this.salvandoServico(false);
         alertify.success('Rascunho salvo com sucesso!', 0);
-        m.redraw();
+        m.redraw.strategy('all');
+        m.redraw(true);
         return resp;
       }, this), _.bind(function (msg) {
         if (msg !== 'acesso_negado') {
@@ -28,7 +29,7 @@ module.exports = {
         
         this.salvando(false);
         this.salvandoServico(false);
-        m.redraw();
+        m.redraw(true);
       }, this));
     };
   },
