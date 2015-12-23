@@ -40,7 +40,7 @@ eds:
   token:
     desabilitarUsuario: false
   cartas:
-    repositorio: "https://github.com/servicosgovbr/cartas-de-teste"
+    repositorio: "/Users/andreleite/code/servicosgovbr/editor-de-servicos/cartas-de-teste"
 
 ---
 
