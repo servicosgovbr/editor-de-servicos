@@ -1,8 +1,6 @@
 package br.gov.servicos.editor.security;
 
 import br.gov.servicos.editor.conteudo.TipoPagina;
-import br.gov.servicos.editor.security.cidadao.CidadaoAuthenticationDetailsSource;
-import br.gov.servicos.editor.security.cidadao.CidadaoPreAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
