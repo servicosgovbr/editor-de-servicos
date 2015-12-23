@@ -47,7 +47,7 @@ class IndexController {
     }
 
     @RequestMapping(value = "/editar/acessoNegado", method = {DELETE, PUT, POST, GET, PATCH})
-    ModelAndView acessoNegago() {
+    ModelAndView acessoNegado() {
         return new ModelAndView("acessoNegado");
     }
 }
