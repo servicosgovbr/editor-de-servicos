@@ -5,22 +5,24 @@ import br.gov.servicos.editor.security.cidadao.CidadaoAuthenticationDetailsSourc
 import br.gov.servicos.editor.security.cidadao.CidadaoPreAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import static br.gov.servicos.editor.security.TipoPermissao.*;
 import static org.springframework.http.HttpMethod.*;
 
-@Order(1)
+@Configuration
+@EnableWebSecurity
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_URL = "/editar/autenticar";
+    private static final String LOGIN_CIDADAO_URL = "/editar/acesso-cidadao";
 
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
     private static final String ADMIN = "ADMIN";
@@ -32,14 +34,15 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESCARTAR_PATTERN = "/editar/api/pagina/%s/*/descartar";
     private static final String API_PAGINA_PATTERN = "/editar/api/pagina/%s/*";
 
+    @Autowired
     private DaoAuthenticationProvider daoAuthenticationProvider;
+
+    @Autowired
     private AuthenticationSuccessHandler successHandler;
 
-    public SecurityWebAppInitializer(DaoAuthenticationProvider daoAuthenticationProvider,
-                                     AuthenticationSuccessHandler successHandler) {
-        this.daoAuthenticationProvider = daoAuthenticationProvider;
-        this.successHandler = successHandler;
-    }
+    @Autowired
+    private UserDetailsService editorUserDetailsService;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -53,11 +56,10 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .formLogin()
-                .loginPage("/editar/autenticar")
+                .loginPage(LOGIN_URL)
                 .successHandler(successHandler)
                 .permitAll()
                 .and()
-
 
                 .logout()
                 .logoutUrl("/editar/sair")
@@ -105,7 +107,9 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider);
+        auth
+                .authenticationProvider(daoAuthenticationProvider)
+                .userDetailsService(editorUserDetailsService);
     }
 
     private String constroiURLTipoPagina(String urlPattern, TipoPagina tipoPagina) {
