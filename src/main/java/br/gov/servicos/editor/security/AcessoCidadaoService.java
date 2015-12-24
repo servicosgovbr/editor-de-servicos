@@ -14,8 +14,12 @@ public class AcessoCidadaoService {
 
     public static final String CIDADAO = "CIDADAO";
 
-    @Autowired
     PapelRepository papelRepository;
+
+    @Autowired
+    public AcessoCidadaoService(PapelRepository papelRepository) {
+       this.papelRepository = papelRepository;
+    }
 
     public void autenticaCidadao(String nome, String email, String cpf) {
         Usuario usuario = criaUsuario(nome, email, cpf);
