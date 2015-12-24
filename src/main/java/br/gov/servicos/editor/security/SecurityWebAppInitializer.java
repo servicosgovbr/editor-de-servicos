@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import java.security.Security;
+
 import static br.gov.servicos.editor.security.TipoPermissao.*;
 import static org.springframework.http.HttpMethod.*;
 
@@ -32,15 +34,17 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESCARTAR_PATTERN = "/editar/api/pagina/%s/*/descartar";
     private static final String API_PAGINA_PATTERN = "/editar/api/pagina/%s/*";
 
-    @Autowired
+
     private DaoAuthenticationProvider daoAuthenticationProvider;
-
-    @Autowired
     private AuthenticationSuccessHandler successHandler;
-
-    @Autowired
     private UserDetailsService editorUserDetailsService;
 
+    @Autowired
+    public SecurityWebAppInitializer(DaoAuthenticationProvider daoAuthenticationProvider,  AuthenticationSuccessHandler successHandler, UserDetailsService editorUserDetailsService) {
+       this.daoAuthenticationProvider = daoAuthenticationProvider;
+       this.successHandler = successHandler;
+       this.editorUserDetailsService = editorUserDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
