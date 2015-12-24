@@ -12,9 +12,12 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/editar/acesso-cidadao")
 public class AcessoCidadaoController {
 
+    AcessoCidadaoService acessoCidadaoService;
 
     @Autowired
-    AcessoCidadaoService acessoCidadaoService;
+    public AcessoCidadaoController(AcessoCidadaoService acessoCidadaoService) {
+        this.acessoCidadaoService = acessoCidadaoService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     ModelAndView acessoCidadao() {
