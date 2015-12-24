@@ -41,7 +41,7 @@ public class AcessoCidadaoControllerTest {
     @Test
     public void deveRedirecionarParaPaginaPrincipal() {
         doNothing().when(service).autenticaCidadao(anyString(), anyString(), anyString());
-        RedirectView view = controller.acessoCidadao("Nome", "um@email.com", "123.123.123.12");
+        RedirectView view = controller.acessoCidadao("Nome", "um@email.com", "123.123.123-12");
         assertThat(view.getUrl(), is("/editar"));
     }
 }
