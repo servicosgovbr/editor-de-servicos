@@ -65,11 +65,11 @@ function possuiPermissaoPaginaOrgaoOrgaoEspecifico(permissao, orgaoIdUsuario, or
   return possuiPermissao(permissao) && estaNaPaginaOrgao() && (formataUrl(orgaoIdUsuario) === formataUrl(orgaoIdPagina));
 }
 
-function podeSalvarPagina() {
+function podeSalvarPagina(orgaoIdUsuario, orgaoIdPagina) {
   return  possuiPermissaoPaginaServico('EDITAR_SALVAR SERVICO') || 
           possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA') || 
           possuiPermissaoPaginaOrgao('EDITAR_SALVAR ORGAO') || 
-          possuiPermissaoPaginaOrgaoOrgaoEspecifico('EDITAR_SALVAR ORGAO (ORGAO ESPECIFICO)');
+          possuiPermissaoPaginaOrgaoOrgaoEspecifico('EDITAR_SALVAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
 }
 
 function podeMostrarPaginaLista(tipo, orgaoIdUsuario, orgaoIdPagina) {
