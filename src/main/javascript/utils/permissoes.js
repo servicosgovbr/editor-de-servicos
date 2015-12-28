@@ -144,6 +144,10 @@ function podeCriarUsuario() {
          possuiPermissao('CADASTRAR EDITOR');
 }
 
+function podeRenomearServico() {
+  return possuiPermissao('CRIAR SERVICO');
+}
+
 module.exports = {
   podeCriarUsuario: podeCriarUsuario,
   podeSalvarPagina: podeSalvarPagina,
@@ -151,5 +155,6 @@ module.exports = {
   podePublicarDascartarPagina: podePublicarDascartarPagina,
   podeDespublicarPagina: podeDespublicarPagina,
   podeExcluirPagina: podeExcluirPagina,
-  podeMostrarPaginaLista: podeMostrarPaginaLista
+  podeMostrarPaginaLista: podeMostrarPaginaLista,
+  podeRenomearServico: podeRenomearServico
 };

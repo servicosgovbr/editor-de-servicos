@@ -32,11 +32,9 @@ module.exports = {
         servico.nome(novoNome);
         m.route('/editar/servico/' + slugify(novoNome));
         alertify.success('Serviço renomeado com sucesso!', 0);
+        this.renomeando(false);
         this.salvandoServico(false);
       }, this));
-       this.renomeando(false);
-       this.salvandoServico(false);
-       m.redraw();
     };
   },
 
@@ -54,7 +52,7 @@ module.exports = {
       autofocus: 'autofocus'
     })) : m('div', [
             m('span', servico.nome()),
-            permissoes.podeSalvarPagina() ? m('button.renomear', {
+            permissoes.podeRenomearServico() ? m('button.renomear', {
         disabled: ctrl.renomeando() || ctrl.salvandoServico(),
         style: {
           float: 'right'
