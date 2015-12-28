@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-#login, #cadastro {
+#login, #cadastro, #acesso-cidadao {
   @include shift(3 of 12);
   @include span-columns(6 of 12);
   margin-top: $tamanho-do-cabecalho + 2em;

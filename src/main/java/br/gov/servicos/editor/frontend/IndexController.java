@@ -36,13 +36,18 @@ class IndexController {
         return new ModelAndView("login");
     }
 
+    @RequestMapping("/editar/acesso-cidadao")
+    ModelAndView acessoCidadao() {
+        return new ModelAndView("acesso-cidadao");
+    }
+
     @RequestMapping("/editar/ajuda-markdown")
     ModelAndView ajudaComMarkdown() {
         return new ModelAndView("ajuda-markdown");
     }
 
     @RequestMapping(value = "/editar/acessoNegado", method = {DELETE, PUT, POST, GET, PATCH})
-    ModelAndView acessoNegago() {
+    ModelAndView acessoNegado() {
         return new ModelAndView("acessoNegado");
     }
 }

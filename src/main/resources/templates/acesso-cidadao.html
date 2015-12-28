@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
+
+<head>
+    <title>Acessar o Editor de Serviços</title>
+</head>
+
+<body layout:fragment="corpo">
+
+<span class="cabecalho-cor"></span>
+<div id="wrapper">
+    <header>
+        <div>
+            <a href="/editar">
+                <h1>Editor de Serviços</h1>
+            </a>
+        </div>
+        <div class="metadados">&nbsp;</div>
+        <span></span>
+    </header>
+
+    <form id="acesso-cidadao" th:action="@{/editar/acesso-cidadao}" method="post">
+
+        <h2>Acesso para Cidadão</h2>
+
+        <p th:if="${param.sair}" class="info">
+            <i class="fa fa-info"></i>&nbsp;
+            Você saiu do sistema.
+        </p>
+
+        <p th:if="${param.sessao}" class="info">
+            <i class="fa fa-info"></i>&nbsp;
+            Sua sessão expirou!
+        </p>
+
+        <div class="borda">
+
+            <label for="email">Nome</label>
+            <input id="nome" name="nome" type="text" required="required" />
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="text" required="required" />
+
+            <label for="cpf">CPF</label>
+            <input id="cpf" name="cpf" type="text" placeholder="XXX.XXX.XXX-XX" required="required" />
+
+            <button type="submit">
+                Entrar
+            </button>
+        </div>
+
+        <a href="/editar/autenticar"><i class="fa fa-user"></i>&nbsp; Login para usuários cadastrados</a>
+
+    </form>
+</div>
+<script src="/editar/assets/vendor.js"></script>
+<script src="/editar/assets/app.js"></script>
+<script>
+    require('usuarios/cpf-mask')('cpf')
+</script>
+</body>
+</html>

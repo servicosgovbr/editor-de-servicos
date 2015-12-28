@@ -1,7 +1,6 @@
 package br.gov.servicos.editor.config;
 
 import br.gov.servicos.editor.security.CustomLoginSuccessHandler;
-import br.gov.servicos.editor.security.SecurityWebAppInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -32,12 +31,6 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public SecurityWebAppInitializer securityWebAppInitializer(DaoAuthenticationProvider daoAuthenticationProvider,
-                                                               AuthenticationSuccessHandler successHandler) {
-        return new SecurityWebAppInitializer(daoAuthenticationProvider, successHandler);
-    }
-
-    @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
@@ -52,8 +45,9 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return new CustomLoginSuccessHandler("/editar","/editar/autenticar");
+        return new CustomLoginSuccessHandler("/editar", "/editar/autenticar");
     }
+
 
     @Bean
     public YamlPropertiesFactoryBean yamlPropertiesFactoryBean() throws IOException {

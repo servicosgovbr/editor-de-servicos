@@ -52,3 +52,5 @@ editor:
   - editar_salvar ORGAO (ORGAO ESPECIFICO)
   - criar SERVICO
   - editar_salvar SERVICO
+cidadao:
+  - editar_salvar SERVICO
