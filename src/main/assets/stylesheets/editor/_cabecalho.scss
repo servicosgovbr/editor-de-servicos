@@ -163,9 +163,10 @@ header {
       line-height: 1.5em;
       margin: 0;
       color: $branco;
-      padding: 0 5px;
-      vertical-align: top;
       margin-top: 5px;
+      padding: 0 2px 0 5px;
+      vertical-align: top;
+      margin-left: 2px;
 
       &:hover {
         background-color: $azul-escuro;  
