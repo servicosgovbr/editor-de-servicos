@@ -7,14 +7,14 @@ module.exports = {
   view: function (ctrl, args) {
     function metadados() {
       if (!args.metadados) {
-        return [m('span.novo',
+        return [permissoes.podeCriarPagina() ? m('span.novo',
             m('a.button#nova-pagina', {
               href: '/editar/pagina/nova'
             }, [
               m('i.fa.fa-file-text-o'),
               m.trust('Nova página')
           ])
-        ),
+        ) : m(''),
 
         permissoes.podeCriarUsuario() ? m('span.novo',
               m('a.button#permissoes', {
