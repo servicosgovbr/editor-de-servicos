@@ -126,11 +126,13 @@ function podeDespublicarPagina(orgaoIdUsuario, orgaoIdPagina) {
 
 function podeExcluirPagina(tipoPagina, orgaoIdUsuario, orgaoIdPagina) {
   if (tipoPagina === 'servico') {
-    return possuiPermissaoOrgaoEspecifico('EXCLUIR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+    return possuiPermissaoOrgaoEspecifico('EXCLUIR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
+           possuiPermissao('EXCLUIR SERVICO');
   }
 
   if (tipoPagina === 'orgao') {
-    return possuiPermissaoOrgaoEspecifico('EXCLUIR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina);
+    return possuiPermissaoOrgaoEspecifico('EXCLUIR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
+           possuiPermissao('EXCLUIR ORGAO');
   }
 
   if (tipoPagina === 'pagina-tematica') {
