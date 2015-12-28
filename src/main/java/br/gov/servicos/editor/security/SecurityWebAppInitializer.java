@@ -20,7 +20,7 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_URL = "/editar/autenticar";
-    private static final String LOGIN_CIDADAO_URL = "/editar/acesso-cidadao";
+
 
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
     private static final String ADMIN = "ADMIN";
