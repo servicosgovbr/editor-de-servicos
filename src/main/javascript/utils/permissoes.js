@@ -93,8 +93,8 @@ function podeCriarPagina(tipoPagina) {
     return possuiPermissao('CRIAR PAGINA-TEMATICA');
   }
 
-  return possuiPermissao('CRIAR SERVICO') &&
-         possuiPermissao('CRIAR ORGAO (ORGAO ESPECIFICO)') &&
+  return possuiPermissao('CRIAR SERVICO') ||
+         possuiPermissao('CRIAR ORGAO (ORGAO ESPECIFICO)') ||
          possuiPermissao('CRIAR PAGINA-TEMATICA');
 }
 
