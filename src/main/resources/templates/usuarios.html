@@ -48,7 +48,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="usuario : ${usuarios}">
+                <tr th:if="${ usuario.papel.nome == 'ADMIN' ? userProfiles.temPermissaoParaCriarAdmin() : true }" th:each="usuario : ${usuarios}">
                     <td>
                         <form th:action="@{/editar/usuarios/usuario/{id}/editar(id=${usuario.id})}" method="post">
                             <button class="nome-usuario-link" type="submit">

@@ -40,6 +40,10 @@ public class LoginUserProfiles implements UserProfiles {
         return usuario.temPermissao(tipoPermissao.comTipoPagina(tipoPagina));
     }
 
+    public boolean temPermissaoParaCriarAdmin() {
+        Usuario usuario = getPrincipal();
+        return usuario.temPermissao(TipoPermissao.CADASTRAR.comPapel("ADMIN"));
+    }
 
     @Override
     public boolean temPermissaoGerenciarUsuarioOrgaoEPapel(String siorg, String papel) {
