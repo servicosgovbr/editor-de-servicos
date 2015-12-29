@@ -108,6 +108,11 @@ function podeCriarPagina(tipoPagina) {
     return possuiPermissao('CRIAR PAGINA-TEMATICA');
   }
 
+  if (tipoPagina === 'importar-xml') {
+    return possuiPermissao('CRIAR SERVICO') ||
+           possuiPermissao('CRIAR SERVICO (ORGAO ESPECIFICO)');
+  }
+
   return possuiPermissao('CRIAR SERVICO') ||
          possuiPermissao('CRIAR SERVICO (ORGAO ESPECIFICO)') ||
          possuiPermissao('CRIAR ORGAO') ||
