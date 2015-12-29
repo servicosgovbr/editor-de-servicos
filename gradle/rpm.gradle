@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem;
+
 def rpmBaseDir = file("$buildDir/rpmbuild")
 def rpmDirs = files(
         "$rpmBaseDir/RPMS",
@@ -39,9 +41,13 @@ task buildRpm(type: Exec) {
 task buildRpmLocal(type: Exec) {
     dependsOn assemble, prepareRpm
 
-    commandLine 'bash', '-c',
+   if (OperatingSystem.current().isLinux()) {
+     commandLine 'bash', '-c',
                "rpmbuild -v -bb " +
-                   "--define '_topdir ${rpmBaseDir}' " +
+                        "--define '_topdir ${rpmBaseDir}' " +
                         "--define 'version ${version}' " +
                         "${project.name}.rpmspec"
+   } else {
+     commandLine 'echo', 'Este comando não é suportado fora do Linux'
+   }
 }
