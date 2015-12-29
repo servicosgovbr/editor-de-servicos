@@ -9,7 +9,6 @@ admin:
   - editar_salvar ORGAO
   - cadastrar ADMIN
   - cadastrar PONTO_FOCAL
-  - cadastrar PUBLICADOR
   - cadastrar EDITOR
   - CADASTRAR OUTROS ORGAOS #permite cadastrar/alterar usuarios de outros orgaos
 ponto_focal:
