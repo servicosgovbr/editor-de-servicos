@@ -35,3 +35,13 @@ task buildRpm(type: Exec) {
         commandLine 'echo', 'Este comando não é suportado fora do Snap CI'
     }
 }
+
+task buildRpmLocal(type: Exec) {
+    dependsOn assemble, prepareRpm
+
+    commandLine 'bash', '-c',
+               "rpmbuild -v -bb " +
+                   "--define '_topdir ${rpmBaseDir}' " +
+                        "--define 'version ${version}' " +
+                        "${project.name}.rpmspec"
+}
