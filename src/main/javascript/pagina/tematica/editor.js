@@ -101,7 +101,9 @@ module.exports = {
         despublicarConfig: {
           tipo: 'pagina-tematica',
           despublicar: _.bind(ctrl.despublicar, ctrl),
-          metadados: ctrl.cabecalho.metadados()
+          metadados: ctrl.cabecalho.metadados(),
+          salvandoServico: ctrl.salvandoServico,
+          caiuSessao: ctrl.caiuSessao
         }
       },
 

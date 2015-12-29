@@ -109,6 +109,8 @@ module.exports = {
           tipo: 'orgao',
           despublicar: _.bind(ctrl.despublicar, ctrl),
           metadados: ctrl.cabecalho.metadados(),
+          salvandoServico: ctrl.salvandoServico,
+          caiuSessao: ctrl.caiuSessao,
           orgaoId: ctrl.pagina().url()
         }
       },

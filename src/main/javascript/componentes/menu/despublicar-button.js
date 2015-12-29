@@ -26,13 +26,17 @@ module.exports = {
   controller: function (args) {
     this.despublicar = safeGet(args, 'despublicar');
     this.despublicando = m.prop(false);
+    this.salvandoServico = args.salvandoServico;
+    this.caiuSessao = args.caiuSessao;
     this.orgaoId = args.orgaoId;
 
     this.onClick = function () {
+      this.salvandoServico(true);
       this.despublicando(true);
       m.redraw();
       return promise.onSuccOrError(this.despublicar(), _.bind(function () {
         this.despublicando(false);
+        this.salvandoServico(false);
         m.redraw();
       }, this));
     };
@@ -58,7 +62,7 @@ module.exports = {
         id: 'despublicar',
         onclick: confirmacao(_.bind(ctrl.onClick, ctrl)),
         icon: '',
-        disabled: !publicado || ctrl.despublicando(),
+        disabled: !publicado || ctrl.despublicando() || ctrl.salvandoServico() || ctrl.caiuSessao(),
         espera: ctrl.despublicando()
       }) : m(''),
       m('hr')

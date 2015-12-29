@@ -103,6 +103,8 @@ module.exports = {
             tipo: 'servico',
             despublicar: _.bind(ctrl.despublicar, ctrl),
             metadados: ctrl.cabecalho.metadados(),
+            salvandoServico: ctrl.salvandoServico,
+            caiuSessao: ctrl.caiuSessao,
             orgaoId: ctrl.servico().orgao().nome()
           }
         }),
