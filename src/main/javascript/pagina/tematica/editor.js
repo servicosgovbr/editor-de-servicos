@@ -25,6 +25,7 @@ module.exports = {
       this.pagina(pagina);
       this.modificado(false);
       redirecionarNovaPagina(this.tipo(), pagina.nome());
+      m.route(window.location.pathname);
       return pagina;
     }, this);
 
