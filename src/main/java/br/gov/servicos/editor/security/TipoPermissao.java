@@ -13,7 +13,6 @@ public enum TipoPermissao {
     CADASTRAR("CADASTRAR"),
     CADASTRAR_OUTROS_ORGAOS("CADASTRAR OUTROS ORGAOS");
 
-    public static final String CADASTRAR_PREFIXO = "CADASTRAR ";
     private static final String ORGAO_ESPECIFICO = " (ORGAO ESPECIFICO)";
 
     @Getter

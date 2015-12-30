@@ -22,11 +22,11 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_URL = "/editar/autenticar";
 
 
-    private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario";
+    private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario/**";
     private static final String ADMIN = "ADMIN";
-    private static final String PONTOFOCAL = "PONTOFOCAL";
+    private static final String PONTOFOCAL = "PONTO_FOCAL";
     private static final String PUBLICADOR = "PUBLICADOR";
-    private static final String EDITOR = "CADASTRO";
+    private static final String EDITOR = "EDITOR";
 
     private static final String API_DESPUBLICAR_PATTERN = "/editar/api/pagina/%s/*/despublicar";
     private static final String API_DESCARTAR_PATTERN = "/editar/api/pagina/%s/*/descartar";
@@ -92,7 +92,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                                                                   CADASTRAR.comPapel(PUBLICADOR),
                                                                   CADASTRAR.comPapel(EDITOR))
 
-                .anyRequest().authenticated()
+                .anyRequest().fullyAuthenticated()
 
                 .and()
                     .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
