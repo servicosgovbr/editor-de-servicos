@@ -121,8 +121,7 @@ function podeCriarPagina(tipoPagina) {
 }
 
 function podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  return true ||
-         possuiPermissaoPaginaServicoOrgaoEspecifico('PUBLICAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
+  return possuiPermissaoPaginaServicoOrgaoEspecifico('PUBLICAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
          possuiPermissaoPaginaServico('PUBLICAR SERVICO') ||
          possuiPermissaoPaginaTematica('PUBLICAR PAGINA-TEMATICA') || 
          possuiPermissaoPaginaOrgaoOrgaoEspecifico('PUBLICAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
@@ -130,8 +129,7 @@ function podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) {
 }
 
 function podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  return true ||
-         possuiPermissaoPaginaServicoOrgaoEspecifico('DESCARTAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
+  return possuiPermissaoPaginaServicoOrgaoEspecifico('DESCARTAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
          possuiPermissaoPaginaServico('DESCARTAR SERVICO') ||
          possuiPermissaoPaginaTematica('DESCARTAR PAGINA-TEMATICA') || 
          possuiPermissaoPaginaOrgaoOrgaoEspecifico('DESCARTAR ORGAO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) ||
@@ -165,7 +163,7 @@ function podeExcluirPagina(tipoPagina, orgaoIdUsuario, orgaoIdPagina) {
 }
 
 function podePublicarDascartarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) &&
+  return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) ||
          podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina);
 }
 
