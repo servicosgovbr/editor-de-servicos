@@ -26,8 +26,8 @@
 
         <h2>Acesso para Cidadão</h2>
 
-        <div th:if="${#fields.hasAnyErrors()}" class="erro">
-            <p th:each="err : ${#fields.allErrors()}" th:text="${err}" ><i class="fa fa-exclamation-triangle"></i>&nbsp;</p>
+        <div th:if="${#fields.hasAnyErrors()}">
+            <p th:each="err : ${#fields.allErrors()}" class="erro"><i class="fa fa-exclamation-triangle"></i>&nbsp;<span th:text="${err}"></span></p>
         </div>
 
         <p th:if="${param.sair}" class="info">
