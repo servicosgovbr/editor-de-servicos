@@ -1,13 +1,18 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.usuarios.FormularioAcessoCidadao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
+
+@Slf4j
 @Controller
 @RequestMapping("/editar/acesso-cidadao")
 public class AcessoCidadaoController {
@@ -21,12 +26,21 @@ public class AcessoCidadaoController {
 
     @RequestMapping(method = RequestMethod.GET)
     ModelAndView acessoCidadao() {
-        return new ModelAndView("acesso-cidadao");
+        ModelMap model = new ModelMap();
+        model.addAttribute("formularioAcessoCidadao", new FormularioAcessoCidadao());
+        return new ModelAndView("acesso-cidadao", model);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    RedirectView acessoCidadao(@RequestParam String nome, @RequestParam String email, @RequestParam String cpf) {
-        acessoCidadaoService.autenticaCidadao(nome,email,cpf);
-        return new RedirectView("/editar", true, false);
+    ModelAndView acessoCidadao(@Valid FormularioAcessoCidadao formularioAcessoCidadao, BindingResult result) {
+        if (!result.hasErrors()) {
+            acessoCidadaoService.autenticaCidadao(formularioAcessoCidadao);
+            return new ModelAndView("redirect:/editar");
+        } else {
+            ModelMap model = new ModelMap();
+            model.addAttribute("formularioAcessoCidadao", formularioAcessoCidadao);
+            return new ModelAndView("acesso-cidadao", model);
+        }
     }
+
 }

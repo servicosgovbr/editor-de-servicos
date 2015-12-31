@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.security;
 
+import br.gov.servicos.editor.usuarios.FormularioAcessoCidadao;
 import lombok.experimental.FieldDefaults;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -17,7 +20,9 @@ import static lombok.AccessLevel.PRIVATE;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @FieldDefaults(level = PRIVATE)
 @RunWith(MockitoJUnitRunner.class)
@@ -27,6 +32,9 @@ public class AcessoCidadaoControllerTest {
 
     @Mock
     AcessoCidadaoService service;
+
+    @Mock
+    BindingResult result;
 
     @Before
     public void setUp() {
@@ -40,8 +48,27 @@ public class AcessoCidadaoControllerTest {
 
     @Test
     public void deveRedirecionarParaPaginaPrincipal() {
-        doNothing().when(service).autenticaCidadao(anyString(), anyString(), anyString());
-        RedirectView view = controller.acessoCidadao("Nome", "um@email.com", "123.123.123-12");
-        assertThat(view.getUrl(), is("/editar"));
+        FormularioAcessoCidadao cidadao = criaCidadao();
+        when(result.hasErrors()).thenReturn(false);
+        doNothing().when(service).autenticaCidadao(eq(cidadao));
+
+
+        ModelAndView view = controller.acessoCidadao(cidadao, result);
+        assertThat(view.getViewName(), is("redirect:/editar"));
+    }
+
+    @Test
+    public void naoDeveRedirecionarParaPaginaPrincipalPoisExisteErroDeValidacao() {
+        FormularioAcessoCidadao cidadao = criaCidadao();
+        when(result.hasErrors()).thenReturn(true);
+        doNothing().when(service).autenticaCidadao(eq(cidadao));
+
+
+        ModelAndView view = controller.acessoCidadao(cidadao, result);
+        assertThat(view.getViewName(), is("acesso-cidadao"));
+    }
+
+    private FormularioAcessoCidadao criaCidadao() {
+        return new FormularioAcessoCidadao("Nome", "um@email.com", "123.123.123-12");
     }
 }

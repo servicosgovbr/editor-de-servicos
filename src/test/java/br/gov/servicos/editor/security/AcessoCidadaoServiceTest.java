@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
+import br.gov.servicos.editor.usuarios.FormularioAcessoCidadao;
 import br.gov.servicos.editor.usuarios.Papel;
 import br.gov.servicos.editor.usuarios.PapelRepository;
 import br.gov.servicos.editor.usuarios.Usuario;
@@ -75,9 +76,12 @@ public class AcessoCidadaoServiceTest {
     }
 
     private void chamaServico() {
-        service.autenticaCidadao("Nome", "um@email.com", "123.123.123-12");
+        service.autenticaCidadao(criaCidadao());
     }
 
+    private FormularioAcessoCidadao criaCidadao() {
+        return new FormularioAcessoCidadao("Nome", "um@email.com", "123.123.123-12");
+    }
     private Papel criaPapelCidadao() {
         Papel cidadao = new Papel();
         cidadao.setNome(CIDADAO);

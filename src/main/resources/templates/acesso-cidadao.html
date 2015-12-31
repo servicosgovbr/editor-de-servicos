@@ -22,9 +22,13 @@
         <span></span>
     </header>
 
-    <form id="acesso-cidadao" th:action="@{/editar/acesso-cidadao}" method="post">
+    <form id="acesso-cidadao" th:action="@{/editar/acesso-cidadao}" th:object="${formularioAcessoCidadao}" method="post">
 
         <h2>Acesso para Cidadão</h2>
+
+        <div th:if="${#fields.hasAnyErrors()}" class="erro">
+            <p th:each="err : ${#fields.allErrors()}" th:text="${err}" ><i class="fa fa-exclamation-triangle"></i>&nbsp;</p>
+        </div>
 
         <p th:if="${param.sair}" class="info">
             <i class="fa fa-info"></i>&nbsp;
@@ -39,13 +43,13 @@
         <div class="borda">
 
             <label for="email">Nome</label>
-            <input id="nome" name="nome" type="text" required="required" />
+            <input id="nome" name="nome" type="text" required="required" th:value="*{nome}" th:class="${#fields.hasErrors('nome')}? erroCampo"/>
 
             <label for="email">Email</label>
-            <input id="email" name="email" type="text" required="required" />
+            <input id="email" name="email" type="text" required="required" th:value="*{email}" th:class="${#fields.hasErrors('email')}? erroCampo"/>
 
             <label for="cpf">CPF</label>
-            <input id="cpf" name="cpf" type="text" placeholder="XXX.XXX.XXX-XX" required="required" />
+            <input id="cpf" name="cpf" type="text" placeholder="XXX.XXX.XXX-XX" th:value="*{cpf}" required="required" th:class="${#fields.hasErrors('cpf')}? erroCampo" />
 
             <button type="submit">
                 Entrar
