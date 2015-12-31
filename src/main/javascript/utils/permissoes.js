@@ -1,4 +1,4 @@
-/*global loggedUser, location*/
+/*global loggedUser, location, console*/
 'use strict';
 
 function retornaPermissoes() {
@@ -163,7 +163,10 @@ function podeExcluirPagina(tipoPagina, orgaoIdUsuario, orgaoIdPagina) {
 }
 
 function podePublicarDascartarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) ||
+  console.log(orgaoIdUsuario, orgaoIdPagina);
+  console.log(podePublicarPagina(orgaoIdUsuario, orgaoIdPagina));
+  console.log(podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina));
+  return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) &&
          podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina);
 }
 
