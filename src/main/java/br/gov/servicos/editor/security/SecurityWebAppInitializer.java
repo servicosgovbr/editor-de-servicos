@@ -31,6 +31,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     private static final String API_DESPUBLICAR_PATTERN = "/editar/api/pagina/%s/*/despublicar";
     private static final String API_DESCARTAR_PATTERN = "/editar/api/pagina/%s/*/descartar";
     private static final String API_PAGINA_PATTERN = "/editar/api/pagina/%s/*";
+    private static final String API_NOVA_PAGINA_PATTERN = "/editar/api/pagina/%s/novo";
 
     @Autowired
     private DaoAuthenticationProvider daoAuthenticationProvider;
@@ -73,6 +74,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         // este laço irá adicionar todas as permissões específicas por página
         for (TipoPagina tipoPagina: TipoPagina.values()) {
               httpSecurityBuilder.authorizeRequests()
+                      .antMatchers(GET, constroiURLTipoPagina(API_NOVA_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
                       .antMatchers(DELETE, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
                       .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
                       .antMatchers(PUT, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
