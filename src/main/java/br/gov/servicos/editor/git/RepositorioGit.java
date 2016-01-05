@@ -7,9 +7,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.marker.LogstashMarker;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.MergeResult;
-import org.eclipse.jgit.api.PullResult;
+import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.internal.JGitText;
@@ -275,6 +273,7 @@ public class RepositorioGit {
             log.info(marker, "git pull em {}", git.getRepository().getBranch());
 
             if (!result.isSuccessful()) {
+                git.rebase().setOperation(RebaseCommand.Operation.ABORT).call();
                 throw new IllegalStateException("Não foi possível completar o git pull");
             }
 
