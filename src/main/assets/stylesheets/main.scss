@@ -56,7 +56,11 @@ body {
 #tipoDePagina .select2-container {
 	width: 100% !important;
 	margin-top: 15px;
-} 
+}
+
+#tipoDePagina h3 {
+   display: inline;
+}
 
 #importar-xml {
 	input {
@@ -83,7 +87,7 @@ body {
 		border-bottom-color: #3972DB;
 		width: 50%;
 		margin-right: 60%; 
-		display: inline-block;
+		display: block;
 
 		&:hover {
 			border-bottom-color: #2355b1;

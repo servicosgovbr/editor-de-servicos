@@ -31,8 +31,8 @@ module.exports = {
     })) : referencia.tipoDePagina(args.tipo());
 
     return m('fieldset#tipoDePagina', [
-      m('h3', [
-        'Tipo de Página: ',
+      m('div', [
+        m('h3', 'Tipo de Página: '),
         args.novo ? m.component(tooltipTipo) : '',
         componenteTipo
       ])
