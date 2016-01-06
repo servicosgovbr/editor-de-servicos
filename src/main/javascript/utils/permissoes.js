@@ -1,4 +1,4 @@
-/*global loggedUser, location, console*/
+/*global loggedUser, location*/
 'use strict';
 
 function retornaPermissoes() {
@@ -66,7 +66,8 @@ function possuiPermissaoPaginaOrgaoOrgaoEspecifico(permissao, orgaoIdUsuario, or
 }
 
 function podeSalvarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  return  possuiPermissaoPaginaServico('EDITAR_SALVAR SERVICO') ||
+  return  !orgaoIdPagina ||
+          possuiPermissaoPaginaServico('EDITAR_SALVAR SERVICO') ||
           possuiPermissaoPaginaServicoOrgaoEspecifico('EDITAR_SALVAR SERVICO (ORGAO ESPECIFICO)', orgaoIdUsuario, orgaoIdPagina) || 
           possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA') || 
           possuiPermissaoPaginaOrgao('EDITAR_SALVAR ORGAO') || 
@@ -163,9 +164,6 @@ function podeExcluirPagina(tipoPagina, orgaoIdUsuario, orgaoIdPagina) {
 }
 
 function podePublicarDascartarPagina(orgaoIdUsuario, orgaoIdPagina) {
-  console.log(orgaoIdUsuario, orgaoIdPagina);
-  console.log(podePublicarPagina(orgaoIdUsuario, orgaoIdPagina));
-  console.log(podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina));
   return podePublicarPagina(orgaoIdUsuario, orgaoIdPagina) &&
          podeDescartarPagina(orgaoIdUsuario, orgaoIdPagina);
 }
