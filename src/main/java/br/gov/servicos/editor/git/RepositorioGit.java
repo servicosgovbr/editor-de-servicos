@@ -276,8 +276,11 @@ public class RepositorioGit {
             log.info(marker, "git pull em {}", git.getRepository().getBranch());
 
             if (!result.isSuccessful()) {
-                git.rebase().setOperation(RebaseCommand.Operation.ABORT).call();
+                log.error(append("git.state", git.getRepository().getRepositoryState().toString()), "ERRO AO FAZER REBASE --- INICIANDO ABORT");
+                git.rebase().setStrategy(THEIRS).setOperation(RebaseCommand.Operation.ABORT).call();
+                log.error(append("git.state", git.getRepository().getRepositoryState().toString()), "ERRO AO FAZER REBASE --- APÓS O ABORT");
                 throw new IllegalStateException("Não foi possível completar o git pull");
+
             }
         } catch (WrongRepositoryStateException e) { // o repositório pode entrar em estado inválido, e neste caso fazemos um rebase e tentamos
             try {
