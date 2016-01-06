@@ -10,6 +10,7 @@ import net.logstash.logback.marker.LogstashMarker;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -262,6 +263,8 @@ public class RepositorioGit {
                     .setProgressMonitor(new LogstashProgressMonitor(log))
                     .call();
 
+
+
             Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                     .and(append("git.branch", git.getRepository().getBranch()))
                     .and(append("pull.fetched.from", result.getFetchedFrom()))
@@ -276,7 +279,12 @@ public class RepositorioGit {
                 git.rebase().setOperation(RebaseCommand.Operation.ABORT).call();
                 throw new IllegalStateException("Não foi possível completar o git pull");
             }
-
+        } catch (WrongRepositoryStateException e) { // o repositório pode entrar em estado inválido, e neste caso fazemos um rebase e tentamos
+            try {
+                git.rebase().setOperation(RebaseCommand.Operation.ABORT).call();
+            } finally {
+                throw new IllegalStateException("Não foi possível completar o git pull");
+            }
         } catch (IOException | GitAPIException e) {
             throw new RuntimeException(e);
         }
