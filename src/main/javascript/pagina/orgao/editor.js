@@ -10,6 +10,7 @@ var publicarOrgao = require('xml/publicar').publicarOrgao;
 var descartarOrgao = require('xml/descartar').descartarOrgao;
 var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
+var permissoes = require('utils/permissoes');
 
 function ehNovo() {
   return m.route.param('id') === 'novo';
@@ -57,6 +58,10 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
+    if (!permissoes.podeCriarPagina('orgao')) {
+      return m.component(require('acesso-negado'));
+    }
+
     if (!ctrl.pagina()) {
       return m('');
     }
