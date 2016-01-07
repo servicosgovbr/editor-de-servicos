@@ -290,9 +290,21 @@ public class RepositorioGit {
         }
     }
 
-    private void colocarEmSAFE() throws GitAPIException {
-        git.rebase().setStrategy(THEIRS).setOperation(RebaseCommand.Operation.ABORT).call();
-        git.checkout().setForce(true).call();
+    private void colocarEmSAFE() throws GitAPIException, IOException {
+        RebaseResult rebaseResult = git.rebase().setStrategy(THEIRS).setOperation(RebaseCommand.Operation.ABORT).call();
+
+
+        Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
+                .and(append("git.branch", git.getRepository().getBranch()))
+                .and(append("pull.rebase.result", rebaseResult.getStatus().toString()));
+
+        log.info(marker, "git rebase em {}", git.getRepository().getBranch());
+
+        Ref checkoutResult = git.checkout().setName(git.getRepository().getBranch()).setForce(true).call();
+
+        marker = append("checkout.result", checkoutResult.getName());
+
+        log.info(marker, "git checkout --force em {}", git.getRepository().getBranch());
     }
 
     public void push(String branch) {
