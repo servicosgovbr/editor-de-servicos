@@ -9,6 +9,7 @@ var despublicarServico = require('api').despublicar;
 var servicoEmEdicao = require('servico/servico-em-edicao');
 var redirecionarNovoServico = require('redirecionador');
 var routeUtils = require('utils/route-utils');
+var permissoes = require('utils/permissoes');
 
 var modificado = m.prop(false);
 
@@ -58,6 +59,10 @@ module.exports = {
   },
 
   view: function (ctrl) {
+    if (!permissoes.podeCriarPagina('servico')) {
+      return m.component(require('acesso-negado'));
+    }
+
     var binding = {
       servico: ctrl.servico,
       novo: routeUtils.ehNovo(),
