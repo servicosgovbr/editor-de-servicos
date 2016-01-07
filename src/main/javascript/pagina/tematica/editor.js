@@ -10,6 +10,7 @@ var publicarPagina = require('xml/publicar').publicarPaginaTematica;
 var descartarPagina = require('xml/descartar').descartarPaginaTematica;
 var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
+var permissoes = require('utils/permissoes');
 
 module.exports = {
   controller: function (args) {
@@ -56,6 +57,10 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
+    if (!permissoes.podeCriarPagina('pagina-tematica')) {
+      return m.component(require('acesso-negado'));
+    }
+
     if (!ctrl.pagina()) {
       return m('');
     }
