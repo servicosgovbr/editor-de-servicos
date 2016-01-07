@@ -259,11 +259,8 @@ public class RepositorioGit {
         try {
             PullResult result = git.pull()
                     .setRebase(true)
-                    .setStrategy(THEIRS)
                     .setProgressMonitor(new LogstashProgressMonitor(log))
                     .call();
-
-
 
             Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                     .and(append("git.branch", git.getRepository().getBranch()))
