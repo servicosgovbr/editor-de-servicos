@@ -8,7 +8,7 @@ module.exports = function (tipo, nome, redirect) {
   if (!_.isEqual(oldId, newId)) {
     m.route('/editar/' + tipo + '/' + newId);
   }
-  if (redirect()) {
+  if (redirect && redirect()) {
     m.route(window.location.pathname);
   }
 };
