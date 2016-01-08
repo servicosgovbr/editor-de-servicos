@@ -31,8 +31,6 @@ module.exports = function (metadados) {
 
     if(xhr.status === 406 || xhr.status === 403) {
       return 'acesso_negado';
-    } else if (xhr.status === 409) {
-      return 'conflito_edicao';
     } else {
       return xhr.responseText;
     }

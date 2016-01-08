@@ -35,13 +35,8 @@ function tratamentoErros(xhr){
     return erroPermissao;
   }
 
-  var erroConflito = tratamentoConcorrenciaEdicao(xhr);
-
-  if (erroConflito !== '') {
-    return erroConflito;
-  } else {
-    return xhr.responseText;
-  }
+  tratamentoConcorrenciaEdicao(xhr);
+  return xhr.responseText;
 
 }
 
