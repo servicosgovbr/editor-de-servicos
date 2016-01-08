@@ -300,14 +300,11 @@ public class RepositorioGit {
 
         log.info(marker, "git rebase em {}", git.getRepository().getBranch());
 
-        Ref checkoutResult = git
-                .checkout()
-                .setName(git.getRepository().getBranch())
-                .setForce(true).call();
+        Ref resetResult = git.reset().setMode(ResetCommand.ResetType.HARD).setRef(R_HEADS + MASTER).call();
 
-        marker = append("checkout.result", checkoutResult.getName());
+        marker = append("reset.result", resetResult.getName());
 
-        log.info(marker, "git checkout --force em {}", git.getRepository().getBranch());
+        log.info(marker, "git reset --hard em {}", git.getRepository().getBranch());
     }
 
     public void push(String branch) {
