@@ -24,7 +24,7 @@ module.exports = {
         m.redraw(true);
         return resp;
       }, this), _.bind(function (msg) {
-        if (msg !== 'acesso_negado') {
+        if (msg !== 'acesso_negado' && msg !== 'conflito_edicao') {
           alertify.error(msg, 0);
         }
         

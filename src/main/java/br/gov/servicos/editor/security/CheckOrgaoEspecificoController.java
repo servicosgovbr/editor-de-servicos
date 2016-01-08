@@ -2,7 +2,9 @@ package br.gov.servicos.editor.security;
 
 
 import br.gov.servicos.editor.conteudo.TipoPagina;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 public abstract class CheckOrgaoEspecificoController {
@@ -27,4 +29,7 @@ public abstract class CheckOrgaoEspecificoController {
     private final boolean usuarioTemPermissaoParaTipoPagina(TipoPermissao tipoPermissao, UserProfiles userProfiles, TipoPagina tipoPagina) {
         return userProfiles.temPermissaoParaTipoPagina(tipoPermissao, tipoPagina);
     }
+
+
+
 }

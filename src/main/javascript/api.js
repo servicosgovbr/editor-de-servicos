@@ -5,6 +5,7 @@ var extrairMetadados = require('utils/extrair-metadados');
 var atributosCsrf = require('utils/atributos-csrf');
 var slugify = require('slugify');
 var tratamentoAcessoNegado = require('utils/tratamento-acesso-negado');
+var tratamentoConcorrenciaEdicao = require('utils/tratamento-concorrencia-edicao');
 
 function request(opts) {
   return m.request(_.assign({
@@ -18,11 +19,30 @@ function serializeXml(svc) {
 }
 
 function deserializeXml(svc) {
-  if(svc === 'acesso_negado') {
-      return 'acesso_negado';
-  } else {
-    return jQuery.parseXML(svc);
+    if(svc === 'acesso_negado') {
+        return 'acesso_negado';
+    } else if (svc === 'conflito_edicao'){
+        return 'conflito_edicao';
+    } else {
+      return jQuery.parseXML(svc);
+    }
   }
+
+function tratamentoErros(xhr){
+  var erroPermissao = tratamentoAcessoNegado(xhr);
+
+  if (erroPermissao !== '') {
+    return erroPermissao;
+  }
+
+  var erroConflito = tratamentoConcorrenciaEdicao(xhr);
+
+  if (erroConflito !== '') {
+    return erroConflito;
+  } else {
+    return xhr.responseText;
+  }
+
 }
 
 function configCsrf(xhr) {
@@ -109,7 +129,7 @@ module.exports = {
     return request({
       method: 'DELETE',
       url: url,
-      extract: tratamentoAcessoNegado,
+      extract: tratamentoErros,
       config: configCsrf
     });
   },
@@ -121,7 +141,7 @@ module.exports = {
       url: '/editar/api/pagina/servico/' + id,
       config: configCsrf,
       serialize: _.identity,
-      extract: tratamentoAcessoNegado,
+      extract: tratamentoErros,
       data: novoNome
     });
   },

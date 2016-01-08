@@ -1,6 +1,7 @@
 'use strict';
 
 var tratamentoAcessoNegado = require('utils/tratamento-acesso-negado');
+var tratamentoConcorrenciaEdicao = require('utils/tratamento-concorrencia-edicao');
 
 function fazMockSeRodarEmTestes(xhr) {
   if (!xhr.getResponseHeader) {
@@ -26,9 +27,12 @@ module.exports = function (metadados) {
     });
 
     tratamentoAcessoNegado(xhr);
+    tratamentoConcorrenciaEdicao(xhr);
 
     if(xhr.status === 406 || xhr.status === 403) {
       return 'acesso_negado';
+    } else if (xhr.status === 409) {
+      return 'conflito_edicao';
     } else {
       return xhr.responseText;
     }

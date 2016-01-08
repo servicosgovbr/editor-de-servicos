@@ -273,17 +273,14 @@ public class RepositorioGit {
             log.info(marker, "git pull em {}", git.getRepository().getBranch());
 
             if (!result.isSuccessful()) {
-
                 colocarEmSAFE();
-
-                throw new IllegalStateException("Não foi possível completar o git pull");
-
+                throw new RepositorioEstadoInvalidoException("Não foi possível completar o git pull");
             }
-        } catch (WrongRepositoryStateException e) { // o repositório pode entrar em estado inválido, e neste caso fazemos um rebase e tentamos
+        } catch (WrongRepositoryStateException e) { // o repositório pode entrar em estado inválido, e neste caso fazemos um rebase e voltamos o repositório para um estado válido
             try {
                 colocarEmSAFE();
             } finally {
-                throw new IllegalStateException("Não foi possível completar o git pull");
+                throw new RepositorioEstadoInvalidoException("Não foi possível completar o git pull");
             }
         } catch (IOException | GitAPIException e) {
             throw new RuntimeException(e);
@@ -291,7 +288,10 @@ public class RepositorioGit {
     }
 
     private void colocarEmSAFE() throws GitAPIException, IOException {
-        RebaseResult rebaseResult = git.rebase().setStrategy(THEIRS).setOperation(RebaseCommand.Operation.ABORT).call();
+        RebaseResult rebaseResult = git
+                .rebase()
+                .setStrategy(THEIRS)
+                .setOperation(RebaseCommand.Operation.ABORT).call();
 
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
@@ -300,7 +300,10 @@ public class RepositorioGit {
 
         log.info(marker, "git rebase em {}", git.getRepository().getBranch());
 
-        Ref checkoutResult = git.checkout().setName(git.getRepository().getBranch()).setForce(true).call();
+        Ref checkoutResult = git
+                .checkout()
+                .setName(git.getRepository().getBranch())
+                .setForce(true).call();
 
         marker = append("checkout.result", checkoutResult.getName());
 
