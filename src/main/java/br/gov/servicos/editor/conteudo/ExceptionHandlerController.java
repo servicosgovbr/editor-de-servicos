@@ -52,7 +52,7 @@ public class ExceptionHandlerController {
 
     @ResponseStatus(value= HttpStatus.CONFLICT)
     @ExceptionHandler(RepositorioEstadoInvalidoException.class)
-    public String repositorioEmEstadoInvalido(RepositorioEstadoInvalidoException e) {
-        return e.getMessage();
+    public void repositorioEmEstadoInvalido(RepositorioEstadoInvalidoException e) {
+        // apenas para retornar o código certo
     }
 }
