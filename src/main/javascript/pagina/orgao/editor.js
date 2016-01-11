@@ -25,11 +25,13 @@ module.exports = {
     this.pagina = carregarPagina(m.route.param('id'), this.cabecalho);
     this.salvandoServico = m.prop(false);
     this.caiuSessao = m.prop(false);
+    this.redirect = m.prop(false);
 
     this._onOp = _.bind(function (pagina) {
       this.pagina(pagina);
       this.modificado(false);
-      redirecionarNovaPagina(this.tipo(), pagina.url());
+      redirecionarNovaPagina(this.tipo(), pagina.url(), this.redirect);
+      this.redirect(false);
       return pagina;
     }, this);
 
@@ -48,6 +50,7 @@ module.exports = {
     };
 
     this.descartar = function () {
+      this.redirect(true);
       return descartarOrgao(this.pagina(), this.cabecalho.metadados)
         .then(this._onOp);
     };

@@ -23,6 +23,7 @@ module.exports = {
     this._servicoSalvo = _.bind(function (servico) {
       this.servico(servico);
       redirecionarNovoServico('servico', this.servico().nome(), this.redirect);
+      this.redirect(false);
       this.cabecalho.limparErro();
       modificado(false);
       return servico;
