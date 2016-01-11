@@ -10,7 +10,6 @@ var servicoEmEdicao = require('servico/servico-em-edicao');
 var redirecionarNovoServico = require('redirecionador');
 var routeUtils = require('utils/route-utils');
 var permissoes = require('utils/permissoes');
-
 var modificado = m.prop(false);
 
 module.exports = {
@@ -19,13 +18,13 @@ module.exports = {
     this.salvandoServico = m.prop(false);
     this.caiuSessao = m.prop(false);
     this.servico = servicoEmEdicao.recuperar(this.cabecalho);
+    this.redirect = m.prop(false);
 
     this._servicoSalvo = _.bind(function (servico) {
       this.servico(servico);
-      redirecionarNovoServico('servico', this.servico().nome());
+      redirecionarNovoServico('servico', this.servico().nome(), this.redirect);
       this.cabecalho.limparErro();
       modificado(false);
-
       return servico;
     }, this);
 
@@ -42,6 +41,7 @@ module.exports = {
     };
 
     this.descartar = function () {
+      this.redirect(true);
       return descartarServico(this.servico(), this.cabecalho.metadados)
         .then(this._servicoSalvo);
     };
