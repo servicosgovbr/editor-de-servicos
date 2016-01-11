@@ -378,12 +378,14 @@ public class RepositorioGit {
             try {
                 marker = marker.and(append("git.branch", git.getRepository().getBranch()));
 
-                List<Ref> branches = git.branchList().call();
+                List<Ref> branches = git.branchList().setListMode(ALL).call();
                 log.info(marker, "git branch list: {} branches", branches.size());
 
                 return branches.stream()
                         .map(Ref::getName)
-                        .map(n -> n.replaceAll(R_HEADS, ""));
+                        .map(n -> n.replaceAll(R_HEADS, ""))
+                        .map(n -> n.replaceAll("refs/remotes/[^/]+/", ""))
+                        .distinct();
 
             } catch (IOException | GitAPIException e) {
                 log.error(marker, "Erro ao listar branches", e);
