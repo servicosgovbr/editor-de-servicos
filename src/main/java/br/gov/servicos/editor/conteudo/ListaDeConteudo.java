@@ -80,6 +80,7 @@ public class ListaDeConteudo {
     }
 
     public Set<Metadados> listar() throws FileNotFoundException {
+        repositorioGit.atualizarMetadados();
         Stream<Metadados> orgaos = listarMetadados(ORGAO);
         Stream<Metadados> paginas = listarMetadados(PAGINA_TEMATICA);
         Stream<Metadados> servicos = listarMetadados(SERVICO);

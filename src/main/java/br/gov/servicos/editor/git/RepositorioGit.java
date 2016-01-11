@@ -15,6 +15,7 @@ import org.eclipse.jgit.internal.JGitText;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.TrackingRefUpdate;
 import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
@@ -414,4 +415,13 @@ public class RepositorioGit {
         config.save();
     }
 
+    @SneakyThrows
+    public void atualizarMetadados() {
+        comRepositorioAberto(uncheckedFunction(git -> {
+            log.info("git fetch");
+            return git.fetch()
+                    .setProgressMonitor(new LogstashProgressMonitor(log))
+                    .call();
+        }));
+    }
 }
