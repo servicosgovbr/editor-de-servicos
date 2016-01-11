@@ -49,11 +49,11 @@ module.exports = {
         .then(this._onOp);
     };
 
-    this.descartar = function () {
+    this.descartar = _.bind(function () {
       this.redirect(true);
       return descartarOrgao(this.pagina(), this.cabecalho.metadados)
         .then(this._onOp);
-    };
+    }, this);
 
     this.despublicar = function () {
       return despublicar('orgao', this.pagina().url(), this.cabecalho.metadados);

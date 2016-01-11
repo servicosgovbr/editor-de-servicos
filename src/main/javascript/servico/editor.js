@@ -41,11 +41,11 @@ module.exports = {
         }, this));
     };
 
-    this.descartar = function () {
+    this.descartar = _.bind(function () {
       this.redirect(true);
       return descartarServico(this.servico(), this.cabecalho.metadados)
         .then(this._servicoSalvo);
-    };
+    }, this);
 
     this.despublicar = function () {
       return despublicarServico('servico', routeUtils.id(), this.cabecalho.metadados);

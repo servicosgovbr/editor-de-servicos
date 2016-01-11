@@ -45,11 +45,11 @@ module.exports = {
         .then(this._onOp);
     };
 
-    this.descartar = function () {
+    this.descartar = _.bind(function () {
       this.redirect(true);
       return descartarPagina(this.pagina(), this.cabecalho.metadados)
         .then(this._onOp);
-    };
+    }, this);
 
     this.despublicar = function () {
       return despublicar('pagina-tematica', this.pagina().nome(), this.cabecalho.metadados);
