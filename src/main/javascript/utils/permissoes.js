@@ -1,4 +1,4 @@
-/*global loggedUser, location*/
+/*global loggedUser*/
 'use strict';
 
 function retornaPermissoes() {
@@ -34,15 +34,15 @@ function possuiPermissaoOrgaoEspecifico(permissao, orgaoIdUsuario, orgaoIdPagina
 }
 
 function estaNaPaginaServico() {
-  return location.pathname.indexOf('editar/servico') > -1;
+  return m.route().indexOf('editar/servico') > -1;
 }
 
 function estaNaPaginaOrgao() {
-  return location.pathname.indexOf('editar/orgao') > -1;
+  return m.route().indexOf('editar/orgao') > -1;
 }
 
 function estaNaPaginaTematica() {
-  return location.pathname.indexOf('editar/pagina-tematica') > -1;
+  return m.route().indexOf('editar/pagina-tematica') > -1;
 }
 
 function possuiPermissaoPaginaServico(permissao) {
