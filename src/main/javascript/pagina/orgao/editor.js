@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var Tooltips = require('tooltips');
@@ -58,7 +59,15 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    if (!permissoes.podeCriarPagina('orgao')) {
+    if (routeUtils.ehNovo() && !permissoes.podeCriarPagina('orgao')) {
+      return m.component(require('acesso-negado'));
+    }
+
+    if (!routeUtils.ehNovo() &&
+        !permissoes.podeSalvarPagina(
+          loggedUser.siorg,
+          ctrl.pagina().url()
+        )) {
       return m.component(require('acesso-negado'));
     }
 
