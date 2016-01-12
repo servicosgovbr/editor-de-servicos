@@ -1,4 +1,3 @@
-/*global loggedUser*/
 'use strict';
 
 var Tooltips = require('tooltips');
@@ -59,15 +58,13 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    if (routeUtils.ehNovo() && !permissoes.podeCriarPagina('pagina-tematica')) {
+    if (routeUtils.ehNovo() &&
+        !permissoes.podeCriarPagina('pagina-tematica')) {
       return m.component(require('acesso-negado'));
     }
 
     if (!routeUtils.ehNovo() &&
-        !permissoes.podeSalvarPagina(
-          loggedUser.siorg,
-          ctrl.servico().orgao().nome()
-        )) {
+        !permissoes.possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA')) {
       return m.component(require('acesso-negado'));
     }
 

@@ -187,5 +187,6 @@ module.exports = {
   podeDespublicarPagina: podeDespublicarPagina,
   podeExcluirPagina: podeExcluirPagina,
   podeMostrarPaginaLista: podeMostrarPaginaLista,
-  podeRenomearServico: podeRenomearServico
+  podeRenomearServico: podeRenomearServico,
+  possuiPermissaoPaginaTematica: possuiPermissaoPaginaTematica
 };
