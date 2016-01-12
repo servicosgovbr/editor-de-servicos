@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var CabecalhoModel = require('cabecalho/cabecalho-model');
@@ -60,7 +61,12 @@ module.exports = {
   },
 
   view: function (ctrl) {
-    if (!permissoes.podeCriarPagina('servico')) {
+    if (routeUtils.ehNovo() && !permissoes.podeCriarPagina('servico')) {
+      return m.component(require('acesso-negado'));
+    }
+
+    if (!routeUtils.ehNovo() &&
+        !permissoes.podeSalvarPagina(loggedUser.siorg, ctrl.servico().orgao().nome())) {
       return m.component(require('acesso-negado'));
     }
 
