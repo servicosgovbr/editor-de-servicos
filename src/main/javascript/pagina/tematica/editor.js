@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var Tooltips = require('tooltips');
@@ -58,7 +59,15 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    if (!permissoes.podeCriarPagina('pagina-tematica')) {
+    if (routeUtils.ehNovo() && !permissoes.podeCriarPagina('pagina-tematica')) {
+      return m.component(require('acesso-negado'));
+    }
+
+    if (!routeUtils.ehNovo() &&
+        !permissoes.podeSalvarPagina(
+          loggedUser.siorg,
+          ctrl.servico().orgao().nome()
+        )) {
       return m.component(require('acesso-negado'));
     }
 
