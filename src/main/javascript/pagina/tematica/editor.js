@@ -11,6 +11,7 @@ var descartarPagina = require('xml/descartar').descartarPaginaTematica;
 var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
 var permissoes = require('utils/permissoes');
+var routeUtils = require('utils/route-utils');
 
 module.exports = {
   controller: function (args) {
@@ -57,7 +58,13 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    if (!permissoes.podeCriarPagina('pagina-tematica')) {
+    if (routeUtils.ehNovo() &&
+        !permissoes.podeCriarPagina('pagina-tematica')) {
+      return m.component(require('acesso-negado'));
+    }
+
+    if (!routeUtils.ehNovo() &&
+        !permissoes.possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA')) {
       return m.component(require('acesso-negado'));
     }
 
@@ -75,7 +82,7 @@ module.exports = {
     var binding = {
       pagina: ctrl.pagina,
       nome: ctrl.pagina().nome,
-      novo: m.route.param('id') === 'novo'
+      novo: routeUtils.ehNovo()
     };
 
     return m.component(EditorBase, {

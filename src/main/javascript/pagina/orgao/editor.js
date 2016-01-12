@@ -1,3 +1,4 @@
+/*global loggedUser*/
 'use strict';
 
 var Tooltips = require('tooltips');
@@ -11,10 +12,7 @@ var descartarOrgao = require('xml/descartar').descartarOrgao;
 var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
 var permissoes = require('utils/permissoes');
-
-function ehNovo() {
-  return m.route.param('id') === 'novo';
-}
+var routeUtils = require('utils/route-utils');
 
 module.exports = {
   controller: function (args) {
@@ -61,7 +59,15 @@ module.exports = {
   },
 
   view: function (ctrl, args) {
-    if (!permissoes.podeCriarPagina('orgao')) {
+    if (routeUtils.ehNovo() && !permissoes.podeCriarPagina('orgao')) {
+      return m.component(require('acesso-negado'));
+    }
+
+    if (!routeUtils.ehNovo() &&
+        !permissoes.podeSalvarPagina(
+          loggedUser.siorg,
+          ctrl.pagina().url()
+        )) {
       return m.component(require('acesso-negado'));
     }
 
@@ -80,8 +86,8 @@ module.exports = {
     var binding = {
       pagina: ctrl.pagina,
       validaNome: ctrl.pagina().nome,
-      nome: ehNovo() ? ctrl.pagina().url : ctrl.pagina().nome,
-      novo: ehNovo()
+      nome: routeUtils.ehNovo() ? ctrl.pagina().url : ctrl.pagina().nome,
+      novo: routeUtils.ehNovo()
     };
 
     return m.component(EditorBase, {
