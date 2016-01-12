@@ -11,10 +11,7 @@ var descartarOrgao = require('xml/descartar').descartarOrgao;
 var despublicar = require('api').despublicar;
 var redirecionarNovaPagina = require('redirecionador');
 var permissoes = require('utils/permissoes');
-
-function ehNovo() {
-  return m.route.param('id') === 'novo';
-}
+var routeUtils = require('utils/route-utils');
 
 module.exports = {
   controller: function (args) {
@@ -80,8 +77,8 @@ module.exports = {
     var binding = {
       pagina: ctrl.pagina,
       validaNome: ctrl.pagina().nome,
-      nome: ehNovo() ? ctrl.pagina().url : ctrl.pagina().nome,
-      novo: ehNovo()
+      nome: routeUtils.ehNovo() ? ctrl.pagina().url : ctrl.pagina().nome,
+      novo: routeUtils.ehNovo()
     };
 
     return m.component(EditorBase, {
