@@ -11,6 +11,8 @@ set -o pipefail
 cd '/root/docker'
 git pull --rebase
 
+export EDS_CARTAS_REPOSITORIO='git@github.com:servicosgovbr/cartas-de-testes.git'
+
 docker-compose stop editor1 editor2
 docker-compose kill editor1 editor2
 docker-compose rm -f editor1 editor2
