@@ -4,7 +4,7 @@ var referencia = require('referencia');
 var permissoes = require('utils/permissoes');
 
 function filtraArray(array) {
-  var arrayNovo = _.filter(array, function(pagina) {
+  var arrayNovo = _.filter(array, function (pagina) {
     if (permissoes.podeCriarPagina(pagina.id)) {
       return true;
     }
@@ -21,13 +21,15 @@ var iconesDeTipo = {
 module.exports = {
   view: function (ctrl, args) {
     var tooltipTipo = args.tooltipTipo;
-    var componenteTipo = args.novo ? m('', { class: 'criar-pagina' }, filtraArray(referencia.tiposDePagina).map(function(pagina) {
+    var componenteTipo = args.novo ? m('', {
+      class: 'criar-pagina'
+    }, filtraArray(referencia.tiposDePagina).map(function (pagina) {
       return m('a', {
         href: '/editar/' + pagina.id + '/novo',
         class: 'button botao-primario'
-      }, [ m('span.fa', {
-          class: iconesDeTipo[pagina.id] || 'fa-file-o'
-        }),'Criar ' + pagina.text]);
+      }, [m('span.fa', {
+        class: iconesDeTipo[pagina.id] || 'fa-file-o'
+      }), 'Criar ' + pagina.text]);
     })) : referencia.tipoDePagina(args.tipo());
 
     return m('fieldset#tipoDePagina', [

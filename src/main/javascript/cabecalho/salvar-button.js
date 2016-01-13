@@ -27,7 +27,7 @@ module.exports = {
         if (msg !== 'acesso_negado' && msg !== 'conflito_edicao') {
           alertify.error(msg, 0);
         }
-        
+
         this.salvando(false);
         this.salvandoServico(false);
         m.redraw(true);

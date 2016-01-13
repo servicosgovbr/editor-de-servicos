@@ -59,12 +59,12 @@ module.exports = {
 
   view: function (ctrl, args) {
     if (routeUtils.ehNovo() &&
-        !permissoes.podeCriarPagina('pagina-tematica')) {
+      !permissoes.podeCriarPagina('pagina-tematica')) {
       return m.component(require('acesso-negado'));
     }
 
     if (!routeUtils.ehNovo() &&
-        !permissoes.possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA')) {
+      !permissoes.possuiPermissaoPaginaTematica('EDITAR_SALVAR PAGINA-TEMATICA')) {
       return m.component(require('acesso-negado'));
     }
 

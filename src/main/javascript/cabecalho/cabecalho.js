@@ -17,9 +17,9 @@ module.exports = {
         ) : m(''),
 
         permissoes.podeCriarUsuario() ? m('span.novo',
-              m('a.button#permissoes', {
-                href: '/editar/usuarios'
-              }, [
+            m('a.button#permissoes', {
+              href: '/editar/usuarios'
+            }, [
                 m('i.fa.fa-user-plus'),
                 m.trust('Gerenciar permissões')
             ])

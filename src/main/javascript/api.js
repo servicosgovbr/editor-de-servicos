@@ -19,16 +19,16 @@ function serializeXml(svc) {
 }
 
 function deserializeXml(svc) {
-    if(svc === 'acesso_negado') {
-        return 'acesso_negado';
-    } else if (svc === 'conflito_edicao'){
-        return 'conflito_edicao';
-    } else {
-      return jQuery.parseXML(svc);
-    }
+  if (svc === 'acesso_negado') {
+    return 'acesso_negado';
+  } else if (svc === 'conflito_edicao') {
+    return 'conflito_edicao';
+  } else {
+    return jQuery.parseXML(svc);
   }
+}
 
-function tratamentoErros(xhr){
+function tratamentoErros(xhr) {
   var erroPermissao = tratamentoAcessoNegado(xhr);
 
   if (erroPermissao !== '') {

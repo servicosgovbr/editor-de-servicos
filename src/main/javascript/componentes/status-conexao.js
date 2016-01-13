@@ -12,10 +12,10 @@ var httpOk = function (resp) {
         .html('');
     }
   } else {
-      caiuSessao(true);
-      m.redraw();
-      this.attr('class', 'mensagem erro')
-        .html('Sua sessão expirou. <a href="/editar/" target="_blank">Clique aqui para entrar novamente</a>');
+    caiuSessao(true);
+    m.redraw();
+    this.attr('class', 'mensagem erro')
+      .html('Sua sessão expirou. <a href="/editar/" target="_blank">Clique aqui para entrar novamente</a>');
   }
 };
 

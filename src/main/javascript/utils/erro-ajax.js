@@ -11,8 +11,8 @@ module.exports = function (resposta) {
   } else {
     ultimoErro.clear();
   }
-  
-  if(resposta !== 'acesso_negado') {
+
+  if (resposta !== 'acesso_negado') {
     m.route('/editar/erro');
   }
 

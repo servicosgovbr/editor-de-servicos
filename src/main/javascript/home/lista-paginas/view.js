@@ -64,13 +64,13 @@ module.exports = function (ctrl, args) {
        m('th.right[width="10%"]', '')
      ])
     ].concat(paginas.map(function (s) {
-        return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, loggedUser.siorg, s.id) ? m('tr', [
+      return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, loggedUser.siorg, s.id) ? m('tr', [
           m('td', m('a.nome-link', {
-                       href: '/editar/' + s.conteudo.tipo + '/' + s.id
-                       }, [
+          href: '/editar/' + s.conteudo.tipo + '/' + s.id
+        }, [
                        m('span.fa', {
-                       class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
-                       }),
+            class: iconesDeTipo[s.conteudo.tipo] || 'fa-file-o'
+          }),
                        m.trust(' &nbsp; '),
                        s.conteudo.nome
                        ]), s.temAlteracoesNaoPublicadas ? m('span.mudanca', 'Alterações não publicadas') : ''),
@@ -91,5 +91,5 @@ module.exports = function (ctrl, args) {
                             permissoes.podeExcluirPagina(s.conteudo.tipo, loggedUser.siorg, s.conteudo.orgaoId || '') ? excluirView(ctrl, s) : '',
                             ])
         ]) : m('tr');
-  }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '']);
+    }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '']);
 };

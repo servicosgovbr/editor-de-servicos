@@ -64,10 +64,10 @@ module.exports = {
     }
 
     if (!routeUtils.ehNovo() &&
-        !permissoes.podeSalvarPagina(
-          loggedUser.siorg,
-          ctrl.pagina().url()
-        )) {
+      !permissoes.podeSalvarPagina(
+        loggedUser.siorg,
+        ctrl.pagina().url()
+      )) {
       return m.component(require('acesso-negado'));
     }
 

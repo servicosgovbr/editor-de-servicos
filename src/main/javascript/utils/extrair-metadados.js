@@ -29,7 +29,7 @@ module.exports = function (metadados) {
     tratamentoAcessoNegado(xhr);
     tratamentoConcorrenciaEdicao(xhr);
 
-    if(xhr.status === 406 || xhr.status === 403) {
+    if (xhr.status === 406 || xhr.status === 403) {
       return 'acesso_negado';
     } else {
       return xhr.responseText;
