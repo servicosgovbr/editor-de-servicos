@@ -11,11 +11,11 @@ set -o pipefail
 cd '/root/docker'
 git pull --rebase
 
+./build-all
+
 docker-compose stop editor1 editor2
 docker-compose kill editor1 editor2
 docker-compose rm -f editor1 editor2
-
-./build-all
 
 docker-compose up -d
 docker-compose restart balanceador
