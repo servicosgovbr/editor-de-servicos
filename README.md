@@ -7,7 +7,7 @@
 Editor de Serviços
 ====
 
-Este é o repositório oficial do Editor de Serviços. Uma versão [alpha](http://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha), constantemente atualizada, está disponível em uma [máquina virtual na DigitalOcean](http://104.236.231.239.xip.io/editar)
+Este é o repositório oficial do Editor de Serviços. Uma versão [alpha](http://en.wikipedia.org/wiki/Software_release_life_cycle#Alpha), constantemente atualizada, está disponível em uma [máquina virtual disponibilizada para testes](http://189.9.150.163.xip.io/editar)
 
 Documentação
 ----
