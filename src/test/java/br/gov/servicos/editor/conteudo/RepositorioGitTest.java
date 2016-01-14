@@ -73,8 +73,8 @@ public class RepositorioGitTest {
         System.out.println("test clone1" + clone1);
         System.out.println("test clone2" + clone2);
 
-        this.repo1 = new RepositorioGit(new RepositorioConfig("", false, true, clone1));
-        this.repo2 = new RepositorioGit(new RepositorioConfig("", false, true, clone2));
+        this.repo1 = new RepositorioGit(new RepositorioConfig("", "", false, true, clone1));
+        this.repo2 = new RepositorioGit(new RepositorioConfig("", "", false, true, clone2));
     }
 
     @Test
