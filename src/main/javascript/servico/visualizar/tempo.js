@@ -33,7 +33,7 @@ module.exports = {
                   m('span', ctrl.servico.tempoTotalEstimado().entreMaximo()),
                   ' ',
                   m('span', ctrl.unidades[ctrl.servico.tempoTotalEstimado().entreTipoMaximo()]),
-                  ' é o tempo estimado para a prestação imediata deste serviço.'
+                  ' é o tempo estimado para a prestação deste serviço.'
               ]);
       }
       return m.component(require('servico/visualizar/view-vazia'));
