@@ -35,7 +35,7 @@ dependencies {
     compile 'com.github.slugify:slugify:2.1.3'
     compile 'com.google.code.findbugs:annotations:3.0.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'org.eclipse.jgit:org.eclipse.jgit:4.0.0.201506090130-r'
+    compile 'org.eclipse.jgit:org.eclipse.jgit:4.1.1.201511131810-r'
     compile 'br.com.caelum.stella:caelum-stella-bean-validation:2.1.2'
 
     testCompile 'junit:junit:4.11'
