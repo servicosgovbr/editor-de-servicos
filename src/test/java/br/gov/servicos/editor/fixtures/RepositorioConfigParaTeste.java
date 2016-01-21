@@ -53,6 +53,7 @@ public class RepositorioConfigParaTeste {
     @Bean
     public RepositorioConfig testConfig() {
         return new RepositorioConfig(origin.toString(),
+                "",
                 true,
                 true,
                 localCloneRepositorio.toFile());
