@@ -285,7 +285,7 @@ describe('validação >', function () {
 
       shouldNotExceed('descricao', function () {
         return documento.descricao;
-      }, 150);
+      }, 250);
     });
 
     describe('custos > custo', function () {
