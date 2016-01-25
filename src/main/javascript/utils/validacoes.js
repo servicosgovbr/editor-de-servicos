@@ -125,6 +125,7 @@ module.exports = {
   minimo: minimo,
   numerico: numerico,
   textoCurto: maximo(150),
+  textoMedio: maximo(250),
   textoLongo: maximo(500),
   idUnico: validaIdUnico,
   idUnicoTematica: validaIdUnicoTematica,
