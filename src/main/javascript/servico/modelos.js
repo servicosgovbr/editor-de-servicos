@@ -42,7 +42,7 @@ var Documentos = function (config) {
 var Documento = function (config) {
   var data = (config || {});
   this.id = id('documento');
-  this.descricao = v.prop(data.descricao || '', v.textoCurto);
+  this.descricao = v.prop(data.descricao || '', v.textoMedio);
 };
 
 var Custo = function (config) {
