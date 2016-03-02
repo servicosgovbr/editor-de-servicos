@@ -1,4 +1,3 @@
-/*global loggedUser*/
 'use strict';
 
 var safeGet = require('utils/code-checks').safeGet;
@@ -78,7 +77,7 @@ module.exports = {
       return temEdicao() && revisaoEditadoEPublicadoDiferente();
     }
 
-    return permissoes.podePublicarDascartarPagina(loggedUser.siorg, ctrl.orgaoId) ? m('span#publicar-view', [
+    return permissoes.podePublicarDascartarPagina(window.loggedUser.siorg, ctrl.orgaoId) ? m('span#publicar-view', [
       m('span.label-botao', 'Publicar alterações?'),
       m.trust('&nbsp&nbsp'),
 

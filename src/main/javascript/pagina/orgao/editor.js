@@ -1,4 +1,3 @@
-/*global loggedUser*/
 'use strict';
 
 var Tooltips = require('tooltips');
@@ -65,7 +64,7 @@ module.exports = {
 
     if (!routeUtils.ehNovo() &&
       !permissoes.podeSalvarPagina(
-        loggedUser.siorg,
+        window.loggedUser.siorg,
         ctrl.pagina().url()
       )) {
       return m.component(require('acesso-negado'));

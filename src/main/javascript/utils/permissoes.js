@@ -1,9 +1,8 @@
-/*global loggedUser*/
 'use strict';
 
 function retornaPermissoes() {
-  if (loggedUser.permissoes !== undefined) {
-    var arrayOriginal = loggedUser.permissoes.slice(1);
+  if (window.loggedUser.permissoes !== undefined) {
+    var arrayOriginal = window.loggedUser.permissoes.slice(1);
 
     return arrayOriginal.map(function (permissao) {
       return permissao.authority;

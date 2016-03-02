@@ -1,4 +1,3 @@
-/*global loggedUser*/
 'use strict';
 
 var referencia = require('referencia');
@@ -64,7 +63,7 @@ module.exports = function (ctrl, args) {
        m('th.right[width="10%"]', '')
      ])
     ].concat(paginas.map(function (s) {
-      return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, loggedUser.siorg, s.id) ? m('tr', [
+      return permissoes.podeMostrarPaginaLista(s.conteudo.tipo, window.loggedUser.siorg, s.id) ? m('tr', [
           m('td', m('a.nome-link', {
           href: '/editar/' + s.conteudo.tipo + '/' + s.id
         }, [
@@ -88,7 +87,7 @@ module.exports = function (ctrl, args) {
                                          ] : '—'),
           m('td.right', [
                             visualizarView(ctrl, s),
-                            permissoes.podeExcluirPagina(s.conteudo.tipo, loggedUser.siorg, s.conteudo.orgaoId || '') ? excluirView(ctrl, s) : '',
+                            permissoes.podeExcluirPagina(s.conteudo.tipo, window.loggedUser.siorg, s.conteudo.orgaoId || '') ? excluirView(ctrl, s) : '',
                             ])
         ]) : m('tr');
     }))) : !mostrarCarregando ? m('div.carregando', 'Não foram encontrados resultados para esta pesquisa') : '']);

@@ -293,7 +293,6 @@ public class RepositorioGit {
                 .setStrategy(THEIRS)
                 .setOperation(RebaseCommand.Operation.ABORT).call();
 
-
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("git.branch", git.getRepository().getBranch()))
                 .and(append("pull.rebase.result", rebaseResult.getStatus().toString()));
