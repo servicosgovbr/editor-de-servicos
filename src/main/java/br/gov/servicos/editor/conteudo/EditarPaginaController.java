@@ -36,7 +36,7 @@ public class EditarPaginaController {
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);
         }
-        return new ResponseEntity(carta.getConteudoRaw(), MetadadosUtils.metadados(carta), OK);
+        return new ResponseEntity<>(carta.getConteudoRaw(), MetadadosUtils.metadados(carta), OK);
     }
 
     @ResponseBody
