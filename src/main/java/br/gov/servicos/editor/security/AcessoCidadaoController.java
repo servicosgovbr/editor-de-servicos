@@ -1,6 +1,8 @@
 package br.gov.servicos.editor.security;
 
 import br.gov.servicos.editor.usuarios.FormularioAcessoCidadao;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import javax.validation.Valid;
 @Slf4j
 @Controller
 @RequestMapping("/editar/acesso-cidadao")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AcessoCidadaoController {
 
     AcessoCidadaoService acessoCidadaoService;

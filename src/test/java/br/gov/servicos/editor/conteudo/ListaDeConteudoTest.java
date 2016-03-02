@@ -23,12 +23,9 @@ import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.config.CacheConfig.METADADOS;
 import static br.gov.servicos.editor.conteudo.TipoPagina.*;
-import static java.util.Locale.getDefault;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;

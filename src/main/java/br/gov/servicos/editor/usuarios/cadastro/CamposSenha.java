@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 @EqualsAndHashCode
 public class CamposSenha {
-    @Size(min=8, max=50, message = "Senha: tamanho deve estar entre 8 e 50")
+    @Size(min = 8, max = 50, message = "Senha: tamanho deve estar entre 8 e 50")
     String senha;
 
     String confirmacaoSenha;

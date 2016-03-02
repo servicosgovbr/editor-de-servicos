@@ -20,9 +20,7 @@ var language = {
   inputTooShort: function (args) {
     var remainingChars = args.minimum - args.input.length;
 
-    var message = 'Digite ' + remainingChars + ' ou mais caracteres.';
-
-    return message;
+    return 'Digite ' + remainingChars + ' ou mais caracteres.';
   },
 
   loadingMore: function () {

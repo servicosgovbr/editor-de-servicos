@@ -19,21 +19,21 @@ public class AcessoCidadaoService {
 
     @Autowired
     public AcessoCidadaoService(PapelRepository papelRepository) {
-       this.papelRepository = papelRepository;
+        this.papelRepository = papelRepository;
     }
 
     public void autenticaCidadao(FormularioAcessoCidadao cidadao) {
         Usuario usuario = criaUsuario(cidadao);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, CIDADAO,usuario.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, CIDADAO, usuario.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private Usuario criaUsuario(FormularioAcessoCidadao cidadao) {
         Papel papel = papelRepository.findByNome(CIDADAO);
         return new Usuario()
-                 .withNome(cidadao.getNome())
-                 .withEmailPrimario(cidadao.getEmail())
-                 .withCpf(cidadao.getCpf())
-                 .withPapel(papel);
+                .withNome(cidadao.getNome())
+                .withEmailPrimario(cidadao.getEmail())
+                .withCpf(cidadao.getCpf())
+                .withPapel(papel);
     }
 }

@@ -39,9 +39,7 @@ public class RepositorioConfig {
                              boolean fazerPush,
                              File localRepositorioDeCartas) {
 
-        String url = isEmpty(urlRepositorioCartas) ? urlFallbackRepositorioCartas : urlRepositorioCartas;
-
-        this.urlRepositorioCartas = url;
+        this.urlRepositorioCartas = isEmpty(urlRepositorioCartas) ? urlFallbackRepositorioCartas : urlRepositorioCartas;
         this.deveImportar = deveImportar;
         this.fazerPush = fazerPush;
         this.localRepositorioDeCartas = localRepositorioDeCartas;

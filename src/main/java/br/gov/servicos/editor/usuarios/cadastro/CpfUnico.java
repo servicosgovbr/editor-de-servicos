@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = CpfUnicoValidator.class)
-@Target( { ElementType.TYPE, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CpfUnico {
     String campoMarcaSeValidacaoHabilitada();

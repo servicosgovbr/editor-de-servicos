@@ -1,13 +1,13 @@
 package br.gov.servicos.editor.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.security.core.GrantedAuthority;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.Wither;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import lombok.experimental.Wither;
 
 @Getter
 @Wither

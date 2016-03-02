@@ -1,9 +1,9 @@
 package br.gov.servicos.editor.usuarios.recuperarsenha;
 
 import br.com.caelum.stella.format.CPFFormatter;
+import br.gov.servicos.editor.usuarios.Usuario;
 import br.gov.servicos.editor.usuarios.token.Token;
 import br.gov.servicos.editor.usuarios.token.TokenError;
-import br.gov.servicos.editor.usuarios.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,9 +31,9 @@ public class RecuperacaoSenhaValidator {
     public Optional<TokenError> hasError(FormularioRecuperarSenha formulario, Token token) {
         Usuario usuario = token.getUsuario();
 
-        if(tokenExpirado(token)) {
+        if (tokenExpirado(token)) {
             return Optional.of(TokenError.EXPIRADO);
-        } else if(cpfETokenInvalido(formulario, token, usuario)) {
+        } else if (cpfETokenInvalido(formulario, token, usuario)) {
             return Optional.of(TokenError.INVALIDO);
         } else {
             return Optional.empty();

@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.XmlExpectationsHelper;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

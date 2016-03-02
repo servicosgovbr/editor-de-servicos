@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 public class UsuarioFactoryTest {
 
     private static final String CPF = "12312312318";
-    private static final Long PAPEL_ID = 1l;
+    private static final Long PAPEL_ID = 1L;
     private static final String SIORG = "1234";
     private static final String SIAPE = "43214321";
     private static final String EMAIL_PRIMARIO = "email@institucional.gov.br";

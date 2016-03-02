@@ -3,15 +3,13 @@
 module.exports = {
 
   controller: function (args) {
-    var config = _.merge({
+    this.config = _.merge({
       salvar: _.noop,
       publicar: _.noop,
       descartar: _.noop,
       visualizar: _.noop,
-      editar: _.noop,
+      editar: _.noop
     }, args);
-
-    this.config = config;
   },
 
   view: function (ctrl) {

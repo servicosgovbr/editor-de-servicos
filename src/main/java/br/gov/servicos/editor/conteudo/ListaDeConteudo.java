@@ -90,14 +90,13 @@ public class ListaDeConteudo {
     }
 
     private Stream<Metadados> listarMetadados(TipoPagina tipo) throws FileNotFoundException {
-        Stream<Metadados> lista = concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
+        return concat(listar(tipo.getCaminhoPasta(), tipo.getExtensao()),
                 repositorioGit.branches()
                         .filter(n -> !n.equals(MASTER))
                         .filter(n -> n.startsWith(tipo.prefixo()))
                         .map(n -> n.replaceFirst(tipo.prefixo(), "")))
                 .map(uncheckedFunction(id -> conteudoVersionadoFactory.pagina(id, tipo)))
                 .map(ConteudoVersionado::getMetadados);
-        return lista;
     }
 
     private Stream<String> listar(Path caminho, String ext) throws FileNotFoundException {

@@ -6,14 +6,10 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
-import org.junit.rules.ExternalResource;
-import org.junit.rules.TemporaryFolder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

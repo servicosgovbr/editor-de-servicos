@@ -29,7 +29,6 @@
     "forin": true,
     "freeze": true,
     "immed": true,
-    "indent": true,
     "latedef": true,
     "newcap": true,
     "noarg": true,

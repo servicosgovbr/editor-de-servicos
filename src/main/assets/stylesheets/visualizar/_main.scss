@@ -114,9 +114,8 @@
 
         li {
           display: list-item;
-          list-style-type: disc;
           color: $cinza-escuro;
-          list-style-position: inside;
+          list-style: disc inside;
           padding: 0 20px 0 20px;
 
           p {
@@ -394,9 +393,7 @@
     ul li {
       display: list-item;
       color: $cinza-escuro;
-      list-style-position: inside;
-      list-style-type: disc;
-      line-height: 100%;
+      list-style: disc inside;
       margin-bottom: 10px;
       font-size: $baseFontSize * 0.9375;
       line-height: 1.4em;
@@ -469,7 +466,7 @@
     padding: 8px 13px 8px 13px;
     background: $cinza-claro;
     text-decoration: none;
-    margin: 0px 0px 20px 0;
+    margin: 0 0 20px 0;
     display: inline-block;
     color: $azul-claro !important;
     border: none;
@@ -497,7 +494,7 @@
     }
 
     p.etapa {
-      margin-left: 0px;
+      margin-left: 0;
       display: inline-block;
     }
 
@@ -587,7 +584,7 @@
       display: inline-block;
 
       a {
-        padding: 0px 7px;
+        padding: 0 7px;
       }
     }
 

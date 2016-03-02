@@ -27,7 +27,6 @@ import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Arrays.asList;
-import static java.util.Optional.empty;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.hamcrest.Matchers.*;

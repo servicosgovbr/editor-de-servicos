@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Wither
-@Table(name="Tokens")
+@Table(name = "Tokens")
 @EqualsAndHashCode
 public class Token implements Serializable {
 
@@ -26,8 +26,8 @@ public class Token implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="usuario_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @Column(nullable = false)
@@ -40,6 +40,6 @@ public class Token implements Serializable {
     private Integer tentativasSobrando;
 
     public Token decrementarTentativasSobrando() {
-        return this.tentativasSobrando == 0 ? this : this.withTentativasSobrando(this.tentativasSobrando-1);
+        return this.tentativasSobrando == 0 ? this : this.withTentativasSobrando(this.tentativasSobrando - 1);
     }
 }

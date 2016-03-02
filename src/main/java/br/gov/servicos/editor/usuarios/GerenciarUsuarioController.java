@@ -88,7 +88,7 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = POST)
     public ModelAndView criar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
-        if(verificarPermissao(formularioUsuario)) {
+        if (verificarPermissao(formularioUsuario)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
         if (!result.hasErrors()) {
@@ -104,14 +104,14 @@ public class GerenciarUsuarioController {
 
     @RequestMapping(value = "/editar/usuarios/usuario", method = PUT)
     public ModelAndView atualizar(@Valid FormularioUsuario formularioUsuario, BindingResult result) {
-        if(verificarPermissao(formularioUsuario)) {
+        if (verificarPermissao(formularioUsuario)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
         if (!result.hasErrors()) {
             // TODO verificar se existe mais de um usuário com o mesmo cpf e lançar erro
             Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
             Usuario usuarioSalvo;
-            if(usuario != null) {
+            if (usuario != null) {
                 usuario = factory.atualizaUsuario(usuario, formularioUsuario);
             } else {
                 throw new UsuarioInexistenteException();

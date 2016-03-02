@@ -49,7 +49,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         accessDeniedHandler.setErrorPage("/editar/acessoNegado");
 
 
-        HttpSecurity httpSecurityBuilder  = http
+        HttpSecurity httpSecurityBuilder = http
                 .httpBasic()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL))
                 .and()
@@ -72,37 +72,37 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .and();
 
         // este laço irá adicionar todas as permissões específicas por página
-        for (TipoPagina tipoPagina: TipoPagina.values()) {
-              httpSecurityBuilder.authorizeRequests()
-                      .antMatchers(GET, constroiURLTipoPagina(API_NOVA_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(DELETE, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(PUT, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(POST, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina), EDITAR_SALVAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(POST, constroiURLTipoPagina(API_DESPUBLICAR_PATTERN, tipoPagina)).hasAnyAuthority(DESPUBLICAR.comTipoPagina(tipoPagina), DESPUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                      .antMatchers(POST, constroiURLTipoPagina(API_DESCARTAR_PATTERN, tipoPagina)).hasAnyAuthority(DESCARTAR.comTipoPagina(tipoPagina),DESCARTAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-            .and();
+        for (TipoPagina tipoPagina : TipoPagina.values()) {
+            httpSecurityBuilder.authorizeRequests()
+                    .antMatchers(GET, constroiURLTipoPagina(API_NOVA_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(DELETE, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(PUT, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(POST, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina), EDITAR_SALVAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(POST, constroiURLTipoPagina(API_DESPUBLICAR_PATTERN, tipoPagina)).hasAnyAuthority(DESPUBLICAR.comTipoPagina(tipoPagina), DESPUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(POST, constroiURLTipoPagina(API_DESCARTAR_PATTERN, tipoPagina)).hasAnyAuthority(DESCARTAR.comTipoPagina(tipoPagina), DESCARTAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .and();
         }
 
-         httpSecurityBuilder.authorizeRequests()
+        httpSecurityBuilder.authorizeRequests()
                 .antMatchers(GET, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
-                                                                 CADASTRAR.comPapel(PONTOFOCAL),
-                                                                 CADASTRAR.comPapel(PUBLICADOR),
-                                                                 CADASTRAR.comPapel(EDITOR))
+                CADASTRAR.comPapel(PONTOFOCAL),
+                CADASTRAR.comPapel(PUBLICADOR),
+                CADASTRAR.comPapel(EDITOR))
                 .antMatchers(POST, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
-                                                                  CADASTRAR.comPapel(PONTOFOCAL),
-                                                                  CADASTRAR.comPapel(PUBLICADOR),
-                                                                  CADASTRAR.comPapel(EDITOR))
+                CADASTRAR.comPapel(PONTOFOCAL),
+                CADASTRAR.comPapel(PUBLICADOR),
+                CADASTRAR.comPapel(EDITOR))
 
                 .anyRequest().fullyAuthenticated()
 
                 .and()
-                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
 
 
                 .and()
-                    .sessionManagement()
-                    .invalidSessionUrl("/editar/autenticar?sessao");
+                .sessionManagement()
+                .invalidSessionUrl("/editar/autenticar?sessao");
     }
 
     @Override

@@ -9,7 +9,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
-import static br.gov.servicos.editor.conteudo.TipoPagina.*;
+import static br.gov.servicos.editor.conteudo.TipoPagina.PAGINA_TEMATICA;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data

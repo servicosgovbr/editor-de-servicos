@@ -30,8 +30,8 @@ public class GerenciadorPermissoes implements InitializingBean {
         Usuario.setGerenciadorPermissoes(this); //necessario porque Usuario não é uma classe spring
     }
 
-    private String parsePapel(String papel)  {
-        if(!papel.matches("[\\w\\s]+\\[\\d+\\]")) {
+    private String parsePapel(String papel) {
+        if (!papel.matches("[\\w\\s]+\\[\\d+\\]")) {
             throw new RuntimeException("Formato incorreto do arquivo de permissões. Problema com o papel: " + papel);
         }
         return papel.split("\\[")[0].toUpperCase();

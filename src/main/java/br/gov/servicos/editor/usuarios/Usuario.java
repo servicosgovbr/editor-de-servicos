@@ -22,9 +22,9 @@ import static com.google.common.collect.Lists.newArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Wither
-@Table(name="USUARIOS")
+@Table(name = "USUARIOS")
 @EqualsAndHashCode
-public class Usuario implements Serializable, UserDetails{
+public class Usuario implements Serializable, UserDetails {
 
     @Id
     @Column(unique = true)
@@ -59,7 +59,7 @@ public class Usuario implements Serializable, UserDetails{
     private String emailSecundario;
 
     @ManyToOne
-    @JoinColumn(name="papel_id")
+    @JoinColumn(name = "papel_id")
     private Papel papel;
 
     private static GerenciadorPermissoes gerenciadorPermissoes;
@@ -107,8 +107,8 @@ public class Usuario implements Serializable, UserDetails{
 
     public boolean temPermissaoComOrgao(TipoPermissao permissao, String orgaoId) {
         return getAuthorities().stream().anyMatch(grantedAuthority ->
-                         permissaoIgual(permissao, grantedAuthority) ||
-                         permissaoIgualComOrgao(permissao, grantedAuthority, orgaoId));
+                permissaoIgual(permissao, grantedAuthority) ||
+                        permissaoIgualComOrgao(permissao, grantedAuthority, orgaoId));
     }
 
     private boolean permissaoIgualComOrgao(TipoPermissao permissao, GrantedAuthority authority, String orgaoId) {

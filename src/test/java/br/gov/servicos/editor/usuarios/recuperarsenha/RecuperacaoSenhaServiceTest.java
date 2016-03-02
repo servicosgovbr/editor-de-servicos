@@ -23,7 +23,6 @@ import static java.util.Optional.empty;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -76,7 +75,6 @@ public class RecuperacaoSenhaServiceTest {
         assertThat(token, equalTo(TOKEN));
     }
 
-
     @Test
     public void deveDesabilitarUsuarioQuandoGerarToken() {
         recuperacaoSenhaService.gerarTokenParaUsuario(USUARIO_ID.toString());
@@ -101,6 +99,7 @@ public class RecuperacaoSenhaServiceTest {
         when(validator.hasError(formulario, token)).thenReturn(empty());
 
         recuperacaoSenhaService.trocarSenha(formulario);
+
         verify(usuarioService).save(usuario.withSenha(ENCRYPTED_SENHA).withHabilitado(true));
     }
 
@@ -144,7 +143,7 @@ public class RecuperacaoSenhaServiceTest {
                 .withTentativasSobrando(MAX);
         Token expectedToken = new Token()
                 .withUsuario(usuario)
-                .withTentativasSobrando(MAX-1);
+                .withTentativasSobrando(MAX - 1);
 
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList(token));
         when(validator.hasError(formulario, token)).thenReturn(Optional.of(INVALIDO));
@@ -171,8 +170,8 @@ public class RecuperacaoSenhaServiceTest {
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
-        } catch(CpfTokenInvalido e) {
-            assertThat(e.getTentativasSobrando(), equalTo(MAX-1));
+        } catch (CpfTokenInvalido e) {
+            assertThat(e.getTentativasSobrando(), equalTo(MAX - 1));
         }
     }
 
@@ -194,15 +193,17 @@ public class RecuperacaoSenhaServiceTest {
     public void deveLancarExcecaoSeNaoEncontrarTokenParaUsuario() throws TokenInvalido {
         FormularioRecuperarSenha formulario = criarFormulario(USUARIO_ID, SENHA);
         when(repository.findByUsuarioId(USUARIO_ID)).thenReturn(newArrayList());
+
         recuperacaoSenhaService.trocarSenha(formulario);
     }
 
     private FormularioRecuperarSenha criarFormulario(Long usuarioId, String senha) {
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withUsuarioId(usuarioId.toString());
+
         return new FormularioRecuperarSenha()
-                    .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha)
-                    .withCamposSenha(new CamposSenha().withSenha(senha));
+                .withCamposVerificacaoRecuperarSenha(camposVerificacaoRecuperarSenha)
+                .withCamposSenha(new CamposSenha().withSenha(senha));
     }
 
 }

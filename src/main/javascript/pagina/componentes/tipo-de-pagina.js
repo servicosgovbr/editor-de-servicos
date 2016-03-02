@@ -4,13 +4,11 @@ var referencia = require('referencia');
 var permissoes = require('utils/permissoes');
 
 function filtraArray(array) {
-  var arrayNovo = _.filter(array, function (pagina) {
+  return _.filter(array, function (pagina) {
     if (permissoes.podeCriarPagina(pagina.id)) {
       return true;
     }
   });
-
-  return arrayNovo;
 }
 
 var iconesDeTipo = {

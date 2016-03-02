@@ -24,8 +24,8 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
         request.getSession();
-        if(accessDeniedException instanceof InvalidCsrfTokenException ||
-           accessDeniedException instanceof MissingCsrfTokenException) {
+        if (accessDeniedException instanceof InvalidCsrfTokenException ||
+                accessDeniedException instanceof MissingCsrfTokenException) {
             redirectStrategy.sendRedirect(request, response, "/editar/autenticar?sessao");
         }
         super.handle(request, response, accessDeniedException);

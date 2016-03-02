@@ -28,7 +28,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
-        if(savedRequest == null || savedRequest.getRedirectUrl().contains(loginUrl)) {
+        if (savedRequest == null || savedRequest.getRedirectUrl().contains(loginUrl)) {
             getRedirectStrategy().sendRedirect(request, response, defaultRedirectUrl);
         }
         super.onAuthenticationSuccess(request, response, authentication);

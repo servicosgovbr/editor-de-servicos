@@ -48,7 +48,7 @@ class ExcluirPaginaController extends CheckOrgaoEspecificoController {
         if (!conteudoVersionado.existe()) {
             throw new ConteudoInexistenteException(conteudoVersionado);
         }
-        if (!usuarioPodeRealizarAcao(userProfiles,tipoPagina,conteudoVersionado.getOrgaoId())) {
+        if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

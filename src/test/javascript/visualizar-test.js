@@ -20,6 +20,6 @@ describe('visualizar', function () {
 
     m.mount(div, visualizar);
 
-    expect(jQuery('#conteudo h2').text()).toBe('Nome Qualquer');
+    expect(jQuery('#conteudo').find('h2').text()).toBe('Nome Qualquer');
   });
 });

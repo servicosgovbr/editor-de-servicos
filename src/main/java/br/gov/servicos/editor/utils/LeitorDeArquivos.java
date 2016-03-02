@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Optional;
 
@@ -33,13 +32,13 @@ public class LeitorDeArquivos {
         }
         log.info("Arquivo {} encontrado", arquivo.getAbsolutePath());
 
-        try (InputStream in = new FileInputStream(arquivo)){
+        try (InputStream in = new FileInputStream(arquivo)) {
             return of(StreamUtils.copyToString(in, defaultCharset()));
         }
     }
 
-    public Optional<String> ler(URI uri) throws MalformedURLException, IOException {
-        try(InputStream in = uri.toURL().openStream()) {
+    public Optional<String> ler(URI uri) throws IOException {
+        try (InputStream in = uri.toURL().openStream()) {
             return of(StreamUtils.copyToString(in, defaultCharset()));
         }
     }

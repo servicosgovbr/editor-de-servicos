@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.conteudo;
 
-import br.gov.servicos.editor.conteudo.cartas.ServicoXML;
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.utils.DeserializadorUtils;
@@ -43,6 +42,5 @@ public class ConteudoVersionadoFactory {
     public ConteudoVersionado pagina(String texto, TipoPagina tipo) {
         return new ConteudoVersionado(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml, siorg, DeserializadorUtils.obterDeserializador(tipo));
     }
-
 
 }

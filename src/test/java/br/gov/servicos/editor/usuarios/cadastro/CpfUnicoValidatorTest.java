@@ -28,14 +28,14 @@ public class CpfUnicoValidatorTest {
     @InjectMocks
     private CpfUnicoValidator validator;
 
-    private FormularioUsuario formularioUsuario;
-
     @Test
     public void deveProcurarPorCpfDesformatado() {
-        formularioUsuario = new FormularioUsuario();
+        FormularioUsuario formulario = new FormularioUsuario();
         validator.nomeCampoComValorCpf = NOME_CAMPO_COM_VALOR_CPF;
         validator.nomeCampoMarcaSeValidacaoAtiva = NOME_CAMPO_MARCA_VALIDACAO_ATIVA;
-        validator.isValid(formularioUsuario.withCpf(CPF_FORMATADO).withEhInclusaoDeUsuario(Boolean.TRUE), context);
+
+        validator.isValid(formulario.withCpf(CPF_FORMATADO).withEhInclusaoDeUsuario(Boolean.TRUE), context);
+
         verify(repository).findByCpf(CPF);
     }
 

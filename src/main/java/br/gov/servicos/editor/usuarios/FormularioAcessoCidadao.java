@@ -1,7 +1,10 @@
 package br.gov.servicos.editor.usuarios;
 
 import br.com.caelum.stella.bean.validation.CPF;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 import org.hibernate.validator.constraints.Email;

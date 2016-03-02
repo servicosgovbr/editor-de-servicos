@@ -18,7 +18,7 @@ public class UsuarioFactory {
         return popularUsuarioApartirDoFormulario(usuario, formulario);
     }
 
-    private Usuario popularUsuarioApartirDoFormulario(Usuario usuario, FormularioUsuario formulario){
+    private Usuario popularUsuarioApartirDoFormulario(Usuario usuario, FormularioUsuario formulario) {
         Papel papel = new Papel(Long.valueOf(formulario.getPapelId()));
         return usuario
                 .withCpf(cpfFormatter.unformat(formulario.getCpf()))

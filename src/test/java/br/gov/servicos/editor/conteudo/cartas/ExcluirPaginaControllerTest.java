@@ -17,7 +17,6 @@ import org.springframework.security.access.AccessDeniedException;
 import java.util.function.Supplier;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.SERVICO;
-import static br.gov.servicos.editor.security.TipoPermissao.EXCLUIR;
 import static br.gov.servicos.editor.utils.TestData.PROFILE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;

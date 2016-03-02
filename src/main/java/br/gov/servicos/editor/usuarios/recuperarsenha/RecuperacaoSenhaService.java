@@ -44,13 +44,13 @@ public class RecuperacaoSenhaService {
     public String gerarTokenParaUsuario(String usuarioId) {
         String token = geradorToken.gerar();
         Token tokenRecuperacaoSenha = new Token()
-                                            .withUsuario(new Usuario().withId(valueOf(usuarioId)))
-                                            .withDataCriacao(LocalDateTime.now(clock))
-                                            .withTentativasSobrando(maxTentativasToken)
-                                            .withToken(passwordEncoder.encode(token));
+                .withUsuario(new Usuario().withId(valueOf(usuarioId)))
+                .withDataCriacao(LocalDateTime.now(clock))
+                .withTentativasSobrando(maxTentativasToken)
+                .withToken(passwordEncoder.encode(token));
         repository.deleteByUsuarioId(valueOf(usuarioId));
         repository.save(tokenRecuperacaoSenha);
-        if(desabilitarUsuarioAoCriarToken) {
+        if (desabilitarUsuarioAoCriarToken) {
             usuarioService.desabilitarUsuario(usuarioId);
         }
         return token;
@@ -62,14 +62,14 @@ public class RecuperacaoSenhaService {
         Usuario usuario = token.getUsuario();
 
         Optional<TokenError> tokenError = validator.hasError(formulario, token);
-        if(!tokenError.isPresent()) {
+        if (!tokenError.isPresent()) {
             Usuario usuarioComSenhaNova = usuario
                     .withSenha(passwordEncoder.encode(formulario.getCamposSenha().getSenha()))
                     .withHabilitado(true);
             usuarioService.save(usuarioComSenhaNova);
             repository.delete(token.getId());
             return usuarioComSenhaNova;
-        } else if(tokenError.get().equals(TokenError.INVALIDO)){
+        } else if (tokenError.get().equals(TokenError.INVALIDO)) {
             Token novoToken = token.decrementarTentativasSobrando();
             repository.save(novoToken);
             throw new CpfTokenInvalido(novoToken.getTentativasSobrando());
@@ -80,7 +80,7 @@ public class RecuperacaoSenhaService {
 
     private Token findLatestTokenByUsuarioId(Long usuarioId) {
         Iterable<Token> tokensUsuario = repository.findByUsuarioId(usuarioId);
-        if(!tokensUsuario.iterator().hasNext()) {
+        if (!tokensUsuario.iterator().hasNext()) {
             throw new UsuarioInexistenteException();
         }
         return tokensUsuario.iterator().next();

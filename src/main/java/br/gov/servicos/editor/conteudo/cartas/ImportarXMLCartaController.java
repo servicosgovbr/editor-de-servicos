@@ -24,7 +24,7 @@ class ImportarXMLCartaController {
         try {
             return new LeitorDeArquivos().ler(new URI(url))
                     .get();
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new ImportacaoXmlException(url, e);
         }
     }

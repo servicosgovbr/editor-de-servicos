@@ -1,11 +1,5 @@
 package br.gov.servicos.editor.security;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-
 import br.gov.servicos.editor.usuarios.FormularioAcessoCidadao;
 import br.gov.servicos.editor.usuarios.Papel;
 import br.gov.servicos.editor.usuarios.PapelRepository;
@@ -15,18 +9,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
 
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class AcessoCidadaoServiceTest {
-
 
     public static final String CIDADAO = "CIDADAO";
 
@@ -46,7 +43,6 @@ public class AcessoCidadaoServiceTest {
         service = new AcessoCidadaoService(repository);
         Usuario.setGerenciadorPermissoes(gerenciadorPermissoes);
     }
-
 
 
     @Test
@@ -82,6 +78,7 @@ public class AcessoCidadaoServiceTest {
     private FormularioAcessoCidadao criaCidadao() {
         return new FormularioAcessoCidadao("Nome", "um@email.com", "123.123.123-12");
     }
+
     private Papel criaPapelCidadao() {
         Papel cidadao = new Papel();
         cidadao.setNome(CIDADAO);

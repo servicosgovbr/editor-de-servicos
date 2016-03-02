@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,7 +47,7 @@ class DescartarAlteracoesPaginaController extends CheckOrgaoEspecificoController
             throw new IllegalStateException("Descartar um serviço que não foi publicado é equivalente a excluir o serviço");
         }
 
-        if (!usuarioPodeRealizarAcao(userProfiles,tipoPagina,conteudoVersionado.getOrgaoId())) {
+        if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 

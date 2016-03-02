@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static br.gov.servicos.editor.conteudo.TipoPagina.*;
 import static br.gov.servicos.editor.utils.Unchecked.Supplier.uncheckedSupplier;
@@ -99,10 +100,11 @@ public class RepositorioCartasBuilder {
                 .map(t -> localRepositorio.resolve(t.getCaminhoPasta()))
                 .map(Path::toFile)
                 .map(f -> {
+                    //noinspection ResultOfMethodCallIgnored
                     f.mkdirs();
                     return uncheckedSupplier(() -> f.toPath().resolve("dummy").toFile().createNewFile());
                 })
-                .allMatch(x -> x.get());
+                .allMatch(Supplier::get);
     }
 
 }
