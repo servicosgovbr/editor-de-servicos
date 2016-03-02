@@ -1,35 +1,26 @@
 package br.gov.servicos.editor.security;
 
-
 import br.gov.servicos.editor.conteudo.TipoPagina;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static br.gov.servicos.editor.conteudo.TipoPagina.PAGINA_TEMATICA;
 
 public abstract class CheckOrgaoEspecificoController {
 
+    public boolean usuarioPodeRealizarAcao(UserProfiles perfil, TipoPagina tipoPagina, String orgaoId) {
+        TipoPermissao permissao = getTipoPermissao();
 
-   public boolean usuarioPodeRealizarAcao(UserProfiles userProfiles, TipoPagina tipoPagina, String orgaoId) {
-        TipoPermissao tipoPermissao = getTipoPermissao();
+        if (PAGINA_TEMATICA.equals(tipoPagina)) {
+            return usuarioTemPermissaoParaTipoPagina(permissao, perfil, tipoPagina);
+        }
 
-
-       if (TipoPagina.PAGINA_TEMATICA.equals(tipoPagina)) {
-          return usuarioTemPermissaoParaTipoPagina(tipoPermissao,userProfiles,tipoPagina);
-       }
-
-       return usuarioTemPermissaoParaTipoPagina(tipoPermissao,userProfiles,tipoPagina) ||
-                userProfiles.temPermissaoParaTipoPaginaOrgaoEspecifico(tipoPermissao,tipoPagina, orgaoId);
-
+        return usuarioTemPermissaoParaTipoPagina(permissao, perfil, tipoPagina) ||
+                perfil.temPermissaoParaTipoPaginaOrgaoEspecifico(permissao, tipoPagina, orgaoId);
     }
 
-   public abstract TipoPermissao getTipoPermissao();
+    public abstract TipoPermissao getTipoPermissao();
 
-
-    private final boolean usuarioTemPermissaoParaTipoPagina(TipoPermissao tipoPermissao, UserProfiles userProfiles, TipoPagina tipoPagina) {
+    private boolean usuarioTemPermissaoParaTipoPagina(TipoPermissao tipoPermissao, UserProfiles userProfiles, TipoPagina tipoPagina) {
         return userProfiles.temPermissaoParaTipoPagina(tipoPermissao, tipoPagina);
     }
-
-
 
 }
