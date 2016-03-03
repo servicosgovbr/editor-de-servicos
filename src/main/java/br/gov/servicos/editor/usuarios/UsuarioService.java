@@ -1,5 +1,7 @@
 package br.gov.servicos.editor.usuarios;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,13 +9,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import static java.lang.Long.valueOf;
 
 @Component
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UsuarioService {
 
+    UsuarioRepository usuarios;
+
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    public UsuarioService(UsuarioRepository usuarios) {
+        this.usuarios = usuarios;
+    }
 
     public Usuario findByCpf(@PathVariable("cpf") String cpf) {
-        Usuario usuario = usuarioRepository.findByCpf(cpf);
+        Usuario usuario = usuarios.findByCpf(cpf);
         if (usuario == null) {
             throw new UsuarioInexistenteException();
         }
@@ -21,15 +28,15 @@ public class UsuarioService {
     }
 
     public Iterable<Usuario> findAll() {
-        return usuarioRepository.findAll();
+        return usuarios.findAll();
     }
 
     public Usuario save(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        return usuarios.save(usuario);
     }
 
     public Usuario findById(String usuarioId) {
-        return usuarioRepository.findById(valueOf(usuarioId));
+        return usuarios.findById(valueOf(usuarioId));
     }
 
     public Usuario habilitarDesabilitarUsuario(String usuarioId) {

@@ -3,6 +3,9 @@ package br.gov.servicos.editor.security;
 import br.gov.servicos.editor.usuarios.Usuario;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
@@ -11,26 +14,30 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GerenciadorPermissoes implements InitializingBean {
-    private Multimap<String, Permissao> map;
-    private YamlPropertiesFactoryBean yamlPropertiesFactoryBean;
+
+    @NonFinal
+    Multimap<String, Permissao> map;
+
+    YamlPropertiesFactoryBean properties;
 
     @Autowired
-    public GerenciadorPermissoes(YamlPropertiesFactoryBean yamlPropertiesFactoryBean) {
-        this.yamlPropertiesFactoryBean = yamlPropertiesFactoryBean;
+    public GerenciadorPermissoes(YamlPropertiesFactoryBean properties) {
+        this.properties = properties;
     }
 
     @Override
     public void afterPropertiesSet() {
         map = HashMultimap.create();
-        yamlPropertiesFactoryBean.getObject().forEach((papel, permissaoObj) -> {
-            String permissao = (String) permissaoObj;
-            map.put(parsePapel((String) papel), new Permissao(permissao.toUpperCase()));
+        properties.getObject().forEach((papel, permissao) -> {
+            map.put(parsePapel(papel), new Permissao(permissao.toString().toUpperCase()));
         });
-        Usuario.setGerenciadorPermissoes(this); //necessario porque Usuario não é uma classe spring
+        Usuario.setGerenciadorPermissoes(this); // necessário porque Usuario não é uma classe Spring
     }
 
-    private String parsePapel(String papel) {
+    private String parsePapel(Object papelObj) {
+        String papel = (String) papelObj;
         if (!papel.matches("[\\w\\s]+\\[\\d+\\]")) {
             throw new RuntimeException("Formato incorreto do arquivo de permissões. Problema com o papel: " + papel);
         }

@@ -1,5 +1,8 @@
 package br.gov.servicos.editor.security;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -11,11 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private RequestCache requestCache;
-    private String defaultRedirectUrl;
-    private String loginUrl;
+    @NonFinal
+    RequestCache requestCache;
+
+    String defaultRedirectUrl;
+    String loginUrl;
 
     public CustomLoginSuccessHandler(String defaultRedirectUrl, String loginUrl) {
         this.defaultRedirectUrl = defaultRedirectUrl;
@@ -28,6 +34,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws ServletException, IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
+
         if (savedRequest == null || savedRequest.getRedirectUrl().contains(loginUrl)) {
             getRedirectStrategy().sendRedirect(request, response, defaultRedirectUrl);
         }

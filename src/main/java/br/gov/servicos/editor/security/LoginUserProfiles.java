@@ -1,6 +1,5 @@
 package br.gov.servicos.editor.security;
 
-import br.gov.servicos.editor.config.SlugifyConfig;
 import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.usuarios.Usuario;
 import org.springframework.context.annotation.Profile;
@@ -8,11 +7,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import static br.gov.servicos.editor.config.SlugifyConfig.slugify;
 import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
 
 @Component
 @Profile("!teste")
 public class LoginUserProfiles implements UserProfiles {
+
     @Override
     public UserProfile get() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -30,19 +31,16 @@ public class LoginUserProfiles implements UserProfiles {
     }
 
     public boolean temPermissaoParaOrgao(TipoPermissao permissao, String orgaoId) {
-        Usuario usuario = getPrincipal();
-        return usuario.temPermissaoComOrgao(permissao, orgaoId);
+        return getPrincipal().temPermissaoComOrgao(permissao, orgaoId);
     }
 
     @Override
     public boolean temPermissaoParaTipoPagina(TipoPermissao tipoPermissao, TipoPagina tipoPagina) {
-        Usuario usuario = getPrincipal();
-        return usuario.temPermissao(tipoPermissao.comTipoPagina(tipoPagina));
+        return getPrincipal().temPermissao(tipoPermissao.comTipoPagina(tipoPagina));
     }
 
     public boolean temPermissaoParaCriarAdmin() {
-        Usuario usuario = getPrincipal();
-        return usuario.temPermissao(TipoPermissao.CADASTRAR.comPapel("ADMIN"));
+        return getPrincipal().temPermissao(TipoPermissao.CADASTRAR.comPapel("ADMIN"));
     }
 
     @Override
@@ -54,9 +52,8 @@ public class LoginUserProfiles implements UserProfiles {
 
     @Override
     public boolean temPermissaoParaTipoPaginaOrgaoEspecifico(TipoPermissao tipoPermissao, TipoPagina tipoPagina, String unsafeOrgaoId) {
-        Usuario usuario = getPrincipal();
-        String userSiorgId = SlugifyConfig.slugify(usuario.getSiorg());
-        String orgaoId = SlugifyConfig.slugify(unsafeOrgaoId);
+        String userSiorgId = slugify(getPrincipal().getSiorg());
+        String orgaoId = slugify(unsafeOrgaoId);
 
         return temPermissao(tipoPermissao.comTipoPaginaParaOrgaoEspecifico(tipoPagina)) && userSiorgId.equals(orgaoId);
     }

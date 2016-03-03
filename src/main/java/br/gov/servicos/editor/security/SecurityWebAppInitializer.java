@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import static br.gov.servicos.editor.security.TipoPermissao.*;
+import static java.lang.String.format;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
@@ -20,7 +21,6 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_URL = "/editar/autenticar";
-
 
     private static final String API_NOVO_USUARIO = "/editar/usuarios/usuario/**";
     private static final String ADMIN = "ADMIN";
@@ -48,7 +48,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
         accessDeniedHandler.setErrorPage("/editar/acessoNegado");
 
-
         HttpSecurity httpSecurityBuilder = http
                 .httpBasic()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_URL))
@@ -74,13 +73,27 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
         // este laço irá adicionar todas as permissões específicas por página
         for (TipoPagina tipoPagina : TipoPagina.values()) {
             httpSecurityBuilder.authorizeRequests()
-                    .antMatchers(GET, constroiURLTipoPagina(API_NOVA_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                    .antMatchers(DELETE, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                    .antMatchers(PATCH, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                    .antMatchers(PUT, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                    .antMatchers(POST, constroiURLTipoPagina(API_PAGINA_PATTERN, tipoPagina)).hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina), EDITAR_SALVAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                    .antMatchers(POST, constroiURLTipoPagina(API_DESPUBLICAR_PATTERN, tipoPagina)).hasAnyAuthority(DESPUBLICAR.comTipoPagina(tipoPagina), DESPUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
-                    .antMatchers(POST, constroiURLTipoPagina(API_DESCARTAR_PATTERN, tipoPagina)).hasAnyAuthority(DESCARTAR.comTipoPagina(tipoPagina), DESCARTAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+                    .antMatchers(GET, urlParaTipoDePagina(API_NOVA_PAGINA_PATTERN, tipoPagina))
+                    .hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
+                    .antMatchers(DELETE, urlParaTipoDePagina(API_PAGINA_PATTERN, tipoPagina))
+                    .hasAnyAuthority(EXCLUIR.comTipoPagina(tipoPagina), EXCLUIR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
+                    .antMatchers(PATCH, urlParaTipoDePagina(API_PAGINA_PATTERN, tipoPagina))
+                    .hasAnyAuthority(CRIAR.comTipoPagina(tipoPagina), CRIAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
+                    .antMatchers(PUT, urlParaTipoDePagina(API_PAGINA_PATTERN, tipoPagina))
+                    .hasAnyAuthority(PUBLICAR.comTipoPagina(tipoPagina), PUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
+                    .antMatchers(POST, urlParaTipoDePagina(API_PAGINA_PATTERN, tipoPagina))
+                    .hasAnyAuthority(EDITAR_SALVAR.comTipoPagina(tipoPagina), EDITAR_SALVAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
+                    .antMatchers(POST, urlParaTipoDePagina(API_DESPUBLICAR_PATTERN, tipoPagina))
+                    .hasAnyAuthority(DESPUBLICAR.comTipoPagina(tipoPagina), DESPUBLICAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
+                    .antMatchers(POST, urlParaTipoDePagina(API_DESCARTAR_PATTERN, tipoPagina))
+                    .hasAnyAuthority(DESCARTAR.comTipoPagina(tipoPagina), DESCARTAR.comTipoPaginaParaOrgaoEspecifico(tipoPagina))
+
                     .and();
         }
 
@@ -89,6 +102,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 CADASTRAR.comPapel(PONTOFOCAL),
                 CADASTRAR.comPapel(PUBLICADOR),
                 CADASTRAR.comPapel(EDITOR))
+
                 .antMatchers(POST, API_NOVO_USUARIO).hasAnyAuthority(CADASTRAR.comPapel(ADMIN),
                 CADASTRAR.comPapel(PONTOFOCAL),
                 CADASTRAR.comPapel(PUBLICADOR),
@@ -98,7 +112,6 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
-
 
                 .and()
                 .sessionManagement()
@@ -112,8 +125,8 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
                 .userDetailsService(editorUserDetailsService);
     }
 
-    private String constroiURLTipoPagina(String urlPattern, TipoPagina tipoPagina) {
-        return String.format(urlPattern, tipoPagina.getNome());
+    private String urlParaTipoDePagina(String urlPattern, TipoPagina tipoPagina) {
+        return format(urlPattern, tipoPagina.getNome());
     }
 
 

@@ -3,6 +3,8 @@ package br.gov.servicos.editor.security;
 
 import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.usuarios.UsuarioRepository;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,15 +12,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component(value = "userDetailsService")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EditorUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    UsuarioRepository usuarios;
 
-    private CPFFormatter formatter = new CPFFormatter();
+    CPFFormatter formatter;
+
+    @Autowired
+    public EditorUserDetailsService(UsuarioRepository usuarios) {
+        this.formatter = new CPFFormatter();
+        this.usuarios = usuarios;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
-        return usuarioRepository.findByCpf(formatter.unformat(cpf));
+        return usuarios.findByCpf(formatter.unformat(cpf));
     }
 }

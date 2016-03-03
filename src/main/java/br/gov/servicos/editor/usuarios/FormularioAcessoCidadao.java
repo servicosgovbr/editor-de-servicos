@@ -20,16 +20,14 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class FormularioAcessoCidadao {
 
-    public static final String CAMPO_OBRIGATORIO = "campo obrigatório";
-
-    @NotBlank(message = "Nome: " + CAMPO_OBRIGATORIO)
+    @NotBlank(message = "Nome: campo obrigatório")
     String nome;
 
-    @NotBlank(message = "Nome: " + CAMPO_OBRIGATORIO)
-    @Email(message = "Email: Formato não é válido")
+    @NotBlank(message = "Email: campo obrigatório")
+    @Email(message = "Email: formato não é válido")
     String email;
 
-    @NotBlank(message = "CPF: " + CAMPO_OBRIGATORIO)
+    @NotBlank(message = "CPF: campo obrigatório")
     @CPF(message = "CPF: não é valido")
     String cpf;
 }
