@@ -46,7 +46,7 @@ public class SecurityWebAppInitializer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
-        accessDeniedHandler.setErrorPage("/editar/acessoNegado");
+        accessDeniedHandler.setErrorPage("/editar/acesso-negado");
 
         HttpSecurity httpSecurityBuilder = http
                 .httpBasic()

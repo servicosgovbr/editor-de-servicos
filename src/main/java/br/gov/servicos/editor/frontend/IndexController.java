@@ -46,8 +46,8 @@ class IndexController {
         return new ModelAndView("ajuda-markdown");
     }
 
-    @RequestMapping(value = "/editar/acessoNegado", method = {DELETE, PUT, POST, GET, PATCH})
+    @RequestMapping(value = "/editar/acesso-negado", method = {DELETE, PUT, POST, GET, PATCH})
     ModelAndView acessoNegado() {
-        return new ModelAndView("acessoNegado");
+        return new ModelAndView("acesso-negado");
     }
 }
