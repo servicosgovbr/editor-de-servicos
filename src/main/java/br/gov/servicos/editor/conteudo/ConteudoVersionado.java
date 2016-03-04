@@ -43,15 +43,23 @@ public class ConteudoVersionado {
 
     @Getter
     String id;
+
     @Getter
     TipoPagina tipo;
+
     @Getter(PROTECTED)
     RepositorioGit repositorio;
+
     LeitorDeArquivos leitorDeArquivos;
+
     EscritorDeArquivos escritorDeArquivos;
+
     Slugify slugify;
+
     ReformatadorXml reformatadorXml;
+
     Siorg siorg;
+
     DeserializadorConteudoXML deserializadorConteudoXML;
 
     public Path getCaminho() {

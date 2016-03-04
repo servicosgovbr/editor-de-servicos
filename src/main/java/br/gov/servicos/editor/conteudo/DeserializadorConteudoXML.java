@@ -9,6 +9,7 @@ import static javax.xml.bind.JAXB.unmarshal;
 
 @Value
 public class DeserializadorConteudoXML {
+
     Class<? extends ConteudoMetadadosProvider> clazz;
 
     public ConteudoMetadadosProvider deserializaConteudo(String raw) {
