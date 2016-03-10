@@ -2,7 +2,7 @@ package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;
-import br.gov.servicos.editor.utils.DeserializadorUtils;
+import br.gov.servicos.editor.utils.Deserializador;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
@@ -40,7 +40,17 @@ public class ConteudoVersionadoFactory {
     @Bean // necessário para @Cacheable
     @Scope("prototype")
     public ConteudoVersionado pagina(String texto, TipoPagina tipo) {
-        return new ConteudoVersionado(slugify.slugify(texto), tipo, repositorio, leitorDeArquivos, escritorDeArquivos, slugify, reformatadorXml, siorg, DeserializadorUtils.obterDeserializador(tipo));
+        return new ConteudoVersionado(
+                slugify.slugify(texto),
+                tipo,
+                repositorio,
+                leitorDeArquivos,
+                escritorDeArquivos,
+                slugify,
+                reformatadorXml,
+                siorg,
+                Deserializador.para(tipo)
+        );
     }
 
 }

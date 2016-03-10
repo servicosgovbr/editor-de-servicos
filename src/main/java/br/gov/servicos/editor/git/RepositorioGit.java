@@ -106,7 +106,7 @@ public class RepositorioGit {
     @SneakyThrows
     private <T> T comRepositorioAberto(Function<Git, T> fn) {
         try (Git git = Git.open(raiz)) {
-            synchronized (Git.class) {
+            synchronized (RepositorioGit.class) {
                 try {
                     this.git = git;
                     return fn.apply(git);

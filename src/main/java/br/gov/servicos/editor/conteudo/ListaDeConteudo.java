@@ -34,9 +34,13 @@ import static org.eclipse.jgit.lib.Constants.MASTER;
 public class ListaDeConteudo {
 
     Importador importador;
+
     RepositorioGit repositorioGit;
+
     ConteudoVersionadoFactory conteudoVersionadoFactory;
+
     CacheManager cacheManager;
+
     boolean esquentarCache;
 
     @Autowired

@@ -7,9 +7,9 @@ import br.gov.servicos.editor.conteudo.PaginaTematicaXML;
 import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.conteudo.cartas.ServicoXML;
 
-public class DeserializadorUtils {
+public class Deserializador {
 
-    public static DeserializadorConteudoXML obterDeserializador(TipoPagina tipo) {
+    public static DeserializadorConteudoXML para(TipoPagina tipo) {
         switch (tipo) {
             case SERVICO:
                 return new DeserializadorConteudoXML(ServicoXML.class);
