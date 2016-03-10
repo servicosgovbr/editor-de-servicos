@@ -48,7 +48,6 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
         return new CustomLoginSuccessHandler("/editar", "/editar/autenticar");
     }
 
-
     @Bean
     public YamlPropertiesFactoryBean yamlPropertiesFactoryBean() throws IOException {
         YamlPropertiesFactoryBean permissoes = new YamlPropertiesFactoryBean();

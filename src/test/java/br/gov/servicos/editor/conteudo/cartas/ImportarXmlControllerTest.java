@@ -8,7 +8,7 @@ import org.springframework.test.util.XmlExpectationsHelper;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ImportarXMLCartaControllerTest {
+public class ImportarXmlControllerTest {
 
     private Path valido;
 
@@ -22,13 +22,13 @@ public class ImportarXMLCartaControllerTest {
 
     @Test
     public void deveReceberUrlDeXmlERetornarConteudoDeXml() throws Exception {
-        String xml = new ImportarXMLCartaController().editar(valido.toUri().toString());
+        String xml = new ImportarXmlController().editar(valido.toUri().toString());
         new XmlExpectationsHelper().assertXmlEqual("<servico><nome>Carta A</nome></servico>", xml);
     }
 
     @Test(expected = Exception.class)
     public void deveReceberUrlDeXmlEValidarFormatoXml() throws Exception {
-        new ImportarXMLCartaController().editar("https://urlquenaoexiste.com/arquivo.xml");
+        new ImportarXmlController().editar("https://urlquenaoexiste.com/arquivo.xml");
     }
 
 }

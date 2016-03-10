@@ -16,7 +16,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Slf4j
 @Controller
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-class ImportarXMLCartaController {
+class ImportarXmlController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/importar-xml", method = GET, produces = "application/xml")
