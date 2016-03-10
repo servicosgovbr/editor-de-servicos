@@ -15,21 +15,27 @@ import static lombok.AccessLevel.PUBLIC;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Component
-@FieldDefaults(level = PUBLIC, makeFinal = true)
 @Profile("!teste")
+@FieldDefaults(level = PUBLIC, makeFinal = true)
 public class RepositorioConfig {
 
     String urlRepositorioCartas;
     boolean deveImportar;
     boolean fazerPush;
-    public final File localRepositorioDeCartas;
+    File localRepositorioDeCartas;
 
     @Autowired
     public RepositorioConfig(@Value("${eds.cartas.repositorio}") String urlRepositorioCartas,
                              @Value("${fallback.eds.cartas.repositorio}") String urlFallbackRepositorioCartas,
                              @Value("${flags.importar}") boolean deveImportar,
                              @Value("${flags.git.push}") boolean fazerPush) throws IOException {
-        this(urlRepositorioCartas, urlFallbackRepositorioCartas, deveImportar, fazerPush, createTempDirectory("editor-de-servicos").toFile());
+
+        this(urlRepositorioCartas,
+                urlFallbackRepositorioCartas,
+                deveImportar,
+                fazerPush,
+                createTempDirectory("editor-de-servicos").toFile()
+        );
     }
 
     @SneakyThrows
@@ -37,8 +43,8 @@ public class RepositorioConfig {
                              String urlFallbackRepositorioCartas,
                              boolean deveImportar,
                              boolean fazerPush,
-                             File localRepositorioDeCartas) {
-
+                             File localRepositorioDeCartas
+    ) {
         this.urlRepositorioCartas = isEmpty(urlRepositorioCartas) ? urlFallbackRepositorioCartas : urlRepositorioCartas;
         this.deveImportar = deveImportar;
         this.fazerPush = fazerPush;
