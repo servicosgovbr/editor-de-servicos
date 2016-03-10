@@ -20,24 +20,24 @@ public class CpfUnicoValidator implements ConstraintValidator<CpfUnico, Object> 
 
     @Override
     public void initialize(CpfUnico constraintAnnotation) {
-        this.nomeCampoMarcaSeValidacaoAtiva = constraintAnnotation.campoMarcaSeValidacaoHabilitada();
-        this.nomeCampoComValorCpf = constraintAnnotation.nomeCampoComValorCpf();
+        nomeCampoMarcaSeValidacaoAtiva = constraintAnnotation.campoMarcaSeValidacaoHabilitada();
+        nomeCampoComValorCpf = constraintAnnotation.nomeCampoComValorCpf();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        Field campoValidacaoAtiva = ReflectionUtils.findField(value.getClass(), this.nomeCampoMarcaSeValidacaoAtiva);
+        Field campoValidacaoAtiva = ReflectionUtils.findField(value.getClass(), nomeCampoMarcaSeValidacaoAtiva);
         ReflectionUtils.makeAccessible(campoValidacaoAtiva);
         boolean validacaoEstaAtiva = (boolean) ReflectionUtils.getField(campoValidacaoAtiva, value);
 
-        if (validacaoEstaAtiva) {
-            Field campoCpf = ReflectionUtils.findField(value.getClass(), this.nomeCampoComValorCpf);
-            ReflectionUtils.makeAccessible(campoCpf);
-            String cpf = (String) ReflectionUtils.getField(campoCpf, value);
-
-            return repository.findByCpf(cpfFormatter.unformat(cpf)) == null;
-        } else {
+        if (!validacaoEstaAtiva) {
             return true;
         }
+
+        Field campoCpf = ReflectionUtils.findField(value.getClass(), nomeCampoComValorCpf);
+        ReflectionUtils.makeAccessible(campoCpf);
+        String cpf = (String) ReflectionUtils.getField(campoCpf, value);
+
+        return repository.findByCpf(cpfFormatter.unformat(cpf)) == null;
     }
 }

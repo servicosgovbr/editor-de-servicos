@@ -6,6 +6,7 @@ import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
 import br.gov.servicos.editor.usuarios.recuperarsenha.RecuperacaoSenhaService;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,39 +24,46 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static br.gov.servicos.editor.security.TipoPermissao.CADASTRAR_OUTROS_ORGAOS;
+import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Slf4j
 @Controller
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class GerenciarUsuarioController {
 
     public static final String COMPLETAR_CADASTRO = "completarCadastro";
     public static final String RECUPERAR_SENHA = "recuperarSenha";
-    @Autowired
-    private UsuarioFactory factory;
+
+    UsuarioFactory factory;
+
+    UsuarioService usuarioService;
+
+    PapelRepository papeis;
+
+    RecuperacaoSenhaService tokenService;
+
+    Siorg siorg;
+
+    UserProfiles userProfiles;
+
+    CPFFormatter cpfFormatter = new CPFFormatter();
 
     @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private PapelRepository papelRepository;
-
-    @Autowired
-    private RecuperacaoSenhaService tokenService;
-
-    @Autowired
-    private Siorg siorg;
-
-    @Autowired
-    private UserProfiles userProfiles;
-
-    private CPFFormatter cpfFormatter = new CPFFormatter();
+    public GerenciarUsuarioController(UsuarioFactory factory, UsuarioService usuarioService, PapelRepository papeis, RecuperacaoSenhaService tokenService, Siorg siorg, UserProfiles userProfiles) {
+        this.factory = factory;
+        this.usuarioService = usuarioService;
+        this.papeis = papeis;
+        this.tokenService = tokenService;
+        this.siorg = siorg;
+        this.userProfiles = userProfiles;
+    }
 
     @ModelAttribute("papeis")
     public Iterable<Papel> popularPapeis() {
-        Iterable<Papel> todosPapeis = this.papelRepository.findAll();
+        Iterable<Papel> todosPapeis = papeis.findAll();
         return StreamSupport.stream(todosPapeis.spliterator(), false)
                 .filter(papel -> userProfiles.temPermissao(TipoPermissao.CADASTRAR.comPapel(papel.getNome())))
                 .collect(Collectors.toList());
@@ -91,9 +99,10 @@ public class GerenciarUsuarioController {
         if (verificarPermissao(formularioUsuario)) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
+
         if (!result.hasErrors()) {
             Usuario usuarioSalvo = usuarioService.save(factory.criarUsuario(formularioUsuario));
-            usuarioLog("Usuario criado", usuarioSalvo);
+            logUsuario("Usuario criado", usuarioSalvo);
             return intrucoesParaRecuperarSenha(usuarioSalvo, COMPLETAR_CADASTRO);
         } else {
             ModelMap model = new ModelMap();
@@ -110,15 +119,16 @@ public class GerenciarUsuarioController {
         if (!result.hasErrors()) {
             // TODO verificar se existe mais de um usuário com o mesmo cpf e lançar erro
             Usuario usuario = usuarioService.findByCpf(cpfFormatter.unformat(formularioUsuario.getCpf()));
-            Usuario usuarioSalvo;
             if (usuario != null) {
                 usuario = factory.atualizaUsuario(usuario, formularioUsuario);
             } else {
                 throw new UsuarioInexistenteException();
             }
-            usuarioSalvo = usuarioService.save(usuario);
-            usuarioLog("Usuario atualizado", usuarioSalvo);
+
+            Usuario usuarioSalvo = usuarioService.save(usuario);
+            logUsuario("Usuario atualizado", usuarioSalvo);
             return usuarios();
+
         } else {
             ModelMap model = new ModelMap();
             model.addAttribute("metodo", PUT);
@@ -137,7 +147,7 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/habilitar-desabilitar", method = POST)
     public String habilitarDesabilitarUsuario(@PathVariable("usuarioId") String usuarioId) {
         Usuario usuario = usuarioService.habilitarDesabilitarUsuario(usuarioId);
-        usuarioLog("Mudança de propriedade habilitado", usuario);
+        logUsuario("Mudança de propriedade habilitado", usuario);
         return "redirect:/editar/usuarios";
     }
 
@@ -150,24 +160,29 @@ public class GerenciarUsuarioController {
     @RequestMapping(value = "/editar/usuarios/usuario/{usuarioId}/editar", method = POST)
     public ModelAndView editarUsuario(@PathVariable("usuarioId") String usuarioId) {
         Usuario usuario = usuarioService.findById(usuarioId);
-        ModelMap model = new ModelMap();
         FormularioUsuario formularioUsuario = factory.criaFormulario(usuario);
+
+        ModelMap model = new ModelMap();
         model.addAttribute("formularioUsuario", formularioUsuario.withEhInclusaoDeUsuario(Boolean.FALSE));
         model.addAttribute("metodo", PUT);
+
         return new ModelAndView("cadastrar", model);
     }
 
     private boolean verificarPermissao(@Valid FormularioUsuario formularioUsuario) {
-        Papel papel = papelRepository.findById(Long.valueOf(formularioUsuario.getPapelId()));
+        Papel papel = papeis.findById(Long.valueOf(formularioUsuario.getPapelId()));
         return papel != null && !userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(formularioUsuario.getSiorg(), papel.getNome());
     }
 
     private ModelAndView intrucoesParaRecuperarSenha(Usuario usuario, String pagina) {
         ModelMap model = new ModelMap();
+
         model.addAttribute("usuario", usuario);
         model.addAttribute("link", gerarLinkParaRecuperacaoDeSenha(usuario.getId().toString(), pagina));
         model.addAttribute("pagina", pagina);
-        usuarioLog("Token gerado para trocar senha", usuario);
+
+        logUsuario("Token gerado para trocar senha", usuario);
+
         return new ModelAndView("instrucoes-recuperar-senha", model);
     }
 
@@ -176,7 +191,7 @@ public class GerenciarUsuarioController {
         return "/editar/recuperar-senha?token=" + token + "&usuarioId=" + usuarioId + "&pagina=" + pagina;
     }
 
-    private void usuarioLog(String mensagem, Usuario usuario) {
+    private static void logUsuario(String mensagem, Usuario usuario) {
         Marker marker = append("usuario.id", usuario.getId())
                 .and(append("usuario.cpf", usuario.getCpf()))
                 .and(append("usuario.habilitado", usuario.isHabilitado()))

@@ -23,7 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class EditarPaginaController {
 
-    private ConteudoVersionadoFactory factory;
+    ConteudoVersionadoFactory factory;
 
     @Autowired
     public EditarPaginaController(ConteudoVersionadoFactory factory) {
@@ -31,7 +31,7 @@ public class EditarPaginaController {
     }
 
     @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = GET, produces = APPLICATION_XML_VALUE)
-    public ResponseEntity editar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
+    public ResponseEntity<String> editar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, FileNotFoundException {
         ConteudoVersionado carta = factory.pagina(id, fromNome(tipo));
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);

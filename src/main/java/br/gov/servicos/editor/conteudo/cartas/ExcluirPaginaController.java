@@ -27,7 +27,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 class ExcluirPaginaController extends CheckOrgaoEspecificoController {
 
     UserProfiles userProfiles;
-    private ConteudoVersionadoFactory factory;
+    ConteudoVersionadoFactory factory;
 
     @Autowired
     public ExcluirPaginaController(UserProfiles userProfiles, ConteudoVersionadoFactory factory) {
@@ -48,6 +48,7 @@ class ExcluirPaginaController extends CheckOrgaoEspecificoController {
         if (!conteudoVersionado.existe()) {
             throw new ConteudoInexistenteException(conteudoVersionado);
         }
+
         if (!usuarioPodeRealizarAcao(userProfiles, tipoPagina, conteudoVersionado.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }

@@ -24,7 +24,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class DescartarAlteracoesPaginaController extends CheckOrgaoEspecificoController {
 
-    private ConteudoVersionadoFactory factory;
+    ConteudoVersionadoFactory factory;
     UserProfiles userProfiles;
 
     @Autowired
@@ -52,7 +52,7 @@ class DescartarAlteracoesPaginaController extends CheckOrgaoEspecificoController
         }
 
         conteudoVersionado.descartarAlteracoes();
-        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
+        return new RedirectView("/editar/api/pagina/" + tipo + '/' + conteudoVersionado.getId(), true, false);
     }
 
     @Override
