@@ -3,7 +3,6 @@ package br.gov.servicos.editor.conteudo.cartas;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 import br.gov.servicos.editor.conteudo.ConteudoVersionadoFactory;
 import br.gov.servicos.editor.conteudo.MetadadosUtils;
-import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.security.CheckOrgaoEspecificoController;
 import br.gov.servicos.editor.security.TipoPermissao;
 import br.gov.servicos.editor.security.UserProfiles;
@@ -28,7 +27,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 class RenomearCartaController extends CheckOrgaoEspecificoController {
 
     UserProfiles userProfiles;
-    private ConteudoVersionadoFactory factory;
+
+    ConteudoVersionadoFactory factory;
 
     @Autowired
     public RenomearCartaController(UserProfiles userProfiles, ConteudoVersionadoFactory factory) {
@@ -37,28 +37,26 @@ class RenomearCartaController extends CheckOrgaoEspecificoController {
     }
 
     @RequestMapping(value = "/editar/api/pagina/servico/{id}", method = PATCH)
-    ResponseEntity renomear(@PathVariable("id") String id,
-                            @RequestBody String novoNome) throws ConteudoInexistenteException {
+    ResponseEntity<Void> renomear(@PathVariable("id") String id, @RequestBody String novoNome) {
         ConteudoVersionado carta = factory.pagina(id, SERVICO);
 
         if (!carta.existe()) {
             throw new ConteudoInexistenteException(carta);
         }
 
-        if (!usuarioPodeRealizarAcao(userProfiles, TipoPagina.SERVICO, carta.getOrgaoId())) {
+        if (!usuarioPodeRealizarAcao(userProfiles, SERVICO, carta.getOrgaoId())) {
             throw new AccessDeniedException("Usuário sem permissão");
         }
 
         String novoId = carta.renomear(userProfiles.get(), novoNome);
         carta = factory.pagina(novoId, SERVICO);
 
-        return new ResponseEntity(MetadadosUtils.metadados(carta), HttpStatus.OK);
+        return new ResponseEntity<>(MetadadosUtils.metadados(carta), HttpStatus.OK);
     }
 
     @Override
     public TipoPermissao getTipoPermissao() {
         return TipoPermissao.CRIAR;
     }
-
 
 }

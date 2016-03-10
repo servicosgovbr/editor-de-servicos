@@ -22,8 +22,8 @@ public class Revisao implements Serializable {
     Date horario;
 
     public Revisao(RevCommit commit) {
-        this.hash = commit.getId().getName();
-        this.autor = commit.getAuthorIdent().getName();
-        this.horario = commit.getAuthorIdent().getWhen();
+        hash = commit.getId().getName();
+        autor = commit.getAuthorIdent().getName();
+        horario = commit.getAuthorIdent().getWhen();
     }
 }

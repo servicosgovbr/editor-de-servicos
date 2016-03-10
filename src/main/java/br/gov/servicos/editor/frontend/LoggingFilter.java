@@ -39,7 +39,7 @@ public class LoggingFilter extends OncePerRequestFilter {
             if (request.getQueryString() == null) {
                 data.put("req.url", request.getRequestURI());
             } else {
-                data.put("req.url", request.getRequestURI() + "?" + request.getQueryString());
+                data.put("req.url", request.getRequestURI() + '?' + request.getQueryString());
                 data.put("req.queryString", request.getQueryString());
             }
             data.put("res.statusCode", status.value());

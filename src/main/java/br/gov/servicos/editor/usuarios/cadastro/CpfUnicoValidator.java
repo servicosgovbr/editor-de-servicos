@@ -14,7 +14,8 @@ public class CpfUnicoValidator implements ConstraintValidator<CpfUnico, Object> 
     @Autowired
     private UsuarioRepository repository;
 
-    private CPFFormatter cpfFormatter = new CPFFormatter();
+    private final CPFFormatter cpfFormatter = new CPFFormatter();
+
     protected String nomeCampoMarcaSeValidacaoAtiva;
     protected String nomeCampoComValorCpf;
 

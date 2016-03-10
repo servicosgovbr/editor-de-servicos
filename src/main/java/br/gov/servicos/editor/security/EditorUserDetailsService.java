@@ -21,7 +21,7 @@ public class EditorUserDetailsService implements UserDetailsService {
 
     @Autowired
     public EditorUserDetailsService(UsuarioRepository usuarios) {
-        this.formatter = new CPFFormatter();
+        formatter = new CPFFormatter();
         this.usuarios = usuarios;
     }
 

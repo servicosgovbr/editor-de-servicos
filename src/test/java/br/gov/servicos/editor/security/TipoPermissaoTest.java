@@ -22,7 +22,7 @@ public class TipoPermissaoTest {
 
     @Test
     public void deveRetornarNomeDePermissaoComTipoDePaginaeEOrgaoEspecifico() {
-        assertThat(PUBLICAR.comTipoPaginaParaOrgaoEspecifico(TipoPagina.ORGAO), equalTo(PUBLICAR.getNome() + " " + TipoPagina.ORGAO.getNome().toUpperCase() + " (ORGAO ESPECIFICO)"));
+        assertThat(PUBLICAR.comTipoPaginaParaOrgaoEspecifico(TipoPagina.ORGAO), equalTo(PUBLICAR.getNome() + ' ' + TipoPagina.ORGAO.getNome().toUpperCase() + " (ORGAO ESPECIFICO)"));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class TipoPermissaoTest {
 
     @Test
     public void deveRetornarNomeDePermissaoComTipoPagina() {
-        assertThat(EDITAR_SALVAR.comTipoPagina(TipoPagina.PAGINA_TEMATICA), equalTo(EDITAR_SALVAR.getNome() + " " + TipoPagina.PAGINA_TEMATICA.getNome().toUpperCase()));
+        assertThat(EDITAR_SALVAR.comTipoPagina(TipoPagina.PAGINA_TEMATICA), equalTo(EDITAR_SALVAR.getNome() + ' ' + TipoPagina.PAGINA_TEMATICA.getNome().toUpperCase()));
     }
 
 }

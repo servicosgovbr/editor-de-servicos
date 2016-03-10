@@ -30,9 +30,9 @@ public class GerenciadorPermissoes implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         map = HashMultimap.create();
-        properties.getObject().forEach((papel, permissao) -> {
-            map.put(parsePapel(papel), new Permissao(permissao.toString().toUpperCase()));
-        });
+        properties.getObject().forEach((papel, permissao) ->
+                map.put(parsePapel(papel), new Permissao(permissao.toString().toUpperCase())));
+
         Usuario.setGerenciadorPermissoes(this); // necessário porque Usuario não é uma classe Spring
     }
 

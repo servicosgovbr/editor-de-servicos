@@ -47,7 +47,7 @@ public class Orgaos implements InitializingBean {
     public Orgaos(@Qualifier("restTemplate") RestTemplate rest, ObjectMapper mapper, Slugify slugify) {
         this.rest = rest;
         this.slugify = slugify;
-        this.reader = mapper.reader(EstruturaOrganizacional.class);
+        reader = mapper.reader(EstruturaOrganizacional.class);
     }
 
     @Override

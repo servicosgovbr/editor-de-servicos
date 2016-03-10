@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class UserProfileConfigParaTeste implements UserProfiles {
 
     @Setter
-    private boolean temPermissaoParaOrgao = true;
+    boolean temPermissaoParaOrgao = true;
 
     @Override
     public UserProfile get() {

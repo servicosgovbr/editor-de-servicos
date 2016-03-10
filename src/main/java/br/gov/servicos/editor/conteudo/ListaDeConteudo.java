@@ -64,7 +64,7 @@ public class ListaDeConteudo {
         if (importador.isImportadoComSucesso()) {
             @SuppressWarnings("unchecked")
             Cache<String, Metadados> metadados =
-                    (Cache) cacheManager.getCache(METADADOS).getNativeCache();
+                    (Cache<String, Metadados>) cacheManager.getCache(METADADOS).getNativeCache();
 
             listar().forEach(c -> metadados.put(c.getId(), c));
             log.info("Cache de metadados das cartas criado com sucesso");

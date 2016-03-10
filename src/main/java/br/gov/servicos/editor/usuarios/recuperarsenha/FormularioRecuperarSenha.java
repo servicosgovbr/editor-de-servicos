@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PRIVATE;
 @EqualsAndHashCode
 public class FormularioRecuperarSenha {
 
-    public final static String NOME_CAMPO = "formularioRecuperarSenha";
+    public static final String NOME_CAMPO = "formularioRecuperarSenha";
 
     @Valid
     CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha();

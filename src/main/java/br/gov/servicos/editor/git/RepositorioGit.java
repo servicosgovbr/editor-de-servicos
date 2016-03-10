@@ -7,7 +7,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.marker.LogstashMarker;
-import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullResult;
+import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
@@ -41,10 +43,11 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 import static net.logstash.logback.marker.Markers.append;
-import static net.logstash.logback.marker.Markers.appendArray;
 import static org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.NOTRACK;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE;
+import static org.eclipse.jgit.api.RebaseCommand.Operation.ABORT;
+import static org.eclipse.jgit.api.ResetCommand.ResetType.HARD;
 import static org.eclipse.jgit.lib.ConfigConstants.*;
 import static org.eclipse.jgit.lib.Constants.*;
 import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
@@ -65,8 +68,8 @@ public class RepositorioGit {
 
     @Autowired
     public RepositorioGit(RepositorioConfig config) {
-        this.raiz = config.localRepositorioDeCartas;
-        this.fazerPush = config.fazerPush;
+        raiz = config.localRepositorioDeCartas;
+        fazerPush = config.fazerPush;
     }
 
     public Path getCaminhoAbsoluto() {
@@ -74,7 +77,8 @@ public class RepositorioGit {
     }
 
     public Optional<Revisao> getRevisaoMaisRecenteDoBranch(String branchRef, Path caminhoRelativo) {
-        Function<Git, RevCommit> fn = uncheckedFunction(git -> {
+
+        RevCommit commit = comRepositorioAberto(uncheckedFunction(git -> {
             Repository repo = git.getRepository();
             RevWalk revWalk = new RevWalk(repo);
 
@@ -85,9 +89,9 @@ public class RepositorioGit {
             if (revs.hasNext()) {
                 return revs.next();
             }
+
             return null;
-        });
-        RevCommit commit = comRepositorioAberto(fn);
+        }));
 
         if (commit == null) {
             return empty();
@@ -146,10 +150,10 @@ public class RepositorioGit {
         return comRepositorioAberto(uncheckedFunction(git -> {
             pull();
 
-            String idLimpo = id.replaceAll("^" + R_HEADS, "");
+            String idLimpo = id.replaceAll('^' + R_HEADS, "");
 
             List<Ref> branchesList = git.branchList().setListMode(ALL).call();
-            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
+            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + '|' + R_REMOTES + "origin/", ""));
 
             return branches.anyMatch(s -> s.equals(idLimpo));
         }));
@@ -163,8 +167,8 @@ public class RepositorioGit {
         currentBranch = branch;
 
         Repository repository = git.getRepository();
-        String novoBranch = branch.replaceAll("^" + R_HEADS, "");
-        String branchRemoto = DEFAULT_REMOTE_NAME + "/" + novoBranch;
+        String novoBranch = branch.replaceAll('^' + R_HEADS, "");
+        String branchRemoto = DEFAULT_REMOTE_NAME + '/' + novoBranch;
 
         LogstashMarker marker = append("git.branch", repository.getBranch())
                 .and(append("git.state", repository.getRepositoryState().toString()))
@@ -280,7 +284,7 @@ public class RepositorioGit {
             try {
                 colocarEmSAFE();
             } finally {
-                throw new RepositorioEstadoInvalidoException("Não foi possível completar o git pull");
+                throw new RepositorioEstadoInvalidoException("Não foi possível completar o git pull", e);
             }
         } catch (IOException | GitAPIException e) {
             throw new RuntimeException(e);
@@ -291,7 +295,7 @@ public class RepositorioGit {
         RebaseResult rebaseResult = git
                 .rebase()
                 .setStrategy(THEIRS)
-                .setOperation(RebaseCommand.Operation.ABORT).call();
+                .setOperation(ABORT).call();
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("git.branch", git.getRepository().getBranch()))
@@ -299,7 +303,7 @@ public class RepositorioGit {
 
         log.info(marker, "git rebase em {}", git.getRepository().getBranch());
 
-        Ref resetResult = git.reset().setMode(ResetCommand.ResetType.HARD).setRef(R_HEADS + MASTER).call();
+        Ref resetResult = git.reset().setMode(HARD).setRef(R_HEADS + MASTER).call();
 
         marker = append("reset.result", resetResult.getName());
 
@@ -319,7 +323,7 @@ public class RepositorioGit {
         try {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
-                    .setRefSpecs(new RefSpec(branchLocal + ":" + branchRemoto))
+                    .setRefSpecs(new RefSpec(branchLocal + ':' + branchRemoto))
                     .setProgressMonitor(new LogstashProgressMonitor(log))
                     .call()
                     .forEach(uncheckedConsumer(result -> {
@@ -332,19 +336,8 @@ public class RepositorioGit {
                     }));
         } catch (GitAPIException e) {
             log.error(append("push.branch", branchRemoto), "git push falhou", e);
+            e.printStackTrace();
         }
-    }
-
-    private void mergeLog(MergeResult result) throws IOException {
-        Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
-                .and(append("git.branch", git.getRepository().getBranch()))
-                .and(append("merge.status", result.getMergeStatus().toString()))
-                .and(append("merge.base", result.getBase().getName()))
-                .and(append("merge.new-head", result.getNewHead().getName()))
-                .and(appendArray("merge.commits", Stream.of(result.getMergedCommits()).map(AnyObjectId::getName).toArray()))
-                .and(appendArray("merge.conflicts", result.getCheckoutConflicts() == null ? null : result.getCheckoutConflicts().toArray()));
-
-        log.info(marker, "git merge {}", git.getRepository().getBranch());
     }
 
     @SneakyThrows
@@ -409,7 +402,7 @@ public class RepositorioGit {
     private void criarTrackComBranchRemoto(String novoBranch) throws IOException {
         StoredConfig config = git.getRepository().getConfig();
         config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_REMOTE, DEFAULT_REMOTE_NAME);
-        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, Constants.R_HEADS + novoBranch);
+        config.setString(CONFIG_BRANCH_SECTION, novoBranch, CONFIG_KEY_MERGE, R_HEADS + novoBranch);
         config.save();
     }
 

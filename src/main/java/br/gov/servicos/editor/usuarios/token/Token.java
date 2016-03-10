@@ -40,6 +40,6 @@ public class Token implements Serializable {
     private Integer tentativasSobrando;
 
     public Token decrementarTentativasSobrando() {
-        return this.tentativasSobrando == 0 ? this : this.withTentativasSobrando(this.tentativasSobrando - 1);
+        return tentativasSobrando == 0 ? this : withTentativasSobrando(tentativasSobrando - 1);
     }
 }

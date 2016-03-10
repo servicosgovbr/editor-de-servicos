@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -97,14 +98,14 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
     @Test
     public void edicaoConcorrenteDoMesmoDocumentoDeveManterAUltimaVersaoSemErros() throws Exception {
         paralelizar(
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
-                () -> this.salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")));
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")),
+                () -> salvarDocumentos(SERVICO, id("a"), carta1("A"), carta2("A")));
 
         String ultimo = "<servico><nome>Carta A</nome><descricao>Uma descricao</descricao></servico>";
 
@@ -263,21 +264,22 @@ public class FluxosEdicaoIntegrationTest extends RepositorioGitIntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    private void paralelizar(Unchecked.Supplier... fs) {
+    @SafeVarargs
+    private final <T> void paralelizar(Unchecked.Supplier<T>... fs) {
         Arrays.asList(fs)
                 .stream()
-                .map(f -> execucaoParalela.submit(() -> f.get()))
-                .forEach(this::get);
+                .map(f -> execucaoParalela.submit((Callable<Object>) f::get))
+                .forEach(FluxosEdicaoIntegrationTest::get);
     }
 
     private void paralelizar(Runnable... fs) {
         Arrays.asList(fs)
                 .stream()
-                .map(f -> execucaoParalela.submit(() -> f.run()))
-                .forEach(this::get);
+                .map(f -> execucaoParalela.submit(f::run))
+                .forEach(FluxosEdicaoIntegrationTest::get);
     }
 
-    private Object get(Future f) {
+    private static <T> Object get(Future<T> f) {
         try {
             return f.get();
         } catch (Throwable t) {

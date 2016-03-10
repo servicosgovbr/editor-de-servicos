@@ -4,7 +4,6 @@ import br.gov.servicos.editor.usuarios.Papel;
 import br.gov.servicos.editor.usuarios.Usuario;
 import br.gov.servicos.editor.usuarios.token.CpfTokenInvalido;
 import br.gov.servicos.editor.usuarios.token.TokenExpirado;
-import br.gov.servicos.editor.usuarios.token.TokenInvalido;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,10 +19,10 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecuperarSenhaControllerTest {
-    private static final String USUARIO_ID = "123412341234";
-    private static final String PAGINA = "recuperarSenha";
-    public static final String CPF = "12312312319";
-    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID)).withPapel(new Papel());
+    static final String USUARIO_ID = "123412341234";
+    static final String PAGINA = "recuperarSenha";
+    static final String CPF = "12312312319";
+    static final Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID)).withPapel(new Papel());
 
     @Mock
     private RecuperacaoSenhaService tokenService;
@@ -35,7 +34,7 @@ public class RecuperarSenhaControllerTest {
     private RecuperarSenhaController controller;
 
     @Test
-    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErrosBasicos() throws TokenInvalido {
+    public void deveTentarSalvarNovaSenhaSeFormularioNãoPossuirErrosBasicos() throws CpfTokenInvalido, TokenExpirado {
         CamposVerificacaoRecuperarSenha camposVerificacaoRecuperarSenha = new CamposVerificacaoRecuperarSenha()
                 .withUsuarioId(USUARIO_ID);
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha()
@@ -49,7 +48,7 @@ public class RecuperarSenhaControllerTest {
     }
 
     @Test
-    public void deveAdicionarErroAResultBidingCasoTokenEstejaInvalido() throws TokenInvalido {
+    public void deveAdicionarErroAResultBidingCasoTokenEstejaInvalido() throws CpfTokenInvalido, TokenExpirado {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 3;
@@ -58,13 +57,13 @@ public class RecuperarSenhaControllerTest {
         ModelAndView endereco = controller.recuperarSenha(PAGINA, formulario, bindingResult);
 
         FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
-                "O CPF informado não é compatível com o cadastrado. Você possui mais "+tentativasSobrando+" tentativas.");
+                "O CPF informado não é compatível com o cadastrado. Você possui mais " + tentativasSobrando + " tentativas.");
         verify(bindingResult).addError(fieldError);
         assertThat(endereco.getViewName(), equalTo("recuperar-senha"));
     }
 
     @Test
-    public void deveAdicionarErroDeTokenBloqueadoAoResultBidingCasoTokenEstejaUltrapassadoNumeroDeTentativas() throws TokenInvalido {
+    public void deveAdicionarErroDeTokenBloqueadoAoResultBidingCasoTokenEstejaUltrapassadoNumeroDeTentativas() throws CpfTokenInvalido, TokenExpirado {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         int tentativasSobrando = 0;
@@ -79,7 +78,7 @@ public class RecuperarSenhaControllerTest {
     }
 
     @Test
-    public void deveAdicionarErroDeTokenExpiraCasoTokenEstejaExpirado() throws TokenInvalido {
+    public void deveAdicionarErroDeTokenExpiraCasoTokenEstejaExpirado() throws CpfTokenInvalido, TokenExpirado {
         FormularioRecuperarSenha formulario = new FormularioRecuperarSenha();
         when(bindingResult.hasErrors()).thenReturn(false);
         doThrow(new TokenExpirado()).when(tokenService).trocarSenha(formulario);

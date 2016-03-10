@@ -34,7 +34,7 @@ public class CacheHealthIndicator implements HealthIndicator {
             }
             return health.build();
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return health.down().withException(e).build();
         }
     }

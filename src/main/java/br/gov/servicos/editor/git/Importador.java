@@ -30,9 +30,9 @@ public class Importador {
 
     @Autowired
     Importador(RepositorioConfig config) {
-        this.repositorioCartas = config.urlRepositorioCartas;
-        this.deveImportar = config.deveImportar;
-        this.repositorioCartasLocal = config.localRepositorioDeCartas;
+        repositorioCartas = config.urlRepositorioCartas;
+        deveImportar = config.deveImportar;
+        repositorioCartasLocal = config.localRepositorioDeCartas;
     }
 
     @PostConstruct

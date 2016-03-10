@@ -6,6 +6,8 @@ import lombok.experimental.Wither;
 
 import javax.validation.constraints.Size;
 
+import java.util.Objects;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Getter
@@ -22,6 +24,6 @@ public class CamposSenha {
     String confirmacaoSenha;
 
     public boolean isValid() {
-        return senha != null && senha.equals(confirmacaoSenha);
+        return Objects.equals(senha, confirmacaoSenha);
     }
 }

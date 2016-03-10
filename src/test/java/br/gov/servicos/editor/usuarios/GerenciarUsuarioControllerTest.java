@@ -22,11 +22,11 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class GerenciarUsuarioControllerTest {
 
-    public static final String CPF = "12312312319";
-    private static final String TOKEN = "token";
-    private static final String USUARIO_ID = "123412341234";
-    private FormularioUsuario FORM_USUARIO = new FormularioUsuario().withPapelId("1");
-    private Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID)).withPapel(new Papel());
+    static final String CPF = "12312312319";
+    static final String TOKEN = "token";
+    static final String USUARIO_ID = "123412341234";
+    static final FormularioUsuario FORM_USUARIO = new FormularioUsuario().withPapelId("1");
+    static final Usuario USUARIO = new Usuario().withCpf(CPF).withId(Long.valueOf(USUARIO_ID)).withPapel(new Papel());
 
     @Mock
     private UsuarioService usuarioService;
@@ -60,7 +60,9 @@ public class GerenciarUsuarioControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
+
         controller.criar(FORM_USUARIO, bindingResult);
+
         verify(usuarioService).save(USUARIO);
     }
 
@@ -71,16 +73,19 @@ public class GerenciarUsuarioControllerTest {
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
         when(usuarioService.save(USUARIO)).thenReturn(USUARIO);
         when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
+
         ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
+
         assertThat(modelAndView.getViewName(), equalTo("instrucoes-recuperar-senha"));
         assertThat(modelAndView.getModel().get("link"), equalTo("/editar/recuperar-senha?token="
-                +TOKEN+"&usuarioId="+USUARIO_ID+"&pagina="+ COMPLETAR_CADASTRO));
+                + TOKEN + "&usuarioId=" + USUARIO_ID + "&pagina=" + COMPLETAR_CADASTRO));
         assertThat(modelAndView.getModel().get("usuario"), equalTo(USUARIO));
     }
 
     @Test(expected = AccessDeniedException.class)
     public void deveLancarExcecaoSeNaoPermitidoAlterarUsuario() {
         when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(false);
+
         controller.criar(FORM_USUARIO, bindingResult);
     }
 
@@ -89,7 +94,9 @@ public class GerenciarUsuarioControllerTest {
         when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(true);
         when(factory.criarUsuario(FORM_USUARIO)).thenReturn(USUARIO);
+
         controller.criar(FORM_USUARIO, bindingResult);
+
         verify(usuarioService, never()).save(USUARIO);
     }
 
@@ -97,23 +104,29 @@ public class GerenciarUsuarioControllerTest {
     public void retornaMesmoUsuarioFormularioSeFormularioPossuiErros() {
         when(userProfiles.temPermissaoGerenciarUsuarioOrgaoEPapel(any(), any())).thenReturn(true);
         when(bindingResult.hasErrors()).thenReturn(true);
+
         ModelAndView modelAndView = controller.criar(FORM_USUARIO, bindingResult);
+
         assertThat(modelAndView.getViewName(), equalTo("cadastrar"));
     }
 
     @Test
     public void mostraInformacoesDoUsuarioNasIntrucoesDeRecuperarSenhas() {
         when(usuarioService.findById(USUARIO_ID)).thenReturn(USUARIO);
-        ModelAndView view = controller.requisitarTrocaSenha(USUARIO_ID);
-        assertThat(view.getModel().get("usuario"), equalTo(USUARIO));
+
+        ModelAndView modelAndView = controller.requisitarTrocaSenha(USUARIO_ID);
+
+        assertThat(modelAndView.getModel().get("usuario"), equalTo(USUARIO));
     }
 
     @Test
     public void mostrarLinkComTokenNasIntrucoesDeRecuperarSenhas() {
         when(usuarioService.findById(USUARIO_ID)).thenReturn(USUARIO);
         when(tokenService.gerarTokenParaUsuario(USUARIO_ID)).thenReturn(TOKEN);
-        ModelAndView view = controller.requisitarTrocaSenha(USUARIO_ID);
-        assertThat(view.getModel().get("link"), equalTo("/editar/recuperar-senha?token="+TOKEN+
-                "&usuarioId="+USUARIO_ID+"&pagina="+ RECUPERAR_SENHA));
+
+        ModelAndView modelAndView = controller.requisitarTrocaSenha(USUARIO_ID);
+
+        assertThat(modelAndView.getModel().get("link"), equalTo("/editar/recuperar-senha?token=" + TOKEN +
+                "&usuarioId=" + USUARIO_ID + "&pagina=" + RECUPERAR_SENHA));
     }
 }

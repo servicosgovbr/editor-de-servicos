@@ -16,7 +16,7 @@ public class UsuarioServiceTest {
 
     public static final String CPF = "12312312312";
     private static final boolean HABILITADO = Boolean.TRUE;
-    private static final Long USUARIO_ID = new Long(12345);
+    private static final Long USUARIO_ID = 12345L;
     private static final Usuario USUARIO = new Usuario().withCpf(CPF).withHabilitado(HABILITADO);
 
     @Mock

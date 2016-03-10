@@ -1,10 +1,9 @@
 package br.gov.servicos.editor.usuarios.token;
 
-import br.gov.servicos.editor.usuarios.token.Token;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 
 public class TokenTest {

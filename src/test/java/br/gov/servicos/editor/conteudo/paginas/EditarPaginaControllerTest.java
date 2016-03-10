@@ -86,7 +86,7 @@ public class EditarPaginaControllerTest {
         given(pagina.getConteudoRaw())
                 .willReturn("<orgao><nome>Ministério Conteúdo</nome></orgao>");
 
-        String conteudo = (String) controller.editar(ORGAO.getNome(), "ministerio-conteudo").getBody();
+        String conteudo = controller.editar(ORGAO.getNome(), "ministerio-conteudo").getBody();
         assertThat(conteudo, is("<orgao><nome>Ministério Conteúdo</nome></orgao>"));
     }
 

@@ -26,6 +26,6 @@ public class PaginaTematicaXML implements ConteudoMetadadosProvider {
     public ConteudoMetadados toConteudoMetadados(Siorg siorg) {
         return new ConteudoMetadados()
                 .withTipo(PAGINA_TEMATICA.getNome())
-                .withNome(this.getNome());
+                .withNome(getNome());
     }
 }

@@ -63,7 +63,7 @@ public class RepositorioCartasBuilder {
 
     private boolean commitPush() {
         try {
-            Git git = Git.open(this.localRepositorio.toFile());
+            Git git = Git.open(localRepositorio.toFile());
             git.add().addFilepattern(".").call();
             git.commit()
                     .setAuthor("Teste", "teste.automatizado@gmail.com")
@@ -80,22 +80,22 @@ public class RepositorioCartasBuilder {
     private boolean criarPaginas() {
         EscritorDeArquivos escritor = new EscritorDeArquivos();
 
-        this.paginas.entrySet()
+        paginas.entrySet()
                 .stream()
-                .forEach(entry -> escritor.escrever(this.localRepositorio.resolve(entry.getKey()), entry.getValue()));
+                .forEach(entry -> escritor.escrever(localRepositorio.resolve(entry.getKey()), entry.getValue()));
 
         return true;
     }
 
     private RepositorioCartasBuilder pagina(TipoPagina tipo, String id, String conteudo) {
-        Path p = Paths.get(tipo.getCaminhoPasta().toString(), id + "." + tipo.getExtensao());
+        Path p = Paths.get(tipo.getCaminhoPasta().toString(), id + '.' + tipo.getExtensao());
         paginas.put(p, conteudo);
 
         return this;
     }
 
     private boolean criarEstruturaRepositorioCartas() {
-        return asList(TipoPagina.values())
+        return asList(values())
                 .stream()
                 .map(t -> localRepositorio.resolve(t.getCaminhoPasta()))
                 .map(Path::toFile)

@@ -36,14 +36,14 @@ public class ServicoXML implements ConteudoMetadadosProvider {
 
     @Override
     public ConteudoMetadados toConteudoMetadados(Siorg siorg) {
-        String id = Optional.ofNullable(this.getOrgao())
+        String id = Optional.ofNullable(getOrgao())
                 .map(TagOrgao::getId)
                 .orElse("");
         String nomeOrgao = nomeOrgao(siorg, id);
 
         return new ConteudoMetadados()
                 .withTipo(tipo)
-                .withNome(this.getNome())
+                .withNome(getNome())
                 .withNomeOrgao(nomeOrgao)
                 .withOrgaoId(id);
     }

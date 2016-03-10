@@ -13,13 +13,13 @@ public enum TipoPagina {
     SERVICO("cartas-servico/v3/servicos", "xml");
 
     @Getter
-    private String nome;
+    private final String nome;
 
     @Getter
-    private Path caminhoPasta;
+    private final Path caminhoPasta;
 
     @Getter
-    private String extensao;
+    private final String extensao;
 
     TipoPagina(String caminhoPasta, String extensao) {
         this.nome = SlugifyConfig.slugify(name());
@@ -29,7 +29,7 @@ public enum TipoPagina {
 
     @Override
     public String toString() {
-        return this.nome;
+        return nome;
     }
 
     public static TipoPagina fromNome(String nome) {
@@ -41,6 +41,6 @@ public enum TipoPagina {
     }
 
     public String prefixo() {
-        return getNome() + "-";
+        return getNome() + '-';
     }
 }

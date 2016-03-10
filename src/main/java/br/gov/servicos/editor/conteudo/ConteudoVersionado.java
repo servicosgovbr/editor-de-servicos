@@ -63,7 +63,7 @@ public class ConteudoVersionado {
     DeserializadorConteudoXML deserializadorConteudoXML;
 
     public Path getCaminho() {
-        return Paths.get(tipo.getCaminhoPasta().toString(), getId() + "." + tipo.getExtensao());
+        return Paths.get(tipo.getCaminhoPasta().toString(), getId() + '.' + tipo.getExtensao());
     }
 
     public String getBranchRef() {
@@ -119,15 +119,15 @@ public class ConteudoVersionado {
     @CacheEvict
     public void remover(UserProfile profile) {
         synchronized (RepositorioGit.class) {
-            repositorio.comRepositorioAbertoNoBranch(this.getBranchMasterRef(), () -> {
+            repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
                 repositorio.pull();
 
-                repositorio.deleteLocalBranch(this.getBranchRef());
-                repositorio.deleteRemoteBranch(this.getBranchRef());
+                repositorio.deleteLocalBranch(getBranchRef());
+                repositorio.deleteRemoteBranch(getBranchRef());
 
                 if (isPublicado()) {
                     repositorio.remove(getCaminhoRelativo());
-                    repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + "'", profile);
+                    repositorio.commit(getCaminhoRelativo(), "Remove '" + getId() + '\'', profile);
                     repositorio.push(getBranchMasterRef());
                 }
                 return null;
@@ -220,7 +220,7 @@ public class ConteudoVersionado {
                 repositorio.pull();
                 return leitorDeArquivos.ler(getCaminhoAbsoluto().toFile());
             }).orElseThrow(
-                    () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + "'")
+                    () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + '\'')
             );
         }
     }
@@ -268,7 +268,7 @@ public class ConteudoVersionado {
     private void despublicar(UserProfile profile) {
         repositorio.comRepositorioAbertoNoBranch(getBranchMasterRef(), () -> {
             repositorio.remove(getCaminhoRelativo());
-            repositorio.commit(getCaminhoRelativo(), "Despublica '" + getId() + "'", profile);
+            repositorio.commit(getCaminhoRelativo(), "Despublica '" + getId() + '\'', profile);
             repositorio.push(getBranchMasterRef());
 
             return null;

@@ -41,8 +41,8 @@ public class CustomLoginSuccessHandlerTest {
 
 
     @Before
-    public void setUp () throws ServletException, IOException {
-        successHandler  = new CustomLoginSuccessHandler(DEFAULT_REDIRECT_URL, LOGIN_URL);
+    public void setUp() throws Exception {
+        successHandler = new CustomLoginSuccessHandler(DEFAULT_REDIRECT_URL, LOGIN_URL);
         successHandler.setRedirectStrategy(redirectStrategy);
     }
 
@@ -77,8 +77,6 @@ public class CustomLoginSuccessHandlerTest {
         successHandler.onAuthenticationSuccess(request, response, authentication);
         verify(redirectStrategy).sendRedirect(request, response, outraUrl);
     }
-
-
 
 
 }

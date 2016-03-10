@@ -5,7 +5,6 @@ import br.gov.servicos.editor.git.RepositorioConfig;
 import br.gov.servicos.editor.git.RepositorioGit;
 import lombok.SneakyThrows;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -29,7 +28,8 @@ import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Arrays.asList;
 import static org.eclipse.jgit.api.ListBranchCommand.ListMode.ALL;
 import static org.eclipse.jgit.lib.Constants.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 
 public class RepositorioGitTest {
@@ -72,8 +72,8 @@ public class RepositorioGitTest {
         System.out.println("test clone1" + clone1);
         System.out.println("test clone2" + clone2);
 
-        this.repo1 = new RepositorioGit(new RepositorioConfig("", "", false, true, clone1));
-        this.repo2 = new RepositorioGit(new RepositorioConfig("", "", false, true, clone2));
+        repo1 = new RepositorioGit(new RepositorioConfig("", "", false, true, clone1));
+        repo2 = new RepositorioGit(new RepositorioConfig("", "", false, true, clone2));
     }
 
     @Test
@@ -138,16 +138,16 @@ public class RepositorioGitTest {
     }
 
     @SneakyThrows
-    private void verificaSeBranchExisteLocalERemoto(File localRepo) throws GitAPIException {
+    private static void verificaSeBranchExisteLocalERemoto(File localRepo) {
         try (Git git = Git.open(localRepo)) {
             List<Ref> branchesList = git.branchList().setListMode(ALL).call();
-            branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", "")).forEach(System.out::println);
-            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + "|" + R_REMOTES + "origin/", ""));
+            branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + '|' + R_REMOTES + "origin/", "")).forEach(System.out::println);
+            Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + '|' + R_REMOTES + "origin/", ""));
             assertTrue(branches.noneMatch(n -> n.equals("foo")));
         }
     }
 
-    private void moveBranch(RepositorioGit r) throws IOException {
+    private static void moveBranch(RepositorioGit r) {
         r.comRepositorioAbertoNoBranch("foo-bar", uncheckedSupplier(() -> {
             Path origem = Paths.get("LICENSE");
             Path destino = Paths.get("baz-bar.md");
@@ -162,7 +162,7 @@ public class RepositorioGitTest {
         }));
     }
 
-    private void garanteQueBranchFoiMovida(RepositorioGit r) {
+    private static void garanteQueBranchFoiMovida(RepositorioGit r) {
         assertTrue(r.branches().noneMatch(n -> n.equals("foo-bar")));
         assertTrue(r.branches().anyMatch(n -> n.equals("baz-bar")));
 
@@ -178,11 +178,11 @@ public class RepositorioGitTest {
         }));
     }
 
-    private void garanteQueAlteracaoFoiPublicada(File localRepo) throws IOException {
+    private static void garanteQueAlteracaoFoiPublicada(File localRepo) throws IOException {
         garanteQueAlteracaoFoiPara(localRepo, MASTER);
     }
 
-    private void garanteQueAlteracaoFoiRecebidaPor(RepositorioGit r, String alteracao) throws IOException {
+    private static void garanteQueAlteracaoFoiRecebidaPor(RepositorioGit r, String alteracao) {
         r.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
             Path relativo = Paths.get("LICENSE");
             Path absoluto = r.getCaminhoAbsoluto().resolve(relativo);
@@ -195,7 +195,7 @@ public class RepositorioGitTest {
         }));
     }
 
-    private void garanteQueAlteracaoFoiPara(File localRepo, String branch) throws IOException {
+    private static void garanteQueAlteracaoFoiPara(File localRepo, String branch) throws IOException {
         try (Git git = Git.open(localRepo)) {
             Ref foo = git.getRepository().getRef(branch);
             assertThat(foo, is(notNullValue()));
@@ -207,7 +207,7 @@ public class RepositorioGitTest {
         }
     }
 
-    private void salvaAlteracao(RepositorioGit r, String alteracao) throws IOException {
+    private static void salvaAlteracao(RepositorioGit r, String alteracao) {
         r.comRepositorioAbertoNoBranch("foo", uncheckedSupplier(() -> {
             r.pull();
 
@@ -243,7 +243,7 @@ public class RepositorioGitTest {
     }
 
     @SneakyThrows
-    private File tempFolder() {
+    private static File tempFolder() {
         File t = createTempDirectory("test").toFile();
         t.deleteOnExit();
         return t;

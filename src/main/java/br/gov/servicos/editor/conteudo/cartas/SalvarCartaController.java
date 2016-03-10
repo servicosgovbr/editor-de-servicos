@@ -55,7 +55,7 @@ public class SalvarCartaController extends CheckOrgaoEspecificoController {
         }
 
         conteudoVersionado.salvar(userProfiles.get(), conteudo);
-        return new RedirectView("/editar/api/pagina/" + tipo + "/" + conteudoVersionado.getId(), true, false);
+        return new RedirectView("/editar/api/pagina/" + tipo + '/' + conteudoVersionado.getId(), true, false);
     }
 
     @Override

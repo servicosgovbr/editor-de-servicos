@@ -34,7 +34,7 @@ class DespublicarPaginaController extends CheckOrgaoEspecificoController {
     }
 
     @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}/despublicar", method = POST)
-    ResponseEntity despublicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, AccessDeniedException {
+    ResponseEntity<Void> despublicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, AccessDeniedException {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
@@ -48,7 +48,7 @@ class DespublicarPaginaController extends CheckOrgaoEspecificoController {
 
         conteudoVersionado.despublicarAlteracoes(userProfiles.get());
 
-        return new ResponseEntity(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
+        return new ResponseEntity<>(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
     }
 
     @Override

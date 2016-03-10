@@ -30,7 +30,7 @@ public class DespublicarPaginaControllerIntegrationTest extends RepositorioGitIn
 
     @Before
     public void setup() {
-        super.setupBase()
+        setupBase()
                 .carta("carta-b", CARTA_B)
                 .paginaTematica("pagina-a", PAGINA_A_ALTERACOES)
                 .orgao("orgao-a", ORGAO_A_ALTERACOES)

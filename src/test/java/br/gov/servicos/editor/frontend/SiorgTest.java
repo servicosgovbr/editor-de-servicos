@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import static java.util.Optional.empty;
@@ -42,7 +43,7 @@ public class SiorgTest {
         String urlOrgao = "http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/404";
 
         given(restTemplate.getForEntity(urlOrgao, Siorg.ConsultaUnidadeResumida.class))
-                .willThrow(new RuntimeException("Connection refused"));
+                .willThrow(new RestClientException("Connection refused"));
 
         assertThat(siorg.nomeDoOrgao(urlOrgao), is(empty()));
     }

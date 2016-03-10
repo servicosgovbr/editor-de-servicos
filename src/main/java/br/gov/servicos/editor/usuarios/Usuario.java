@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -24,7 +23,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @Wither
 @Table(name = "USUARIOS")
 @EqualsAndHashCode
-public class Usuario implements Serializable, UserDetails {
+public class Usuario implements UserDetails {
 
     @Id
     @Column(unique = true)

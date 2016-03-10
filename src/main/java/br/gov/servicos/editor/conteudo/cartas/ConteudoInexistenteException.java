@@ -2,10 +2,12 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
 
-public class ConteudoInexistenteException extends Exception {
+import static java.lang.String.format;
+
+public class ConteudoInexistenteException extends RuntimeException {
 
     public ConteudoInexistenteException(ConteudoVersionado conteudo) {
-        super(conteudo.getTipo().getNome() + " " + conteudo.getId() + " não encontrado em: " + conteudo.getCaminhoAbsoluto());
+        super(format("%s %s não encontrado em: %s", conteudo.getTipo().getNome(), conteudo.getId(), conteudo.getCaminhoAbsoluto()));
     }
 
 }

@@ -27,11 +27,11 @@ public enum TipoPermissao {
     }
 
     public String comPapel(String papel) {
-        return nome + " " + papel.toUpperCase();
+        return nome + ' ' + papel.toUpperCase();
     }
 
     public String comTipoPagina(TipoPagina tipoPagina) {
-        return nome + " " + tipoPagina.toString().toUpperCase();
+        return nome + ' ' + tipoPagina.toString().toUpperCase();
     }
 
     public String comTipoPaginaParaOrgaoEspecifico(TipoPagina tipoPagina) {

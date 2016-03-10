@@ -26,7 +26,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     public CustomLoginSuccessHandler(String defaultRedirectUrl, String loginUrl) {
         this.defaultRedirectUrl = defaultRedirectUrl;
         this.loginUrl = loginUrl;
-        this.requestCache = new HttpSessionRequestCache();
+        requestCache = new HttpSessionRequestCache();
         super.setRequestCache(requestCache);
     }
 

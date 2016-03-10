@@ -3,12 +3,17 @@ package br.gov.servicos.editor.usuarios;
 import br.com.caelum.stella.format.CPFFormatter;
 import br.gov.servicos.editor.usuarios.cadastro.CamposServidor;
 import br.gov.servicos.editor.usuarios.cadastro.FormularioUsuario;
+import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Component
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class UsuarioFactory {
-    private CPFFormatter cpfFormatter = new CPFFormatter();
+
+    CPFFormatter cpfFormatter = new CPFFormatter();
 
     public Usuario criarUsuario(FormularioUsuario formulario) {
         return popularUsuarioApartirDoFormulario(new Usuario(), formulario.withHabilitado(Boolean.TRUE));

@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import static br.gov.servicos.editor.frontend.TicketFilter.TICKET_KEY;
+import static java.util.UUID.*;
 import static lombok.AccessLevel.PRIVATE;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.*;
 @FieldDefaults(level = PRIVATE)
 public class TicketFilterTest {
 
-    public static final UUID TICKET = java.util.UUID.randomUUID();
+    public static final UUID TICKET = randomUUID();
 
     TicketFilter filter;
 
@@ -38,15 +39,15 @@ public class TicketFilterTest {
         filter = new TicketFilter(tickets);
     }
 
-    private MockFilterChain chain() {
+    private static MockFilterChain chain() {
         return new MockFilterChain();
     }
 
-    private MockHttpServletResponse response() {
+    private static MockHttpServletResponse response() {
         return new MockHttpServletResponse();
     }
 
-    private MockHttpServletRequest request() {
+    private static MockHttpServletRequest request() {
         return new MockHttpServletRequest();
     }
 
@@ -63,8 +64,8 @@ public class TicketFilterTest {
 
     @Test
     public void modificaTicketParaCadaNovoRequest() throws Exception {
-        UUID ticket1 = UUID.randomUUID();
-        UUID ticket2 = UUID.randomUUID();
+        UUID ticket1 = randomUUID();
+        UUID ticket2 = randomUUID();
 
         when(tickets.next())
                 .thenReturn(ticket1)

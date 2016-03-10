@@ -4,7 +4,6 @@ import br.gov.servicos.editor.conteudo.TipoPagina;
 import br.gov.servicos.editor.usuarios.Usuario;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import static br.gov.servicos.editor.config.SlugifyConfig.slugify;
@@ -17,19 +16,21 @@ public class LoginUserProfiles implements UserProfiles {
     @Override
     public UserProfile get() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            Usuario usuario = (Usuario) principal;
-            return new UserProfile()
-                    .withId(usuario.getEmailPrimario())
-                    .withEmail(usuario.getEmailPrimario())
-                    .withName(usuario.getNome())
-                    .withPermissoes(usuario.getAuthorities())
-                    .withSiorg(usuario.getSiorg());
-        } else {
+
+        if (!(principal instanceof Usuario)) {
             return new UserProfile();
         }
+
+        Usuario usuario = (Usuario) principal;
+        return new UserProfile()
+                .withId(usuario.getEmailPrimario())
+                .withEmail(usuario.getEmailPrimario())
+                .withName(usuario.getNome())
+                .withPermissoes(usuario.getAuthorities())
+                .withSiorg(usuario.getSiorg());
     }
 
+    @Override
     public boolean temPermissaoParaOrgao(TipoPermissao permissao, String orgaoId) {
         return getPrincipal().temPermissaoComOrgao(permissao, orgaoId);
     }

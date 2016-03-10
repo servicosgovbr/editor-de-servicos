@@ -6,13 +6,14 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ListaDeConteudoIntegrationTest extends RepositorioGitIntegrationTest {
 
     @Before
     public void setup() {
-        super.setupBase()
+        setupBase()
                 .carta("testes", "<servico><nome>testes</nome></servico>")
                 .build();
     }

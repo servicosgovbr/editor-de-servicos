@@ -24,7 +24,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class PublicarPaginaController extends CheckOrgaoEspecificoController {
 
-    private ConteudoVersionadoFactory factory;
+    ConteudoVersionadoFactory factory;
+
     UserProfiles userProfiles;
 
     @Autowired
@@ -34,7 +35,7 @@ class PublicarPaginaController extends CheckOrgaoEspecificoController {
     }
 
     @RequestMapping(value = "/editar/api/pagina/{tipo}/{id}", method = PUT)
-    ResponseEntity publicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) throws ConteudoInexistenteException, AccessDeniedException {
+    ResponseEntity<Void> publicar(@PathVariable("tipo") String tipo, @PathVariable("id") String id) {
         TipoPagina tipoPagina = fromNome(tipo);
         ConteudoVersionado conteudoVersionado = factory.pagina(id, tipoPagina);
 
@@ -48,7 +49,7 @@ class PublicarPaginaController extends CheckOrgaoEspecificoController {
 
         conteudoVersionado.publicar(userProfiles.get());
 
-        return new ResponseEntity(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
+        return new ResponseEntity<>(MetadadosUtils.metadados(conteudoVersionado), HttpStatus.OK);
     }
 
     @Override

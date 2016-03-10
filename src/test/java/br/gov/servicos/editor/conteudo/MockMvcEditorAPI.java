@@ -41,7 +41,7 @@ public class MockMvcEditorAPI {
     @SneakyThrows
     public ResultActions salvarPagina(TipoPagina tipo, String id, String conteudo) {
         return mvc.perform(
-                post("/editar/api/pagina/" + tipo.getNome() + "/" + id)
+                post("/editar/api/pagina/" + tipo.getNome() + '/' + id)
                         .content(conteudo)
                         .accept(ALL)
                         .contentType(APPLICATION_XML));
@@ -49,7 +49,7 @@ public class MockMvcEditorAPI {
 
     @SneakyThrows
     public ResultActions publicarPagina(TipoPagina tipo, String id) {
-        return mvc.perform(put("/editar/api/pagina/" + tipo.getNome() + "/" + id)
+        return mvc.perform(put("/editar/api/pagina/" + tipo.getNome() + '/' + id)
                 .accept(ALL));
     }
 
@@ -90,13 +90,13 @@ public class MockMvcEditorAPI {
 
     @SneakyThrows
     public ResultActions excluirPagina(TipoPagina tipo, String id) {
-        return mvc.perform(delete("/editar/api/pagina/" + tipo.getNome() + "/" + id)
+        return mvc.perform(delete("/editar/api/pagina/" + tipo.getNome() + '/' + id)
                 .accept(ALL));
     }
 
     @SneakyThrows
     public ResultActions editarPagina(TipoPagina tipo, String id) {
-        return mvc.perform(get("/editar/api/pagina/" + tipo.getNome() + "/" + id)
+        return mvc.perform(get("/editar/api/pagina/" + tipo.getNome() + '/' + id)
                 .accept(ALL));
     }
 
