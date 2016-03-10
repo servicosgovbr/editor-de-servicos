@@ -215,16 +215,9 @@ public class ConteudoVersionado {
 
     @CacheEvict
     public String getConteudoRaw() throws FileNotFoundException {
-        return getConteudoRaw(false);
-    }
-
-    @CacheEvict
-    public String getConteudoRaw(boolean fazerPull) throws FileNotFoundException {
         synchronized (RepositorioGit.class) {
             return repositorio.comRepositorioAbertoNoBranch(getBranchRef(), () -> {
-                if(fazerPull) {
-                    repositorio.pull();
-                }
+                repositorio.pull();
                 return leitorDeArquivos.ler(getCaminhoAbsoluto().toFile());
             }).orElseThrow(
                     () -> new FileNotFoundException("Não foi possível encontrar o " + getTipo().getNome() + " referente ao arquivo '" + getCaminhoAbsoluto() + '\'')
@@ -238,7 +231,7 @@ public class ConteudoVersionado {
 
     @SneakyThrows
     protected ConteudoMetadados getConteudoParaMetadados() {
-        return deserializadorConteudoXML.deserializaConteudo(getConteudoRaw(false))
+        return deserializadorConteudoXML.deserializaConteudo(getConteudoRaw())
                 .toConteudoMetadados(siorg);
     }
 
