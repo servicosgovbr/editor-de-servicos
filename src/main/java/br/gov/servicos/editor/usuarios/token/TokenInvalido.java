@@ -1,4 +1,4 @@
 package br.gov.servicos.editor.usuarios.token;
 
-public abstract class TokenInvalido extends Throwable {
+public abstract class TokenInvalido extends RuntimeException {
 }

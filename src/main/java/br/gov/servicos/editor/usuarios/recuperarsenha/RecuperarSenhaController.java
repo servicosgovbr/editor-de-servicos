@@ -23,6 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Slf4j
 @Controller
 public class RecuperarSenhaController {
+
     public static final String RECUPERAR_SENHA = "recuperarSenha";
 
     @Autowired
@@ -40,23 +41,23 @@ public class RecuperarSenhaController {
     @RequestMapping(value = "/editar/recuperar-senha", method = POST)
     public ModelAndView recuperarSenha(@RequestParam(value = "pagina", defaultValue = "recuperarSenha") String pagina,
                                        @Valid FormularioRecuperarSenha formularioRecuperarSenha, BindingResult result) {
-        if (!result.hasErrors()) {
-            try {
-                Usuario usuarioComSenhaNova = tokenService.trocarSenha(formularioRecuperarSenha);
-                usuarioLog("Senha trocada", usuarioComSenhaNova);
-                return new ModelAndView("redirect:/editar/autenticar?senhaAlterada");
-            } catch (TokenInvalido e) {
-                log.info("Falha na tentativa de trocar senha");
-                result.addError(criarErroTokenInvalido(e));
-                return retornarParaRecuperarSenha(pagina);
-            }
-        } else {
+        if (result.hasErrors()) {
+            return retornarParaRecuperarSenha(pagina);
+        }
+
+        try {
+            Usuario usuarioComSenhaNova = tokenService.trocarSenha(formularioRecuperarSenha);
+            usuarioLog("Senha trocada", usuarioComSenhaNova);
+            return new ModelAndView("redirect:/editar/autenticar?senhaAlterada");
+
+        } catch (TokenInvalido e) {
+            log.info("Falha na tentativa de trocar senha");
+            result.addError(criarErroTokenInvalido(e));
             return retornarParaRecuperarSenha(pagina);
         }
     }
 
-
-    private FieldError criarErroTokenInvalido(TokenInvalido e) {
+    private static FieldError criarErroTokenInvalido(TokenInvalido e) {
         String message;
         if (e instanceof CpfTokenInvalido) {
             CpfTokenInvalido cpfTokenInvalido = (CpfTokenInvalido) e;
@@ -72,7 +73,7 @@ public class RecuperarSenhaController {
                 message);
     }
 
-    private String criarMensagemTentativasSobrando(int tentativasSobrando) {
+    private static String criarMensagemTentativasSobrando(int tentativasSobrando) {
         if (tentativasSobrando > 0) {
             return "O CPF informado não é compatível com o cadastrado. Você possui mais "
                     + tentativasSobrando + " tentativas.";
@@ -82,14 +83,14 @@ public class RecuperarSenhaController {
         }
     }
 
-    private ModelAndView retornarParaRecuperarSenha(
+    private static ModelAndView retornarParaRecuperarSenha(
             @RequestParam(value = "pagina", defaultValue = RECUPERAR_SENHA) String pagina) {
         ModelMap model = new ModelMap();
         model.addAttribute("pagina", pagina);
         return new ModelAndView("recuperar-senha", model);
     }
 
-    private void usuarioLog(String mensagem, Usuario usuario) {
+    private static void usuarioLog(String mensagem, Usuario usuario) {
         Marker marker = append("usuario.id", usuario.getId())
                 .and(append("usuario.cpf", usuario.getCpf()))
                 .and(append("usuario.habilitado", usuario.isHabilitado()))

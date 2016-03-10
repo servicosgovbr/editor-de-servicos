@@ -129,7 +129,8 @@ public class RecuperacaoSenhaServiceTest {
         try {
             recuperacaoSenhaService.trocarSenha(formulario);
             fail();
-        } catch (TokenInvalido e) {
+
+        } catch (TokenInvalido ignored) {
             verify(usuarioService, never()).save(usuario.withSenha(ENCRYPTED_SENHA));
         }
     }

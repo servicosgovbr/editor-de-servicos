@@ -20,10 +20,9 @@ class ImportarXMLCartaController {
 
     @ResponseBody
     @RequestMapping(value = "/editar/api/importar-xml", method = GET, produces = "application/xml")
-    String editar(@RequestParam("url") String url) throws ImportacaoXmlException {
+    String editar(@RequestParam("url") String url) {
         try {
-            return new LeitorDeArquivos().ler(new URI(url))
-                    .get();
+            return new LeitorDeArquivos().ler(new URI(url)).get();
         } catch (Exception e) {
             throw new ImportacaoXmlException(url, e);
         }
