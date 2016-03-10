@@ -14,7 +14,10 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.internal.JGitText;
-import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RefSpec;
@@ -58,7 +61,7 @@ import static org.eclipse.jgit.merge.MergeStrategy.THEIRS;
 public class RepositorioGit {
 
     @NonFinal
-    private String currentBranch;
+    private String branchAtual;
 
     File raiz;
     boolean fazerPush;
@@ -128,21 +131,27 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkoutMaster() {
-        if ("master".equals(currentBranch)) {
+        if ("master".equals(branchAtual)) {
             return;
         }
-        currentBranch = "master";
 
-        Ref result = git.checkout()
-                .setName(R_HEADS + MASTER)
-                .call();
+        try {
+            Ref result = git.checkout()
+                    .setName(R_HEADS + MASTER)
+                    .call();
 
-        Marker marker = append("git.branch", git.getRepository().getBranch())
-                .and(append("git.state", git.getRepository().getRepositoryState().toString()))
-                .and(append("checkout.to", MASTER))
-                .and(append("checkout.result", result.getName()));
+            Marker marker = append("git.branch", git.getRepository().getBranch())
+                    .and(append("git.state", git.getRepository().getRepositoryState().toString()))
+                    .and(append("checkout.to", MASTER))
+                    .and(append("checkout.result", result.getName()));
 
-        log.info(marker, "git checkout master");
+            log.info(marker, "git checkout master");
+            branchAtual = "master";
+
+        } catch (Exception e) {
+            branchAtual = null;
+            throw e;
+        }
     }
 
     @SneakyThrows
@@ -161,60 +170,74 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkout(String branch) {
-        if (branch.equals(currentBranch)) {
+        if (branch.equals(branchAtual)) {
             return;
         }
-        currentBranch = branch;
 
-        Repository repository = git.getRepository();
-        String novoBranch = branch.replaceAll('^' + R_HEADS, "");
-        String branchRemoto = DEFAULT_REMOTE_NAME + '/' + novoBranch;
+        try {
+            Repository repository = git.getRepository();
+            String novoBranch = branch.replaceAll('^' + R_HEADS, "");
+            String branchRemoto = DEFAULT_REMOTE_NAME + '/' + novoBranch;
 
-        LogstashMarker marker = append("git.branch", repository.getBranch())
-                .and(append("git.state", repository.getRepositoryState().toString()))
-                .and(append("checkout.to", novoBranch));
+            LogstashMarker marker = append("git.branch", repository.getBranch())
+                    .and(append("git.state", repository.getRepositoryState().toString()))
+                    .and(append("checkout.to", novoBranch));
 
-        if (repository.getRef(novoBranch) == null) {
+            if (repository.getRef(novoBranch) == null) {
+                List<Ref> remoteBranches = git.branchList()
+                        .setListMode(REMOTE)
+                        .call();
 
-            List<Ref> remoteBranches = git.branchList()
-                    .setListMode(REMOTE)
-                    .call();
+                if (remoteBranches.contains(repository.getRef(branchRemoto))) {
+                    checkoutNovoBranch(novoBranch, branchRemoto);
+                } else {
+                    checkoutNovoBranch(novoBranch, R_HEADS + MASTER);
+                    push(novoBranch);
+                }
 
-            if (remoteBranches.contains(repository.getRef(branchRemoto))) {
-                checkoutNovoBranch(novoBranch, branchRemoto);
-            } else {
-                checkoutNovoBranch(novoBranch, R_HEADS + MASTER);
-                push(novoBranch);
+                criarTrackComBranchRemoto(novoBranch);
+
+                marker = marker.and(append("checkout.branch.created", true));
             }
 
-            criarTrackComBranchRemoto(novoBranch);
+            Ref result = git.checkout()
+                    .setName(novoBranch)
+                    .call();
 
-            marker = marker.and(append("checkout.branch.created", true));
+            marker = marker.and(append("checkout.result", result.getName()));
+
+            log.info(marker, "git checkout {}", novoBranch);
+
+            branchAtual = branch;
+
+        } catch (Exception e) {
+            branchAtual = null;
+            throw e;
         }
-
-        Ref result = git.checkout()
-                .setName(novoBranch)
-                .call();
-
-        marker = marker.and(append("checkout.result", result.getName()));
-
-        log.info(marker, "git checkout {}", novoBranch);
     }
 
     private void checkoutNovoBranch(String novoBranch, String pontoDeInicio) throws GitAPIException, IOException {
-        Ref result = git.branchCreate()
-                .setName(novoBranch)
-                .setStartPoint(pontoDeInicio)
-                .setUpstreamMode(NOTRACK)
-                .call();
+        try {
+            Ref result = git.branchCreate()
+                    .setName(novoBranch)
+                    .setStartPoint(pontoDeInicio)
+                    .setUpstreamMode(NOTRACK)
+                    .call();
 
-        Marker info = append("git.branch", git.getRepository().getBranch())
-                .and(append("git.state", git.getRepository().getRepositoryState().toString()))
-                .and(append("branch.name", novoBranch))
-                .and(append("branch.start", R_HEADS + MASTER))
-                .and(append("branch.result", result.getName()));
+            Marker info = append("git.branch", git.getRepository().getBranch())
+                    .and(append("git.state", git.getRepository().getRepositoryState().toString()))
+                    .and(append("branch.name", novoBranch))
+                    .and(append("branch.start", R_HEADS + MASTER))
+                    .and(append("branch.result", result.getName()));
 
-        log.info(info, "git branch {}", novoBranch);
+            log.info(info, "git branch {}", novoBranch);
+
+            branchAtual = novoBranch;
+
+        } catch(Exception e) {
+            branchAtual = null;
+            throw e;
+        }
     }
 
     @SneakyThrows
