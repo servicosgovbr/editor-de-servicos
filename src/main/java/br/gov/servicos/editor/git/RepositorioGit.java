@@ -1,5 +1,6 @@
 package br.gov.servicos.editor.git;
 
+import br.gov.servicos.editor.conteudo.ListaDeConteudo;
 import br.gov.servicos.editor.security.UserProfile;
 import br.gov.servicos.editor.utils.LogstashProgressMonitor;
 import lombok.SneakyThrows;
@@ -131,7 +132,8 @@ public class RepositorioGit {
 
     @SneakyThrows
     private void checkoutMaster() {
-        if ("master".equals(branchAtual)) {
+        if ((R_HEADS + MASTER).equals(branchAtual)) {
+            log.info("ignored: git checkout master");
             return;
         }
 
@@ -161,7 +163,13 @@ public class RepositorioGit {
 
             String idLimpo = id.replaceAll('^' + R_HEADS, "");
 
-            List<Ref> branchesList = git.branchList().setListMode(ALL).call();
+            List<Ref> branchesList;
+            if (ListaDeConteudo.CacheEsquentando.get()) {
+                branchesList = git.branchList().call();
+            } else {
+                branchesList = git.branchList().setListMode(ALL).call();
+            }
+
             Stream<String> branches = branchesList.stream().map(Ref::getName).map(n -> n.replaceAll(R_HEADS + '|' + R_REMOTES + "origin/", ""));
 
             return branches.anyMatch(s -> s.equals(idLimpo));
@@ -234,7 +242,7 @@ public class RepositorioGit {
 
             branchAtual = novoBranch;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             branchAtual = null;
             throw e;
         }
@@ -283,6 +291,11 @@ public class RepositorioGit {
     }
 
     public void pull() {
+        if (ListaDeConteudo.CacheEsquentando.get()) {
+            log.debug("Cache esquentando - ignorando pull()");
+            return;
+        }
+
         try {
             PullResult result = git.pull()
                     .setRebase(true)
@@ -343,6 +356,11 @@ public class RepositorioGit {
             return;
         }
 
+        if (ListaDeConteudo.CacheEsquentando.get()) {
+            log.debug("Cache esquentando - ignorando push()");
+            return;
+        }
+
         try {
             git.push()
                     .setRemote(DEFAULT_REMOTE_NAME)
@@ -386,7 +404,7 @@ public class RepositorioGit {
     }
 
     public Stream<String> branches() {
-        Function<Git, Stream<String>> fn = git -> {
+        return comRepositorioAberto(git -> {
             LogstashMarker marker = append("git.state", git.getRepository().getRepositoryState().toString());
 
             try {
@@ -403,8 +421,7 @@ public class RepositorioGit {
                 log.error(marker, "Erro ao listar branches", e);
                 return Stream.<String>empty();
             }
-        };
-        return comRepositorioAberto(fn);
+        });
     }
 
     @SneakyThrows

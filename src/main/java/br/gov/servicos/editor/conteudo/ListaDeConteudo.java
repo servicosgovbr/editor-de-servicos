@@ -70,13 +70,16 @@ public class ListaDeConteudo {
             Cache<String, Metadados> metadados =
                     (Cache<String, Metadados>) cacheManager.getCache(METADADOS).getNativeCache();
 
-            listar().forEach(c -> metadados.put(c.getId(), c));
-            log.info("Cache de metadados das cartas criado com sucesso");
+            try (CacheEsquentando ignored = CacheEsquentando.open()) {
+                listar().forEach(c -> metadados.put(c.getId(), c));
+                log.info("Cache de metadados das cartas criado com sucesso");
+            }
 
         } else {
             log.warn("Cache de metadados das cartas não foi criado - houve algum problema com o clone do repositório?");
         }
     }
+
 
     @SneakyThrows
     public boolean isIdUnico(String id) {
@@ -119,4 +122,29 @@ public class ListaDeConteudo {
                 .map(f -> f.getName().replaceAll("\\." + ext + '$', ""));
     }
 
+    public static class CacheEsquentando implements AutoCloseable {
+
+        private static final CacheEsquentando instance = new CacheEsquentando();
+
+        private boolean esquentando;
+        private boolean closed;
+
+        @Override
+        public void close() throws Exception {
+            instance.esquentando = false;
+            instance.closed = true;
+        }
+
+        public static CacheEsquentando open() {
+            if(instance.closed) {
+                throw new IllegalStateException("Cache já foi esquentado antes!");
+            }
+            instance.esquentando = true;
+            return instance;
+        }
+
+        public static boolean get() {
+            return instance.esquentando;
+        }
+    }
 }
