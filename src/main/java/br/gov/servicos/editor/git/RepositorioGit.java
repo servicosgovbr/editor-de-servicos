@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 
 import static br.gov.servicos.editor.utils.Unchecked.Consumer.uncheckedConsumer;
 import static br.gov.servicos.editor.utils.Unchecked.Function.uncheckedFunction;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
@@ -192,9 +193,15 @@ public class RepositorioGit {
                     .and(append("checkout.to", novoBranch));
 
             if (repository.getRef(novoBranch) == null) {
-                List<Ref> remoteBranches = git.branchList()
-                        .setListMode(REMOTE)
-                        .call();
+
+                List<Ref> remoteBranches;
+                if (ListaDeConteudo.CacheEsquentando.get()) {
+                    remoteBranches = singletonList(repository.getRef(branchRemoto));
+                } else {
+                    remoteBranches = git.branchList()
+                            .setListMode(REMOTE)
+                            .call();
+                }
 
                 if (remoteBranches.contains(repository.getRef(branchRemoto))) {
                     checkoutNovoBranch(novoBranch, branchRemoto);
@@ -331,7 +338,8 @@ public class RepositorioGit {
         RebaseResult rebaseResult = git
                 .rebase()
                 .setStrategy(THEIRS)
-                .setOperation(ABORT).call();
+                .setOperation(ABORT)
+                .call();
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("git.branch", git.getRepository().getBranch()))
@@ -383,9 +391,15 @@ public class RepositorioGit {
 
     @SneakyThrows
     public void deleteLocalBranch(String branch) {
-        git.branchDelete().setForce(true).setBranchNames(branch).call();
+
+        git.branchDelete()
+                .setForce(true)
+                .setBranchNames(branch)
+                .call();
+
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("branch.delete", branch));
+
         log.info(marker, "git branch delete {}", branch);
     }
 
@@ -395,7 +409,9 @@ public class RepositorioGit {
 
     @SneakyThrows
     public void remove(Path caminho) {
-        git.rm().addFilepattern(caminho.toString()).call();
+        git.rm()
+                .addFilepattern(caminho.toString())
+                .call();
 
         Marker marker = append("git.state", git.getRepository().getRepositoryState().toString())
                 .and(append("git.branch", git.getRepository().getBranch()));
