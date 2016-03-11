@@ -22,12 +22,12 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
             AccessDeniedException accessDeniedException
     ) throws IOException, ServletException {
 
-        request.getSession();
-
         if (accessDeniedException instanceof InvalidCsrfTokenException ||
                 accessDeniedException instanceof MissingCsrfTokenException) {
+
             new DefaultRedirectStrategy().sendRedirect(request, response, "/editar/autenticar?sessao");
         }
+
         super.handle(request, response, accessDeniedException);
     }
 }
