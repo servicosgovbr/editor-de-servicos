@@ -2,7 +2,6 @@ package br.gov.servicos.editor.conteudo;
 
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;
-import br.gov.servicos.editor.utils.Deserializador;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
 import br.gov.servicos.editor.utils.LeitorDeArquivos;
 import br.gov.servicos.editor.utils.ReformatadorXml;
@@ -48,8 +47,7 @@ public class ConteudoVersionadoFactory {
                 escritorDeArquivos,
                 slugify,
                 reformatadorXml,
-                siorg,
-                Deserializador.para(tipo)
+                siorg
         );
     }
 

@@ -73,7 +73,7 @@ public class RecuperarSenhaControllerTest {
 
         FieldError fieldError = new FieldError(FormularioRecuperarSenha.NOME_CAMPO, CamposVerificacaoRecuperarSenha.NOME,
                 "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
-                        "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..");
+                        "Entre em contato com o responsável pelo seu órgão para solicitar um novo link.");
         verify(bindingResult).addError(fieldError);
     }
 

@@ -2,7 +2,6 @@ package br.gov.servicos.editor.conteudo.cartas;
 
 import br.gov.servicos.editor.conteudo.ConteudoMetadadosProvider;
 import br.gov.servicos.editor.conteudo.ConteudoVersionado;
-import br.gov.servicos.editor.conteudo.DeserializadorConteudoXML;
 import br.gov.servicos.editor.frontend.Siorg;
 import br.gov.servicos.editor.git.RepositorioGit;
 import br.gov.servicos.editor.utils.EscritorDeArquivos;
@@ -62,15 +61,12 @@ public class CartaTest {
     @Mock
     ConteudoMetadadosProvider provider;
 
-    DeserializadorConteudoXML deserializadorConteudoXML;
-
     @Captor
     ArgumentCaptor<Supplier<Optional<String>>> captor;
 
     @Before
     public void setUp() throws Exception {
-        deserializadorConteudoXML = new DeserializadorConteudoXML(ServicoXML.class);
-        conteudoVersionado = new ConteudoVersionado("um-id-qualquer", SERVICO, repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml, siorg, deserializadorConteudoXML);
+        conteudoVersionado = new ConteudoVersionado("um-id-qualquer", SERVICO, repositorio, leitorDeArquivos, escritorDeArquivos, new Slugify(), reformatadorXml, siorg);
     }
 
     @Test

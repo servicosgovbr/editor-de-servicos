@@ -39,12 +39,11 @@ public class ServicoXML implements ConteudoMetadadosProvider {
         String id = Optional.ofNullable(getOrgao())
                 .map(TagOrgao::getId)
                 .orElse("");
-        String nomeOrgao = nomeOrgao(siorg, id);
 
         return new ConteudoMetadados()
                 .withTipo(tipo)
                 .withNome(getNome())
-                .withNomeOrgao(nomeOrgao)
+                .withNomeOrgao(nomeOrgao(siorg, id))
                 .withOrgaoId(id);
     }
 

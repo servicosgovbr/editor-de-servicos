@@ -79,7 +79,7 @@ public class RecuperarSenhaController {
                     + tentativasSobrando + " tentativas.";
         } else {
             return "O CPF informado não é compatível com o cadastrado e este link foi bloqueado. " +
-                    "Entre em contato com o responsável pelo seu órgão para solicitar um novo link..";
+                    "Entre em contato com o responsável pelo seu órgão para solicitar um novo link.";
         }
     }
 

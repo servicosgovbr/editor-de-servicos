@@ -60,8 +60,6 @@ public class ConteudoVersionado {
 
     Siorg siorg;
 
-    DeserializadorConteudoXML deserializadorConteudoXML;
-
     public Path getCaminho() {
         return Paths.get(tipo.getCaminhoPasta().toString(), getId() + '.' + tipo.getExtensao());
     }
@@ -231,8 +229,7 @@ public class ConteudoVersionado {
 
     @SneakyThrows
     protected ConteudoMetadados getConteudoParaMetadados() {
-        return deserializadorConteudoXML.deserializaConteudo(getConteudoRaw())
-                .toConteudoMetadados(siorg);
+        return tipo.metadados(getConteudoRaw(), siorg);
     }
 
     protected Optional<Revisao> getRevisaoMaisRecenteDoMaster() {
