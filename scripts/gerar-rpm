@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+if [ ! -d "${SNAP_CACHE_DIR}" ]; then
+  echo "Diretório de cache do Snap (\$SNAP_CACHE_DIR) não configurado"
+  exit -1
+fi
+
+echo "Instalando dependências..."
+sudo yum install -y rpm-build deltarpm python-deltarpm
+
+echo "Importando chave privada GPG..."
+rm -rf ~/.gnupg
+gpg --list-secret-keys 'gpg@servicos.gov.br' || gpg --import gpg-secret # arquivo secreto configurado no Snap
+
+echo "Importando chave pública GPG no RPM..."
+rm -rf gpg-public-key
+gpg --export --armor 'gpg@servicos.gov.br' > gpg-public-key
+sudo rpm --import gpg-public-key
+
+echo "Criando configuração default para o rpmbuild..."
+cat <<-EOF > ~/.rpmmacros
+%_signature gpg
+%_gpg_name gpg@servicos.gov.br
+EOF
+
+echo "Compilando e gerando RPM..."
+./gradlew assemble buildRpm
+
+echo "Verificando assinatura no RPM..."
+rpm --checksig "$(find build/rpmbuild/RPMS/noarch/editor-de-servicos*.rpm -type f)"
