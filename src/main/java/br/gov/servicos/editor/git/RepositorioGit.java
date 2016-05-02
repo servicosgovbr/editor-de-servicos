@@ -194,7 +194,7 @@ public class RepositorioGit {
 
             if (repository.getRef(novoBranch) == null) {
 
-                List<Ref> remoteBranches = remoteBranches = git.branchList()
+                List<Ref> remoteBranches = git.branchList()
                                         .setListMode(REMOTE)
                                         .call();
                 
