@@ -194,16 +194,10 @@ public class RepositorioGit {
 
             if (repository.getRef(novoBranch) == null) {
 
-                List<Ref> remoteBranches;
-                if (ListaDeConteudo.CacheEsquentando.get()) {
-                    remoteBranches = singletonList(repository.getRef(branchRemoto));
-                } else {
-                    remoteBranches = git.branchList()
+                List<Ref> remoteBranches = git.branchList()
                             .setListMode(REMOTE)
                             .call();
-                }
-                
-
+            
                 if (remoteBranches.contains(repository.getRef(branchRemoto))) {
                     checkoutNovoBranch(novoBranch, branchRemoto);
                 } else {
