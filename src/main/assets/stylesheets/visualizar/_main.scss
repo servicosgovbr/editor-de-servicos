@@ -580,7 +580,7 @@
     width: 100%;
 
     ul {
-      @extend .no-mobile;
+      @extend .no-mobile !optional;
       display: inline-block;
 
       a {
