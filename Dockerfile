@@ -1,7 +1,7 @@
 FROM java:openjdk-8u72-jdk
 
 
-ADD ./build/distributions /opt/portal-de-servicos
+ADD ./build/distributions /opt/editor-de-servicos
 WORKDIR /opt/editor-de-servicos
 
 
