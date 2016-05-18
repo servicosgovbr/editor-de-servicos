@@ -1,1 +1,11 @@
+require: sudo
 language: java
+services:
+  - docker
+script: 
+  ./brunch build && ./gradlew clean bootRepackage && docker build -t prodest/editordeservicos .
+deploy:
+  provider: script
+  script: docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push  prodest/editordeservicos
+  on:
+    branch: publish

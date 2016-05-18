@@ -6,9 +6,9 @@ spring:
     cache: false
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/postgres
-    username: postgres
-
+#    url: jdbc:postgresql://postgres:5432/postgres
+#   username: postgres
+    url: jdbc:h2:mem:editor;MODE=PostgreSQL
   jpa:
       hibernate.ddl-auto: none
 
@@ -40,12 +40,12 @@ eds:
   token:
     desabilitarUsuario: false
   cartas:
-    repositorio: "git@github.com:servicosgovbr/cartas-de-teste.git"
+    repositorio: "https://github.com/prodest/cartas-de-teste"
 
 fallback:
   eds:
     cartas:
-      repositorio: "git@github.com:servicosgovbr/cartas-de-servico.git"
+      repositorio: "https://github.com/prodest/cartas-de-teste"
 
 ---
 
