@@ -7,8 +7,11 @@ admin:
   - excluir PAGINA-TEMATICA
   - cadastrar ADMIN
   - cadastrar PONTO_FOCAL
+  - cadastrar PUBLICADOR
   - cadastrar EDITOR
   - CADASTRAR OUTROS ORGAOS #permite cadastrar/alterar usuarios de outros orgaos
+  - criar SERVICO
+  - editar_salvar SERVICO
 ponto_focal:
   - criar PAGINA-TEMATICA
   - editar_salvar PAGINA-TEMATICA
