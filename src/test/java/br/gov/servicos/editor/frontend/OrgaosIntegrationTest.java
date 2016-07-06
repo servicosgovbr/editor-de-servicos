@@ -23,7 +23,7 @@ public class OrgaosIntegrationTest extends RepositorioGitIntegrationTest {
     public void deveListarOrgaosContendoTermoComNomeParcial() throws Exception {
         assertThat(orgaos.get("ministerio do planej"), is(asList(
                 new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/2981",
-                        "Ministério do Planejamento, Orçamento e Gestão (MP)"),
+                        "Ministério do Planejamento, Desenvolvimento e Gestão (MP)"),
                 new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202328",
                         "Superintendência de Administração do Ministério do Planejamento, Orçamento e Gestão nos Estado de Rondônia (SAMPRO)"),
                 new OrgaoDTO("http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/202330",
