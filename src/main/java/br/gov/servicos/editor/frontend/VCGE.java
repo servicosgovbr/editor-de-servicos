@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class VCGE {
 
-    public static final String URL = "http://www.governoeletronico.gov.br/documentos-e-arquivos/VCGE_2_0_3_EXP_json.json";
+    public static final String URL = "https://raw.githubusercontent.com/govbr/vocab-govbr/3ad9daf81cfc793f6a5b87e5daecf17a3195579c/id/vcge.json";
 
     RestTemplate rest;
 
